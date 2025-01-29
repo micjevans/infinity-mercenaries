@@ -20,9 +20,12 @@ jobs:
       - name: Set OpenSSL Legacy Provider
         run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
 
-      # Install dependencies and build the project
-      - name: Install and Build
-        run: npm ci && npm run build
+      # Install dependencies and build the frontend project
+      - name: Install and Build Frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
 
       # Deploy to Firebase Hosting
       - name: Deploy to Firebase
