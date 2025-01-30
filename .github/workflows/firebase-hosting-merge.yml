@@ -54,7 +54,7 @@ jobs:
           channelId: live
           projectId: infinity-mercenaries
 
-      # ✅ Fix: Deploy Firebase Functions (Backend)
+      # ✅ Fix: Deploy Firebase Functions with Authentication
       - name: Deploy Firebase Functions
         run: |
-          firebase deploy --only functions
+          firebase deploy --only functions --token "$(gcloud auth print-access-token)"
