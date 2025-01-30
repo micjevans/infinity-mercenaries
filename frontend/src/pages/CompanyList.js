@@ -9,10 +9,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL ||
-  "http://localhost:5001/infinity-mercenaries/us-central1";
+import { API_BASE_URL } from "../config"; // Import the API URL
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
