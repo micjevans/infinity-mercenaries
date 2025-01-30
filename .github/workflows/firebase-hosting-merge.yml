@@ -22,7 +22,7 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # ✅ Authenticate Firebase using Service Account Key
+      # ✅ Authenticate Firebase CLI using Service Account
       - name: Authenticate Firebase CLI
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
@@ -30,11 +30,10 @@ jobs:
           gcloud auth activate-service-account --key-file="$HOME/firebase-key.json"
           gcloud config set project infinity-mercenaries
 
-      # ✅ Confirm Authentication (Debugging Step)
-      - name: Check Authentication
+      # ✅ Explicitly Log in Firebase CLI
+      - name: Firebase Login with Service Account
         run: |
-          gcloud auth list
-          firebase projects:list
+          firebase login --ci --no-localhost --token "$(gcloud auth print-access-token)"
 
       # Install and Build Frontend
       - name: Install and Build Frontend
