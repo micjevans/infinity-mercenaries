@@ -26,9 +26,8 @@ jobs:
       - name: Authenticate Firebase CLI
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
-          firebase auth:login --no-localhost --token "$(firebase login:ci --project infinity-mercenaries)"
-          firebase use --add infinity-mercenaries
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
+          firebase use --add infinity-mercenaries --token "$(firebase auth:print-access-token)"
 
       # ✅ Install and Build Frontend
       - name: Install and Build Frontend
