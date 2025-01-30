@@ -25,9 +25,8 @@ jobs:
       # ✅ Authenticate Firebase using the Service Account
       - name: Authenticate Firebase CLI
         run: |
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFINITY_MERCENARIES }}' > "$HOME/firebase-key.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
-          firebase use --add infinity-mercenaries --token "$(firebase auth:print-access-token)"
 
       # ✅ Install and Build Frontend
       - name: Install and Build Frontend
@@ -54,6 +53,6 @@ jobs:
       # ✅ Deploy Firebase Functions
       - name: Deploy Firebase Functions
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/firebase-key.json"
         run: |
-          firebase deploy --only functions --token "$(cat $HOME/firebase-key.json)"
+          firebase deploy --only functions
