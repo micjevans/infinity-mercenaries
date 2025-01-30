@@ -26,7 +26,7 @@ jobs:
       - name: Authenticate Firebase CLI
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFINITY_MERCENARIES }}' > "$HOME/firebase-key.json"
-          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json" >> $GITHUB_ENV
 
       # ✅ Install and Build Frontend
       - name: Install and Build Frontend
@@ -52,4 +52,4 @@ jobs:
 
       # ✅ Deploy Firebase Functions
       - name: Deploy Firebase Functions
-        run: firebase deploy --only hosting,functions --token "${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFINITY_MERCENARIES }}"
+        run: firebase deploy --only hosting,functions
