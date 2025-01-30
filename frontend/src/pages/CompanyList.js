@@ -10,21 +10,23 @@ import {
   TextField,
 } from "@mui/material";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:5001/infinity-mercenaries/us-central1";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState("");
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/companies`)
+    fetch(`${API_BASE_URL}/getCompanies`)
       .then((res) => res.json())
       .then((data) => setCompanies(data))
       .catch((error) => console.error("Error fetching companies:", error));
   }, []);
 
   const handleAddCompany = () => {
-    fetch(`${API_BASE_URL}/api/companies`, {
+    fetch(`${API_BASE_URL}/addCompany`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newCompany, userId: "user123" }), // Replace with dynamic userId

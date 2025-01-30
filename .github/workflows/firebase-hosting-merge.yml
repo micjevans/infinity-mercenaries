@@ -27,7 +27,13 @@ jobs:
           npm ci
           npm run build
 
-      # Deploy to Firebase Hosting
+      # Install Backend Dependencies
+      - name: Install Backend Dependencies
+        run: |
+          cd backend/functions
+          npm ci
+
+      # Deploy to Firebase Hosting & Functions
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -35,3 +41,8 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFINITY_MERCENARIES }}
           channelId: live
           projectId: infinity-mercenaries
+
+      # Deploy Firebase Functions (Backend)
+      - name: Deploy Firebase Functions
+        run: |
+          firebase deploy --only functions
