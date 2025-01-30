@@ -1,156 +1,54 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
 import {
-  signUpWithEmail,
-  signInWithEmail,
-  signInWithGoogle,
-  logOut,
-  onAuthStateChange,
-} from "./auth";
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { useAuth } from "./auth/AuthContext"; // Use AuthContext
+import { signInWithEmail, signInWithGoogle } from "./auth/auth"; // Import sign-in methods
+import LandingPage from "./pages/LandingPage";
+import ResourcesPage from "./pages/ResourcesPage";
 import CompanyList from "./pages/CompanyList";
-import {
-  Container,
-  Typography,
-  Modal,
-  Box,
-  TextField,
-  Button,
-} from "@mui/material";
 import NavBar from "./NavBar";
+import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import CompanyPage from "./pages/CompanyPage";
 
-const LandingPage = () => {
-  return (
-    <Container maxWidth="md" style={{ textAlign: "center", marginTop: "10vh" }}>
-      <Typography variant="h2">Welcome to Mercenaries</Typography>
-    </Container>
-  );
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+
+  // Redirect unauthenticated users to the landing page
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
 };
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange((currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleSignInWithEmail = async (email, password) => {
-    try {
-      await signInWithEmail(email, password);
-      handleClose();
-    } catch (error) {
-      console.error("Error signing in with email:", error);
-    }
-  };
-
-  const handleSignInWithGoogle = async () => {
-    try {
-      await signInWithGoogle();
-      handleClose();
-    } catch (error) {
-      console.error("Error signing in with Google:", error);
-    }
-  };
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      handleMenuClose();
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
-
   return (
     <Router>
-      <NavBar
-        user={user}
-        anchorEl={anchorEl}
-        handleMenuOpen={handleMenuOpen}
-        handleMenuClose={handleMenuClose}
-        handleLogout={handleLogout}
-        handleOpen={handleOpen}
-      />
+      <NavBar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/companies" element={<CompanyList />} />
+        <Route path="/resources" element={<ResourcesPage />} />
+        <Route
+          path="/companies"
+          element={
+            <ProtectedRoute>
+              <CompanyList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId"
+          element={
+            <ProtectedRoute>
+              <CompanyPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            backgroundColor: "white",
-            padding: "16px",
-            boxShadow: 24,
-            borderRadius: "8px",
-          }}
-        >
-          <Typography variant="h6" style={{ marginBottom: "16px" }}>
-            Sign In
-          </Typography>
-          <TextField
-            fullWidth
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            margin="normal"
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={() => handleSignInWithEmail(email, password)}
-          >
-            Sign In
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            color="secondary"
-            onClick={handleSignInWithGoogle}
-            style={{ marginTop: "8px" }}
-          >
-            Sign In with Google
-          </Button>
-          <Button
-            fullWidth
-            variant="text"
-            onClick={() => signUpWithEmail(email, password)}
-            style={{ marginTop: "8px" }}
-          >
-            Sign Up
-          </Button>
-        </Box>
-      </Modal>
     </Router>
   );
 }

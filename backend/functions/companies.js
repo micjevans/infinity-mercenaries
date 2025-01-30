@@ -1,52 +1,87 @@
-const functions = require("firebase-functions");
-const cors = require("cors");
+const express = require("express");
 
-const corsHandler = cors({ origin: true });
-
-// ✅ Receive Firestore from index.js
 module.exports = (db) => {
-  return {
-    // Get all companies
-    getCompanies: functions.https.onRequest(async (req, res) => {
-      corsHandler(req, res, async () => {
-        try {
-          const snapshot = await db.collection("companies").get();
-          const companies = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          res.status(200).json(companies);
-        } catch (error) {
-          console.error("Error fetching companies:", error);
-          res.status(500).send("Internal Server Error");
-        }
-      });
-    }),
+  const router = express.Router({ mergeParams: true });
 
-    // Add a new company
-    addCompany: functions.https.onRequest(async (req, res) => {
-      corsHandler(req, res, async () => {
-        try {
-          const { name, userId } = req.body;
-          if (!name || !userId) {
-            return res
-              .status(400)
-              .send("Missing required fields: name, userId");
-          }
+  // ✅ Get all companies for a specific user
+  router.get("/", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      if (!userId) {
+        return res.status(400).send("Missing required field: userId");
+      }
 
-          const newCompany = {
-            name,
-            userId,
-            createdAt: new Date(),
-          };
+      const snapshot = await db
+        .collection("users")
+        .doc(userId)
+        .collection("companies")
+        .get();
 
-          const docRef = await db.collection("companies").add(newCompany);
-          res.status(201).json({ id: docRef.id, ...newCompany });
-        } catch (error) {
-          console.error("Error adding company:", error);
-          res.status(500).send("Internal Server Error");
-        }
-      });
-    }),
-  };
+      const companies = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      res.status(200).json(companies);
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // Route: Fetch Company Details
+  // ✅ Get all companies for a specific user
+  router.get("/:companyId", async (req, res) => {
+    try {
+      const { userId, companyId } = req.params;
+      if (!userId) {
+        return res.status(400).send("Missing required field: userId");
+      }
+
+      const companyDoc = await db
+        .collection("users")
+        .doc(userId)
+        .collection("companies")
+        .doc(companyId)
+        .get();
+
+      if (!companyDoc.exists) {
+        return res.status(404).send("Company not found");
+      }
+
+      res.status(200).json(companyDoc.data());
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  // ✅ Add a new company under a specific user
+  router.post("/", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { name } = req.body;
+      if (!name || !userId) {
+        return res.status(400).send("Missing required fields: name, userId");
+      }
+
+      const newCompany = {
+        name,
+        createdAt: new Date().toISOString(),
+      };
+
+      const docRef = await db
+        .collection("users")
+        .doc(userId)
+        .collection("companies")
+        .add(newCompany);
+
+      res.status(201).json({ id: docRef.id, ...newCompany });
+    } catch (error) {
+      console.error("Error adding company:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
+  return router;
 };
