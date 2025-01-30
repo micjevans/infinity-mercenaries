@@ -1,3 +1,4 @@
+# Deploy to Firebase Hosting & Functions on merge to main
 on:
   push:
     branches:
@@ -16,22 +17,24 @@ jobs:
         with:
           node-version: "18"
 
-      # Add OpenSSL Legacy Provider to fix Webpack build errors
-      - name: Set OpenSSL Legacy Provider
-        run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
-
       # Install Firebase CLI
       - name: Install Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
 
-      # ✅ Authenticate Firebase using Google Credentials
+      # ✅ Authenticate Firebase using Service Account Key
       - name: Authenticate Firebase CLI
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
           gcloud auth activate-service-account --key-file="$HOME/firebase-key.json"
           gcloud config set project infinity-mercenaries
+
+      # ✅ Confirm Authentication (Debugging Step)
+      - name: Check Authentication
+        run: |
+          gcloud auth list
+          firebase projects:list
 
       # Install and Build Frontend
       - name: Install and Build Frontend
@@ -46,8 +49,8 @@ jobs:
           cd backend/functions
           npm ci
 
-      # Deploy to Firebase Hosting & Functions
-      - name: Deploy to Firebase
+      # ✅ Deploy Firebase Hosting
+      - name: Deploy Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +58,7 @@ jobs:
           channelId: live
           projectId: infinity-mercenaries
 
-      # ✅ Fix: Deploy Firebase Functions with Google Credentials
+      # ✅ Deploy Firebase Functions with Google Credentials
       - name: Deploy Firebase Functions
         env:
           GOOGLE_APPLICATION_CREDENTIALS: "$HOME/firebase-key.json"
