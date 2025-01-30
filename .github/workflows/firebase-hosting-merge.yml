@@ -52,7 +52,4 @@ jobs:
 
       # ✅ Deploy Firebase Functions
       - name: Deploy Firebase Functions
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/firebase-key.json"
-        run: |
-          firebase deploy --only functions
+        run: firebase deploy --only hosting,functions --token "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
