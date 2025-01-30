@@ -2,9 +2,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
 if (admin.apps.length === 0) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+  admin.initializeApp();
 }
 
 const db = admin.firestore();
