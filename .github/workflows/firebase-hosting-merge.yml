@@ -27,11 +27,7 @@ jobs:
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
-
-      # ✅ Set Firebase Project
-      - name: Set Firebase Project
-        run: |
-          firebase use --add infinity-mercenaries --token "$(gcloud auth print-access-token)"
+          firebase login --no-localhost --token "$(cat $HOME/firebase-key.json)"
 
       # ✅ Check Authentication Status (Debugging Step)
       - name: Check Authentication
@@ -65,4 +61,4 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: "$HOME/firebase-key.json"
         run: |
-          firebase deploy --only functions
+          firebase deploy --only functions --token "$(cat $HOME/firebase-key.json)"
