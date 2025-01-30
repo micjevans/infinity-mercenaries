@@ -25,10 +25,11 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Authenticate Firebase using the service account
-      - name: Authenticate Firebase
+      # ✅ Authenticate Firebase using Google Credentials
+      - name: Authenticate Firebase CLI
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > "$HOME/firebase-key.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
           gcloud auth activate-service-account --key-file="$HOME/firebase-key.json"
           gcloud config set project infinity-mercenaries
 
@@ -54,7 +55,9 @@ jobs:
           channelId: live
           projectId: infinity-mercenaries
 
-      # ✅ Fix: Deploy Firebase Functions with Authentication
+      # ✅ Fix: Deploy Firebase Functions with Google Credentials
       - name: Deploy Firebase Functions
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/firebase-key.json"
         run: |
-          firebase deploy --only functions --token "$(gcloud auth print-access-token)"
+          firebase deploy --only functions
