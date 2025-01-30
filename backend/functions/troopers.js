@@ -1,9 +1,7 @@
 const express = require("express");
-import { useAuth } from "../auth/AuthContext"; // Assuming Firebase Auth Context
 
 module.exports = (db) => {
   const router = express.Router({ mergeParams: true });
-  const { user } = useAuth(); // Get the logged-in user
 
   // ✅ Get troopers for a specific company
   router.get("/", async (req, res) => {

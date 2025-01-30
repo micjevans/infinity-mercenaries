@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -6,12 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext"; // Use AuthContext
-import { signInWithEmail, signInWithGoogle } from "./auth/auth"; // Import sign-in methods
 import LandingPage from "./pages/LandingPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import CompanyList from "./pages/CompanyList";
 import NavBar from "./NavBar";
-import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 import CompanyPage from "./pages/CompanyPage";
 
 const ProtectedRoute = ({ children }) => {

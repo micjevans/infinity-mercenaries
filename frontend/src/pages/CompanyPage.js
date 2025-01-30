@@ -32,7 +32,7 @@ const CompanyPage = () => {
       .then((res) => res.json())
       .then((data) => setTroopers(data))
       .catch((error) => console.error("Error fetching troopers:", error));
-  }, [companyId]);
+  }, [companyId, user.uid]);
 
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
