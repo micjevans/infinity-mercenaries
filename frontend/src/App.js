@@ -11,6 +11,8 @@ import ResourcesPage from "./pages/ResourcesPage";
 import CompanyList from "./pages/CompanyList";
 import NavBar from "./NavBar";
 import CompanyPage from "./pages/CompanyPage";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -25,29 +27,32 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/resources" element={<ResourcesPage />} />
-        <Route
-          path="/companies"
-          element={
-            <ProtectedRoute>
-              <CompanyList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/companies/:companyId"
-          element={
-            <ProtectedRoute>
-              <CompanyPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route
+            path="/companies"
+            element={
+              <ProtectedRoute>
+                <CompanyList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/companies/:companyId"
+            element={
+              <ProtectedRoute>
+                <CompanyPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 
