@@ -4,10 +4,11 @@ import "@fontsource/exo-2"; // Defaults to weights 400 and 700
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#2B005C", // Deep purple
+      main: "#ff8a00", // Deep purple
+      contrastText: "#FFFFFF", // Ensure text on primary color is white
     },
     secondary: {
-      main: "#FFC107", // Neon yellow
+      main: "#ff461a", // Neon yellow
     },
     background: {
       default: "#121212", // Dark background
@@ -51,9 +52,9 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: "8px", // Rounded edges
-          boxShadow: "0 0 8px rgba(255, 193, 7, 0.6)", // Neon glow
+          boxShadow: "0 0 8px #ffc400", // Neon glow
           "&:hover": {
-            boxShadow: "0 0 12px rgba(255, 193, 7, 0.9)", // Stronger glow on hover
+            boxShadow: "0 0 12px #ffeb00", // Stronger glow on hover
             transform: "scale(1.05)",
             transition: "all 0.2s ease-in-out",
           },

@@ -18,6 +18,7 @@ import {
   signUpWithEmail,
 } from "./auth/auth";
 import { API_BASE_URL } from "./config";
+import logo from "./assets/images/M2-no-bg-short.png";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -120,15 +121,43 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar
+      position="sticky"
+      style={{ background: "transparent", boxShadow: "none" }}
+    >
       <Toolbar>
-        <Typography
-          variant="h6"
-          style={{ flexGrow: 1, cursor: "pointer" }}
+        <Button
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            cursor: "pointer",
+            boxShadow: "none",
+            "&:focus": {
+              boxShadow: "none",
+            },
+          }}
           onClick={() => navigate("/")}
         >
-          Infinity Mercenaries
-        </Typography>
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ height: "40px", marginTop: "4px", marginBottom: "0px" }}
+          />
+          <Typography
+            variant="subtitle2"
+            style={{ fontSize: "10px", margin: "0px" }}
+          >
+            INFINITY
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            style={{ fontSize: "10px", marginBottom: "4px" }}
+          >
+            MERCENARIES
+          </Typography>
+        </Button>
+        <div style={{ flexGrow: 1 }} />
         {user ? (
           <>
             <Button color="inherit" onClick={handleMenuOpen}>
