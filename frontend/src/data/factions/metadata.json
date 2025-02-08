@@ -7134,5 +7134,86 @@
       "name": "PH=18",
       "type": "TEXT"
     }
+  ],
+  "category": [
+    {
+      "id": 1,
+      "name": "Garrison Troops"
+    },
+    {
+      "id": 2,
+      "name": "Line Troops"
+    },
+    {
+      "id": 3,
+      "name": "Spec. Trained  Troops"
+    },
+    {
+      "id": 4,
+      "name": "Veteran Troops"
+    },
+    {
+      "id": 5,
+      "name": "Elite Troops"
+    },
+    {
+      "id": 6,
+      "name": "Headquarters Troops"
+    },
+    {
+      "id": 7,
+      "name": "Mechanized Troops"
+    },
+    {
+      "id": 8,
+      "name": "Support Troops"
+    },
+    {
+      "id": 10,
+      "name": "Character"
+    },
+    {
+      "id": 11,
+      "name": "Mercenary Troops"
+    },
+    {
+      "id": 12,
+      "name": "Headquarters Troops / Mechanized Troops"
+    }
+  ],
+  "type": [
+    {
+      "id": 1,
+      "name": "LI"
+    },
+    {
+      "id": 2,
+      "name": "MI"
+    },
+    {
+      "id": 3,
+      "name": "HI"
+    },
+    {
+      "id": 4,
+      "name": "TAG"
+    },
+    {
+      "id": 5,
+      "name": "REM"
+    },
+    {
+      "id": 6,
+      "name": "SK"
+    },
+    {
+      "id": 7,
+      "name": "WB",
+      "mercs": true
+    },
+    {
+      "id": 8,
+      "name": "VH"
+    }
   ]
 }

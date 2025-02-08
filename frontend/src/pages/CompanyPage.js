@@ -27,6 +27,7 @@ import Trooper from "../components/Trooper";
 import metadata from "../data/factions/metadata"; // <-- add this import at the top with other imports
 import UnitDetails from "../components/UnitDetails";
 import ProfileDetails from "../components/ProfileDetails";
+import AddTrooperDialog from "../components/AddTrooperDialog";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -277,113 +278,11 @@ const CompanyPage = ({ company }) => {
           <Typography>No troopers found.</Typography>
         )}
       </List>
-      <Dialog
+      <AddTrooperDialog
         open={trooperModalOpen}
         onClose={() => setTrooperModalOpen(false)}
-        fullWidth
-        maxWidth="md"
-      >
-        <DialogTitle>Select a Trooper Unit</DialogTitle>
-        {/* Moved filter box outside the scrollable DialogContent */}
-        <div style={{ padding: "16px" }}>
-          <TextField
-            label="Filter by ISC"
-            variant="outlined"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-          />
-        </div>
-        <DialogContent
-          dividers
-          style={{ maxHeight: "70vh", overflowY: "auto" }}
-        >
-          {units
-            // For each unit, filter each profileGroup's options to only those with swc === "0", and don't have the lieutenant skill
-            .map((unit) => ({
-              ...unit,
-              profileGroups: unit.profileGroups.map((group) => ({
-                ...group,
-                options: group.options.filter(
-                  (option) =>
-                    option.swc === "0" &&
-                    !option.skills.includes((skill) => skill.id === 119)
-                ),
-              })),
-            }))
-            // Then, filter out any unit that has no valid options in any profileGroup, aren't characters, and first filter by ISC search term.
-            .filter((unit) => {
-              return (
-                unit.profileGroups.some(
-                  (group) => group.options && group.options.length > 0
-                ) &&
-                unit.resume.category !== 10 &&
-                unit.isc.toLowerCase().includes(unitFilter.toLowerCase())
-              );
-            })
-            .map((unit, unitIndex) => (
-              <Accordion key={`unit-${unit.isc}-${unitIndex}`}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  {/* Display unit isc and logo from first profile group */}
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    {unit.profileGroups &&
-                      unit.profileGroups[0] &&
-                      unit.profileGroups[0].profiles &&
-                      unit.profileGroups[0].profiles[0] && (
-                        <img
-                          src={unit.profileGroups[0].profiles[0].logo}
-                          alt={unit.isc}
-                          style={{ width: 20, height: 20, marginRight: 8 }}
-                        />
-                      )}
-                    <Typography>{unit.isc}</Typography>
-                  </div>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {unit.profileGroups.map((group, grpIndex) =>
-                    group.options.length > 0 ? (
-                      <div
-                        key={`group-${unit.isc}-${grpIndex}`}
-                        style={{ marginBottom: 8 }}
-                      >
-                        <Typography variant="h6">{group.isc}</Typography>
-                        {group.profiles && group.profiles[0] && (
-                          <UnitDetails profile={group.profiles[0]} />
-                        )}
-                        {group.options.map((option, optIndex) => (
-                          <div
-                            key={`option-${group.isc}-${optIndex}`}
-                            style={{ paddingLeft: 16 }}
-                          >
-                            <Typography variant="body2">
-                              {option.name}
-                            </Typography>
-                          </div>
-                        ))}
-                      </div>
-                    ) : null
-                  )}
-                  {unit.options && unit.options.length > 0 && (
-                    <div style={{ marginTop: 16 }}>
-                      <Typography variant="subtitle1">Unit Options</Typography>
-                      {unit.options.map((option, idx) => (
-                        <Typography
-                          key={`unit-option-${unit.isc}-${idx}`}
-                          variant="body2"
-                        >
-                          {option.name}
-                        </Typography>
-                      ))}
-                    </div>
-                  )}
-                </AccordionDetails>
-              </Accordion>
-            ))}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setTrooperModalOpen(false)}>Cancel</Button>
-        </DialogActions>
-      </Dialog>
+        units={units}
+      />
     </Container>
   );
 };

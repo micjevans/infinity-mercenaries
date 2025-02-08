@@ -1,4 +1,7 @@
 import metadata from "../data/factions/metadata";
+import { createTheme } from "@mui/material/styles";
+
+const theme = createTheme();
 
 // Helper conversion: centimeters to inches (rounded to nearest whole number)
 const convertCmToInches = (cm) => Math.round(cm / 2.54);
@@ -44,14 +47,16 @@ export const renderStat = (stat) => {
 
 // Updated mapping functions with inline styling for links
 
+const getWikiLink = (baseName, wikiUrl) => {
+  return `<a href="${wikiUrl}" target="_blank" rel="noopener noreferrer" style="color: ${theme.palette.warning.dark}; text-decoration: underline;">${baseName}</a>`;
+};
+
 // Maps an equipment object (by id) to its name via metadata.equips.
 export const mapEquip = (equipItem) => {
   const found = metadata.equips.find((e) => e.id === equipItem.id);
   const baseName = found ? found.name : equipItem.id;
   const wikiUrl = (found && found.wiki) || equipItem.wiki;
-  const displayName = wikiUrl
-    ? `<a href="${wikiUrl}" target="_blank" rel="noopener noreferrer" style="color: orange; text-decoration: underline;">${baseName}</a>`
-    : baseName;
+  const displayName = wikiUrl ? getWikiLink(baseName, wikiUrl) : baseName;
   return appendExtras(displayName, equipItem);
 };
 
@@ -60,9 +65,7 @@ export const mapSkill = (skillItem) => {
   const found = metadata.skills.find((s) => s.id === skillItem.id);
   const baseName = found ? found.name : skillItem.id;
   const wikiUrl = (found && found.wiki) || skillItem.wiki;
-  const displayName = wikiUrl
-    ? `<a href="${wikiUrl}" target="_blank" rel="noopener noreferrer" style="color: orange; text-decoration: underline;">${baseName}</a>`
-    : baseName;
+  const displayName = wikiUrl ? getWikiLink(baseName, wikiUrl) : baseName;
   return appendExtras(displayName, skillItem);
 };
 
@@ -71,8 +74,12 @@ export const mapWeapon = (weaponItem) => {
   const found = metadata.weapons.find((w) => w.id === weaponItem.id);
   const baseName = found ? found.name : weaponItem.id;
   const wikiUrl = (found && found.wiki) || weaponItem.wiki;
-  const displayName = wikiUrl
-    ? `<a href="${wikiUrl}" target="_blank" rel="noopener noreferrer" style="color: orange; text-decoration: underline;">${baseName}</a>`
-    : baseName;
+  const displayName = wikiUrl ? getWikiLink(baseName, wikiUrl) : baseName;
   return appendExtras(displayName, weaponItem);
+};
+
+// Maps a type object (by id) to its name via metadata.type.
+export const mapType = (type) => {
+  const found = metadata.type.find((t) => t.id === type);
+  return found ? found.name : type;
 };

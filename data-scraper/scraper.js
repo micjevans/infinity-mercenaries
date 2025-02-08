@@ -5,6 +5,8 @@ const path = require("path");
 
 // Create a Map to accumulate unique extras across factions
 const extrasMap = new Map();
+const categoryMap = new Map();
+const typeMap = new Map();
 
 (async () => {
   // 1. Launch browser (headed mode so we can see it)
@@ -116,20 +118,32 @@ const extrasMap = new Map();
       continue;
     }
 
-    // In your loop over factions, after you successfully parse each faction's data:
-    // For example, after:
-    //   factionData = await factionRes.json();
-    // Insert the following snippet:
-    if (
-      factionData &&
-      factionData.filters &&
-      Array.isArray(factionData.filters.extras)
-    ) {
-      factionData.filters.extras.forEach((extra) => {
-        if (!extrasMap.has(extra.id)) {
-          extrasMap.set(extra.id, extra);
-        }
-      });
+    // After successfully parsing factionData:
+    if (factionData && factionData.filters) {
+      // Add extras to the metadata map
+      if (Array.isArray(factionData.filters.extras)) {
+        factionData.filters.extras.forEach((extra) => {
+          if (!extrasMap.has(extra.id)) {
+            extrasMap.set(extra.id, extra);
+          }
+        });
+      }
+      // Add category filters to the categoryMap
+      if (Array.isArray(factionData.filters.category)) {
+        factionData.filters.category.forEach((category) => {
+          if (!categoryMap.has(category.id)) {
+            categoryMap.set(category.id, category);
+          }
+        });
+      }
+      // Add type filters to the typeMap
+      if (Array.isArray(factionData.filters.type)) {
+        factionData.filters.type.forEach((type) => {
+          if (!typeMap.has(type.id)) {
+            typeMap.set(type.id, type);
+          }
+        });
+      }
     }
 
     // 7. If we have factionData, save it to a file named after the slug
@@ -161,7 +175,11 @@ const extrasMap = new Map();
 
   // After processing all factions and accumulating extras...
   const combinedExtras = Array.from(extrasMap.values());
+  const combinedCategory = Array.from(categoryMap.values());
+  const combinedType = Array.from(typeMap.values());
   metadataJson.extras = combinedExtras;
+  metadataJson.category = combinedCategory;
+  metadataJson.type = combinedType;
 
   // Instead of exporting the metadata, save it as a plain JSON object.
   // Also, save to the correct path: data/factions/metadata.json
