@@ -37,17 +37,14 @@ module.exports = (db) => {
   router.post("/", async (req, res) => {
     try {
       const { userId, companyId } = req.params;
-      const { name, role, stats, equipment } = req.body;
+      const { name } = req.body;
 
-      if (!userId || !companyId || !name || !role) {
+      if (!userId || !companyId || !name) {
         return res.status(400).send("Missing required fields");
       }
 
       const newTrooper = {
         name,
-        role,
-        stats,
-        equipment,
         createdAt: new Date().toISOString(),
       };
 

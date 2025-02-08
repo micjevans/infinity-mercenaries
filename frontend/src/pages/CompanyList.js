@@ -8,6 +8,8 @@ import {
   Paper,
   Button,
   TextField,
+  Modal,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config"; // Import the API URL
@@ -18,6 +20,9 @@ const CompanyList = () => {
   const [newCompany, setNewCompany] = useState("");
   const { user } = useAuth(); // Get the logged-in user
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     if (!user) return; // Wait until user is loaded
@@ -34,12 +39,21 @@ const CompanyList = () => {
     fetch(`${API_BASE_URL}/users/${user.uid}/companies`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newCompany }),
+      body: JSON.stringify({
+        name: newCompany,
+        sectorials: [],
+        credits: 0,
+        swc: 0,
+        sponsor: "",
+        notoriety: 0,
+        description: "",
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
         setCompanies((prev) => [...prev, data]); // Add new company to the list
         setNewCompany("");
+        handleClose(); // Close the modal
       })
       .catch((error) => console.error("Error adding company:", error));
   };
@@ -51,13 +65,7 @@ const CompanyList = () => {
       </Typography>
       {/* Add Company Section */}
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
-        <TextField
-          label="New Company Name"
-          value={newCompany}
-          onChange={(e) => setNewCompany(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <Button variant="contained" color="primary" onClick={handleAddCompany}>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
           Add Company
         </Button>
       </Paper>
@@ -87,6 +95,36 @@ const CompanyList = () => {
           )}
         </List>
       </Paper>
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          style={{
+            padding: "16px",
+            margin: "auto",
+            marginTop: "20vh",
+            width: "300px",
+            border: "2px solid #3f51b5",
+            boxShadow: "0 0 10px #3f51b5",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Add New Company
+          </Typography>
+          <TextField
+            label="New Company Name"
+            value={newCompany}
+            onChange={(e) => setNewCompany(e.target.value)}
+            fullWidth
+            style={{ marginBottom: "10px", backgroundColor: "primary" }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddCompany}
+          >
+            Add Company
+          </Button>
+        </Box>
+      </Modal>
     </Container>
   );
 };
