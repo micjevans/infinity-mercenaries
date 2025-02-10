@@ -95,6 +95,15 @@ const CompanyPage = ({ company }) => {
     }
   }, [trooperModalOpen, sectorial1, sectorial2]);
 
+  // Define the handleAddTrooper function
+  const handleAddTrooper = (trooper) => {
+    // Append the full trooper object to the company list
+    setTroopers((prevTroopers) => [...prevTroopers, trooper]);
+    // Optionally, close the AddTrooperDialog after adding
+    console.log(trooper, troopers);
+    setTrooperModalOpen(false);
+  };
+
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
       <Button variant="outlined" onClick={() => navigate("/companies")}>
@@ -199,40 +208,14 @@ const CompanyPage = ({ company }) => {
       {/* Trooper List Section */}
       <List>
         {troopers.length > 0 ? (
-          troopers.map((notTrooper, index) => {
-            const trooper = {
-              id: "123",
-              name: "Artalis",
-              mov1: "4",
-              mov2: "4",
-              cc: 17,
-              bs: 12,
-              ph: 10,
-              wip: 14,
-              arm: 1,
-              bts: 3,
-              vita: 2,
-              s: 1,
-              ava: 1,
-              equipment: ["Deactivator"],
-              skills: ["Courage", 'Dodge (+1")', "Immunity (Shock)", "NCO"],
-            };
-            return (
-              <ListItem
-                key={trooper.id + "" + index}
-                style={{ padding: "0px" }}
-              >
-                <Accordion>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>{trooper.name}</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Trooper initialTrooper={trooper} onUpdate={() => {}} />
-                  </AccordionDetails>
-                </Accordion>
-              </ListItem>
-            );
-          })
+          troopers.map((trooper, index) => (
+            <Trooper
+              key={index}
+              trooper={trooper}
+              onUpdate={() => {}}
+              onClick={() => {}}
+            />
+          ))
         ) : (
           <Typography>No troopers found.</Typography>
         )}
@@ -241,6 +224,7 @@ const CompanyPage = ({ company }) => {
         open={trooperModalOpen}
         onClose={() => setTrooperModalOpen(false)}
         units={units}
+        onAddTrooper={handleAddTrooper} // pass down the handler
       />
     </Container>
   );

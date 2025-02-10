@@ -1,26 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Divider,
-  Box,
-} from "@mui/material";
-import UnitDetails from "./UnitDetails";
-import ProfileDetails from "./ProfileDetails";
-import {
-  mapType,
-  renderCharLogos,
-  mapCategory,
-} from "../utils/metadataMapping";
+import { Dialog, DialogTitle, DialogContent, TextField } from "@mui/material";
+import Trooper from "./Trooper";
 
-const AddTrooperDialog = ({ open, onClose, units }) => {
+const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
   const [filteredUnits, setFilteredUnits] = useState([]);
@@ -94,121 +77,47 @@ const AddTrooperDialog = ({ open, onClose, units }) => {
         }}
       >
         {filteredUnits.map((unit, unitIndex) => (
-          <Accordion
-            key={`unit-${unit.isc}-${unitIndex}`}
-            sx={{ mb: 0.5 }}
-            TransitionProps={{ unmountOnExit: true }}
-          >
-            <AccordionSummary
-              expandIcon={
-                <Typography color="white">
-                  {mapType(unit.resume.type)}
-                </Typography>
-              }
-              sx={{
-                "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-                  transform: "none",
-                },
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={unit.resume.logo}
-                  alt={unit.isc}
-                  style={{ height: 40, marginRight: 8 }}
-                />
-                <Typography>{unit.isc}</Typography>
-              </div>
-            </AccordionSummary>
-            <AccordionDetails>
-              {unit.profileGroups.map((group, grpIndex) =>
-                group.options.length > 0 ? (
-                  <div
-                    key={`group-${unit.isc}-${grpIndex}`}
-                    style={{ marginBottom: 8 }}
-                  >
-                    {/* Dark neon blue category line */}
-                    <Box
-                      sx={{
-                        backgroundColor: theme.palette.primary.dark, // using theme palette
-                        color: theme.palette.common.white,
-                        px: 1,
-                        py: 0.5,
-                        borderTopLeftRadius: 4,
-                        borderTopRightRadius: 4,
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography variant="caption">
-                        {mapCategory(group.category)}
-                      </Typography>
-                    </Box>
-                    {group.profiles && group.profiles[0] && (
-                      <>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            border: "1px solid transparent", // to keep layout consistent
-                          }}
-                        >
-                          <Typography variant="h6">
-                            {group.profiles[0].name}
-                          </Typography>
-                          <Box sx={{ display: "flex", gap: 0.5 }}>
-                            {renderCharLogos(group.profiles[0].chars)}
-                          </Box>
-                        </Box>
-                        <UnitDetails profile={group.profiles[0]} />
-                      </>
-                    )}
-                    {/* Existing header bar with three titles */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "inherit",
-                        color: "white",
-                        px: 2,
-                        py: 1,
-                        mt: 1,
-                      }}
-                    >
-                      <Typography variant="body2">Name</Typography>
-                      <Box sx={{ display: "flex", gap: 2 }}>
-                        <Typography variant="body2">SWC</Typography>
-                        <Typography variant="body2">PTS</Typography>
-                      </Box>
-                    </Box>
-                    {/* Render options... */}
-                    {group.options.map((option, optIndex) => (
-                      <div key={`option-${group.isc}-${optIndex}`}>
-                        <ProfileDetails option={option} />
-                        <Divider />
-                      </div>
-                    ))}
-                  </div>
-                ) : null
-              )}
-              {unit.options && unit.options.length > 0 && (
-                <div style={{ marginTop: 16 }}>
-                  <Typography variant="subtitle1">Unit Options</Typography>
-                  {unit.options.map((option, idx) => (
-                    <Typography
-                      key={`unit-option-${unit.isc}-${idx}`}
-                      variant="body2"
-                    >
-                      {option.name}
-                    </Typography>
-                  ))}
-                </div>
-              )}
-            </AccordionDetails>
-          </Accordion>
+          <Trooper
+            key={unitIndex}
+            trooper={unit}
+            onClick={(group, option) => {
+              const cleanedUpUnit = {
+                ...unit,
+                profileGroups: [
+                  {
+                    ...group,
+                    category: 10,
+                    profiles: group.profiles.map((profile) => ({
+                      ...profile,
+                      skills: option.skills
+                        ? profile.skills.concat(option.skills)
+                        : profile.skills,
+                      equip: option.equip
+                        ? profile.equip.concat(option.equip)
+                        : profile.equip,
+                      peripheral: option.peripheral
+                        ? profile.peripheral.concat(option.peripheral)
+                        : profile.peripheral,
+                      weapons: option.weapons
+                        ? profile.weapons.concat(option.weapons)
+                        : profile.weapons,
+                    })),
+                    options: [
+                      {
+                        ...option,
+                        skills: [],
+                        equip: [],
+                        peripheral: [],
+                        weapons: [],
+                      },
+                    ],
+                  },
+                ],
+              };
+              console.log(cleanedUpUnit);
+              onAddTrooper(cleanedUpUnit);
+            }}
+          />
         ))}
       </DialogContent>
     </Dialog>

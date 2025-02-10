@@ -1,18 +1,28 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import MapDetails from "./MapDetails";
 import { renderOrderIcons } from "../utils/metadataMapping";
 
-const ProfileDetails = ({ option }) => {
+const ProfileDetails = ({ option, onClick }) => {
   const theme = useTheme();
   if (!option) return null;
 
-  const { name, skills, weapons, equip, swc, points, peripheral, orders } =
-    option;
+  const {
+    name,
+    skills,
+    weapons,
+    equip,
+    swc,
+    points,
+    peripheral,
+    orders,
+    disabled,
+  } = option;
 
   return (
     <Box
-      mb={1}
+      onClick={!disabled ? () => onClick(option) : () => {}}
       sx={{
         backgroundColor: theme.palette.grey[300],
         color: "black",
@@ -25,6 +35,7 @@ const ProfileDetails = ({ option }) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "flex-start",
+        cursor: !disabled ? "pointer" : "default",
       }}
     >
       {/* Orders icons column */}
@@ -46,6 +57,7 @@ const ProfileDetails = ({ option }) => {
       <Box sx={{ flex: 1 }}>
         <Typography
           variant="body1"
+          component="div" // changed from <p> to <div>
           color="inherit"
           sx={{ display: "inline-flex", alignItems: "center" }}
         >

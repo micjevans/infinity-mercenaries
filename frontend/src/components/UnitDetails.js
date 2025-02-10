@@ -15,6 +15,7 @@ const UnitDetails = ({ profile }) => {
     w,
     s,
     ava,
+    weapons,
     equip,
     skills,
     peripheral,
@@ -64,6 +65,8 @@ const UnitDetails = ({ profile }) => {
         <span>{renderStat(s)}</span>
         <span>{renderStat(ava)}</span>
       </Box>
+      {/* Weapons Row */}
+      <MapDetails list={weapons} metaKey="weapons" preText="Weapons: " />
       {/* Equipment Row */}
       <MapDetails list={equip} metaKey="equips" preText="Equipment: " />
       {/* Peripherals Row */}
