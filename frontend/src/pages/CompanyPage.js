@@ -4,18 +4,13 @@ import {
   Container,
   Typography,
   List,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Paper,
   Button,
-  ListItem,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { API_BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import Trooper from "../components/Trooper";
