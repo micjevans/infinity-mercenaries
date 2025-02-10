@@ -14,19 +14,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { API_BASE_URL } from "../config";
-import { useAuth } from "../auth/AuthContext"; // Assuming Firebase Auth Context
+import { useAuth } from "../auth/AuthContext";
 import Trooper from "../components/Trooper";
-import metadata from "../data/factions/metadata"; // <-- add this import at the top with other imports
-import UnitDetails from "../components/UnitDetails";
-import ProfileDetails from "../components/ProfileDetails";
+import metadata from "../data/factions/metadata";
 import AddTrooperDialog from "../components/AddTrooperDialog";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
@@ -40,9 +33,8 @@ const loadFactionData = (slug) => {
 };
 
 const CompanyPage = ({ company }) => {
-  const [newTrooper, setNewTrooper] = useState("");
   const { companyId } = useParams(); // Get the companyId from the route
-  const [companyName, setCompanyName] = useState("");
+  const companyName = company?.name;
   const [troopers, setTroopers] = useState([]);
   const { user } = useAuth(); // Get the logged-in user
   const navigate = useNavigate();
@@ -50,39 +42,14 @@ const CompanyPage = ({ company }) => {
   const [sectorial2, setSectorial2] = useState(null);
   const [trooperModalOpen, setTrooperModalOpen] = useState(false);
   const [units, setUnits] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [unitFilter, setUnitFilter] = useState("");
 
   useEffect(() => {
-    // Fetch company name (optional, if you want to display it)
-    fetch(`${API_BASE_URL}/users/${user.uid}/companies/${companyId}`)
-      .then((res) => res.json())
-      .then((data) => setCompanyName(data.name))
-      .catch((error) =>
-        console.error("Error fetching company details:", error)
-      );
-
     // Fetch troopers for this company
     fetch(`${API_BASE_URL}/users/${user.uid}/companies/${companyId}/troopers`)
       .then((res) => res.json())
       .then((data) => setTroopers(data))
       .catch((error) => console.error("Error fetching troopers:", error));
   }, [companyId, user.uid]);
-
-  const handleAddTrooper = () => {
-    if (!user) return; // Ensure user is logged in
-    fetch(`${API_BASE_URL}/users/${user.uid}/companies/${companyId}/troopers`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newTrooper }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setTroopers((prev) => [...prev, data]); // Add new trooper to the list
-        setNewTrooper("");
-      })
-      .catch((error) => console.error("Error adding trooper:", error));
-  };
 
   const handleSectorial1Change = (e) => {
     const selectedId = Number(e.target.value);
@@ -127,14 +94,6 @@ const CompanyPage = ({ company }) => {
       setUnits(unitsArrays.flat());
     }
   }, [trooperModalOpen, sectorial1, sectorial2]);
-
-  // Debounce the search term
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setUnitFilter(searchTerm);
-    }, 300); // 300ms delay
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
 
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
