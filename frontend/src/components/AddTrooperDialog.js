@@ -14,7 +14,11 @@ import {
 } from "@mui/material";
 import UnitDetails from "./UnitDetails";
 import ProfileDetails from "./ProfileDetails";
-import { mapType } from "../utils/metadataMapping";
+import {
+  mapType,
+  renderCharLogos,
+  mapCategory,
+} from "../utils/metadataMapping";
 
 const AddTrooperDialog = ({ open, onClose, units }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -123,21 +127,51 @@ const AddTrooperDialog = ({ open, onClose, units }) => {
                     key={`group-${unit.isc}-${grpIndex}`}
                     style={{ marginBottom: 8 }}
                   >
+                    {/* Dark neon blue category line */}
+                    <Box
+                      sx={{
+                        backgroundColor: theme.palette.primary.dark, // using theme palette
+                        color: theme.palette.common.white,
+                        px: 1,
+                        py: 0.5,
+                        borderTopLeftRadius: 4,
+                        borderTopRightRadius: 4,
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography variant="caption">
+                        {mapCategory(group.category)}
+                      </Typography>
+                    </Box>
                     {group.profiles && group.profiles[0] && (
                       <>
-                        <Typography variant="h6">
-                          {group.profiles[0].name}
-                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            border: "1px solid transparent", // to keep layout consistent
+                          }}
+                        >
+                          <Typography variant="h6">
+                            {group.profiles[0].name}
+                          </Typography>
+                          <Box sx={{ display: "flex", gap: 0.5 }}>
+                            {renderCharLogos(group.profiles[0].chars)}
+                          </Box>
+                        </Box>
                         <UnitDetails profile={group.profiles[0]} />
                       </>
                     )}
-                    {/* Dark grey header bar with three titles */}
+                    {/* Existing header bar with three titles */}
                     <Box
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        backgroundColor: "inherit", // Same as the accordion background
+                        backgroundColor: "inherit",
                         color: "white",
                         px: 2,
                         py: 1,
@@ -150,7 +184,7 @@ const AddTrooperDialog = ({ open, onClose, units }) => {
                         <Typography variant="body2">PTS</Typography>
                       </Box>
                     </Box>
-                    {/* Map through each option */}
+                    {/* Render options... */}
                     {group.options.map((option, optIndex) => (
                       <div key={`option-${group.isc}-${optIndex}`}>
                         <ProfileDetails option={option} />

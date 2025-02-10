@@ -192,6 +192,22 @@ const peripheralMap = new Map();
   metadataJson.type = combinedType;
   metadataJson.peripheral = combinedPeripheral;
 
+  // Merge additions.json into metadataJson
+  const additionsPath = path.resolve(__dirname, "additions.json");
+  if (fs.existsSync(additionsPath)) {
+    try {
+      const additions = JSON.parse(fs.readFileSync(additionsPath, "utf8"));
+      Object.keys(additions).forEach((key) => {
+        metadataJson[key] = additions[key];
+      });
+      console.log("Merged additions.json into metadataJson");
+    } catch (err) {
+      console.error("Error reading or parsing additions.json:", err);
+    }
+  } else {
+    console.log("additions.json not found at", additionsPath);
+  }
+
   // Instead of exporting the metadata, save it as a plain JSON object.
   // Also, save to the correct path: data/factions/metadata.json
   const metadataPath = path.resolve(

@@ -14,13 +14,19 @@ export const renderStat = (stat) => {
       ? `${converted[0]} - ${converted[1]}`
       : converted[0];
   }
-  return stat !== undefined && stat !== null ? stat : "-";
+  return stat !== undefined && stat !== null && stat >= 0 ? stat : "-";
 };
 
 // Maps a type object (by id) to its name via metadata.type.
 export const mapType = (type) => {
   const found = metadata.type.find((t) => t.id === type);
   return found ? found.name : type;
+};
+
+// Add the following function to map a category id to its text value using metadata
+export const mapCategory = (categoryId) => {
+  const found = metadata.category.find((c) => c.id === categoryId);
+  return found ? found.name : null;
 };
 
 export const renderOrderIcons = (orders) => {
@@ -43,4 +49,20 @@ export const renderOrderIcons = (orders) => {
       {icons}
     </Box>
   );
+};
+
+export const renderCharLogos = (chars) => {
+  if (!chars || chars.length === 0) return null;
+  return chars.map((char, index) => {
+    const charMeta = metadata.chars.find((c) => c.id === char);
+    if (!charMeta || !charMeta.logo) return null;
+    return (
+      <img
+        key={`${char}-${index}`}
+        src={charMeta.logo}
+        alt={char}
+        style={{ width: 24, height: 24 }}
+      />
+    );
+  });
 };

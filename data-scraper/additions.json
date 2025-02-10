@@ -20,5 +20,45 @@
       "type": "TACTICAL",
       "logo": "https://assets.corvusbelli.net/army/img/icon/tactical.svg"
     }
+  ],
+  "chars": [
+    {
+      "id": 1,
+      "name": "Cube",
+      "wiki": "https://infinitythewiki.com/Cube?version=n4",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/cube.svg"
+    },
+    {
+      "id": 21,
+      "name": "Hackable",
+      "wiki": "https://infinitythewiki.com/Unit_Profile?version=n4#Trooper_Characteristics",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/hackable.svg"
+    },
+    {
+      "id": 6,
+      "name": "Impetuous",
+      "wiki": "https://infinitythewiki.com/Orders_and_the_Order_Pool?version=n4",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/impetuous.svg"
+    },
+    {
+      "id": 4,
+      "name": "Irregular",
+      "wiki": "https://infinitythewiki.com/Orders_and_the_Order_Pool?version=n4"
+    },
+    {
+      "id": 2,
+      "name": "No Cube",
+      "wiki": "https://infinitythewiki.com/Cube?version=n4"
+    },
+    {
+      "id": 5,
+      "name": "Not Impetuous"
+    },
+    {
+      "id": 27,
+      "name": "Peripheral",
+      "wiki": "https://infinitythewiki.com/Peripheral?version=n4",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/peripheral.svg"
+    }
   ]
 }
