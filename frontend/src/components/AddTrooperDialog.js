@@ -10,8 +10,8 @@ import {
   AccordionDetails,
   Typography,
   Divider,
+  Box,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import UnitDetails from "./UnitDetails";
 import ProfileDetails from "./ProfileDetails";
 import { mapType } from "../utils/metadataMapping";
@@ -19,14 +19,51 @@ import { mapType } from "../utils/metadataMapping";
 const AddTrooperDialog = ({ open, onClose, units }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
+  const [filteredUnits, setFilteredUnits] = useState([]);
   const theme = useTheme();
 
+  // Debounce search term update
   useEffect(() => {
     const timer = setTimeout(() => {
       setUnitFilter(searchTerm);
     }, 300);
     return () => clearTimeout(timer);
   }, [searchTerm]);
+
+  // Preprocess and cache filtered units
+  useEffect(() => {
+    if (!units) {
+      setFilteredUnits([]);
+      return;
+    }
+    const processed = units
+      // Map units: filter options for each profileGroup
+      .map((unit) => ({
+        ...unit,
+        profileGroups: unit.profileGroups.map((group) => ({
+          ...group,
+          options: group.options.filter(
+            (option) =>
+              (option.swc === "0" || option.swc === "-") &&
+              !option.skills.some((skill) => skill.id === 119)
+          ),
+        })),
+      }))
+      // Filter out units missing valid options, non-character resumes,
+      // and those that do not match the ISC search term
+      .filter(
+        (unit) =>
+          unit.profileGroups.every(
+            (group) => group.options && group.options.length > 0
+          ) &&
+          unit.resume.category !== 10 &&
+          unit.isc.toLowerCase().includes(unitFilter.toLowerCase()) &&
+          !unit.slug.startsWith("merc-")
+      )
+      // Sort units by their resume type
+      .sort((a, b) => a.resume.type - b.resume.type);
+    setFilteredUnits(processed);
+  }, [units, unitFilter]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -43,100 +80,102 @@ const AddTrooperDialog = ({ open, onClose, units }) => {
       </div>
       <DialogContent
         dividers
-        style={{
+        sx={{
           maxHeight: "70vh",
           background: theme.palette.background.default,
           overflowY: "auto",
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // Internet Explorer 10+
+          "&::-webkit-scrollbar": { display: "none" }, // WebKit-based browsers
         }}
       >
-        {units
-          // For each unit, filter each profileGroup's options to only those with swc === "0" and no lieutenant skill
-          .map((unit) => ({
-            ...unit,
-            profileGroups: unit.profileGroups.map((group) => ({
-              ...group,
-              options: group.options.filter(
-                (option) =>
-                  option.swc === "0" &&
-                  !option.skills.some((skill) => skill.id === 119)
-              ),
-            })),
-          }))
-          // Filter units by valid options, non-character resume, and ISC search term
-          .filter((unit) => {
-            return (
-              unit.profileGroups.some(
-                (group) => group.options && group.options.length > 0
-              ) &&
-              unit.resume.category !== 10 &&
-              unit.isc.toLowerCase().includes(unitFilter.toLowerCase())
-            );
-          })
-          .sort((a, b) => a.resume.type - b.resume.type)
-          .map((unit, unitIndex) => (
-            <Accordion key={`unit-${unit.isc}-${unitIndex}`}>
-              <AccordionSummary
-                expandIcon={
-                  <Typography color="white">
-                    {mapType(unit.resume.type)}
-                  </Typography>
-                }
-                sx={{
-                  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-                    transform: "none",
-                  },
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  {unit.profileGroups &&
-                    unit.profileGroups[0] &&
-                    unit.profileGroups[0].profiles &&
-                    unit.profileGroups[0].profiles[0] && (
-                      <img
-                        src={unit.profileGroups[0].profiles[0].logo}
-                        alt={unit.isc}
-                        style={{ width: 20, height: 20, marginRight: 8 }}
-                      />
-                    )}
-                  <Typography>{unit.isc}</Typography>
-                </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                {unit.profileGroups.map((group, grpIndex) =>
-                  group.options.length > 0 ? (
-                    <div
-                      key={`group-${unit.isc}-${grpIndex}`}
-                      style={{ marginBottom: 8 }}
-                    >
-                      <Typography variant="h6">{group.isc}</Typography>
-                      {group.profiles && group.profiles[0] && (
+        {filteredUnits.map((unit, unitIndex) => (
+          <Accordion
+            key={`unit-${unit.isc}-${unitIndex}`}
+            sx={{ mb: 0.5 }}
+            TransitionProps={{ unmountOnExit: true }}
+          >
+            <AccordionSummary
+              expandIcon={
+                <Typography color="white">
+                  {mapType(unit.resume.type)}
+                </Typography>
+              }
+              sx={{
+                "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                  transform: "none",
+                },
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={unit.resume.logo}
+                  alt={unit.isc}
+                  style={{ height: 40, marginRight: 8 }}
+                />
+                <Typography>{unit.isc}</Typography>
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              {unit.profileGroups.map((group, grpIndex) =>
+                group.options.length > 0 ? (
+                  <div
+                    key={`group-${unit.isc}-${grpIndex}`}
+                    style={{ marginBottom: 8 }}
+                  >
+                    {group.profiles && group.profiles[0] && (
+                      <>
+                        <Typography variant="h6">
+                          {group.profiles[0].name}
+                        </Typography>
                         <UnitDetails profile={group.profiles[0]} />
-                      )}
-                      {group.options.map((option, optIndex) => (
-                        <div key={`option-${group.isc}-${optIndex}`}>
-                          <ProfileDetails option={option} />
-                          <Divider />
-                        </div>
-                      ))}
-                    </div>
-                  ) : null
-                )}
-                {unit.options && unit.options.length > 0 && (
-                  <div style={{ marginTop: 16 }}>
-                    <Typography variant="subtitle1">Unit Options</Typography>
-                    {unit.options.map((option, idx) => (
-                      <Typography
-                        key={`unit-option-${unit.isc}-${idx}`}
-                        variant="body2"
-                      >
-                        {option.name}
-                      </Typography>
+                      </>
+                    )}
+                    {/* Dark grey header bar with three titles */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        backgroundColor: "inherit", // Same as the accordion background
+                        color: "white",
+                        px: 2,
+                        py: 1,
+                        mt: 1,
+                      }}
+                    >
+                      <Typography variant="body2">Name</Typography>
+                      <Box sx={{ display: "flex", gap: 2 }}>
+                        <Typography variant="body2">SWC</Typography>
+                        <Typography variant="body2">PTS</Typography>
+                      </Box>
+                    </Box>
+                    {/* Map through each option */}
+                    {group.options.map((option, optIndex) => (
+                      <div key={`option-${group.isc}-${optIndex}`}>
+                        <ProfileDetails option={option} />
+                        <Divider />
+                      </div>
                     ))}
                   </div>
-                )}
-              </AccordionDetails>
-            </Accordion>
-          ))}
+                ) : null
+              )}
+              {unit.options && unit.options.length > 0 && (
+                <div style={{ marginTop: 16 }}>
+                  <Typography variant="subtitle1">Unit Options</Typography>
+                  {unit.options.map((option, idx) => (
+                    <Typography
+                      key={`unit-option-${unit.isc}-${idx}`}
+                      variant="body2"
+                    >
+                      {option.name}
+                    </Typography>
+                  ))}
+                </div>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        ))}
       </DialogContent>
     </Dialog>
   );

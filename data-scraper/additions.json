@@ -1,0 +1,24 @@
+{
+  "orders": [
+    {
+      "type": "REGULAR",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+    },
+    {
+      "type": "IRREGULAR",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/irregular.svg"
+    },
+    {
+      "type": "IMPETUOUS",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/impetuous.svg"
+    },
+    {
+      "type": "LIEUTENANT",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/lieutenant.svg"
+    },
+    {
+      "type": "TACTICAL",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/tactical.svg"
+    }
+  ]
+}

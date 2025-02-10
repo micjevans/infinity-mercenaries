@@ -1,12 +1,39 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
-import { renderStat, mapEquip, mapSkill } from "../utils/metadataMapping";
+import { Box, useTheme } from "@mui/material";
+import { renderStat } from "../utils/metadataMapping";
+import MapDetails from "./MapDetails";
 
 const UnitDetails = ({ profile }) => {
-  const { move, cc, bs, ph, wip, arm, bts, w, s, ava, equip, skills } = profile;
+  const {
+    move,
+    cc,
+    bs,
+    ph,
+    wip,
+    arm,
+    bts,
+    w,
+    s,
+    ava,
+    equip,
+    skills,
+    peripheral,
+  } = profile;
+  const theme = useTheme();
 
   return (
-    <Box mb={2}>
+    <Box
+      mb={2}
+      sx={{
+        backgroundColor: theme.palette.grey[300],
+        color: "black",
+        pt: 1,
+        pb: 1,
+        px: 3,
+        m: 0,
+        width: "100%",
+      }}
+    >
       {/* Stat Titles Row */}
       <Box display="flex" justifyContent="space-between" fontWeight="bold">
         <span>MOV</span>
@@ -38,29 +65,15 @@ const UnitDetails = ({ profile }) => {
         <span>{renderStat(ava)}</span>
       </Box>
       {/* Equipment Row */}
-      {equip && equip.length > 0 && (
-        <Box mt={1}>
-          <Typography variant="subtitle2">Equipment:</Typography>
-          <Typography
-            variant="body2"
-            dangerouslySetInnerHTML={{
-              __html: equip.map(mapEquip).join(", "),
-            }}
-          />
-        </Box>
-      )}
+      <MapDetails list={equip} metaKey="equips" preText="Equipment: " />
+      {/* Peripherals Row */}
+      <MapDetails
+        list={peripheral}
+        metaKey="peripheral"
+        preText="Peripherals: "
+      />
       {/* Skills Row */}
-      {skills && skills.length > 0 && (
-        <Box mt={1}>
-          <Typography variant="subtitle2">Skills:</Typography>
-          <Typography
-            variant="body2"
-            dangerouslySetInnerHTML={{
-              __html: skills.map(mapSkill).join(", "),
-            }}
-          />
-        </Box>
-      )}
+      <MapDetails list={skills} metaKey="skills" preText="Skills: " />
     </Box>
   );
 };

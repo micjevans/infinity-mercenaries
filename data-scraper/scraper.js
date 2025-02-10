@@ -7,6 +7,7 @@ const path = require("path");
 const extrasMap = new Map();
 const categoryMap = new Map();
 const typeMap = new Map();
+const peripheralMap = new Map();
 
 (async () => {
   // 1. Launch browser (headed mode so we can see it)
@@ -145,6 +146,14 @@ const typeMap = new Map();
         });
       }
     }
+    // Add peripheral filters to the peripheralMap
+    if (Array.isArray(factionData.filters.peripheral)) {
+      factionData.filters.peripheral.forEach((peripheral) => {
+        if (!peripheralMap.has(peripheral.id)) {
+          peripheralMap.set(peripheral.id, peripheral);
+        }
+      });
+    }
 
     // 7. If we have factionData, save it to a file named after the slug
     if (factionData) {
@@ -177,9 +186,11 @@ const typeMap = new Map();
   const combinedExtras = Array.from(extrasMap.values());
   const combinedCategory = Array.from(categoryMap.values());
   const combinedType = Array.from(typeMap.values());
+  const combinedPeripheral = Array.from(peripheralMap.values());
   metadataJson.extras = combinedExtras;
   metadataJson.category = combinedCategory;
   metadataJson.type = combinedType;
+  metadataJson.peripheral = combinedPeripheral;
 
   // Instead of exporting the metadata, save it as a plain JSON object.
   // Also, save to the correct path: data/factions/metadata.json
