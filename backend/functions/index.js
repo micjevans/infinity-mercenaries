@@ -23,19 +23,20 @@ const troopersRoutes = require("./troopers")(db);
 // Initialize Express app
 const app = express();
 
-// Define allowed origins for CORS
+// Define allowed origins for CORS (make sure no trailing slash on the deployed URL)
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://infinity-mercenaries.web.app/",
+  "https://infinity-mercenaries.web.app",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // Allow request
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS")); // Deny request
+        callback(new Error("Not allowed by CORS"));
       }
     },
   })
