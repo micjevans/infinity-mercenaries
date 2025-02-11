@@ -9,7 +9,7 @@ import { useAuth } from "./auth/AuthContext"; // Use AuthContext
 import LandingPage from "./pages/LandingPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import CompanyList from "./pages/CompanyList";
-import NavBar from "./NavBar";
+import NavBar from "./components/NavBar";
 import CompanyPage from "./pages/CompanyPage";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";

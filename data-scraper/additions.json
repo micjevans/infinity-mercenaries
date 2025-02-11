@@ -60,5 +60,73 @@
       "wiki": "https://infinitythewiki.com/Peripheral?version=n4",
       "logo": "https://assets.corvusbelli.net/army/img/icon/peripheral.svg"
     }
+  ],
+  "weapons": [
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/stunpistol.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-spitfire.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-hmg.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
+    },
+    {
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/aleph-mk12.png"
+    }
   ]
 }

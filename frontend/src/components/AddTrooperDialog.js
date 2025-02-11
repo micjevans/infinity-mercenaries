@@ -31,10 +31,39 @@ const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
           ...group,
           options: group.options.filter(
             (option) =>
+              // Filter out options with no SWC
               (option.swc === "0" || option.swc === "-") &&
+              // Filter out LT options
               !option.skills.some((skill) => skill.id === 119)
           ),
         })),
+      }))
+      // After filtering once, go back through and remove unused peripheral options
+      .map((unit) => ({
+        ...unit,
+        profileGroups: unit.profileGroups.map((group) => {
+          // If the group isn't a peripheral then return as is
+          if (
+            !group.profiles.some((profile) =>
+              profile.chars.some((char) => char === 27)
+            )
+          ) {
+            return group;
+          }
+          // Otherwise, filter out peripherals that aren't used
+          return {
+            ...group,
+            options: group.options.filter((option) =>
+              unit.profileGroups.some((group) =>
+                group.options.some((parentOption) =>
+                  parentOption.includes.some(
+                    (include) => include.option === option.id
+                  )
+                )
+              )
+            ),
+          };
+        }),
       }))
       // Filter out units missing valid options, non-character resumes,
       // and those that do not match the ISC search term
@@ -81,41 +110,64 @@ const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
             key={unitIndex}
             trooper={unit}
             onClick={(group, option) => {
-              const cleanedUpUnit = {
-                ...unit,
+              const cleanUpUnit = (
+                unitToClean,
+                groupToClean,
+                optionToClean
+              ) => ({
+                ...unitToClean,
                 profileGroups: [
                   {
-                    ...group,
+                    ...groupToClean,
                     category: 10,
-                    profiles: group.profiles.map((profile) => ({
+                    profiles: groupToClean.profiles.map((profile) => ({
                       ...profile,
-                      skills: option.skills
-                        ? profile.skills.concat(option.skills)
+                      skills: optionToClean.skills
+                        ? profile.skills.concat(optionToClean.skills)
                         : profile.skills,
-                      equip: option.equip
-                        ? profile.equip.concat(option.equip)
+                      equip: optionToClean.equip
+                        ? profile.equip.concat(optionToClean.equip)
                         : profile.equip,
-                      peripheral: option.peripheral
-                        ? profile.peripheral.concat(option.peripheral)
+                      peripheral: optionToClean.peripheral
+                        ? profile.peripheral.concat(optionToClean.peripheral)
                         : profile.peripheral,
-                      weapons: option.weapons
-                        ? profile.weapons.concat(option.weapons)
+                      weapons: optionToClean.weapons
+                        ? profile.weapons.concat(optionToClean.weapons)
                         : profile.weapons,
                     })),
                     options: [
                       {
-                        ...option,
+                        ...optionToClean,
                         skills: [],
                         equip: [],
                         peripheral: [],
                         weapons: [],
+                        orders:
+                          option.orders.length > 0
+                            ? option.orders
+                            : [
+                                {
+                                  type: "REGULAR",
+                                  list: 1,
+                                  total: 1,
+                                },
+                              ],
                       },
                     ],
                   },
                 ],
-              };
-              console.log(cleanedUpUnit);
-              onAddTrooper(cleanedUpUnit);
+              });
+              onAddTrooper(cleanUpUnit(unit, group, option));
+
+              option.includes.forEach((include) => {
+                const includeGroup = unit.profileGroups.find(
+                  (group) => group.id === include.group
+                );
+                const includeOption = includeGroup.options.find(
+                  (option) => option.id === include.option
+                );
+                onAddTrooper(cleanUpUnit(unit, includeGroup, includeOption));
+              });
             }}
           />
         ))}

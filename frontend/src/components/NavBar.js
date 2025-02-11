@@ -9,16 +9,17 @@ import {
   Modal,
   Box,
   TextField,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./auth/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 import {
   signInWithEmail,
   signInWithGoogle,
   signUpWithEmail,
-} from "./auth/auth";
-import { API_BASE_URL } from "./config";
-import logo from "./assets/images/M2-no-bg-short.png";
+} from "../auth/auth";
+import { API_BASE_URL } from "../config";
+import logo from "../assets/images/M2-no-bg-short.png";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const NavBar = () => {
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const { user, logOut } = useAuth(); // Access user and logOut from AuthContext
-
+  const theme = useTheme();
   // Login modal handlers
   const handleOpenLoginModal = () => setOpen(true);
   const handleCloseLoginModal = () => {
@@ -94,7 +95,6 @@ const NavBar = () => {
     }
     try {
       const user = await signUpWithEmail(email, password);
-      console.log(user);
       // If they don't then create a new user in Firestore
       fetch(`${API_BASE_URL}/users`, {
         method: "POST",
@@ -184,14 +184,14 @@ const NavBar = () => {
       {/* Login Modal */}
       <Modal open={open} onClose={handleCloseLoginModal}>
         <Box
-          style={{
+          sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 400,
-            backgroundColor: "white",
-            padding: "16px",
+            backgroundColor: theme.palette.grey[900], // use the primary dark grey background
+            p: 2,
             boxShadow: 24,
             borderRadius: "8px",
           }}

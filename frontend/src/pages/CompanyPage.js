@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
@@ -10,12 +10,15 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Box,
 } from "@mui/material";
 import { API_BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import Trooper from "../components/Trooper";
 import metadata from "../data/factions/metadata";
 import AddTrooperDialog from "../components/AddTrooperDialog";
+import EditTrooperDialog from "../components/EditTrooperDialog";
+import ShopDialog from "../components/ShopDialog"; // new import
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -36,7 +39,11 @@ const CompanyPage = ({ company }) => {
   const [sectorial1, setSectorial1] = useState(null);
   const [sectorial2, setSectorial2] = useState(null);
   const [trooperModalOpen, setTrooperModalOpen] = useState(false);
+  const [shopModalOpen, setShopModalOpen] = useState(false); // new state for shop
+  const [editingTrooper, setEditingTrooper] = useState(null);
   const [units, setUnits] = useState([]);
+  // Create a ref for the Add Trooper button
+  const addTrooperButtonRef = useRef(null);
 
   useEffect(() => {
     // Fetch troopers for this company
@@ -95,9 +102,26 @@ const CompanyPage = ({ company }) => {
     // Append the full trooper object to the company list
     setTroopers((prevTroopers) => [...prevTroopers, trooper]);
     // Optionally, close the AddTrooperDialog after adding
-    console.log(trooper, troopers);
     setTrooperModalOpen(false);
+    // Delay focus to ensure the dialog is closed
+    setTimeout(() => {
+      if (addTrooperButtonRef.current) {
+        addTrooperButtonRef.current.focus();
+      }
+    }, 0);
   };
+
+  const handleEditTrooper = (trooper) => {
+    setEditingTrooper(trooper);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditingTrooper(null);
+  };
+
+  // Placeholder arrays; replace with actual company and merchant items
+  const companyItems = [14, 78, 227, 172, 224, 24, 63, 91, 100];
+  const merchantItems = [14, 78, 227, 172, 224, 24, 63, 91, 100];
 
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
@@ -111,15 +135,6 @@ const CompanyPage = ({ company }) => {
         Troopers
       </Typography>
       {/* Add Trooper Section */}
-      <Paper style={{ padding: "16px", marginBottom: "20px" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setTrooperModalOpen(true)}
-        >
-          Add Trooper
-        </Button>
-      </Paper>
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
         <FormControl fullWidth style={{ marginBottom: "16px" }}>
           <InputLabel id="sectorial1-label">Sectorial 1</InputLabel>
@@ -200,26 +215,65 @@ const CompanyPage = ({ company }) => {
           </Select>
         </FormControl>
       </Paper>
+      {/* Action Buttons Row */}
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Button
+          ref={addTrooperButtonRef}
+          onClick={() => setTrooperModalOpen(true)}
+          variant="contained"
+          color="primary"
+        >
+          Add Trooper
+        </Button>
+        <Button
+          onClick={() => setShopModalOpen(true)}
+          variant="contained"
+          color="secondary"
+        >
+          Open Shop
+        </Button>
+      </Box>
       {/* Trooper List Section */}
       <List>
         {troopers.length > 0 ? (
           troopers.map((trooper, index) => (
-            <Trooper
-              key={index}
-              trooper={trooper}
-              onUpdate={() => {}}
-              onClick={() => {}}
-            />
+            <div key={index}>
+              <Trooper
+                trooper={trooper}
+                onUpdate={() => {}}
+                onClick={() => handleEditTrooper(trooper)}
+              />
+            </div>
           ))
         ) : (
           <Typography>No troopers found.</Typography>
         )}
       </List>
+
       <AddTrooperDialog
         open={trooperModalOpen}
         onClose={() => setTrooperModalOpen(false)}
         units={units}
         onAddTrooper={handleAddTrooper} // pass down the handler
+      />
+      {editingTrooper && (
+        <EditTrooperDialog
+          open={Boolean(editingTrooper)}
+          onClose={handleCloseEditDialog}
+          trooper={editingTrooper}
+          companyInventory={[]}
+          onSelectEquipment={() => {}}
+        />
+      )}
+      <ShopDialog
+        open={shopModalOpen}
+        onClose={() => setShopModalOpen(false)}
+        companyItems={companyItems}
+        merchantItems={merchantItems}
+        onConfirmExchange={(exchangeData) => {
+          console.log("Exchange confirmed:", exchangeData);
+          setShopModalOpen(false);
+        }}
       />
     </Container>
   );
