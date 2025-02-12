@@ -17,6 +17,9 @@ export const renderStat = (stat) => {
   return stat !== undefined && stat !== null && stat >= 0 ? stat : "-";
 };
 
+export const mapItemData = (item) => {
+  return (metadata[item.key] || []).filter((e) => e.id === item.id);
+};
 // Maps a type object (by id) to its name via metadata.type.
 export const mapType = (type) => {
   const found = metadata.type.find((t) => t.id === type);

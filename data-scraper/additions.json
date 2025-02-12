@@ -63,70 +63,1682 @@
   ],
   "weapons": [
     {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/stunpistol.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-spitfire.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-hmg.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
-    },
-    {
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
-    },
-    {
+      "id": 216,
+      "abbr": "Adhesive Launcher Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
       "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
     },
     {
+      "id": 1,
+      "abbr": "Akrylat-Kanone",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
+    },
+    {
+      "id": 78,
+      "abbr": "AP + DA CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 227,
+      "abbr": "AP + EXP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 172,
+      "abbr": "AP + Shock CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 224,
+      "abbr": "AP + T2 CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 6,
+      "abbr": "AP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 3,
+      "abbr": "AP Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
+    },
+    {
+      "id": 100,
+      "abbr": "AP Heavy Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
+    },
+    {
+      "id": 85,
+      "abbr": "AP Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
+    },
+    {
+      "id": 199,
+      "abbr": "AP Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 32,
+      "abbr": "AP Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "id": 35,
+      "abbr": "AP Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 157,
+      "abbr": "AP Spitfire",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-spitfire.png"
+    },
+    {
+      "id": 214,
+      "abbr": "AP Submachine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 226,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 70,
+      "abbr": "Assault Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 14,
+      "abbr": "Blitzen",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 212,
+      "abbr": "Boarding Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 212,
+      "abbr": "Boarding Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 26,
+      "abbr": "Boarding Shotgun",
+      "cr": 10,
+      "swc": 0,
+      "slot": "secondary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
+    },
+    {
+      "id": 103,
+      "abbr": "Breaker Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
+    },
+    {
+      "id": 98,
+      "abbr": "Breaker Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 109,
+      "abbr": "Breaker Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "id": 5,
+      "abbr": "CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 18,
+      "abbr": "Chain Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 80,
+      "abbr": "Chain-colt",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 147,
+      "abbr": "Chest Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 147,
+      "abbr": "Chest Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 33,
+      "abbr": "Combi Rifle",
+      "cr": 5,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
+    },
+    {
+      "id": 19,
+      "abbr": "Contender",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 20,
+      "abbr": "Crazykoala",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 174,
+      "abbr": "Cybermine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 17,
+      "abbr": "D-Charges",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 17,
+      "abbr": "D-Charges",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 11,
+      "abbr": "DA CC Weapon",
+      "cr": 3,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 243,
+      "abbr": "Dazer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 238,
+      "abbr": "Deactivator",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 111,
+      "abbr": "Deployable Repeater",
+      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
+      "cr": 8,
+      "swc": 0,
+      "slot": "secondary"
+    },
+    {
+      "id": 208,
+      "abbr": "Disco Baller",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 208,
+      "abbr": "Disco Baller",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 131,
+      "abbr": "Discover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 96,
+      "abbr": "Drop Bears",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 96,
+      "abbr": "Drop Bears",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 213,
+      "abbr": "E/M Carbine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 7,
+      "abbr": "E/M CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 201,
+      "abbr": "E/M Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 47,
+      "abbr": "E/M Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 197,
+      "abbr": "E/M Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 23,
+      "abbr": "E/Marat",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 25,
+      "abbr": "E/Mitter",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 76,
+      "abbr": "Eclipse Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 46,
+      "abbr": "Eclipse Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 8,
+      "abbr": "EXP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 240,
+      "abbr": "FastPanda",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 30,
+      "abbr": "Feuerbach",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 30,
+      "abbr": "Feuerbach",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 82,
+      "abbr": "Flammenspeer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 82,
+      "abbr": "Flammenspeer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 72,
+      "abbr": "Flash Pulse",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 59,
+      "abbr": "Forward Observer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 237,
+      "abbr": "GizmoKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 194,
+      "abbr": "Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 44,
+      "abbr": "Grenades",
+      "cr": 4,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 57,
+      "abbr": "Heavy Flamethrower",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 2,
+      "abbr": "Heavy Machine Gun",
+      "cr": 24,
+      "swc": 1.5,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-hmg.png"
+    },
+    {
+      "id": 107,
+      "abbr": "Heavy Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
+    },
+    {
+      "id": 188,
+      "abbr": "Heavy Riotstopper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 89,
+      "abbr": "Heavy Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
       "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
     },
     {
+      "id": 89,
+      "abbr": "Heavy Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
+    },
+    {
+      "id": 29,
+      "abbr": "Heavy Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
+    },
+    {
+      "id": 15,
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 15,
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 15,
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 87,
+      "abbr": "Jammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 95,
+      "abbr": "K1 Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
+    },
+    {
+      "id": 181,
+      "abbr": "K1 Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 110,
+      "abbr": "K1 Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 49,
+      "abbr": "Katyusha MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
       "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
     },
     {
+      "id": 221,
+      "abbr": "Kobra Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 221,
+      "abbr": "Kobra Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 56,
+      "abbr": "Light Flamethrower",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 187,
+      "abbr": "Light Riotstopper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 88,
+      "abbr": "Light Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
+    },
+    {
+      "id": 88,
+      "abbr": "Light Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
+    },
+    {
+      "id": 28,
+      "abbr": "Light Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
+    },
+    {
+      "id": 150,
+      "abbr": "Madtraps",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 84,
+      "abbr": "Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 106,
+      "abbr": "MediKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 176,
+      "abbr": "Mine Dispenser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 58,
+      "abbr": "Missile Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
+    },
+    {
+      "id": 58,
+      "abbr": "Missile Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
+    },
+    {
+      "id": 64,
+      "abbr": "Mk12",
+      "cr": 12,
+      "swc": 18,
+      "slot": "primary",
       "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/aleph-mk12.png"
+    },
+    {
+      "id": 9,
+      "abbr": "Monofilament CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 62,
+      "abbr": "Monofilament Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 4,
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
+    },
+    {
+      "id": 4,
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
+    },
+    {
+      "id": 4,
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
+    },
+    {
+      "id": 169,
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 169,
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 169,
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 189,
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 189,
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 189,
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 210,
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 210,
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 210,
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 41,
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 41,
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 41,
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 36,
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 36,
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 36,
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 65,
+      "abbr": "Nanopulser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 67,
+      "abbr": "Ohotnik",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 68,
+      "abbr": "Panzerfaust",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 71,
+      "abbr": "PARA CC Weapon",
+      "cr": 4,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 220,
+      "abbr": "PARA Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 69,
+      "abbr": "Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 154,
+      "abbr": "Pitcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 111,
+      "abbr": "Plasma Carbine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 111,
+      "abbr": "Plasma Carbine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 40,
+      "abbr": "Plasma Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 40,
+      "abbr": "Plasma Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 113,
+      "abbr": "Plasma Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 113,
+      "abbr": "Plasma Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 16,
+      "abbr": "Portable Autocannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
+    },
+    {
+      "id": 203,
+      "abbr": "PT: Endgame",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 204,
+      "abbr": "PT: Eraser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 205,
+      "abbr": "PT: Mirrorball",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 145,
+      "abbr": "Pulzar",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 152,
+      "abbr": "Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 31,
+      "abbr": "Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "id": 73,
+      "abbr": "Sepsitor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 114,
+      "abbr": "Sepsitor Plus",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    },
+    {
+      "id": 10,
+      "abbr": "Shock CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 155,
+      "abbr": "Shock Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 196,
+      "abbr": "Shock Mine",
+      "cr": 5,
+      "swc": 0,
+      "slot": "secondary",
+      "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
+    },
+    {
+      "id": 211,
+      "abbr": "Silenced Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 195,
+      "abbr": "Smoke Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 45,
+      "abbr": "Smoke Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
+    },
+    {
+      "id": 34,
+      "abbr": "Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 74,
+      "abbr": "Spitfire",
+      "cr": 18,
+      "swc": 1,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
+    },
+    {
+      "id": 217,
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
+    },
+    {
+      "id": 217,
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
+    },
+    {
+      "id": 217,
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
+    },
+    {
+      "id": 92,
+      "abbr": "Stun Pistol",
+      "cr": 1,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/stunpistol.png"
+    },
+    {
+      "id": 77,
+      "abbr": "Submachine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
+    },
+    {
+      "id": 127,
+      "abbr": "Suppressive Fire Mode Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 27,
+      "abbr": "T2 Boarding Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
+    },
+    {
+      "id": 153,
+      "abbr": "T2 CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 180,
+      "abbr": "T2 Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 42,
+      "abbr": "T2 Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "id": 38,
+      "abbr": "T2 Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 193,
+      "abbr": "Tactical Bow",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 207,
+      "abbr": "Thunderbolt",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 177,
+      "abbr": "Trench-Hammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 177,
+      "abbr": "Trench-Hammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 75,
+      "abbr": "Uragan MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 75,
+      "abbr": "Uragan MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 13,
+      "abbr": "Viral CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 83,
+      "abbr": "Viral Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
+    },
+    {
+      "id": 206,
+      "abbr": "Viral Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
+    },
+    {
+      "id": 63,
+      "abbr": "Viral Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 156,
+      "abbr": "Viral Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
+    },
+    {
+      "id": 43,
+      "abbr": "Viral Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
+    },
+    {
+      "id": 39,
+      "abbr": "VIRAL Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
+    },
+    {
+      "id": 179,
+      "abbr": "Viral Tactical Bow",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
+    },
+    {
+      "id": 149,
+      "abbr": "Vorpal CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 149,
+      "abbr": "Vorpal CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
+    },
+    {
+      "id": 81,
+      "abbr": "Vulkan Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
+    },
+    {
+      "id": 182,
+      "abbr": "WildParrot",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
+    },
+    {
+      "id": 175,
+      "abbr": "Zapper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
+    }
+  ],
+  "equips": [
+    {
+      "id": 24,
+      "abbr": "Holomask",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 63,
+      "abbr": "Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 91,
+      "abbr": "Baggage",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 100,
+      "abbr": "Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 101,
+      "abbr": "Hacking Device Plus",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 102,
+      "abbr": "ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 104,
+      "abbr": "Holoprojector",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 106,
+      "abbr": "MediKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 107,
+      "abbr": "Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 108,
+      "abbr": "Nanoscreen",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 113,
+      "abbr": "360º Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 114,
+      "abbr": "MSV1",
+      "img": "/assets/images/MSV1.jpg",
+      "cr": 10,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 115,
+      "abbr": "MVS2",
+      "img": "/assets/images/MSV2.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 116,
+      "abbr": "MSV3",
+      "img": "/assets/images/MSV3.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 117,
+      "abbr": "X Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 137,
+      "abbr": "Escape System",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 145,
+      "abbr": "Killer Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 169,
+      "abbr": "TinBot: Firewall",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 10,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 182,
+      "abbr": "EVO Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 183,
+      "abbr": "Albedo",
+      "img": "https://assets.corvusbelli.net/wiki/albedo_a0.jpg",
+      "cr": 8,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 184,
+      "abbr": "Biometric Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 188,
+      "abbr": "TinBot: Neourocinetics",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 193,
+      "abbr": "TinBot (Albedo)",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 205,
+      "abbr": "AI Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 233,
+      "abbr": "Advanced ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 235,
+      "abbr": "TinBot",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 237,
+      "abbr": "GizmoKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 238,
+      "abbr": "Deactivator",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 239,
+      "abbr": "ECM: Guided",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 240,
+      "abbr": "FastPanda",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 241,
+      "abbr": "ECM: Hacker",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 242,
+      "abbr": "SymbioMate",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 243,
+      "abbr": "Dazer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 244,
+      "abbr": "TinBot: Discover",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 245,
+      "abbr": "Deployable Cover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 246,
+      "abbr": "Bangbomb",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 247,
+      "abbr": "TinBot: ECM Guided",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     }
   ]
 }

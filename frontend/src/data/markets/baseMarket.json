@@ -1,0 +1,47 @@
+{
+  "alignment": "good",
+  "items": [
+    {
+      "id": 33,
+      "key": "weapons",
+      "cr": 5
+    },
+    {
+      "id": 64,
+      "key": "weapons",
+      "cr": 12
+    },
+    {
+      "id": 74,
+      "key": "weapons",
+      "cr": 18
+    },
+    {
+      "id": 2,
+      "key": "weapons",
+      "cr": 24
+    },
+    {
+      "id": 196,
+      "key": "weapons",
+      "cr": 5
+    },
+    {
+      "id": 111,
+      "key": "weapons",
+      "cr": 8
+    },
+    {
+      "id": 26,
+      "key": "weapons",
+      "cr": 10
+    },
+    { "id": 92, "key": "weapons", "cr": 1 },
+    { "id": 11, "key": "weapons", "cr": 3 },
+    { "id": 44, "key": "weapons", "cr": 4 },
+    { "id": 71, "key": "weapons", "cr": 4 },
+    { "id": 183, "key": "equips", "mods": ["-3"], "cr": 8 },
+    { "id": 114, "key": "equips", "cr": 10 },
+    { "id": 169, "key": "equips", "mods": ["-3"], "cr": 10 }
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "equips": [
+    {
+      "id": 24,
+      "abbr": "Holomask",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 63,
+      "abbr": "Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 91,
+      "abbr": "Baggage",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 100,
+      "abbr": "Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 101,
+      "abbr": "Hacking Device Plus",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 102,
+      "abbr": "ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 104,
+      "abbr": "Holoprojector",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 106,
+      "abbr": "MediKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 107,
+      "abbr": "Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 108,
+      "abbr": "Nanoscreen",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 111,
+      "abbr": "Deployable Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 113,
+      "abbr": "360º Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 114,
+      "abbr": "Multispectral Visor L1",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 115,
+      "abbr": "Multispectral Visor L2",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 116,
+      "abbr": "Multispectral Visor L3",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 117,
+      "abbr": "X Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 137,
+      "abbr": "Escape System",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 145,
+      "abbr": "Killer Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 169,
+      "abbr": "TinBot: Firewall",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 182,
+      "abbr": "EVO Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 183,
+      "abbr": "Albedo",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 184,
+      "abbr": "Biometric Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 188,
+      "abbr": "TinBot: Neourocinetics",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 193,
+      "abbr": "TinBot (Albedo)",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 205,
+      "abbr": "AI Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 233,
+      "abbr": "Advanced ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 235,
+      "abbr": "TinBot",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 237,
+      "abbr": "GizmoKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 238,
+      "abbr": "Deactivator",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 239,
+      "abbr": "ECM: Guided",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 240,
+      "abbr": "FastPanda",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 241,
+      "abbr": "ECM: Hacker",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 242,
+      "abbr": "SymbioMate",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 243,
+      "abbr": "Dazer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 244,
+      "abbr": "TinBot: Discover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 245,
+      "abbr": "Deployable Cover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 246,
+      "abbr": "Bangbomb",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    },
+    {
+      "id": 247,
+      "abbr": "TinBot: ECM Guided",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
+    }
+  ]
+};

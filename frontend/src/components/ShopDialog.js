@@ -9,7 +9,7 @@ import {
   Typography,
   Grid2,
 } from "@mui/material";
-import MapImage from "./MapImage";
+import MapItem from "./MapItem";
 
 const ShopDialog = ({
   open,
@@ -31,12 +31,12 @@ const ShopDialog = ({
     setAvailableMerchantItems(merchantItems);
   }, [companyItems, merchantItems]);
 
-  const totalCreditsForCompany = stagedCompany.reduce(
-    (acc, item) => acc + (item.value || 0),
+  const totalCreditsForCompany = stagedMerchant.reduce(
+    (acc, item) => acc + (item.cr || 0),
     0
   );
-  const totalCreditsForMerchant = stagedMerchant.reduce(
-    (acc, item) => acc + (item.value || 0),
+  const totalCreditsForMerchant = stagedCompany.reduce(
+    (acc, item) => acc + (item.cr || 0),
     0
   );
 
@@ -48,6 +48,17 @@ const ShopDialog = ({
   const handleStageMerchantItem = (item) => {
     setStagedMerchant((prev) => [...prev, item]);
     setAvailableMerchantItems((prev) => prev.filter((i) => i !== item));
+  };
+
+  // New unstage functions for double click on staged items:
+  const handleUnstageCompanyItem = (item) => {
+    setAvailableCompanyItems((prev) => [...prev, item]);
+    setStagedCompany((prev) => prev.filter((i) => i !== item));
+  };
+
+  const handleUnstageMerchantItem = (item) => {
+    setAvailableMerchantItems((prev) => [...prev, item]);
+    setStagedMerchant((prev) => prev.filter((i) => i !== item));
   };
 
   const handleConfirm = () => {
@@ -83,9 +94,8 @@ const ShopDialog = ({
             <Grid2 container spacing={2}>
               {availableCompanyItems.map((item, index) => (
                 <Grid2 item xs={4} key={index}>
-                  <MapImage
+                  <MapItem
                     item={item}
-                    metaKey="weapons"
                     action={handleStageCompanyItem}
                     width={50}
                     height={50}
@@ -105,22 +115,24 @@ const ShopDialog = ({
               p: 2,
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
             }}
           >
             <Typography variant="subtitle1" align="center" gutterBottom>
               Staged Exchange
             </Typography>
+
             <Grid2 container spacing={2}>
-              <Grid2 item xs={6}>
+              <Grid2 item size={6} xs={6}>
                 <Typography variant="caption" align="center" display="block">
                   Company Items
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedCompany.map((item, index) => (
                     <Grid2 item xs={12} key={index}>
-                      <MapImage
+                      <MapItem
                         item={item}
-                        metaKey="weapons"
+                        action={handleUnstageCompanyItem}
                         width={40}
                         height={40}
                         style={{ marginBottom: 2 }}
@@ -130,16 +142,16 @@ const ShopDialog = ({
                   ))}
                 </Grid2>
               </Grid2>
-              <Grid2 item xs={6}>
+              <Grid2 item size={6} xs={6}>
                 <Typography variant="caption" align="center" display="block">
                   Merchant Items
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedMerchant.map((item, index) => (
                     <Grid2 item xs={12} key={index}>
-                      <MapImage
+                      <MapItem
                         item={item}
-                        metaKey="weapons"
+                        action={handleUnstageMerchantItem}
                         width={40}
                         height={40}
                         style={{ marginBottom: 2 }}
@@ -162,6 +174,7 @@ const ShopDialog = ({
               flex: 1,
               border: "1px solid",
               borderColor: "divider",
+              alignItems: "center",
               p: 1,
             }}
           >
@@ -171,10 +184,9 @@ const ShopDialog = ({
             <Grid2 container spacing={2}>
               {availableMerchantItems.map((item, index) => (
                 <Grid2 item xs={4} key={index}>
-                  <MapImage
+                  <MapItem
                     item={item}
-                    metaKey="weapons"
-                    onDoubleClick={handleStageMerchantItem}
+                    action={handleStageMerchantItem}
                     width={50}
                     height={50}
                     style={{ marginBottom: 4 }}

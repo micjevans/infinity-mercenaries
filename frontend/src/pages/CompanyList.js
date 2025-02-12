@@ -10,6 +10,7 @@ import {
   TextField,
   Modal,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config"; // Import the API URL
@@ -21,6 +22,7 @@ const CompanyList = () => {
   const { user } = useAuth(); // Get the logged-in user
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -29,8 +31,14 @@ const CompanyList = () => {
 
     fetch(`${API_BASE_URL}/users/${user.uid}/companies`)
       .then((res) => res.json())
-      .then((data) => setCompanies(data))
-      .catch((error) => console.error("Error fetching companies:", error));
+      .then((data) => {
+        setCompanies(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching companies:", error);
+        setLoading(false);
+      });
   }, [user]); // Run when user changes
 
   const handleAddCompany = () => {
@@ -71,29 +79,43 @@ const CompanyList = () => {
       </Paper>
       {/* Company List Section */}
       <Paper style={{ padding: "16px" }}>
-        <List>
-          {companies.length > 0 ? (
-            companies.map((company) => (
-              <ListItem
-                key={company.id}
-                divider
-                button="true"
-                onClick={() => navigate(`/companies/${company.id}`)} // Navigate to CompanyPage
-              >
-                <ListItemText
-                  primary={company.name}
-                  secondary={`Created at: ${new Date(
-                    company.createdAt.seconds * 1000
-                  ).toLocaleString()}`}
-                />
-              </ListItem>
-            ))
-          ) : (
-            <Typography variant="body1" align="center">
-              No companies found.
-            </Typography>
-          )}
-        </List>
+        {loading ? (
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <List>
+            {companies.length > 0 ? (
+              companies.map((company) => (
+                <ListItem
+                  key={company.id}
+                  divider
+                  button
+                  onClick={() =>
+                    navigate(`/companies/${company.id}`, { state: { company } })
+                  } // Navigate to CompanyPage
+                >
+                  <ListItemText
+                    primary={company.name}
+                    secondary={`Created at: ${new Date(
+                      company.createdAt.seconds * 1000
+                    ).toLocaleString()}`}
+                  />
+                </ListItem>
+              ))
+            ) : (
+              <Typography variant="body1" align="center">
+                No companies found.
+              </Typography>
+            )}
+          </List>
+        )}
       </Paper>
       <Modal open={open} onClose={handleClose}>
         <Box

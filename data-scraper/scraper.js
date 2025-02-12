@@ -4,10 +4,12 @@ const fs = require("fs");
 const path = require("path");
 
 // Create a Map to accumulate unique extras across factions
-const extrasMap = new Map();
-const categoryMap = new Map();
-const typeMap = new Map();
-const peripheralMap = new Map();
+let additionsMap = [
+  { id: "extras", map: new Map() },
+  { id: "category", map: new Map() },
+  { id: "type", map: new Map() },
+  { id: "peripheral", map: new Map() },
+];
 
 (async () => {
   // 1. Launch browser (headed mode so we can see it)
@@ -121,37 +123,16 @@ const peripheralMap = new Map();
 
     // After successfully parsing factionData:
     if (factionData && factionData.filters) {
-      // Add extras to the metadata map
-      if (Array.isArray(factionData.filters.extras)) {
-        factionData.filters.extras.forEach((extra) => {
-          if (!extrasMap.has(extra.id)) {
-            extrasMap.set(extra.id, extra);
-          }
-        });
-      }
-      // Add category filters to the categoryMap
-      if (Array.isArray(factionData.filters.category)) {
-        factionData.filters.category.forEach((category) => {
-          if (!categoryMap.has(category.id)) {
-            categoryMap.set(category.id, category);
-          }
-        });
-      }
-      // Add type filters to the typeMap
-      if (Array.isArray(factionData.filters.type)) {
-        factionData.filters.type.forEach((type) => {
-          if (!typeMap.has(type.id)) {
-            typeMap.set(type.id, type);
-          }
-        });
-      }
-    }
-    // Add peripheral filters to the peripheralMap
-    if (Array.isArray(factionData.filters.peripheral)) {
-      factionData.filters.peripheral.forEach((peripheral) => {
-        if (!peripheralMap.has(peripheral.id)) {
-          peripheralMap.set(peripheral.id, peripheral);
+      additionsMap = additionsMap.map((addition) => {
+        const { id } = addition;
+        if (factionData.filters[id] && Array.isArray(factionData.filters[id])) {
+          factionData.filters[id].forEach((item) => {
+            if (!addition.map.has(item.id)) {
+              addition.map.set(item.id, item);
+            }
+          });
         }
+        return addition;
       });
     }
 
@@ -183,14 +164,10 @@ const peripheralMap = new Map();
   }
 
   // After processing all factions and accumulating extras...
-  const combinedExtras = Array.from(extrasMap.values());
-  const combinedCategory = Array.from(categoryMap.values());
-  const combinedType = Array.from(typeMap.values());
-  const combinedPeripheral = Array.from(peripheralMap.values());
-  metadataJson.extras = combinedExtras;
-  metadataJson.category = combinedCategory;
-  metadataJson.type = combinedType;
-  metadataJson.peripheral = combinedPeripheral;
+  additionsMap.forEach((addition) => {
+    const combinedAdditions = Array.from(addition.map.values());
+    metadataJson[addition.id] = combinedAdditions;
+  });
 
   // Merge additions.json into metadataJson
   const additionsPath = path.resolve(__dirname, "additions.json");
@@ -198,7 +175,17 @@ const peripheralMap = new Map();
     try {
       const additions = JSON.parse(fs.readFileSync(additionsPath, "utf8"));
       Object.keys(additions).forEach((key) => {
-        metadataJson[key] = additions[key];
+        // if the key is not in metadataJson, add it
+        if (!metadataJson[key]) {
+          metadataJson[key] = additions[key];
+        }
+        // otherwise add the additions to the existing key
+        else {
+          metadataJson[key] = metadataJson[key].map((item) => ({
+            ...item,
+            ...additions[key].find((i) => i.id === item.id), // Merge properties
+          }));
+        }
       });
       console.log("Merged additions.json into metadataJson");
     } catch (err) {

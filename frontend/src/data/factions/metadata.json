@@ -591,7 +591,6 @@
       "id": 216,
       "type": "WEAPON",
       "name": "Adhesive Launcher Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png",
       "ammunition": 37,
       "burst": "2",
       "damage": "-",
@@ -615,13 +614,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Adhesive Launcher Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
     },
     {
       "id": 1,
       "type": "WEAPON",
       "name": "Akrylat-Kanone",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
@@ -645,78 +648,102 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Akrylat-Kanone",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
     },
     {
       "id": 78,
       "type": "WEAPON",
       "name": "AP + DA CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 10,
       "burst": "1",
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "2",
       "properties": ["Anti-materiel", "CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "AP + DA CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 227,
       "type": "WEAPON",
       "name": "AP + EXP CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 13,
       "burst": "1",
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "3",
       "properties": ["Anti-materiel", "CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "AP + EXP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 172,
       "type": "WEAPON",
       "name": "AP + Shock CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 30,
       "burst": "1",
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "AP + Shock CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 224,
       "type": "WEAPON",
       "name": "AP + T2 CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 40,
       "burst": "1",
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "AP + T2 CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 6,
       "type": "WEAPON",
       "name": "AP CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 3,
       "burst": "1",
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "AP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 3,
       "type": "WEAPON",
       "name": "AP Heavy Machine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png",
       "ammunition": 3,
       "burst": "4",
       "damage": "5",
@@ -740,13 +767,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "AP Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
     },
     {
       "id": 100,
       "type": "WEAPON",
       "name": "AP Heavy Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "6",
@@ -767,13 +798,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "AP Heavy Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
     },
     {
       "id": 85,
       "type": "WEAPON",
       "name": "AP Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
@@ -797,13 +832,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "AP Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
     },
     {
       "id": 199,
       "type": "WEAPON",
       "name": "AP Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 3,
       "burst": "1",
       "damage": "7",
@@ -817,13 +856,17 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "AP Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 32,
       "type": "WEAPON",
       "name": "AP Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
@@ -847,13 +890,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "AP Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
     },
     {
       "id": 35,
       "type": "WEAPON",
       "name": "AP Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "5",
@@ -877,13 +924,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "AP Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 157,
       "type": "WEAPON",
       "name": "AP Spitfire",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-spitfire.png",
       "ammunition": 3,
       "burst": "4",
       "damage": "6",
@@ -907,13 +958,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "AP Spitfire",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-spitfire.png"
     },
     {
       "id": 214,
       "type": "WEAPON",
       "name": "AP Submachine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
@@ -937,26 +992,34 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "AP Submachine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "burst": "-",
       "damage": "-",
       "profile": "CC=5, BS=10, ARM=2, BTS=3, STR=1, S=2, Equip: 360 Visor, Skills: Total Reaction, CCW: PARA CC Weapon (-3)",
       "saving": "-",
       "savingNum": "-",
       "properties": [],
-      "distance": null
+      "distance": null,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Adhesive Launcher Rifle",
       "ammunition": 37,
       "burst": "2",
@@ -981,13 +1044,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "AP Rifle",
       "ammunition": 3,
       "burst": "3",
@@ -1012,13 +1079,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Combi Rifle",
       "ammunition": 2,
       "burst": "3",
@@ -1039,13 +1110,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "E/Mitter",
       "ammunition": 14,
       "burst": "2",
@@ -1070,13 +1145,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Marksman Rifle",
       "ammunition": 2,
       "burst": "3",
@@ -1101,13 +1180,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Mk12",
       "ammunition": 2,
       "burst": "3",
@@ -1132,13 +1215,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "PARA CC Weapon",
       "ammunition": 37,
       "burst": "1",
@@ -1146,13 +1233,17 @@
       "saving": "PH-6",
       "savingNum": "1",
       "properties": ["Non-lethal", "State: IMM-A"],
-      "distance": null
+      "distance": null,
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Rifle",
       "ammunition": 2,
       "burst": "3",
@@ -1177,13 +1268,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Thunderbolt",
       "ammunition": 2,
       "burst": "2",
@@ -1208,13 +1303,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Armed Turret",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 70,
       "type": "WEAPON",
       "name": "Assault Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "ammunition": 2,
       "burst": "4",
       "damage": "7",
@@ -1234,7 +1333,12 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Assault Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 14,
@@ -1263,13 +1367,16 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Blitzen",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 212,
       "type": "WEAPON",
       "name": "Boarding Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "Blast Mode",
       "ammunition": 2,
       "burst": "1",
@@ -1277,13 +1384,17 @@
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["Intuitive Attack", "Direct Template (Small Teardrop)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Boarding Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 212,
       "type": "WEAPON",
       "name": "Boarding Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "Hit Mode",
       "ammunition": 2,
       "burst": "2",
@@ -1304,13 +1415,17 @@
           "max": 20,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Boarding Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 26,
       "type": "WEAPON",
       "name": "Boarding Shotgun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "6",
@@ -1330,13 +1445,17 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Boarding Shotgun",
+      "cr": 10,
+      "swc": 0,
+      "slot": "secondary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
     },
     {
       "id": 103,
       "type": "WEAPON",
       "name": "Breaker Combi Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
@@ -1356,13 +1475,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Breaker Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
     },
     {
       "id": 98,
       "type": "WEAPON",
       "name": "Breaker Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "8",
@@ -1382,13 +1505,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Breaker Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 109,
       "type": "WEAPON",
       "name": "Breaker Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
@@ -1412,52 +1539,68 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Breaker Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
     },
     {
       "id": 5,
       "type": "WEAPON",
       "name": "CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 18,
       "type": "WEAPON",
       "name": "Chain Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["Intuitive Attack", "Direct Template (Large Teardrop)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Chain Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 80,
       "type": "WEAPON",
       "name": "Chain-colt",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["Intuitive Attack", "Direct Template (Small Teardrop)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Chain-colt",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 147,
       "type": "WEAPON",
       "name": "Chest Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "BS Mode",
       "ammunition": 8,
       "burst": "1",
@@ -1471,7 +1614,12 @@
         "Double Shot",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Chest Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 147,
@@ -1484,13 +1632,17 @@
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["CC Attack (+3)", "Disposable (2)", "[*]"],
-      "distance": null
+      "distance": null,
+      "abbr": "Chest Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 33,
       "type": "WEAPON",
       "name": "Combi Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -1510,7 +1662,12 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Combi Rifle",
+      "cr": 5,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
     },
     {
       "id": 19,
@@ -1535,7 +1692,11 @@
           "max": 80,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Contender",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 20,
@@ -1555,13 +1716,16 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Crazykoala",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 174,
       "type": "WEAPON",
       "name": "Cybermine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "wiki": "https://infinitythewiki.com/Cybermines?version=n4",
       "ammunition": 0,
       "burst": "1",
@@ -1580,7 +1744,12 @@
         "State: Stunned / Immbolized-B",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Cybermine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 17,
@@ -1600,7 +1769,11 @@
         "Improvised",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "D-Charges",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 17,
@@ -1614,20 +1787,28 @@
       "saving": "ARM/2",
       "savingNum": "3",
       "properties": ["Anti-materiel", "Disposable (3)", "[*]"],
-      "distance": null
+      "distance": null,
+      "abbr": "D-Charges",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 11,
       "type": "WEAPON",
       "name": "DA CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 9,
       "burst": "1",
       "damage": "8",
       "saving": "ARM",
       "savingNum": "2",
       "properties": ["Anti-materiel", "CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "DA CC Weapon",
+      "cr": 3,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 243,
@@ -1641,7 +1822,11 @@
       "saving": "",
       "savingNum": "-",
       "properties": ["Disposable (3)", "Deployable", "Zone of Control"],
-      "distance": null
+      "distance": null,
+      "abbr": "Dazer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 238,
@@ -1668,13 +1853,18 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Deactivator",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 111,
       "type": "EQUIPMENT",
       "name": "Deployable Repeater",
       "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
       "ammunition": 0,
       "burst": "1",
       "damage": "-",
@@ -1682,7 +1872,11 @@
       "saving": "",
       "savingNum": "-",
       "properties": ["Disposable (3)", "Deployable"],
-      "distance": null
+      "distance": null,
+      "abbr": "Deployable Repeater",
+      "cr": 8,
+      "swc": 0,
+      "slot": "secondary"
     },
     {
       "id": 208,
@@ -1717,7 +1911,11 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Disco Baller",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 208,
@@ -1731,7 +1929,11 @@
       "saving": "BTS",
       "savingNum": "1",
       "properties": [],
-      "distance": null
+      "distance": null,
+      "abbr": "Disco Baller",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 131,
@@ -1761,7 +1963,11 @@
           "max": 120,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Discover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 96,
@@ -1793,13 +1999,16 @@
           "mod": "-3"
         },
         "long": null
-      }
+      },
+      "abbr": "Drop Bears",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 96,
       "type": "WEAPON",
       "name": "Drop Bears",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "mode": "Deployable Mode",
       "wiki": "https://infinitythewiki.com/Mines#Drop_Bears?version=n4",
       "ammunition": 8,
@@ -1815,7 +2024,11 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Drop Bears",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 213,
@@ -1840,26 +2053,33 @@
           "max": 100,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "E/M Carbine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 7,
       "type": "WEAPON",
       "name": "E/M CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 5,
       "burst": "1",
       "damage": "8",
       "saving": "BTS/2",
       "savingNum": "2",
       "properties": ["CC", "[**]"],
-      "distance": null
+      "distance": null,
+      "abbr": "E/M CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 201,
       "type": "WEAPON",
       "name": "E/M Grenade Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -1884,13 +2104,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "E/M Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 47,
       "type": "WEAPON",
       "name": "E/M Grenades",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -1912,13 +2136,17 @@
           "max": 20,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "E/M Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 197,
       "type": "WEAPON",
       "name": "E/M Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -1933,13 +2161,17 @@
         "Deployable",
         "[**]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "E/M Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 23,
       "type": "WEAPON",
       "name": "E/Marat",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -1951,7 +2183,12 @@
         "Direct Template (Large Teardrop)",
         "[**]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "E/Marat",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 25,
@@ -1980,13 +2217,16 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "E/Mitter",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 76,
       "type": "WEAPON",
       "name": "Eclipse Grenade Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 22,
       "burst": "1",
       "damage": "-",
@@ -2013,13 +2253,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Eclipse Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 46,
       "type": "WEAPON",
       "name": "Eclipse Grenades",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 22,
       "burst": "1",
       "damage": "-",
@@ -2043,20 +2287,29 @@
           "max": 20,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Eclipse Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 8,
       "type": "WEAPON",
       "name": "EXP CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 6,
       "burst": "1",
       "damage": "8",
       "saving": "ARM",
       "savingNum": "3",
       "properties": ["Anti-materiel", "CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "EXP CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 240,
@@ -2077,7 +2330,11 @@
         "Zone of Control",
         "[***]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "FastPanda",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 30,
@@ -2107,7 +2364,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Feuerbach",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 30,
@@ -2137,7 +2398,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Feuerbach",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 82,
@@ -2171,7 +2436,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Flammenspeer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 82,
@@ -2201,7 +2470,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Flammenspeer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 72,
@@ -2230,7 +2503,11 @@
           "max": 120,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Flash Pulse",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 59,
@@ -2262,7 +2539,11 @@
           "max": 120,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Forward Observer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 237,
@@ -2289,13 +2570,16 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "GizmoKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 194,
       "type": "WEAPON",
       "name": "Grenade Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
@@ -2315,13 +2599,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 44,
       "type": "WEAPON",
       "name": "Grenades",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
@@ -2341,13 +2629,17 @@
           "max": 20,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Grenades",
+      "cr": 4,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 57,
       "type": "WEAPON",
       "name": "Heavy Flamethrower",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "6",
@@ -2358,13 +2650,17 @@
         "Direct Template (Large Teardrop)",
         "Continous Damage"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Heavy Flamethrower",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 2,
       "type": "WEAPON",
       "name": "Heavy Machine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-hmg.png",
       "ammunition": 2,
       "burst": "4",
       "damage": "5",
@@ -2388,13 +2684,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Heavy Machine Gun",
+      "cr": 24,
+      "swc": 1.5,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-hmg.png"
     },
     {
       "id": 107,
       "type": "WEAPON",
       "name": "Heavy Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png",
       "ammunition": 8,
       "burst": "2",
       "damage": "6",
@@ -2415,13 +2715,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Heavy Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/heavy-pistol.png"
     },
     {
       "id": 188,
       "type": "WEAPON",
       "name": "Heavy Riotstopper",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
@@ -2432,13 +2736,17 @@
         "Non-lethal",
         "Direct Template (Large Teardrop)"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Heavy Riotstopper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 89,
       "type": "WEAPON",
       "name": "Heavy Rocket Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png",
       "mode": "Blast Mode",
       "ammunition": 2,
       "burst": "2",
@@ -2463,13 +2771,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Heavy Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
     },
     {
       "id": 89,
       "type": "WEAPON",
       "name": "Heavy Rocket Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png",
       "mode": "Hit Mode",
       "ammunition": 2,
       "burst": "2",
@@ -2494,13 +2806,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Heavy Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
     },
     {
       "id": 29,
       "type": "WEAPON",
       "name": "Heavy Shotgun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "5",
@@ -2520,7 +2836,12 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Heavy Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
     },
     {
       "id": 15,
@@ -2550,7 +2871,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 15,
@@ -2580,7 +2905,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 15,
@@ -2610,7 +2939,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Hyper-Rapid Magnetic Cannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 87,
@@ -2631,13 +2964,16 @@
         "No LoF",
         "Zone of Control"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Jammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 95,
       "type": "WEAPON",
       "name": "K1 Combi Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -2657,13 +2993,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "K1 Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
     },
     {
       "id": 181,
       "type": "WEAPON",
       "name": "K1 Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -2687,13 +3027,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "K1 Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 110,
       "type": "WEAPON",
       "name": "K1 Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "ammunition": 2,
       "burst": "2",
       "damage": "7",
@@ -2717,13 +3061,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "K1 Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 49,
       "type": "WEAPON",
       "name": "Katyusha MRL",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png",
       "ammunition": 9,
       "burst": "1",
       "damage": "6",
@@ -2751,13 +3099,17 @@
           "max": 100,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Katyusha MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
     },
     {
       "id": 221,
       "type": "WEAPON",
       "name": "Kobra Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "BS Mode",
       "ammunition": 2,
       "burst": "2",
@@ -2778,13 +3130,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Kobra Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 221,
       "type": "WEAPON",
       "name": "Kobra Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "CC Mode",
       "ammunition": 8,
       "burst": "1",
@@ -2792,13 +3148,17 @@
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["CC", "[*]"],
-      "distance": null
+      "distance": null,
+      "abbr": "Kobra Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 56,
       "type": "WEAPON",
       "name": "Light Flamethrower",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
@@ -2809,13 +3169,17 @@
         "Direct Template (Small Teardrop)",
         "Continous Damage"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Light Flamethrower",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 187,
       "type": "WEAPON",
       "name": "Light Riotstopper",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
@@ -2826,13 +3190,17 @@
         "Non-lethal",
         "Direct Template (Small Teardrop)"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Light Riotstopper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 88,
       "type": "WEAPON",
       "name": "Light Rocket Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png",
       "mode": "Blast Mode",
       "ammunition": 2,
       "burst": "2",
@@ -2857,13 +3225,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Light Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
     },
     {
       "id": 88,
       "type": "WEAPON",
       "name": "Light Rocket Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png",
       "mode": "Hit Mode",
       "ammunition": 2,
       "burst": "2",
@@ -2888,13 +3260,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Light Rocket Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/heavy-rocket-launcher-aleph.png"
     },
     {
       "id": 28,
       "type": "WEAPON",
       "name": "Light Shotgun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png",
       "ammunition": 2,
       "burst": "2",
       "damage": "7",
@@ -2914,7 +3290,12 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Light Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-boarding-shotgun.png"
     },
     {
       "id": 150,
@@ -2935,13 +3316,16 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Madtraps",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 84,
       "type": "WEAPON",
       "name": "Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -2965,7 +3349,12 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 106,
@@ -2992,7 +3381,11 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MediKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 176,
@@ -3028,13 +3421,16 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Mine Dispenser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 58,
       "type": "WEAPON",
       "name": "Missile Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png",
       "mode": "Blast Mode",
       "ammunition": 6,
       "burst": "1",
@@ -3059,13 +3455,17 @@
           "max": 100,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Missile Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
     },
     {
       "id": 58,
       "type": "WEAPON",
       "name": "Missile Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png",
       "mode": "Hit Mode",
       "ammunition": 13,
       "burst": "1",
@@ -3090,13 +3490,17 @@
           "max": 100,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Missile Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
     },
     {
       "id": 64,
       "type": "WEAPON",
       "name": "Mk12",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/aleph-mk12.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "5",
@@ -3120,26 +3524,34 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Mk12",
+      "cr": 12,
+      "swc": 18,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/aleph-mk12.png"
     },
     {
       "id": 9,
       "type": "WEAPON",
       "name": "Monofilament CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "8",
       "saving": "ARM=0",
       "savingNum": "1",
       "properties": ["CC", "State: Dead"],
-      "distance": null
+      "distance": null,
+      "abbr": "Monofilament CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 62,
       "type": "WEAPON",
       "name": "Monofilament Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "8",
@@ -3154,13 +3566,17 @@
         "State: Dead",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Monofilament Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 4,
       "type": "WEAPON",
       "name": "MULTI Heavy Machine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png",
       "mode": "Anti-materiel Mode",
       "ammunition": 6,
       "burst": "1",
@@ -3185,13 +3601,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
     },
     {
       "id": 4,
       "type": "WEAPON",
       "name": "MULTI Heavy Machine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "4",
@@ -3216,13 +3636,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
     },
     {
       "id": 4,
       "type": "WEAPON",
       "name": "MULTI Heavy Machine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "4",
@@ -3247,13 +3671,17 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Heavy Machine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-hmg.png"
     },
     {
       "id": 169,
       "type": "WEAPON",
       "name": "MULTI Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Anti-Material Mode",
       "ammunition": 9,
       "burst": "1",
@@ -3278,13 +3706,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 169,
       "type": "WEAPON",
       "name": "MULTI Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "3",
@@ -3309,13 +3741,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 169,
       "type": "WEAPON",
       "name": "MULTI Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "3",
@@ -3340,13 +3776,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 189,
       "type": "WEAPON",
       "name": "MULTI Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "Anti-Material Mode",
       "ammunition": 9,
       "burst": "1",
@@ -3367,13 +3807,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 189,
       "type": "WEAPON",
       "name": "MULTI Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "2",
@@ -3394,13 +3838,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 189,
       "type": "WEAPON",
       "name": "MULTI Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "2",
@@ -3421,7 +3869,12 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 210,
@@ -3451,7 +3904,11 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 210,
@@ -3481,7 +3938,11 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 210,
@@ -3511,13 +3972,16 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "MULTI Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 41,
       "type": "WEAPON",
       "name": "MULTI Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Anti-Materiel Mode",
       "ammunition": 9,
       "burst": "1",
@@ -3538,13 +4002,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 41,
       "type": "WEAPON",
       "name": "MULTI Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "3",
@@ -3565,13 +4033,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 41,
       "type": "WEAPON",
       "name": "MULTI Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "3",
@@ -3592,13 +4064,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "MULTI Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 36,
       "type": "WEAPON",
       "name": "MULTI Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "mode": "Anti-Materiel Mode",
       "ammunition": 9,
       "burst": "2",
@@ -3623,13 +4099,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 36,
       "type": "WEAPON",
       "name": "MULTI Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "2",
@@ -3654,13 +4134,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 36,
       "type": "WEAPON",
       "name": "MULTI Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "2",
@@ -3685,20 +4169,29 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "MULTI Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 65,
       "type": "WEAPON",
       "name": "Nanopulser",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
       "properties": ["Direct Template (Small Teardrop)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Nanopulser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 67,
@@ -3731,7 +4224,11 @@
           "max": 100,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Ohotnik",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 68,
@@ -3760,26 +4257,33 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Panzerfaust",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 71,
       "type": "WEAPON",
       "name": "PARA CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
       "properties": ["CC", "Non-lethal", "State: IMM-A"],
-      "distance": null
+      "distance": null,
+      "abbr": "PARA CC Weapon",
+      "cr": 4,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 220,
       "type": "WEAPON",
       "name": "PARA Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
@@ -3794,13 +4298,17 @@
         "Deployable",
         "[**]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "PARA Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 69,
       "type": "WEAPON",
       "name": "Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "ammunition": 2,
       "burst": "2",
       "damage": "9",
@@ -3820,7 +4328,12 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 154,
@@ -3853,7 +4366,11 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Pitcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 111,
@@ -3879,7 +4396,11 @@
           "max": 100,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Deployable Repeater",
+      "cr": 8,
+      "swc": 0,
+      "slot": "secondary"
     },
     {
       "id": 111,
@@ -3905,13 +4426,16 @@
           "max": 100,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Deployable Repeater",
+      "cr": 8,
+      "swc": 0,
+      "slot": "secondary"
     },
     {
       "id": 40,
       "type": "WEAPON",
       "name": "Plasma Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Blast Mode",
       "ammunition": 2,
       "burst": "3",
@@ -3932,13 +4456,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Plasma Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 40,
       "type": "WEAPON",
       "name": "Plasma Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "mode": "Hit Mode",
       "ammunition": 2,
       "burst": "3",
@@ -3959,13 +4487,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Plasma Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 113,
       "type": "WEAPON",
       "name": "Plasma Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "mode": "Blast Mode",
       "ammunition": 2,
       "burst": "2",
@@ -3990,13 +4522,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Plasma Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 113,
       "type": "WEAPON",
       "name": "Plasma Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "mode": "Hit Mode",
       "ammunition": 2,
       "burst": "2",
@@ -4021,13 +4557,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Plasma Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 16,
       "type": "WEAPON",
       "name": "Portable Autocannon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png",
       "ammunition": 13,
       "burst": "2",
       "damage": "5",
@@ -4051,7 +4591,12 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Portable Autocannon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/haqqislam-missile-launcher.png"
     },
     {
       "id": 203,
@@ -4070,7 +4615,11 @@
         "No LoF",
         "Zone of Control"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "PT: Endgame",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 204,
@@ -4090,7 +4639,11 @@
         "No LoF",
         "Zone of Control"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "PT: Eraser",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 205,
@@ -4111,20 +4664,28 @@
         "Targetless",
         "Zone of Control"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "PT: Mirrorball",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 145,
       "type": "WEAPON",
       "name": "Pulzar",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
       "properties": ["Intuitive Attack", "Direct Template (Large Teardrop)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Pulzar",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 152,
@@ -4153,13 +4714,16 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Red Fury",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 31,
       "type": "WEAPON",
       "name": "Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -4183,13 +4747,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
     },
     {
       "id": 73,
       "type": "WEAPON",
       "name": "Sepsitor",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "wiki": "https://infinitythewiki.com/Sepsitor?version=n4",
       "ammunition": 0,
       "burst": "1",
@@ -4203,13 +4771,17 @@
         "Direct Template (Large Teardrop)",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Sepsitor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 114,
       "type": "WEAPON",
       "name": "Sepsitor Plus",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "wiki": "https://infinitythewiki.com/Sepsitor?version=n4",
       "ammunition": 0,
       "burst": "1",
@@ -4221,26 +4793,34 @@
         "State: Sepsitorized",
         "Direct Template (Large Teardrop)"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Sepsitor Plus",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     },
     {
       "id": 10,
       "type": "WEAPON",
       "name": "Shock CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 8,
       "burst": "1",
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "Shock CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 155,
       "type": "WEAPON",
       "name": "Shock Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "ammunition": 8,
       "burst": "3",
       "damage": "7",
@@ -4264,13 +4844,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Shock Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 196,
       "type": "WEAPON",
       "name": "Shock Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 8,
       "burst": "1",
       "damage": "7",
@@ -4284,13 +4868,17 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Shock Mine",
+      "cr": 5,
+      "swc": 0,
+      "slot": "secondary",
+      "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
     },
     {
       "id": 211,
       "type": "WEAPON",
       "name": "Silenced Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "ammunition": 30,
       "burst": "2",
       "damage": "8",
@@ -4310,13 +4898,17 @@
           "max": 20,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Silenced Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 195,
       "type": "WEAPON",
       "name": "Smoke Grenade Launcher",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 21,
       "burst": "1",
       "damage": "-",
@@ -4342,13 +4934,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Smoke Grenade Launcher",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 45,
       "type": "WEAPON",
       "name": "Smoke Grenades",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png",
       "ammunition": 21,
       "burst": "1",
       "damage": "-",
@@ -4371,13 +4967,17 @@
           "max": 20,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Smoke Grenades",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/grenade.png"
     },
     {
       "id": 34,
       "type": "WEAPON",
       "name": "Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "ammunition": 8,
       "burst": "2",
       "damage": "5",
@@ -4401,13 +5001,17 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 74,
       "type": "WEAPON",
       "name": "Spitfire",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png",
       "ammunition": 2,
       "burst": "4",
       "damage": "6",
@@ -4431,13 +5035,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Spitfire",
+      "cr": 18,
+      "swc": 1,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
     },
     {
       "id": 217,
       "type": "WEAPON",
       "name": "Spitfire MULTI",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png",
       "mode": "Anti-Material Mode",
       "ammunition": 9,
       "burst": "1",
@@ -4462,13 +5070,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
     },
     {
       "id": 217,
       "type": "WEAPON",
       "name": "Spitfire MULTI",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png",
       "mode": "AP Mode",
       "ammunition": 3,
       "burst": "4",
@@ -4493,13 +5105,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
     },
     {
       "id": 217,
       "type": "WEAPON",
       "name": "Spitfire MULTI",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png",
       "mode": "Shock Mode",
       "ammunition": 8,
       "burst": "4",
@@ -4524,13 +5140,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Spitfire MULTI",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/panoceania-spitfire.png"
     },
     {
       "id": 92,
       "type": "WEAPON",
       "name": "Stun Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/stunpistol.png",
       "ammunition": 29,
       "burst": "2",
       "damage": "8",
@@ -4550,13 +5170,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Stun Pistol",
+      "cr": 1,
+      "swc": 0,
+      "slot": "sidearm",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/stunpistol.png"
     },
     {
       "id": 77,
       "type": "WEAPON",
       "name": "Submachine Gun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -4580,7 +5204,12 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Submachine Gun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/smg-panoceania.png"
     },
     {
       "id": 127,
@@ -4601,13 +5230,16 @@
           "max": 40,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Suppressive Fire Mode Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 27,
       "type": "WEAPON",
       "name": "T2 Boarding Shotgun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png",
       "ammunition": 18,
       "burst": "2",
       "damage": "6",
@@ -4628,26 +5260,34 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "T2 Boarding Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
     },
     {
       "id": 153,
       "type": "WEAPON",
       "name": "T2 CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 18,
       "burst": "1",
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
       "properties": ["CC"],
-      "distance": null
+      "distance": null,
+      "abbr": "T2 CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 180,
       "type": "WEAPON",
       "name": "T2 Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "ammunition": 18,
       "burst": "3",
       "damage": "7",
@@ -4671,13 +5311,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "T2 Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 42,
       "type": "WEAPON",
       "name": "T2 Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png",
       "ammunition": 18,
       "burst": "3",
       "damage": "7",
@@ -4701,13 +5345,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "T2 Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
     },
     {
       "id": 38,
       "type": "WEAPON",
       "name": "T2 Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "ammunition": 18,
       "burst": "2",
       "damage": "5",
@@ -4731,7 +5379,12 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "T2 Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 193,
@@ -4756,7 +5409,11 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Tactical Bow",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 207,
@@ -4785,7 +5442,11 @@
           "max": 80,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "Thunderbolt",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 177,
@@ -4812,7 +5473,11 @@
         "max": null,
         "med": null,
         "long": null
-      }
+      },
+      "abbr": "Trench-Hammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 177,
@@ -4826,7 +5491,11 @@
       "saving": "ARM",
       "savingNum": "2",
       "properties": ["Anti-materiel", "CC", "Disposable (3)", "[*]"],
-      "distance": null
+      "distance": null,
+      "abbr": "Trench-Hammer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 75,
@@ -4860,7 +5529,11 @@
           "max": 100,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Uragan MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 75,
@@ -4890,26 +5563,33 @@
           "max": 100,
           "mod": "0"
         }
-      }
+      },
+      "abbr": "Uragan MRL",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 13,
       "type": "WEAPON",
       "name": "Viral CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "8",
       "saving": "BTS",
       "savingNum": "1",
       "properties": ["CC", "Bioweapon (DA+SHOCK)"],
-      "distance": null
+      "distance": null,
+      "abbr": "Viral CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 83,
       "type": "WEAPON",
       "name": "Viral Combi Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -4930,13 +5610,17 @@
           "max": 120,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Viral Combi Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/combi-rifle-yu-jing.png"
     },
     {
       "id": 206,
       "type": "WEAPON",
       "name": "Viral Marksman Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -4960,13 +5644,17 @@
           "max": 100,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Viral Marksman Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/panoceania-multi-rifle.png"
     },
     {
       "id": 63,
       "type": "WEAPON",
       "name": "Viral Mine",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 2,
       "burst": "1",
       "damage": "7",
@@ -4981,13 +5669,17 @@
         "Deployable",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Viral Mine",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 156,
       "type": "WEAPON",
       "name": "Viral Pistol",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png",
       "ammunition": 2,
       "burst": "2",
       "damage": "8",
@@ -5007,13 +5699,17 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Viral Pistol",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200729_Guia_de_armas_3/imagenes/yujing-pistol.png"
     },
     {
       "id": 43,
       "type": "WEAPON",
       "name": "Viral Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
@@ -5037,13 +5733,17 @@
           "max": 80,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Viral Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/ariadna-rifle.png"
     },
     {
       "id": 39,
       "type": "WEAPON",
       "name": "VIRAL Sniper Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png",
       "ammunition": 2,
       "burst": "2",
       "damage": "5",
@@ -5067,7 +5767,12 @@
           "max": 120,
           "mod": "+3"
         }
-      }
+      },
+      "abbr": "VIRAL Sniper Rifle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-sniper-rifle.png"
     },
     {
       "id": 179,
@@ -5092,13 +5797,16 @@
           "max": 60,
           "mod": "-6"
         }
-      }
+      },
+      "abbr": "Viral Tactical Bow",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary"
     },
     {
       "id": 149,
       "type": "WEAPON",
       "name": "Vorpal CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "mode": "BS Mode",
       "wiki": "https://infinitythewiki.com/Mixed_Weapons?version=n4",
       "ammunition": 2,
@@ -5115,13 +5823,17 @@
         "max": null,
         "med": null,
         "long": null
-      }
+      },
+      "abbr": "Vorpal CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 149,
       "type": "WEAPON",
       "name": "Vorpal CC Weapon",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png",
       "mode": "CC Mode",
       "wiki": "https://infinitythewiki.com/Mixed_Weapons?version=n4",
       "ammunition": 2,
@@ -5130,13 +5842,17 @@
       "saving": "ARM=0",
       "savingNum": "1",
       "properties": ["CC", "State: Dead", "[*]"],
-      "distance": null
+      "distance": null,
+      "abbr": "Vorpal CC Weapon",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/yujing-ccw-katana.png"
     },
     {
       "id": 81,
       "type": "WEAPON",
       "name": "Vulkan Shotgun",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png",
       "ammunition": 3,
       "burst": "2",
       "damage": "6",
@@ -5156,13 +5872,17 @@
           "max": 60,
           "mod": "-3"
         }
-      }
+      },
+      "abbr": "Vulkan Shotgun",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/shasvastii-boarding-shotgun.png"
     },
     {
       "id": 182,
       "type": "WEAPON",
       "name": "WildParrot",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -5177,13 +5897,17 @@
         "Perimeter",
         "[*]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "WildParrot",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/crazykoala.png"
     },
     {
       "id": 175,
       "type": "WEAPON",
       "name": "Zapper",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png",
       "ammunition": 14,
       "burst": "1",
       "damage": "7",
@@ -5195,7 +5919,12 @@
         "Direct Template (Small Teardrop)",
         "[**]"
       ],
-      "distance": null
+      "distance": null,
+      "abbr": "Zapper",
+      "cr": 0,
+      "swc": 0,
+      "slot": "primary",
+      "img": "https://assets.infinitythegame.net/web/articles/images/20200703-weapons-guide-part-1/generic-chain-rifle.png"
     }
   ],
   "skills": [
@@ -5702,189 +6431,351 @@
     {
       "id": 24,
       "name": "Holomask",
-      "wiki": "https://infinitythewiki.com/HoloMask?version=n4"
+      "wiki": "https://infinitythewiki.com/HoloMask?version=n4",
+      "abbr": "Holomask",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 63,
       "name": "Repeater",
-      "wiki": "https://infinitythewiki.com/Repeater?version=n4"
+      "wiki": "https://infinitythewiki.com/Repeater?version=n4",
+      "abbr": "Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 91,
       "name": "Baggage",
-      "wiki": "https://infinitythewiki.com/Baggage?version=n4"
+      "wiki": "https://infinitythewiki.com/Baggage?version=n4",
+      "abbr": "Baggage",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 100,
       "name": "Hacking Device",
-      "wiki": "https://infinitythewiki.com/Hacking_Device?version=n4"
+      "wiki": "https://infinitythewiki.com/Hacking_Device?version=n4",
+      "abbr": "Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 101,
       "name": "Hacking Device Plus",
-      "wiki": "https://infinitythewiki.com/Hacking_Device#Hacking_Device_Plus?version=n4"
+      "wiki": "https://infinitythewiki.com/Hacking_Device#Hacking_Device_Plus?version=n4",
+      "abbr": "Hacking Device Plus",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 102,
       "name": "ECM",
-      "wiki": "https://infinitythewiki.com/ECM?version=n4"
+      "wiki": "https://infinitythewiki.com/ECM?version=n4",
+      "abbr": "ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 104,
       "name": "Holoprojector",
-      "wiki": "https://infinitythewiki.com/Holoprojector?version=n4"
+      "wiki": "https://infinitythewiki.com/Holoprojector?version=n4",
+      "abbr": "Holoprojector",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 106,
       "name": "MediKit",
-      "wiki": "https://infinitythewiki.com/MediKit?version=n4"
+      "wiki": "https://infinitythewiki.com/MediKit?version=n4",
+      "abbr": "MediKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 107,
       "name": "Motorcycle",
-      "wiki": "https://infinitythewiki.com/Motorcycle?version=n4"
+      "wiki": "https://infinitythewiki.com/Motorcycle?version=n4",
+      "abbr": "Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 108,
       "name": "Nanoscreen",
-      "wiki": "https://infinitythewiki.com/Nanoscreen?version=n4"
+      "wiki": "https://infinitythewiki.com/Nanoscreen?version=n4",
+      "abbr": "Nanoscreen",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 111,
       "name": "Deployable Repeater",
-      "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4"
+      "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4",
+      "abbr": "Deployable Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 113,
       "name": "360º Visor",
-      "wiki": "https://infinitythewiki.com/360º_Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/360º_Visor?version=n4",
+      "abbr": "360º Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 114,
       "name": "Multispectral Visor L1",
-      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
+      "img": "/assets/images/MSV1.jpg",
+      "abbr": "MSV1",
+      "cr": 10,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 115,
       "name": "Multispectral Visor L2",
-      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
+      "img": "/assets/images/MSV2.jpg",
+      "abbr": "MSV2",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 116,
       "name": "Multispectral Visor L3",
-      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
+      "img": "/assets/images/MSV2.jpg",
+      "abbr": "MSV3",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 117,
       "name": "X Visor",
-      "wiki": "https://infinitythewiki.com/X-Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/X-Visor?version=n4",
+      "abbr": "X Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 137,
       "name": "Escape System",
-      "wiki": "https://infinitythewiki.com/Escape_System?version=n4"
+      "wiki": "https://infinitythewiki.com/Escape_System?version=n4",
+      "abbr": "Escape System",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 145,
       "name": "Killer Hacking Device",
-      "wiki": "https://infinitythewiki.com/Hacking_Device#Killer_Hacking_Device?version=n4"
+      "wiki": "https://infinitythewiki.com/Hacking_Device#Killer_Hacking_Device?version=n4",
+      "abbr": "Killer Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 169,
       "name": "TinBot: Firewall",
-      "wiki": "https://infinitythewiki.com/TinBot?version=n4"
+      "wiki": "https://infinitythewiki.com/TinBot?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Firewall",
+      "cr": 10,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 182,
       "name": "EVO Hacking Device",
-      "wiki": "https://infinitythewiki.com/Hacking_Device#EVO_Hacking_Device?version=n4"
+      "wiki": "https://infinitythewiki.com/Hacking_Device#EVO_Hacking_Device?version=n4",
+      "abbr": "EVO Hacking Device",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 183,
       "name": "Albedo",
-      "wiki": "https://infinitythewiki.com/Albedo?version=n4"
+      "wiki": "https://infinitythewiki.com/Albedo?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/albedo_a0.jpg",
+      "abbr": "Albedo",
+      "cr": 8,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 184,
       "name": "Biometric Visor",
-      "wiki": "https://infinitythewiki.com/Biometric_Visor?version=n4"
+      "wiki": "https://infinitythewiki.com/Biometric_Visor?version=n4",
+      "abbr": "Biometric Visor",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 188,
       "name": "TinBot: Neourocinetics",
-      "wiki": "https://infinitythewiki.com/TinBot?version=n4"
+      "wiki": "https://infinitythewiki.com/TinBot?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Neourocinetics",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 193,
       "name": "TinBot (Albedo)",
-      "wiki": "https://infinitythewiki.com/TinBot?version=n4"
+      "wiki": "https://infinitythewiki.com/TinBot?version=n4",
+      "abbr": "TinBot (Albedo)",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 205,
       "name": "AI Motorcycle",
-      "wiki": "https://infinitythewiki.com/AI_Motorcycle?version=n4"
+      "wiki": "https://infinitythewiki.com/AI_Motorcycle?version=n4",
+      "abbr": "AI Motorcycle",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 233,
       "name": "Advanced ECM",
-      "wiki": "https://infinitythewiki.com/ECM?version=n4"
+      "wiki": "https://infinitythewiki.com/ECM?version=n4",
+      "abbr": "Advanced ECM",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 235,
       "name": "TinBot",
-      "wiki": "https://infinitythewiki.com/TinBot?version=n4"
+      "wiki": "https://infinitythewiki.com/TinBot?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 237,
       "name": "GizmoKit",
-      "wiki": "https://infinitythewiki.com/GizmoKit?version=n4"
+      "wiki": "https://infinitythewiki.com/GizmoKit?version=n4",
+      "abbr": "GizmoKit",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 238,
       "name": "Deactivator",
-      "wiki": "https://infinitythewiki.com/Deactivator?version=n4"
+      "wiki": "https://infinitythewiki.com/Deactivator?version=n4",
+      "abbr": "Deactivator",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 239,
       "name": "ECM: Guided",
-      "wiki": "https://infinitythewiki.com/ECM?version=n4"
+      "wiki": "https://infinitythewiki.com/ECM?version=n4",
+      "abbr": "ECM: Guided",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 240,
       "name": "FastPanda",
-      "wiki": "https://infinitythewiki.com/FastPanda?version=n4"
+      "wiki": "https://infinitythewiki.com/FastPanda?version=n4",
+      "abbr": "FastPanda",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 241,
       "name": "ECM: Hacker",
-      "wiki": "https://infinitythewiki.com/ECM?version=n4"
+      "wiki": "https://infinitythewiki.com/ECM?version=n4",
+      "abbr": "ECM: Hacker",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 242,
       "name": "SymbioMate",
-      "wiki": "https://infinitythewiki.com/SymbioMate?version=n4"
+      "wiki": "https://infinitythewiki.com/SymbioMate?version=n4",
+      "abbr": "SymbioMate",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 243,
       "name": "Dazer",
-      "wiki": "https://infinitythewiki.com/Dazer?version=n4"
+      "wiki": "https://infinitythewiki.com/Dazer?version=n4",
+      "abbr": "Dazer",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 244,
       "name": "TinBot: Discover",
-      "wiki": "https://infinitythewiki.com/TinBot?version=n4"
+      "wiki": "https://infinitythewiki.com/TinBot?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Discover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 245,
-      "name": "Deployable Cover"
+      "name": "Deployable Cover",
+      "abbr": "Deployable Cover",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 246,
-      "name": "Bangbomb"
+      "name": "Bangbomb",
+      "abbr": "Bangbomb",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 247,
-      "name": "TinBot: ECM Guided"
+      "name": "TinBot: ECM Guided",
+      "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: ECM Guided",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     }
   ],
   "hack": [
@@ -6165,8 +7056,7 @@
     {
       "name": "11",
       "id": 11,
-      "value": "Adhesive Launcher Rifle",
-      "img": "https://assets.infinitythegame.net/web/articles/images/20200717-weapons-guide-part-2/adhl-ariadna.png"
+      "value": "Adhesive Launcher Rifle"
     },
     {
       "name": "12",
@@ -7756,11 +8646,6 @@
       "name": "Peripheral",
       "wiki": "https://infinitythewiki.com/Peripheral?version=n4",
       "logo": "https://assets.corvusbelli.net/army/img/icon/peripheral.svg"
-    },
-    {
-      "id": 3,
-      "name": "Regular",
-      "wiki": "https://infinitythewiki.com/Orders_and_the_Order_Pool?version=n4"
     }
   ]
 }
