@@ -30,12 +30,6 @@ const TrooperList = ({ company, setCompany }) => {
   };
 
   const handleCloseEditDialog = () => {
-    setCompany((prev) => ({
-      ...prev,
-      troopers: (prev.troopers || []).map((trooper) =>
-        trooper.id === editingTrooper.id ? editingTrooper : trooper
-      ),
-    }));
     setEditingTrooper(null);
   };
 
@@ -143,11 +137,17 @@ const TrooperList = ({ company, setCompany }) => {
           onClose={handleCloseEditDialog}
           trooperToEdit={editingTrooper}
           companyInventory={company.inventory}
-          saveChanges={(trooper) => {
-            console.log("Updating trooper", trooper);
+          saveChanges={(trooper, removedItems) => {
             setTroopers((prev) =>
               prev.map((t) => (t.id === trooper.id ? trooper : t))
             );
+            setCompany((prev) => ({
+              ...prev,
+              inventory: prev.inventory.filter(
+                (item) =>
+                  !removedItems.some((removed) => removed.uuid === item.uuid)
+              ),
+            }));
           }}
         />
       )}

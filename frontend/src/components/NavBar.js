@@ -18,8 +18,8 @@ import {
   signInWithGoogle,
   signUpWithEmail,
 } from "../auth/auth";
-import { API_BASE_URL } from "../config";
 import logo from "../assets/images/M2-no-bg-short.png";
+import { getUser, createOrUpdateUser } from "../services/userService";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -40,8 +40,16 @@ const NavBar = () => {
   };
 
   // Navbar menu handlers
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
+  const handleMenuOpen = (event) => {
+    // Make sure we're setting anchorEl to a valid DOM element
+    if (event && event.currentTarget) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   // Login with email and password
   const handleSignInWithEmail = async () => {
@@ -57,31 +65,32 @@ const NavBar = () => {
   const handleSignInWithGoogle = async () => {
     try {
       const user = await signInWithGoogle();
+
       // Check if user exists in Firestore
-      fetch(`${API_BASE_URL}/users/${user.uid}`)
-        .then((res) => res.json())
-        .then((data) => handleCloseLoginModal())
-        .catch((error) => {
-          // If they don't then create a new user in Firestore
-          fetch(`${API_BASE_URL}/users`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userId: user.uid,
-              name: user.displayName,
-              email: user.email,
-            }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              handleCloseLoginModal();
-              // do something later
-            })
-            .catch((error) => {
-              logOut();
-              console.error("Error creating user:", error);
-            });
-        });
+      try {
+        const existingUser = await getUser(user.uid);
+
+        if (!existingUser) {
+          // If user doesn't exist, create a new user in Firestore
+          const result = await createOrUpdateUser(user.uid, {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL || "",
+            createdAt: new Date(),
+          });
+
+          if (!result.success) {
+            console.error("Error creating user:", result.error);
+            await logOut();
+            return;
+          }
+        }
+
+        handleCloseLoginModal();
+      } catch (error) {
+        console.error("Error checking/creating user:", error);
+        await logOut();
+      }
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
@@ -95,28 +104,27 @@ const NavBar = () => {
     }
     try {
       const user = await signUpWithEmail(email, password);
-      // If they don't then create a new user in Firestore
-      fetch(`${API_BASE_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.uid,
-          name: displayName,
+
+      // Create a new user in Firestore
+      try {
+        const result = await createOrUpdateUser(user.uid, {
+          displayName: displayName,
           email: user.email,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          handleCloseLoginModal();
-          // do something later
-        })
-        .catch((error) => {
-          logOut();
-          console.error("Error creating user:", error);
+          createdAt: new Date(),
         });
+
+        if (result.success) {
+          handleCloseLoginModal();
+        } else {
+          console.error("Error creating user:", result.error);
+          await logOut();
+        }
+      } catch (error) {
+        console.error("Error creating user:", error);
+        await logOut();
+      }
     } catch (error) {
       console.error("Error signing up with email:", error);
-      return;
     }
   };
 
@@ -167,6 +175,14 @@ const NavBar = () => {
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
             >
               <MenuItem onClick={() => navigate("/companies")}>
                 Company List

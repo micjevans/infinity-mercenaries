@@ -1,9 +1,41 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Typography, CircularProgress } from "@mui/material";
+import { getEquipment } from "../services/firebaseService";
 
-const MapEquipment = ({ equipment }) => {
+const MapEquipment = ({ equipmentId }) => {
+  const [equipment, setEquipment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      try {
+        setLoading(true);
+        const response = await getEquipment(equipmentId);
+        if (response.success) {
+          setEquipment(response.data);
+        } else {
+          setError(response.error || "Failed to fetch equipment");
+        }
+      } catch (err) {
+        setError("Error fetching equipment data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (equipmentId) {
+      fetchEquipment();
+    }
+  }, [equipmentId]);
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">{error}</Typography>;
+  if (!equipment) return <Typography>No equipment found</Typography>;
+
   return (
-    <div>
+    <div style={{ overflowX: "auto", width: "100%" }}>
       <Typography variant="h6" align="center" gutterBottom>
         {equipment.name}
       </Typography>

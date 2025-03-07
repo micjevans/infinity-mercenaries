@@ -14,7 +14,8 @@ import metadata from "../data/factions/metadata";
 const getRangeCellBg = (val, theme) => {
   const num = Number(val);
   if (val === "" || val == null) return theme.palette.grey[600];
-  if (num === -3 || num === -6) return theme.palette.error.main;
+  if (num === -6) return theme.palette.error.main;
+  if (num === -3) return theme.palette.warning.light;
   if (num === 0) return theme.palette.info.main;
   if (num === 3 || num === 6) return theme.palette.success.main;
   return undefined;

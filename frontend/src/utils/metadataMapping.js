@@ -20,6 +20,12 @@ export const renderStat = (stat) => {
 export const mapItemData = (item) => {
   return (metadata[item.key] || []).filter((e) => e.id === item.id);
 };
+
+export const getExtra = (extraId) => {
+  const found = metadata.extras.find((t) => t.id === extraId);
+  return found ? found : extraId;
+};
+
 // Maps a type object (by id) to its name via metadata.type.
 export const mapType = (type) => {
   const found = metadata.type.find((t) => t.id === type);

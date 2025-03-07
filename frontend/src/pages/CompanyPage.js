@@ -34,8 +34,6 @@ const CompanyPage = () => {
   }
   const [shopModalOpen, setShopModalOpen] = useState(false); // new state for shop
   const [company, setCompany] = useState(cleanedCompany);
-  // Ensure you have state for companyCR and companyInventory at the top of your component:
-  const [companyCR, setCompanyCR] = useState(company?.cr || 0);
 
   if (!cleanedCompany) return null;
 
@@ -191,12 +189,12 @@ const CompanyPage = () => {
           sx={{ mb: 2 }}
         />
         <Typography variant="body2">
-          Available Creddits: {company.credits}
+          Available Credits: {company.credits}
         </Typography>
         <Typography variant="body2">Sponsor: {company.sponsor}</Typography>
         <Typography variant="body2">Notoriety: {company.notoriety}</Typography>
         <Typography variant="body2">
-          Total Company Renown: {companyCR}
+          Total Company Renown: {company.renown}
         </Typography>
       </Paper>
       {/* Action Buttons Row */}
@@ -217,11 +215,11 @@ const CompanyPage = () => {
         merchantItems={merchantItems}
         onConfirmExchange={(exchangeData) => {
           // Update company CR by adding net exchange:
-          setCompanyCR((prevCR) => prevCR + exchangeData.netExchange);
           // Update company inventory:
           // Remove the company items that were staged for exchange, comparing by id.
           setCompany((prevCompany) => ({
             ...prevCompany,
+            credits: prevCompany.credits + exchangeData.netExchange,
             inventory: [
               ...prevCompany.inventory.filter(
                 (item) =>

@@ -42,23 +42,27 @@ const ShopDialog = ({
 
   const handleStageCompanyItem = (item) => {
     setStagedCompany((prev) => [...prev, item]);
-    setAvailableCompanyItems((prev) => prev.filter((i) => i !== item));
+    setAvailableCompanyItems((prev) =>
+      prev.filter((i) => i.uuid !== item.uuid)
+    );
   };
 
   const handleStageMerchantItem = (item) => {
     setStagedMerchant((prev) => [...prev, item]);
-    setAvailableMerchantItems((prev) => prev.filter((i) => i !== item));
+    setAvailableMerchantItems((prev) =>
+      prev.filter((i) => i.uuid !== item.uuid)
+    );
   };
 
   // New unstage functions for double click on staged items:
   const handleUnstageCompanyItem = (item) => {
     setAvailableCompanyItems((prev) => [...prev, item]);
-    setStagedCompany((prev) => prev.filter((i) => i !== item));
+    setStagedCompany((prev) => prev.filter((i) => i.uuid !== item.uuid));
   };
 
   const handleUnstageMerchantItem = (item) => {
     setAvailableMerchantItems((prev) => [...prev, item]);
-    setStagedMerchant((prev) => prev.filter((i) => i !== item));
+    setStagedMerchant((prev) => prev.filter((i) => i.uuid !== item.uuid));
   };
 
   const handleConfirm = () => {

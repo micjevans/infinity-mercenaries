@@ -1,14 +1,13 @@
-// Import the necessary Firebase modules
 import { initializeApp } from "firebase/app";
 import {
   browserLocalPersistence,
   getAuth,
   setPersistence,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // If you're using Firestore
-import { getStorage } from "firebase/storage"; // If you're using Firebase Storage
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// Your Firebase configuration object (replace with your actual config)
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDTr4jf9ZZgagDjzVe8xkpgZF5zzXyQRD8",
   authDomain: "infinity-mercenaries.firebaseapp.com",
@@ -19,19 +18,17 @@ const firebaseConfig = {
   measurementId: "G-BCZYR0J4JD",
 };
 
-// Initialize Firebase App
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Services
-export const auth = getAuth(app); // Firebase Authentication
-export const db = getFirestore(app); // Firestore Database (optional)
-export const storage = getStorage(app); // Firebase Storage (optional)
+// Initialize services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-// Set persistence
+// Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch((error) => {
   console.error("Error setting persistence:", error.message);
 });
 
-// Export the app for other uses
-const firebaseServices = { app, auth };
-export default firebaseServices;
+export { app };
