@@ -1,4 +1,4 @@
-name: Deploy Frontend & Functions to Firebase
+name: Deploy Frontend, Functions & Rules to Firebase
 
 on:
   push:
@@ -40,6 +40,12 @@ jobs:
         run: |
           cd backend/functions
           npm ci
+
+      # ✅ Deploy Firestore Rules
+      - name: Deploy Firestore Rules
+        run: |
+          echo "Deploying Firestore Rules..."
+          firebase deploy --only firestore:rules
 
       # ✅ Deploy Firebase Hosting
       - name: Deploy Firebase Hosting
