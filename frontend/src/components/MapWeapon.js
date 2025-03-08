@@ -138,8 +138,8 @@ const MapWeapon = ({ weaponProfiles }) => {
                 )
               )}
           </TableRow>
-          {weaponProfilesWithRanges.map((weapon) => (
-            <>
+          {weaponProfilesWithRanges.map((weapon, weaponIndex) => (
+            <React.Fragment key={`weapon-${weaponIndex}`}>
               <TableRow sx={{ backgroundColor: theme.palette.grey[200] }}>
                 <TableCell
                   key={weapon.mode}
@@ -163,7 +163,7 @@ const MapWeapon = ({ weaponProfiles }) => {
                   weapon.savingNum,
                 ].map((value, index) => (
                   <TableCell
-                    key={index}
+                    key={`${weapon.mode}-${index}`}
                     align="center"
                     sx={{
                       padding: "2px 4px",
@@ -185,12 +185,8 @@ const MapWeapon = ({ weaponProfiles }) => {
                 </TableRow>
               )}
               {/* Range Details Section */}
-              {weapon.rangeCells && (
-                <>
-                  <TableRow>{weapon.rangeCells}</TableRow>
-                </>
-              )}
-            </>
+              {weapon.rangeCells && <TableRow>{weapon.rangeCells}</TableRow>}
+            </React.Fragment>
           ))}
         </TableBody>
       </Table>

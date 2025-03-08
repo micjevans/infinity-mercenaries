@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -10,7 +11,10 @@ import {
   Box,
   TextField,
   useTheme,
+  IconButton,
+  Divider,
 } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import {
@@ -30,8 +34,9 @@ const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const { user, logOut } = useAuth(); // Access user and logOut from AuthContext
+  const { user, logOut, isAdmin } = useAuth();
   const theme = useTheme();
+
   // Login modal handlers
   const handleOpenLoginModal = () => setOpen(true);
   const handleCloseLoginModal = () => {
@@ -41,7 +46,6 @@ const NavBar = () => {
 
   // Navbar menu handlers
   const handleMenuOpen = (event) => {
-    // Make sure we're setting anchorEl to a valid DOM element
     if (event && event.currentTarget) {
       setAnchorEl(event.currentTarget);
     }
@@ -165,12 +169,30 @@ const NavBar = () => {
             MERCENARIES
           </Typography>
         </Button>
+
+        {/* Navigation buttons */}
+        <Box sx={{ mx: 2, display: "flex" }}>
+          <Button color="inherit" onClick={() => navigate("/resources")}>
+            Resources
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/events")}>
+            Events
+          </Button>
+          {user && (
+            <Button color="inherit" onClick={() => navigate("/companies")}>
+              Companies
+            </Button>
+          )}
+        </Box>
+
         <div style={{ flexGrow: 1 }} />
+
+        {/* User authentication */}
         {user ? (
           <>
-            <Button color="inherit" onClick={handleMenuOpen}>
-              Signed in as {user.displayName || user.email}
-            </Button>
+            <IconButton color="inherit" onClick={handleMenuOpen}>
+              <AccountCircleIcon />
+            </IconButton>
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -184,10 +206,36 @@ const NavBar = () => {
                 horizontal: "right",
               }}
             >
-              <MenuItem onClick={() => navigate("/companies")}>
+              <MenuItem disabled>
+                Signed in as {user.displayName || user.email}
+              </MenuItem>
+              <Divider />
+              {isAdmin && (
+                <MenuItem
+                  onClick={() => {
+                    navigate("/events/create");
+                    handleMenuClose();
+                  }}
+                >
+                  Create Event
+                </MenuItem>
+              )}
+              <MenuItem
+                onClick={() => {
+                  navigate("/companies");
+                  handleMenuClose();
+                }}
+              >
                 Company List
               </MenuItem>
-              <MenuItem onClick={logOut}>Logout</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  logOut();
+                  handleMenuClose();
+                }}
+              >
+                Logout
+              </MenuItem>
             </Menu>
           </>
         ) : (
@@ -197,6 +245,7 @@ const NavBar = () => {
           </Button>
         )}
       </Toolbar>
+
       {/* Login Modal */}
       <Modal open={open} onClose={handleCloseLoginModal}>
         <Box

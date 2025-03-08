@@ -11,28 +11,41 @@ import {
   MenuItem,
   Box,
   TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import metadata from "../data/factions/metadata";
-import ShopDialog from "../components/ShopDialog"; // new import
-import baseMarket from "../data/markets/baseMarket.json"; // Import baseMarket.json
+import ShopDialog from "../components/ShopDialog";
+import baseMarket from "../data/markets/baseMarket.json";
 import TrooperList from "../components/TrooperList";
+import { useAuth } from "../auth/AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CompanyPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [shopModalOpen, setShopModalOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
   let cleanedCompany = null;
   if (location?.state?.company) {
     const stateCompany = location.state.company;
     cleanedCompany = {
       ...stateCompany,
-      sectorials: stateCompany.sectorials || [], // Ensure sectorials is always an array
-      inventory: stateCompany.inventory || [], // Ensure inventory is always an array
+      sectorials: stateCompany.sectorials || [],
+      inventory: stateCompany.inventory || [],
       notoriety: stateCompany.notoriety || 0,
-      credits: stateCompany.credits || 0, // Default to 0 if not present
-      sponsor: stateCompany.sponsor || "", // Default to empty string if not present
+      credits: stateCompany.credits || 0,
+      sponsor: stateCompany.sponsor || "",
     };
   }
-  const [shopModalOpen, setShopModalOpen] = useState(false); // new state for shop
+
   const [company, setCompany] = useState(cleanedCompany);
 
   if (!cleanedCompany) return null;
@@ -51,7 +64,6 @@ const CompanyPage = () => {
     setCompany((prev) => ({
       ...prev,
       sectorial1: selectedFaction,
-      // If the selected faction is vanilla (id === parent), clear sectorial2
       sectorial2:
         selectedFaction.id === selectedFaction.parent ? null : prev.sectorial2,
     }));
@@ -71,8 +83,38 @@ const CompanyPage = () => {
       sectorial2: selectedFaction,
     }));
   };
-  // Use the items from baseMarket.json for both company and merchant items
+
   const merchantItems = baseMarket.items;
+
+  const saveInventoryChanges = async (updatedInventory, updatedCredits) => {
+    if (!user || !company || !company.id) return;
+
+    try {
+      const companyRef = doc(db, "users", user.uid, "companies", company.id);
+
+      await updateDoc(companyRef, {
+        inventory: updatedInventory,
+        credits: updatedCredits,
+      });
+
+      setSnackbar({
+        open: true,
+        message: "Inventory and credits updated successfully!",
+        severity: "success",
+      });
+    } catch (error) {
+      console.error("Error saving inventory changes:", error);
+      setSnackbar({
+        open: true,
+        message: "Error saving inventory changes: " + error.message,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   if (!company) {
     return <div>Loading...</div>;
@@ -88,7 +130,6 @@ const CompanyPage = () => {
       <Typography variant="h6" gutterBottom>
         Troopers
       </Typography>
-      {/* Sectorial Selection */}
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
         <Box sx={{ display: "flex", gap: 2, marginBottom: "16px" }}>
           <FormControl fullWidth>
@@ -175,7 +216,6 @@ const CompanyPage = () => {
             </Select>
           </FormControl>
         </Box>
-        {/* Company Details Section */}
         <Typography variant="subtitle1" gutterBottom>
           Description
         </Typography>
@@ -197,7 +237,6 @@ const CompanyPage = () => {
           Total Company Renown: {company.renown}
         </Typography>
       </Paper>
-      {/* Action Buttons Row */}
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <Button
           onClick={() => setShopModalOpen(true)}
@@ -213,26 +252,54 @@ const CompanyPage = () => {
         onClose={() => setShopModalOpen(false)}
         companyItems={company.inventory}
         merchantItems={merchantItems}
-        onConfirmExchange={(exchangeData) => {
-          // Update company CR by adding net exchange:
-          // Update company inventory:
-          // Remove the company items that were staged for exchange, comparing by id.
-          setCompany((prevCompany) => ({
-            ...prevCompany,
-            credits: prevCompany.credits + exchangeData.netExchange,
-            inventory: [
-              ...prevCompany.inventory.filter(
+        onConfirmExchange={async (exchangeData) => {
+          try {
+            const updatedInventory = [
+              ...company.inventory.filter(
                 (item) =>
                   !exchangeData.companyItems.some(
                     (exItem) => exItem.id === item.id
                   )
               ),
               ...exchangeData.merchantItems,
-            ],
-          }));
-          setShopModalOpen(false);
+            ];
+
+            const updatedCredits = company.credits + exchangeData.netExchange;
+
+            setCompany((prev) => ({
+              ...prev,
+              inventory: updatedInventory,
+              credits: updatedCredits,
+            }));
+
+            await saveInventoryChanges(updatedInventory, updatedCredits);
+
+            setShopModalOpen(false);
+          } catch (error) {
+            console.error("Error processing exchange:", error);
+            setSnackbar({
+              open: true,
+              message: "Error processing exchange: " + error.message,
+              severity: "error",
+            });
+          }
         }}
       />
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

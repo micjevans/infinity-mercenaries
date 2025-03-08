@@ -235,6 +235,7 @@ const EditTrooperDialog = ({
               // Perks tab content: Perk buttons layout in two columns
               <Box sx={{ mt: 2 }}>
                 <Button
+                  key="intelligence-button"
                   style={{
                     ...perkStyles,
                     top: "5%",
@@ -249,6 +250,7 @@ const EditTrooperDialog = ({
                   Intelligence
                 </Button>
                 <Button
+                  key="empathy-button"
                   style={{
                     ...perkStyles,
                     top: "20%",
@@ -263,6 +265,7 @@ const EditTrooperDialog = ({
                   Empathy
                 </Button>
                 <Button
+                  key="body-button"
                   style={{
                     ...perkStyles,
                     top: "35%",
@@ -277,6 +280,7 @@ const EditTrooperDialog = ({
                   Body
                 </Button>
                 <Button
+                  key="reflex-button"
                   style={{
                     ...perkStyles,
                     top: "25%",
@@ -291,6 +295,7 @@ const EditTrooperDialog = ({
                   Reflex
                 </Button>
                 <Button
+                  key="cool-button"
                   style={{
                     ...perkStyles,
                     top: "25%",
@@ -305,6 +310,7 @@ const EditTrooperDialog = ({
                   Cool
                 </Button>
                 <Button
+                  key="initiative-button"
                   style={{
                     ...perkStyles,
                     top: "50%",

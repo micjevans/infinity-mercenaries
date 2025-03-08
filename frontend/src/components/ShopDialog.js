@@ -127,7 +127,7 @@ const ShopDialog = ({
             </Typography>
 
             <Grid2 container spacing={2}>
-              <Grid2 item size={6} xs={6}>
+              <Grid2 item xs={6}>
                 <Typography variant="caption" align="center" display="block">
                   Company Items
                 </Typography>
@@ -146,7 +146,7 @@ const ShopDialog = ({
                   ))}
                 </Grid2>
               </Grid2>
-              <Grid2 item size={6} xs={6}>
+              <Grid2 item xs={6}>
                 <Typography variant="caption" align="center" display="block">
                   Merchant Items
                 </Typography>

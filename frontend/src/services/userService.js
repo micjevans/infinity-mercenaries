@@ -1,4 +1,10 @@
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 /**
@@ -51,3 +57,30 @@ export const createOrUpdateUser = async (uid, userData) => {
     return { success: true, warning: "User profile may not be fully updated" };
   }
 };
+
+/**
+ * Set a user role in Firestore
+ * @param {string} userId - User ID
+ * @param {string} role - Role to set (e.g., 'admin', 'moderator')
+ * @param {boolean} value - Value to set for the role (true or false)
+ * @returns {Promise<Object>} - Result with success status
+ */
+export const setUserRole = async (userId, role, value) => {
+  try {
+    // Create the update path dynamically using dot notation
+    // This updates a specific field in the roles object
+    const updateData = {};
+    updateData[`roles.${role}`] = value;
+
+    await updateDoc(doc(db, "users", userId), updateData);
+    return { success: true };
+  } catch (error) {
+    console.error(`Error setting user ${role} role:`, error);
+    return { success: false, error };
+  }
+};
+
+// Example usage:
+// Make a user a moderator: await setUserRole(userId, 'moderator', true)
+// Make a user an admin: await setUserRole(userId, 'admin', true)
+// Remove moderator role: await setUserRole(userId, 'moderator', false)

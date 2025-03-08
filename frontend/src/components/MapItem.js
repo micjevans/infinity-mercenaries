@@ -4,7 +4,7 @@ import MapWeapon from "./MapWeapon";
 import MapEquipment from "./MapEquipment";
 import { mapItemData } from "../utils/metadataMapping";
 
-const MapImage = ({
+const MapItem = ({
   item,
   action = () => {},
   width = 50,
@@ -115,4 +115,4 @@ const MapImage = ({
   );
 };
 
-export default MapImage;
+export default MapItem;

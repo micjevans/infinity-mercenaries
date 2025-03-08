@@ -2,9 +2,16 @@ import { List, Typography, Box, CircularProgress, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import Trooper from "./Trooper";
 import EditTrooperDialog from "./EditTrooperDialog";
-import { API_BASE_URL } from "../config";
 import { useAuth } from "../auth/AuthContext";
 import AddTrooperDialog from "./AddTrooperDialog";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -64,33 +71,77 @@ const TrooperList = ({ company, setCompany }) => {
   ]);
 
   // Define the handleAddTrooper function
-  const handleAddTrooper = (trooper) => {
-    // Append the full trooper object to the company list
-    setTroopers((prev) => [...prev, trooper]);
-    // Optionally, close the AddTrooperDialog after adding
-    setTrooperModalOpen(false);
-    // Delay focus to ensure the dialog is closed
-    setTimeout(() => {
-      if (addTrooperButtonRef.current) {
-        addTrooperButtonRef.current.focus();
-      }
-    }, 0);
+  const handleAddTrooper = async (trooper) => {
+    try {
+      // Add the trooper to Firestore
+      const troopersRef = collection(
+        db,
+        "users",
+        user.uid,
+        "companies",
+        company.id,
+        "troopers"
+      );
+
+      delete trooper.id; // Remove the ID field before adding
+
+      const docRef = await addDoc(troopersRef, trooper);
+
+      // Add the new trooper to state with its ID
+      const newTrooper = {
+        id: docRef.id,
+        ...trooper,
+      };
+
+      // Append the full trooper object to the company list
+      setTroopers((prev) => [...prev, newTrooper]);
+
+      // Close the AddTrooperDialog after adding
+      setTrooperModalOpen(false);
+
+      // Delay focus to ensure the dialog is closed
+      setTimeout(() => {
+        if (addTrooperButtonRef.current) {
+          addTrooperButtonRef.current.focus();
+        }
+      }, 0);
+    } catch (error) {
+      console.error("Error adding trooper:", error);
+    }
   };
 
   useEffect(() => {
+    if (!user || !company.id) return;
+
     setLoadingTroopers(true);
-    // Fetch troopers for this company
-    fetch(`${API_BASE_URL}/users/${user.uid}/companies/${company.id}/troopers`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTroopers(data);
+
+    const fetchTroopers = async () => {
+      try {
+        // Fetch troopers for this company
+        const troopersRef = collection(
+          db,
+          "users",
+          user.uid,
+          "companies",
+          company.id,
+          "troopers"
+        );
+        const snapshot = await getDocs(troopersRef);
+        const troopersList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setTroopers(troopersList);
         setLoadingTroopers(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching troopers:", error);
         setLoadingTroopers(false);
-      });
-  }, [company.id, user.uid]);
+      }
+    };
+
+    fetchTroopers();
+  }, [company.id, user]);
 
   return (
     <>
@@ -137,17 +188,51 @@ const TrooperList = ({ company, setCompany }) => {
           onClose={handleCloseEditDialog}
           trooperToEdit={editingTrooper}
           companyInventory={company.inventory}
-          saveChanges={(trooper, removedItems) => {
-            setTroopers((prev) =>
-              prev.map((t) => (t.id === trooper.id ? trooper : t))
-            );
-            setCompany((prev) => ({
-              ...prev,
-              inventory: prev.inventory.filter(
+          saveChanges={async (trooper, removedItems) => {
+            try {
+              // Update the trooper in Firestore
+              const trooperRef = doc(
+                db,
+                "users",
+                user.uid,
+                "companies",
+                company.id,
+                "troopers",
+                trooper.id
+              );
+              await updateDoc(trooperRef, trooper);
+
+              // Update the local state
+              setTroopers((prev) =>
+                prev.map((t) => (t.id === trooper.id ? trooper : t))
+              );
+
+              const companyRef = doc(
+                db,
+                "users",
+                user.uid,
+                "companies",
+                company.id
+              );
+
+              const newCompanyInventory = company.inventory.filter(
                 (item) =>
                   !removedItems.some((removed) => removed.uuid === item.uuid)
-              ),
-            }));
+              );
+              await updateDoc(companyRef, {
+                inventory: newCompanyInventory,
+              });
+              // Update company inventory by filtering out removed items
+              setCompany((prev) => ({
+                ...prev,
+                inventory: newCompanyInventory,
+              }));
+
+              // TODO: Update the company inventory in Firestore if needed
+              // This would require another updateDoc call to update the company document
+            } catch (error) {
+              console.error("Error updating trooper:", error);
+            }
           }}
         />
       )}

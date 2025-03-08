@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { useAuth } from "./auth/AuthContext"; // Use AuthContext
+import { useAuth } from "./auth/AuthContext";
 import LandingPage from "./pages/LandingPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import CompanyList from "./pages/CompanyList";
@@ -13,12 +13,42 @@ import NavBar from "./components/NavBar";
 import CompanyPage from "./pages/CompanyPage";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
+// Import new event pages
+import EventListPage from "./pages/EventListPage";
+import EventCreatePage from "./pages/EventCreatePage";
+import EventDetailsPage from "./pages/EventDetailsPage";
+import EventManagePage from "./pages/EventManagePage";
+import PairingPage from "./pages/PairingPage";
+// Add this import with your other page imports
+import AdminSetup from "./pages/AdminSetup";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
 
   // Redirect unauthenticated users to the landing page
   if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+// Admin-only route component
+const AdminRoute = ({ children }) => {
+  const { user, isAdmin } = useAuth();
+
+  if (!user || !isAdmin) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+// Mod-only route component
+const ModRoute = ({ children }) => {
+  const { user, isMod } = useAuth();
+
+  if (!user || !isMod) {
     return <Navigate to="/" />;
   }
 
@@ -34,6 +64,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/resources" element={<ResourcesPage />} />
+
+          {/* Existing protected routes */}
           <Route
             path="/companies"
             element={
@@ -50,6 +82,36 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* New Event Routes */}
+          <Route path="/events" element={<EventListPage />} />
+          <Route
+            path="/events/create"
+            element={
+              <AdminRoute>
+                <EventCreatePage />
+              </AdminRoute>
+            }
+          />
+          <Route path="/events/:eventId" element={<EventDetailsPage />} />
+          <Route
+            path="/events/:eventId/manage"
+            element={
+              <ModRoute>
+                <EventManagePage />
+              </ModRoute>
+            }
+          />
+          <Route
+            path="/events/:eventId/rounds/:roundId/pairings/:pairingId"
+            element={
+              <ProtectedRoute>
+                <PairingPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Add this admin setup route */}
+          <Route path="/admin-setup" element={<AdminSetup />} />
         </Routes>
       </Router>
     </ThemeProvider>

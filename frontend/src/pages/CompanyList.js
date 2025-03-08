@@ -11,10 +11,17 @@ import {
   Modal,
   Box,
   CircularProgress,
+  ListItemButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config"; // Import the API URL
 import { useAuth } from "../auth/AuthContext"; // Assuming Firebase Auth Context
+import {
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase"; // Import your firebase config with initialized db
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -29,25 +36,31 @@ const CompanyList = () => {
   useEffect(() => {
     if (!user) return; // Wait until user is loaded
 
-    fetch(`${API_BASE_URL}/users/${user.uid}/companies`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCompanies(data);
+    const fetchCompanies = async () => {
+      try {
+        const companiesRef = collection(db, "users", user.uid, "companies");
+        const snapshot = await getDocs(companiesRef);
+        const companiesList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCompanies(companiesList);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching companies:", error);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchCompanies();
   }, [user]); // Run when user changes
 
-  const handleAddCompany = () => {
+  const handleAddCompany = async () => {
     if (!user) return; // Ensure user is logged in
 
-    fetch(`${API_BASE_URL}/users/${user.uid}/companies`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    try {
+      const companiesRef = collection(db, "users", user.uid, "companies");
+      const newCompanyData = {
         name: newCompany,
         sectorials: [],
         credits: 0,
@@ -55,15 +68,24 @@ const CompanyList = () => {
         sponsor: "",
         notoriety: 0,
         description: "",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCompanies((prev) => [...prev, data]); // Add new company to the list
-        setNewCompany("");
-        handleClose(); // Close the modal
-      })
-      .catch((error) => console.error("Error adding company:", error));
+        createdAt: serverTimestamp(),
+      };
+
+      const docRef = await addDoc(companiesRef, newCompanyData);
+
+      // Add the new company to state with its ID
+      const addedCompany = {
+        id: docRef.id,
+        ...newCompanyData,
+        createdAt: { seconds: Date.now() / 1000 }, // Use current timestamp for UI until it refreshes
+      };
+
+      setCompanies((prev) => [...prev, addedCompany]);
+      setNewCompany("");
+      handleClose(); // Close the modal
+    } catch (error) {
+      console.error("Error adding company:", error);
+    }
   };
 
   return (
@@ -93,10 +115,9 @@ const CompanyList = () => {
           <List>
             {companies.length > 0 ? (
               companies.map((company) => (
-                <ListItem
+                <ListItemButton
                   key={company.id}
                   divider
-                  button
                   onClick={() =>
                     navigate(`/companies/${company.id}`, { state: { company } })
                   } // Navigate to CompanyPage
@@ -107,7 +128,7 @@ const CompanyList = () => {
                       company.createdAt.seconds * 1000
                     ).toLocaleString()}`}
                   />
-                </ListItem>
+                </ListItemButton>
               ))
             ) : (
               <Typography variant="body1" align="center">
