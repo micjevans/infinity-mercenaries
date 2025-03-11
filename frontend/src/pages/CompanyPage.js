@@ -5,16 +5,13 @@ import {
   Typography,
   Paper,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Box,
   TextField,
   Snackbar,
   Alert,
+  Grid,
 } from "@mui/material";
-import metadata from "../data/factions/metadata";
+import SaveIcon from "@mui/icons-material/Save";
 import ShopDialog from "../components/ShopDialog";
 import baseMarket from "../data/markets/baseMarket.json";
 import TrooperList from "../components/TrooperList";
@@ -47,44 +44,50 @@ const CompanyPage = () => {
   }
 
   const [company, setCompany] = useState(cleanedCompany);
+  const [isModified, setIsModified] = useState(false);
 
   if (!cleanedCompany) return null;
 
   const companyName = cleanedCompany?.name;
 
-  const handleSectorial1Change = (e) => {
-    const selectedId = Number(e.target.value);
-    const selectedFaction = metadata.factions.find(
-      (faction) => faction.id === selectedId
-    );
-    if (!selectedFaction) {
-      console.error("Selected faction not found:", selectedFaction);
-      return;
-    }
-    setCompany((prev) => ({
-      ...prev,
-      sectorial1: selectedFaction,
-      sectorial2:
-        selectedFaction.id === selectedFaction.parent ? null : prev.sectorial2,
-    }));
-  };
-
-  const handleSectorial2Change = (e) => {
-    const selectedId = Number(e.target.value);
-    const selectedFaction = metadata.factions.find(
-      (faction) => faction.id === selectedId
-    );
-    if (!selectedFaction) {
-      console.error("Selected faction not found:", selectedFaction);
-      return;
-    }
-    setCompany((prev) => ({
-      ...prev,
-      sectorial2: selectedFaction,
-    }));
-  };
-
   const merchantItems = baseMarket.items;
+
+  // Add handler for description changes
+  const handleDescriptionChange = (e) => {
+    setCompany({
+      ...company,
+      description: e.target.value,
+    });
+    setIsModified(true);
+  };
+
+  // Add function to save company details
+  const saveCompanyDetails = async () => {
+    if (!user || !company || !company.id) return;
+
+    try {
+      const companyRef = doc(db, "users", user.uid, "companies", company.id);
+
+      await updateDoc(companyRef, {
+        description: company.description,
+        // Add other fields to update if needed
+      });
+
+      setSnackbar({
+        open: true,
+        message: "Company details saved successfully!",
+        severity: "success",
+      });
+      setIsModified(false);
+    } catch (error) {
+      console.error("Error saving company details:", error);
+      setSnackbar({
+        open: true,
+        message: "Error saving company details: " + error.message,
+        severity: "error",
+      });
+    }
+  };
 
   const saveInventoryChanges = async (updatedInventory, updatedCredits) => {
     if (!user || !company || !company.id) return;
@@ -131,101 +134,70 @@ const CompanyPage = () => {
         Troopers
       </Typography>
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
-        <Box sx={{ display: "flex", gap: 2, marginBottom: "16px" }}>
-          <FormControl fullWidth>
-            <InputLabel id="sectorial1-label">Sectorial 1</InputLabel>
-            <Select
-              labelId="sectorial1-label"
-              value={company.sectorial1 ? company.sectorial1.id : ""}
-              label="Sectorial 1"
-              onChange={handleSectorial1Change}
-              renderValue={(selected) => {
-                const faction = metadata.factions.find(
-                  (f) => f.id === selected
-                );
-                return faction ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    <span>{faction.name}</span>
-                  </div>
-                ) : (
-                  ""
-                );
-              }}
-            >
-              {metadata.factions.map((faction) => (
-                <MenuItem key={faction.id} value={faction.id}>
+        <Box sx={{ marginBottom: "16px" }}>
+          <Typography variant="subtitle1" gutterBottom>
+            Sectorials
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              {company.sectorial1 && (
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                   <img
-                    src={faction.logo}
-                    alt={faction.name}
-                    style={{ width: 20, height: 20, marginRight: 8 }}
+                    src={company.sectorial1.logo}
+                    alt={company.sectorial1.name}
+                    style={{ width: 24, height: 24, marginRight: 8 }}
                   />
-                  {faction.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl
-            fullWidth
-            disabled={
-              !company.sectorial1 ||
-              (company.sectorial1 &&
-                company.sectorial1.id === company.sectorial1.parent)
-            }
-          >
-            <InputLabel id="sectorial2-label">Sectorial 2</InputLabel>
-            <Select
-              labelId="sectorial2-label"
-              value={company.sectorial2 ? company.sectorial2.id : ""}
-              label="Sectorial 2"
-              onChange={handleSectorial2Change}
-              renderValue={(selected) => {
-                const faction = metadata.factions.find(
-                  (f) => f.id === selected
-                );
-                return faction ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    <span>{faction.name}</span>
-                  </div>
-                ) : (
-                  ""
-                );
-              }}
-            >
-              {metadata.factions
-                .filter((faction) => faction.id !== faction.parent)
-                .map((faction) => (
-                  <MenuItem key={faction.id} value={faction.id}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    {faction.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
+                  <Typography variant="body1">
+                    {company.sectorial1.name}
+                  </Typography>
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              {company.sectorial2 && (
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                  <img
+                    src={company.sectorial2.logo}
+                    alt={company.sectorial2.name}
+                    style={{ width: 24, height: 24, marginRight: 8 }}
+                  />
+                  <Typography variant="body1">
+                    {company.sectorial2.name}
+                  </Typography>
+                </Box>
+              )}
+            </Grid>
+          </Grid>
         </Box>
-        <Typography variant="subtitle1" gutterBottom>
-          Description
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <Typography variant="subtitle1" gutterBottom>
+            Description
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SaveIcon />}
+            onClick={saveCompanyDetails}
+            disabled={!isModified}
+          >
+            Save
+          </Button>
+        </Box>
         <TextField
           fullWidth
           variant="outlined"
           multiline
           minRows={4}
           placeholder="Enter company description"
-          value={company?.description}
+          value={company?.description || ""}
+          onChange={handleDescriptionChange}
           sx={{ mb: 2 }}
         />
         <Typography variant="body2">
@@ -243,15 +215,16 @@ const CompanyPage = () => {
           variant="contained"
           color="secondary"
         >
-          Open Shop
+          Open Shop/Inventory
         </Button>
       </Box>
       <TrooperList company={company} setCompany={setCompany} />
       <ShopDialog
         open={shopModalOpen}
         onClose={() => setShopModalOpen(false)}
-        companyItems={company.inventory}
+        companyItems={company.inventory || []}
         merchantItems={merchantItems}
+        companyCredits={company.credits || 0} // Pass current company credits
         onConfirmExchange={async (exchangeData) => {
           try {
             const updatedInventory = [

@@ -43,7 +43,7 @@ const EditTrooperDialog = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [trooper, setTrooper] = useState(trooperToEdit);
-  const [removedItems, setRemovedItems] = useState([]);
+  const [currentInventory, setCurrentInventory] = useState(companyInventory);
   // NEW: State for tab selection: 0 => Equipment, 1 => Perks
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedPerkTree, setSelectedPerkTree] = useState(null);
@@ -67,6 +67,33 @@ const EditTrooperDialog = ({
   const handlePerkButtonClick = (perkName) => {
     // Set the selected perk so that we render the perk tree view
     setSelectedPerkTree(perkName);
+  };
+
+  // Unified function to handle equipment changes
+  const handleEquipmentChange = (slot, item) => {
+    // Return current item to inventory if it exists
+    if (trooper[slot] && trooper[slot].uuid) {
+      setCurrentInventory((prev) => [...prev, trooper[slot]]);
+    }
+
+    // Set the new item or null if unequipping
+    setTrooper((prev) => ({
+      ...prev,
+      [slot]: item, // Will be null when unequipping
+    }));
+
+    // If equipping a new item, remove it from the inventory
+    if (item) {
+      setCurrentInventory((prev) => prev.filter((i) => i.uuid !== item.uuid));
+    }
+  };
+
+  // Function to handle unequipping an item
+  const handleUnequipItem = () => {
+    if (selectedSlot && trooper[selectedSlot]) {
+      handleEquipmentChange(selectedSlot, null);
+    }
+    handlePopoverClose();
   };
 
   return (
@@ -181,51 +208,52 @@ const EditTrooperDialog = ({
                     transformOrigin={{ vertical: "top", horizontal: "center" }}
                   >
                     <Box
-                      sx={{ p: 2, display: "flex", flexWrap: "wrap", gap: 2 }}
+                      sx={{
+                        p: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                      }}
                     >
-                      {(() => {
-                        const filteredInventory = companyInventory
-                          .filter(
-                            (item) =>
-                              mapItemData(item).filter(
-                                (itemData) =>
-                                  itemData.slot === selectedSlot &&
-                                  !removedItems.some(
-                                    (removed) => removed.uuid === item.uuid
-                                  )
-                              ).length
-                          )
-                          .map((item) => (
-                            <MapItem
-                              item={item}
-                              width={40}
-                              height={40}
-                              style={{ cursor: "pointer" }}
-                              alt={item.name}
-                              action={(itemData) => {
-                                if (trooper[selectedSlot]) {
-                                  setRemovedItems((prev) =>
-                                    prev.filter(
-                                      (i) =>
-                                        i.uuid !== trooper[selectedSlot].uuid
-                                    )
-                                  );
-                                }
-                                setTrooper({
-                                  ...trooper,
-                                  [selectedSlot]: itemData,
-                                });
-                                setRemovedItems((prev) => [...prev, itemData]);
-                                handlePopoverClose();
-                              }}
-                            />
-                          ));
-                        return filteredInventory.length ? (
-                          filteredInventory
-                        ) : (
-                          <Typography>No items available</Typography>
-                        );
-                      })()}
+                      {/* Add a "None" option at the top */}
+                      <Button
+                        variant="outlined"
+                        onClick={handleUnequipItem}
+                        sx={{ mb: 1 }}
+                      >
+                        None (Unequip)
+                      </Button>
+
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                        {(() => {
+                          const filteredInventory = currentInventory
+                            .filter(
+                              (item) =>
+                                mapItemData(item).filter(
+                                  (itemData) => itemData.slot === selectedSlot
+                                ).length
+                            )
+                            .map((item) => (
+                              <MapItem
+                                key={item.uuid}
+                                item={item}
+                                width={40}
+                                height={40}
+                                style={{ cursor: "pointer" }}
+                                alt={item.name}
+                                action={(itemData) => {
+                                  handleEquipmentChange(selectedSlot, itemData);
+                                  handlePopoverClose();
+                                }}
+                              />
+                            ));
+                          return filteredInventory.length ? (
+                            filteredInventory
+                          ) : (
+                            <Typography>No items available</Typography>
+                          );
+                        })()}
+                      </Box>
                     </Box>
                   </Popover>
                 </Box>
@@ -335,7 +363,22 @@ const EditTrooperDialog = ({
         </Button>
         <Button
           onClick={() => {
-            saveChanges(trooper, removedItems);
+            // Create cleaned copy of trooper with nulls instead of undefined
+            const cleanedTrooper = { ...trooper };
+            [
+              "primary",
+              "secondary",
+              "sidearm",
+              "accessory",
+              "armor",
+              "augment",
+            ].forEach((slot) => {
+              if (cleanedTrooper[slot] === undefined) {
+                cleanedTrooper[slot] = null;
+              }
+            });
+
+            saveChanges(cleanedTrooper, currentInventory);
             onClose();
           }}
           variant="contained"

@@ -50,12 +50,6 @@ const EventDetailsPage = () => {
         const eventData = await getEvent(eventId);
         setEvent(eventData);
 
-        // Debug logging
-        console.log("Event data:", eventData);
-        console.log("User ID:", user?.uid);
-        console.log("isAdmin:", isAdmin);
-        console.log("isMod:", isMod);
-
         // Check if user is registered
         if (user && eventData.participants) {
           const registered = eventData.participants.some(
@@ -67,21 +61,12 @@ const EventDetailsPage = () => {
         // Check if user is an organizer
         if (user && eventData) {
           const organizer = isEventOrganizer(eventData, user.uid);
-          console.log("Is user an organizer?", organizer);
-          console.log("Organizers array:", eventData.organizers);
           setIsOrganizer(organizer);
         }
 
         if (user) {
           try {
-            console.log("Loading companies for user:", user.uid);
             const userCompanies = await getUserCompanies(user.uid);
-            console.log("User companies loaded:", userCompanies);
-
-            if (userCompanies.length === 0) {
-              console.warn("No companies found for this user");
-            }
-
             setCompanies(userCompanies);
           } catch (companyError) {
             console.error("Error loading user companies:", companyError);

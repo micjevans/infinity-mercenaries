@@ -86,7 +86,7 @@ const Trooper = ({ trooper, onClick }) => {
                         {renderCharLogos(profile.chars)}
                       </Box>
                     </Box>
-                    <UnitDetails profile={profile} />
+                    <UnitDetails trooper={trooper} profile={profile} />
                   </div>
                 ))}
                 {/* Existing header bar with three titles */}

@@ -4,14 +4,10 @@ import Trooper from "./Trooper";
 import EditTrooperDialog from "./EditTrooperDialog";
 import { useAuth } from "../auth/AuthContext";
 import AddTrooperDialog from "./AddTrooperDialog";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+// Import the new trooper service functions
+import { getTroopers, addTrooper } from "../services/trooperService";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -70,28 +66,11 @@ const TrooperList = ({ company, setCompany }) => {
     company?.sectorial2?.slug,
   ]);
 
-  // Define the handleAddTrooper function
+  // Define the handleAddTrooper function - now using the service
   const handleAddTrooper = async (trooper) => {
     try {
-      // Add the trooper to Firestore
-      const troopersRef = collection(
-        db,
-        "users",
-        user.uid,
-        "companies",
-        company.id,
-        "troopers"
-      );
-
-      delete trooper.id; // Remove the ID field before adding
-
-      const docRef = await addDoc(troopersRef, trooper);
-
-      // Add the new trooper to state with its ID
-      const newTrooper = {
-        id: docRef.id,
-        ...trooper,
-      };
+      // Use the service function instead of direct Firebase calls
+      const newTrooper = await addTrooper(company.id, trooper, user.uid);
 
       // Append the full trooper object to the company list
       setTroopers((prev) => [...prev, newTrooper]);
@@ -115,23 +94,10 @@ const TrooperList = ({ company, setCompany }) => {
 
     setLoadingTroopers(true);
 
+    // Use the service function instead of duplicating the fetch logic
     const fetchTroopers = async () => {
       try {
-        // Fetch troopers for this company
-        const troopersRef = collection(
-          db,
-          "users",
-          user.uid,
-          "companies",
-          company.id,
-          "troopers"
-        );
-        const snapshot = await getDocs(troopersRef);
-        const troopersList = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
+        const troopersList = await getTroopers(company.id, user.uid);
         setTroopers(troopersList);
         setLoadingTroopers(false);
       } catch (error) {
@@ -187,8 +153,8 @@ const TrooperList = ({ company, setCompany }) => {
           open={Boolean(editingTrooper)}
           onClose={handleCloseEditDialog}
           trooperToEdit={editingTrooper}
-          companyInventory={company.inventory}
-          saveChanges={async (trooper, removedItems) => {
+          companyInventory={company.inventory || []}
+          saveChanges={async (trooper, updatedInventory) => {
             try {
               // Update the trooper in Firestore
               const trooperRef = doc(
@@ -202,11 +168,12 @@ const TrooperList = ({ company, setCompany }) => {
               );
               await updateDoc(trooperRef, trooper);
 
-              // Update the local state
+              // Update the local state for troopers
               setTroopers((prev) =>
                 prev.map((t) => (t.id === trooper.id ? trooper : t))
               );
 
+              // Update company inventory in Firestore
               const companyRef = doc(
                 db,
                 "users",
@@ -215,21 +182,15 @@ const TrooperList = ({ company, setCompany }) => {
                 company.id
               );
 
-              const newCompanyInventory = company.inventory.filter(
-                (item) =>
-                  !removedItems.some((removed) => removed.uuid === item.uuid)
-              );
               await updateDoc(companyRef, {
-                inventory: newCompanyInventory,
+                inventory: updatedInventory,
               });
-              // Update company inventory by filtering out removed items
+
+              // Update local company state
               setCompany((prev) => ({
                 ...prev,
-                inventory: newCompanyInventory,
+                inventory: updatedInventory,
               }));
-
-              // TODO: Update the company inventory in Firestore if needed
-              // This would require another updateDoc call to update the company document
             } catch (error) {
               console.error("Error updating trooper:", error);
             }

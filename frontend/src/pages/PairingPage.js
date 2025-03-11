@@ -3,35 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
-  Button,
   Paper,
-  Box,
-  Grid,
   CircularProgress,
-  TextField,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  Select,
-  MenuItem,
-  Checkbox,
-  Divider,
-  Card,
-  CardContent,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Chip,
   Stepper,
   Step,
   StepLabel,
   Snackbar,
   Alert,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   getEvent,
   getPairings,
@@ -39,8 +18,14 @@ import {
   getResults,
 } from "../services/eventService";
 import { useAuth } from "../auth/AuthContext";
-import { getTroopersForCompany } from "../services/companyService";
+// Import the new service
+import { getTroopers } from "../services/trooperService";
+// Import components
+import DeployTroopers from "../components/pairing/DeployTroopers";
+import Mission from "../components/pairing/Mission";
+import PostMission from "../components/pairing/PostMission";
 
+// Constants moved to top level for clarity
 const DOWNTIME_EVENTS = [
   "Training",
   "Recovery",
@@ -137,9 +122,11 @@ const PairingPage = () => {
           setResultData(userResult);
         }
 
-        // Load user's troopers for this company
-        const companyTroopers = await getTroopersForCompany(
-          userParticipation.companyId
+        // Load user's troopers for this company using the new service
+        // We need to pass both the companyId and userId
+        const companyTroopers = await getTroopers(
+          userParticipation.companyId,
+          user.uid
         );
         setTroopers(companyTroopers);
       } catch (error) {
@@ -184,6 +171,14 @@ const PairingPage = () => {
     }));
   };
 
+  // Handle form fields
+  const handleInputChange = (field, value) => {
+    setResultData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   // Handle injuries
   const handleAddInjury = (trooperIndex, injury) => {
     const updatedTroopers = [...resultData.troopers];
@@ -218,14 +213,6 @@ const PairingPage = () => {
     }));
   };
 
-  // Handle form fields
-  const handleInputChange = (field, value) => {
-    setResultData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   const handleDowntimeChange = (field, value) => {
     setResultData((prev) => ({
       ...prev,
@@ -236,36 +223,75 @@ const PairingPage = () => {
     }));
   };
 
-  // Stepper navigation
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  // Form submission
-  const handleSubmit = async () => {
+  // New function to save deployed troopers
+  const saveDeployedTroopers = async () => {
     try {
-      // Validate form data
+      // Validate that troopers are selected
       if (resultData.troopers.length === 0) {
         setError("You must deploy at least one trooper.");
         return;
       }
 
-      if (!resultData.downtime.event || !resultData.downtime.result) {
-        setError("You must select a downtime event and result.");
+      // Save partial result with deployed troopers
+      await submitResult(eventId, roundId, pairingId, {
+        ...resultData,
+        status: "deploying",
+      });
+
+      // Move to next step
+      setActiveStep((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error saving deployed troopers:", error);
+      setError("Failed to save deployed troopers. Please try again.");
+    }
+  };
+
+  // New function to save mission results
+  const saveMissionResults = async () => {
+    try {
+      // Will implement validation here
+
+      // Save partial result with mission details
+      await submitResult(eventId, roundId, pairingId, {
+        ...resultData,
+        status: "completed",
+      });
+
+      // Move to next step
+      setActiveStep((prev) => prev + 1);
+    } catch (error) {
+      console.error("Error saving mission results:", error);
+      setError("Failed to save mission results. Please try again.");
+    }
+  };
+
+  // Final submission function
+  const handleSubmit = async () => {
+    try {
+      // Final validation
+      if (resultData.troopers.length === 0) {
+        setError("You must deploy at least one trooper.");
         return;
       }
 
-      await submitResult(eventId, roundId, pairingId, resultData);
-      setSuccess(true);
+      // Submit final result with verified status
+      await submitResult(eventId, roundId, pairingId, {
+        ...resultData,
+        status: "verified",
+      });
 
-      // Refresh results - Remove the problematic line
-      // const updatedResults = await getResults(eventId, roundId, pairingId);
-      // setResults(updatedResults); // This line causes the error - remove it
+      setSuccess(true);
       setHasSubmitted(true);
+
+      // Check if all players have verified their results
+      const allResults = await getResults(eventId, roundId, pairingId);
+      const allVerified = allResults.every(
+        (result) => result.status === "verified"
+      );
+
+      if (allVerified) {
+        // Mark pairing as complete - This would be implemented in your backend
+      }
 
       // Navigate back to event details
       setTimeout(() => {
@@ -275,6 +301,11 @@ const PairingPage = () => {
       console.error("Error submitting result:", error);
       setError("Failed to submit result. Please try again.");
     }
+  };
+
+  // Handle going back a step
+  const handleBack = () => {
+    setActiveStep((prev) => prev - 1);
   };
 
   if (loading) {
@@ -293,19 +324,8 @@ const PairingPage = () => {
     );
   }
 
-  const steps = [
-    "Deploy Troopers",
-    "Record Downtime",
-    "Add Injuries & XP",
-    "Mission Results",
-  ];
-
-  // Find trooper details from ID
-  const getTrooperById = (trooperId) => {
-    return (
-      troopers.find((t) => t.id === trooperId) || { name: "Unknown Trooper" }
-    );
-  };
+  // Updated steps for the new workflow
+  const steps = ["Deploy Troopers", "Mission", "Post Mission"];
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
@@ -333,389 +353,40 @@ const PairingPage = () => {
           ))}
         </Stepper>
 
-        {/* Step 1: Deploy Troopers */}
+        {/* Render appropriate component based on activeStep */}
         {activeStep === 0 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Select Troopers to Deploy
-            </Typography>
-
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Available Troopers
-                    </Typography>
-                    <List dense>
-                      {troopers.map((trooper) => (
-                        <ListItem key={trooper.id}>
-                          <ListItemText
-                            primary={trooper.name}
-                            secondary={`${trooper.type} - ${trooper.rank}`}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              edge="end"
-                              disabled={
-                                resultData.troopers.some(
-                                  (t) => t.trooper === trooper.id
-                                ) || hasSubmitted
-                              }
-                              onClick={() => handleAddTrooper(trooper.id)}
-                            >
-                              <AddIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Deployed Troopers
-                    </Typography>
-                    {resultData.troopers.length === 0 ? (
-                      <Typography variant="body2" color="textSecondary">
-                        No troopers deployed yet
-                      </Typography>
-                    ) : (
-                      <List dense>
-                        {resultData.troopers.map((deployedTrooper) => {
-                          const trooperDetails = getTrooperById(
-                            deployedTrooper.trooper
-                          );
-                          return (
-                            <ListItem key={deployedTrooper.trooper}>
-                              <ListItemText
-                                primary={trooperDetails.name}
-                                secondary={`${trooperDetails.type} - ${trooperDetails.rank}`}
-                              />
-                              <ListItemSecondaryAction>
-                                <IconButton
-                                  edge="end"
-                                  disabled={hasSubmitted}
-                                  onClick={() =>
-                                    handleRemoveTrooper(deployedTrooper.trooper)
-                                  }
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </ListItemSecondaryAction>
-                            </ListItem>
-                          );
-                        })}
-                      </List>
-                    )}
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-              <Button
-                onClick={handleNext}
-                variant="contained"
-                color="primary"
-                disabled={resultData.troopers.length === 0}
-              >
-                Next
-              </Button>
-            </Box>
-          </Box>
+          <DeployTroopers
+            troopers={troopers}
+            resultData={resultData}
+            hasSubmitted={hasSubmitted}
+            onAddTrooper={handleAddTrooper}
+            onRemoveTrooper={handleRemoveTrooper}
+            onNext={saveDeployedTroopers}
+          />
         )}
 
-        {/* Step 2: Record Downtime */}
         {activeStep === 1 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Record Downtime
-            </Typography>
-
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth disabled={hasSubmitted}>
-                  <InputLabel>Downtime Activity</InputLabel>
-                  <Select
-                    value={resultData.downtime.event}
-                    onChange={(e) =>
-                      handleDowntimeChange("event", e.target.value)
-                    }
-                    label="Downtime Activity"
-                  >
-                    {DOWNTIME_EVENTS.map((event) => (
-                      <MenuItem key={event} value={event}>
-                        {event}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth disabled={hasSubmitted}>
-                  <InputLabel>Result</InputLabel>
-                  <Select
-                    value={resultData.downtime.result}
-                    onChange={(e) =>
-                      handleDowntimeChange("result", e.target.value)
-                    }
-                    label="Result"
-                  >
-                    {DOWNTIME_RESULTS.map((result) => (
-                      <MenuItem key={result} value={result}>
-                        {result}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
-            >
-              <Button onClick={handleBack} sx={{ mr: 1 }}>
-                Back
-              </Button>
-              <Button
-                onClick={handleNext}
-                variant="contained"
-                color="primary"
-                disabled={
-                  !resultData.downtime.event || !resultData.downtime.result
-                }
-              >
-                Next
-              </Button>
-            </Box>
-          </Box>
+          <Mission
+            resultData={resultData}
+            hasSubmitted={hasSubmitted}
+            onBack={handleBack}
+            onNext={saveMissionResults}
+            handleInputChange={handleInputChange}
+            handleDowntimeChange={handleDowntimeChange}
+            handleXpChange={handleXpChange}
+            troopers={troopers}
+            DOWNTIME_EVENTS={DOWNTIME_EVENTS}
+            DOWNTIME_RESULTS={DOWNTIME_RESULTS}
+          />
         )}
 
-        {/* Step 3: Add Injuries & XP */}
         {activeStep === 2 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Record Injuries & Experience Points
-            </Typography>
-
-            {resultData.troopers.map((deployedTrooper, trooperIndex) => {
-              const trooperDetails = getTrooperById(deployedTrooper.trooper);
-
-              return (
-                <Card
-                  variant="outlined"
-                  key={deployedTrooper.trooper}
-                  sx={{ mb: 3 }}
-                >
-                  <CardContent>
-                    <Typography variant="subtitle1" gutterBottom>
-                      {trooperDetails.name} ({trooperDetails.type} -{" "}
-                      {trooperDetails.rank})
-                    </Typography>
-
-                    <Divider sx={{ my: 2 }} />
-
-                    {/* Injuries section */}
-                    <Typography variant="subtitle2" gutterBottom>
-                      Injuries
-                    </Typography>
-
-                    <Grid container spacing={2} sx={{ mb: 2 }}>
-                      <Grid item xs={12} sm={8}>
-                        <TextField
-                          label="Add Injury"
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          disabled={hasSubmitted}
-                          onKeyPress={(e) => {
-                            if (e.key === "Enter" && e.target.value) {
-                              handleAddInjury(trooperIndex, e.target.value);
-                              e.target.value = "";
-                            }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <Button
-                          variant="outlined"
-                          onClick={(e) => {
-                            const input =
-                              e.target.previousSibling?.querySelector("input");
-                            if (input && input.value) {
-                              handleAddInjury(trooperIndex, input.value);
-                              input.value = "";
-                            }
-                          }}
-                          disabled={hasSubmitted}
-                          fullWidth
-                        >
-                          Add Injury
-                        </Button>
-                      </Grid>
-                    </Grid>
-
-                    <Box sx={{ mb: 2 }}>
-                      {deployedTrooper.injuries.length === 0 ? (
-                        <Typography variant="body2" color="textSecondary">
-                          No injuries recorded
-                        </Typography>
-                      ) : (
-                        deployedTrooper.injuries.map((injury, injuryIndex) => (
-                          <Chip
-                            key={injuryIndex}
-                            label={injury}
-                            onDelete={
-                              hasSubmitted
-                                ? undefined
-                                : () =>
-                                    handleRemoveInjury(
-                                      trooperIndex,
-                                      injuryIndex
-                                    )
-                            }
-                            sx={{ m: 0.5 }}
-                          />
-                        ))
-                      )}
-                    </Box>
-
-                    <Divider sx={{ my: 2 }} />
-
-                    {/* XP section */}
-                    <Typography variant="subtitle2" gutterBottom>
-                      Experience Points
-                    </Typography>
-
-                    <Grid container spacing={2}>
-                      {XP_CATEGORIES.map((category) => (
-                        <Grid item xs={12} sm={6} key={category}>
-                          <TextField
-                            label={category}
-                            type="number"
-                            InputProps={{ inputProps: { min: 0 } }}
-                            value={deployedTrooper.xp[category] || 0}
-                            onChange={(e) =>
-                              handleXpChange(
-                                trooperIndex,
-                                category,
-                                e.target.value
-                              )
-                            }
-                            disabled={hasSubmitted}
-                            fullWidth
-                            size="small"
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              );
-            })}
-
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
-            >
-              <Button onClick={handleBack} sx={{ mr: 1 }}>
-                Back
-              </Button>
-              <Button onClick={handleNext} variant="contained" color="primary">
-                Next
-              </Button>
-            </Box>
-          </Box>
-        )}
-
-        {/* Step 4: Mission Results */}
-        {activeStep === 3 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Mission Results
-            </Typography>
-
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Objective Points"
-                  type="number"
-                  InputProps={{ inputProps: { min: 0 } }}
-                  value={resultData.op}
-                  onChange={(e) =>
-                    handleInputChange("op", parseInt(e.target.value, 10) || 0)
-                  }
-                  disabled={hasSubmitted}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={resultData.won}
-                      onChange={(e) =>
-                        handleInputChange("won", e.target.checked)
-                      }
-                      disabled={hasSubmitted}
-                    />
-                  }
-                  label="Mission Won"
-                />
-              </Grid>
-            </Grid>
-
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="subtitle1" gutterBottom>
-                Summary
-              </Typography>
-
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="body2">
-                    <strong>Deployed Troopers:</strong>{" "}
-                    {resultData.troopers.length} troopers
-                  </Typography>
-
-                  <Typography variant="body2">
-                    <strong>Downtime:</strong> {resultData.downtime.event} -{" "}
-                    {resultData.downtime.result}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    <strong>Objective Points:</strong> {resultData.op}
-                  </Typography>
-
-                  <Typography variant="body2">
-                    <strong>Mission Status:</strong>{" "}
-                    {resultData.won ? "Victory" : "Defeat"}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Box>
-
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
-            >
-              <Button onClick={handleBack} sx={{ mr: 1 }}>
-                Back
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                variant="contained"
-                color="primary"
-                disabled={hasSubmitted}
-              >
-                Submit Results
-              </Button>
-            </Box>
-          </Box>
+          <PostMission
+            resultData={resultData}
+            hasSubmitted={hasSubmitted}
+            onBack={handleBack}
+            onSubmit={handleSubmit}
+          />
         )}
       </Paper>
 

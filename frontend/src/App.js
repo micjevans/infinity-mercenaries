@@ -23,7 +23,12 @@ import PairingPage from "./pages/PairingPage";
 import AdminSetup from "./pages/AdminSetup";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Show nothing while authentication is being loaded
+  if (loading) {
+    return null; // Or return a loading spinner if preferred
+  }
 
   // Redirect unauthenticated users to the landing page
   if (!user) {
@@ -35,7 +40,12 @@ const ProtectedRoute = ({ children }) => {
 
 // Admin-only route component
 const AdminRoute = ({ children }) => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
+
+  // Show nothing while authentication is being loaded
+  if (loading) {
+    return null; // Or return a loading spinner if preferred
+  }
 
   if (!user || !isAdmin) {
     return <Navigate to="/" />;
@@ -46,7 +56,12 @@ const AdminRoute = ({ children }) => {
 
 // Mod-only route component
 const ModRoute = ({ children }) => {
-  const { user, isMod } = useAuth();
+  const { user, isMod, loading } = useAuth();
+
+  // Show nothing while authentication is being loaded
+  if (loading) {
+    return null; // Or return a loading spinner if preferred
+  }
 
   if (!user || !isMod) {
     return <Navigate to="/" />;
