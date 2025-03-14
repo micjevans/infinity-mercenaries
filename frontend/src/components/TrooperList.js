@@ -26,6 +26,11 @@ const TrooperList = ({ company, setCompany }) => {
   const [trooperModalOpen, setTrooperModalOpen] = useState(false);
   const [loadingTroopers, setLoadingTroopers] = useState(true);
   const [units, setUnits] = useState([]);
+  const [specops, setSpecops] = useState({
+    equip: [],
+    skills: [],
+    weapons: [],
+  });
   // Create a ref for the Add Trooper button
   const addTrooperButtonRef = useRef(null);
   const handleEditTrooper = (trooper) => {
@@ -48,6 +53,16 @@ const TrooperList = ({ company, setCompany }) => {
         console.info("Loading units for", sector);
         const data = loadFactionData(sector);
         if (!data) return [];
+
+        // Add specops data
+        if (data.specops) {
+          setSpecops((prev) => ({
+            equip: [...prev.equip, ...(data.specops.equip || [])],
+            skills: [...prev.skills, ...(data.specops.skills || [])],
+            weapons: [...prev.weapons, ...(data.specops.weapons || [])],
+          }));
+        }
+
         const factionUnits = data.units || [];
         const resumeList = data.resume || [];
         // Loop through each unit and find the matching resume by id
@@ -99,6 +114,7 @@ const TrooperList = ({ company, setCompany }) => {
       try {
         const troopersList = await getTroopers(company.id, user.uid);
         setTroopers(troopersList);
+        console.log("Troopers loaded:", troopersList);
         setLoadingTroopers(false);
       } catch (error) {
         console.error("Error fetching troopers:", error);
@@ -119,7 +135,7 @@ const TrooperList = ({ company, setCompany }) => {
           variant="contained"
           color="primary"
         >
-          Add Trooper
+          {troopers.length === 0 ? "Create Captain" : "Add Trooper"}
         </Button>
       </Box>
       {/* Trooper List Section */}
@@ -201,6 +217,8 @@ const TrooperList = ({ company, setCompany }) => {
         open={trooperModalOpen}
         onClose={() => setTrooperModalOpen(false)}
         units={units}
+        specops={specops}
+        isCreatingCaptain={troopers.length === 0} // Pass prop to indicate captain creation
         onAddTrooper={handleAddTrooper} // pass down the handler
       />
     </>

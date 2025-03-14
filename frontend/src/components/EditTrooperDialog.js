@@ -215,14 +215,16 @@ const EditTrooperDialog = ({
                         gap: 1,
                       }}
                     >
-                      {/* Add a "None" option at the top */}
-                      <Button
-                        variant="outlined"
-                        onClick={handleUnequipItem}
-                        sx={{ mb: 1 }}
-                      >
-                        None (Unequip)
-                      </Button>
+                      {/* Only show the None button if there's an item equipped in this slot */}
+                      {trooper[selectedSlot] && (
+                        <Button
+                          variant="outlined"
+                          onClick={handleUnequipItem}
+                          sx={{ mb: 1 }}
+                        >
+                          None (Unequip)
+                        </Button>
+                      )}
 
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
                         {(() => {

@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import { Dialog, DialogTitle, DialogContent, TextField } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import Trooper from "./Trooper";
+import SpecOpsForm from "./SpecOpsForm"; // Import the new component
 
-const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
+const AddTrooperDialog = ({
+  open,
+  onClose,
+  units,
+  isCreatingCaptain,
+  specops = { weapons: [], skills: [], equip: [] }, // Default empty arrays
+  onAddTrooper,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
   const [filteredUnits, setFilteredUnits] = useState([]);
@@ -31,10 +46,13 @@ const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
           ...group,
           options: group.options.filter(
             (option) =>
-              // Filter out options with no SWC
-              (option.swc === "0" || option.swc === "-") &&
-              // Filter out LT options
-              !option.skills.some((skill) => skill.id === 119)
+              // Filter out options that cost SWC
+              (option.swc === "0" ||
+                option.swc === "-" ||
+                option.swc.includes("+")) &&
+              // Filter out LT options if not creating a captain
+              option.skills.some((skill) => skill.id === 119) ===
+                isCreatingCaptain
           ),
         })),
       }))
@@ -79,11 +97,13 @@ const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
       // Sort units by their resume type
       .sort((a, b) => a.resume.type - b.resume.type);
     setFilteredUnits(processed);
-  }, [units, unitFilter]);
+  }, [units, unitFilter, isCreatingCaptain]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Select a Trooper Unit</DialogTitle>
+      <DialogTitle>
+        {isCreatingCaptain ? "Create Captain" : "Select a Trooper Unit"}
+      </DialogTitle>
       {/* Filter box placed outside the scrollable DialogContent */}
       <div style={{ padding: "16px" }}>
         <TextField
@@ -169,9 +189,17 @@ const AddTrooperDialog = ({ open, onClose, units, onAddTrooper }) => {
                 onAddTrooper(cleanUpUnit(unit, includeGroup, includeOption));
               });
             }}
-          />
+          >
+            {/* Replace HelloWorld with the new SpecOpsForm component */}
+            <SpecOpsForm specops={specops} />
+          </Trooper>
         ))}
       </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} variant="outlined">
+          Cancel
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

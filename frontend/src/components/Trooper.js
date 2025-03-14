@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   useTheme,
+  Button,
 } from "@mui/material";
 import {
   mapCategory,
@@ -16,7 +17,7 @@ import {
 import UnitDetails from "./UnitDetails";
 import ProfileDetails from "./ProfileDetails";
 
-const Trooper = ({ trooper, onClick }) => {
+const Trooper = ({ trooper, onClick, children }) => {
   const theme = useTheme();
 
   if (!trooper || !trooper.profileGroups) return null;
@@ -121,6 +122,7 @@ const Trooper = ({ trooper, onClick }) => {
               </div>
             ) : null
           )}
+          {children}
         </AccordionDetails>
       </Accordion>
     </Box>
