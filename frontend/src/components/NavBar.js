@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -12,6 +13,7 @@ import {
   useTheme,
   IconButton,
   Divider,
+  styled,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +26,53 @@ import {
 import logo from "../assets/images/M2-no-bg-short.png";
 import { getUser, createOrUpdateUser } from "../services/userService";
 
+// Styled navigation button with no border and optional active underline
+// Modified to remove background color change on hover
+const NavButton = styled(Button)(({ theme, active }) => ({
+  color: "inherit",
+  borderRadius: 0,
+  padding: "10px 16px",
+  margin: "0 8px",
+  textTransform: "none",
+  fontSize: "1rem",
+  border: "none",
+  boxShadow: "none",
+  position: "relative",
+  backgroundColor: "transparent", // Always transparent background
+  "&:after": {
+    content: '""',
+    position: "absolute",
+    width: active ? "100%" : "0",
+    height: "3px",
+    bottom: 0,
+    left: 0,
+    backgroundColor: theme.palette.primary.main,
+    transition: "width 0.3s ease-in-out",
+  },
+  "&:hover": {
+    backgroundColor: "transparent", // Keep transparent on hover
+    "&:after": {
+      width: "100%", // Still show the underline on hover
+    },
+  },
+  "&:focus": {
+    boxShadow: "none",
+    backgroundColor: "transparent", // Also keep transparent on focus
+  },
+}));
+
+// Styled user account icon button with larger size
+const UserIconButton = styled(IconButton)(({ theme }) => ({
+  color: "inherit",
+  padding: "12px",
+  "& .MuiSvgIcon-root": {
+    fontSize: "2rem",
+  },
+}));
+
 const NavBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -35,6 +82,18 @@ const NavBar = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const { user, logOut, isAdmin } = useAuth();
   const theme = useTheme();
+
+  // Determine if a path is active
+  const isActivePath = (path) => {
+    // For root path, only match exact
+    if (path === "/" && location.pathname !== "/") return false;
+
+    // For other paths, check if current path starts with this path
+    return (
+      location.pathname === path ||
+      (path !== "/" && location.pathname.startsWith(path))
+    );
+  };
 
   // Login modal handlers
   const handleOpenLoginModal = () => setOpen(true);
@@ -136,62 +195,73 @@ const NavBar = () => {
       position="sticky"
       style={{ background: "transparent", boxShadow: "none" }}
     >
-      <Toolbar>
-        <Button
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            cursor: "pointer",
-            boxShadow: "none",
-            "&:focus": {
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box display="flex" alignItems="center">
+          <Button
+            component={RouterLink}
+            to="/"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              cursor: "pointer",
               boxShadow: "none",
-            },
-          }}
-          onClick={() => navigate("/")}
-        >
-          <img
-            src={logo}
-            alt="Logo"
-            style={{ height: "40px", marginTop: "4px", marginBottom: "0px" }}
-          />
-          <Typography
-            variant="subtitle2"
-            style={{ fontSize: "10px", margin: "0px" }}
+              mr: 3,
+              "&:focus": {
+                boxShadow: "none",
+              },
+            }}
           >
-            INFINITY
-          </Typography>
-          <Typography
-            variant="subtitle2"
-            style={{ fontSize: "10px", marginBottom: "4px" }}
-          >
-            MERCENARIES
-          </Typography>
-        </Button>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ height: "40px", marginTop: "4px", marginBottom: "0px" }}
+            />
+            <Typography
+              variant="subtitle2"
+              style={{ fontSize: "10px", margin: "0px" }}
+            >
+              INFINITY
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              style={{ fontSize: "10px", marginBottom: "4px" }}
+            >
+              MERCENARIES
+            </Typography>
+          </Button>
 
-        {/* Navigation buttons */}
-        <Box sx={{ mx: 2, display: "flex" }}>
-          <Button color="inherit" onClick={() => navigate("/resources")}>
-            Resources
-          </Button>
-          <Button color="inherit" onClick={() => navigate("/events")}>
-            Events
-          </Button>
-          {user && (
-            <Button color="inherit" onClick={() => navigate("/companies")}>
-              Companies
-            </Button>
-          )}
+          {/* Navigation buttons */}
+          <Box sx={{ display: "flex" }}>
+            <NavButton
+              active={isActivePath("/resources")}
+              onClick={() => navigate("/resources")}
+            >
+              Resources
+            </NavButton>
+            <NavButton
+              active={isActivePath("/events")}
+              onClick={() => navigate("/events")}
+            >
+              Events
+            </NavButton>
+            {user && (
+              <NavButton
+                active={isActivePath("/companies")}
+                onClick={() => navigate("/companies")}
+              >
+                Companies
+              </NavButton>
+            )}
+          </Box>
         </Box>
-
-        <div style={{ flexGrow: 1 }} />
 
         {/* User authentication */}
         {user ? (
           <>
-            <IconButton color="inherit" onClick={handleMenuOpen}>
+            <UserIconButton onClick={handleMenuOpen}>
               <AccountCircleIcon />
-            </IconButton>
+            </UserIconButton>
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -206,7 +276,17 @@ const NavBar = () => {
               }}
             >
               <MenuItem disabled>
-                Signed in as {user.displayName || user.email}
+                <Typography
+                  noWrap
+                  variant="body2"
+                  sx={{
+                    maxWidth: "200px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {user.displayName || user.email}
+                </Typography>
               </MenuItem>
               <Divider />
               {isAdmin && (
@@ -239,7 +319,18 @@ const NavBar = () => {
           </>
         ) : (
           // Sign-In Button for Guests
-          <Button color="inherit" onClick={handleOpenLoginModal}>
+          <Button
+            color="inherit"
+            onClick={handleOpenLoginModal}
+            variant="outlined"
+            sx={{
+              borderColor: "rgba(255,255,255,0.3)",
+              "&:hover": {
+                borderColor: "primary.main",
+                backgroundColor: "rgba(255,255,255,0.05)",
+              },
+            }}
+          >
             Sign In
           </Button>
         )}

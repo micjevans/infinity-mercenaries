@@ -18,8 +18,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  InputAdornment,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import {
@@ -35,11 +37,11 @@ import { db } from "../firebase";
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const { user } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  // Add state for delete confirmation dialog
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState(null);
 
@@ -49,6 +51,11 @@ const CompanyList = () => {
   };
 
   const handleClose = () => setOpen(false);
+
+  // Filter companies based on search term
+  const filteredCompanies = companies.filter((company) =>
+    company.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     if (!user) return; // Wait until user is loaded
@@ -153,15 +160,36 @@ const CompanyList = () => {
 
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
-      <Typography variant="h4" gutterBottom>
-        My Companies
-      </Typography>
-      {/* Add Company Section */}
+      {/* Action row with search and add button */}
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          Add Company
-        </Button>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            placeholder="Search companies..."
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ width: "60%" }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button variant="contained" color="primary" onClick={handleOpen}>
+            Add Company
+          </Button>
+        </Box>
       </Paper>
+
       {/* Company List Section */}
       <Paper style={{ padding: "16px" }}>
         {loading ? (
@@ -176,8 +204,8 @@ const CompanyList = () => {
           </Box>
         ) : (
           <List>
-            {companies.length > 0 ? (
-              companies.map((company) => (
+            {filteredCompanies.length > 0 ? (
+              filteredCompanies.map((company) => (
                 <ListItemButton
                   key={company.id}
                   divider
@@ -196,6 +224,7 @@ const CompanyList = () => {
                       edge="end"
                       aria-label="delete"
                       onClick={(event) => handleDeleteClick(event, company)}
+                      color=""
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -204,7 +233,9 @@ const CompanyList = () => {
               ))
             ) : (
               <Typography variant="body1" align="center">
-                No companies found.
+                {searchTerm
+                  ? "No matching companies found."
+                  : "No companies found."}
               </Typography>
             )}
           </List>

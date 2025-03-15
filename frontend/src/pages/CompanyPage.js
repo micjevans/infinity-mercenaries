@@ -14,7 +14,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
 import ShopDialog from "../components/ShopDialog";
 import baseMarket from "../data/markets/baseMarket.json";
@@ -215,12 +218,18 @@ const CompanyPage = () => {
   }
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
-      <Button variant="outlined" onClick={() => navigate("/companies")}>
-        Back to Companies
-      </Button>
-      <Typography variant="h4" gutterBottom>
-        {companyName || "Company"}
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Tooltip title="Back to Companies">
+          <IconButton
+            onClick={() => navigate("/companies")}
+            color="primary"
+            sx={{ mr: 2 }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        </Tooltip>
+        <Typography variant="h4">{companyName || "Company"}</Typography>
+      </Box>
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
         <Box sx={{ marginBottom: "16px" }}>
           <Typography variant="subtitle1" gutterBottom>
