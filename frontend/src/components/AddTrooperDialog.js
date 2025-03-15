@@ -182,8 +182,15 @@ const AddTrooperDialog = ({
                 ],
               });
               const cleanedUnit = cleanUpUnit(unit, group, option);
+              if (
+                isCreatingCaptain &&
+                cleanedUnit.profileGroups[0].options[0].points >= 28
+              ) {
+                // If creating a captain and no config is needed, send to be added
+                cleanedUnit.captain = true;
+              }
               if (!isCreatingCaptain || cleanedUnit.captain) {
-                onAddTrooper(unit);
+                onAddTrooper(cleanedUnit);
                 return;
               }
 

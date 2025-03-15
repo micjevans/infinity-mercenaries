@@ -66,9 +66,15 @@ const TrooperList = ({ company, setCompany }) => {
         // Add specops data
         if (data.specops) {
           setSpecops((prev) => ({
-            equip: addSpecOpsDataType(prev, "equip"),
-            skills: addSpecOpsDataType(prev, "skills"),
-            weapons: addSpecOpsDataType(prev, "weapons"),
+            equip: data.specops.equip
+              ? addSpecOpsDataType(prev, "equip")
+              : prev.equip,
+            skills: data.specops.skills
+              ? addSpecOpsDataType(prev, "skills")
+              : prev.skills,
+            weapons: data.specops.weapons
+              ? addSpecOpsDataType(prev, "weapons")
+              : prev.weapons,
           }));
         }
 

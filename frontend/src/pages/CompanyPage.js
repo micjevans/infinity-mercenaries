@@ -232,7 +232,7 @@ const CompanyPage = () => {
       </Box>
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
         <Box sx={{ marginBottom: "16px" }}>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="subtitle1" sx={{ mb: 2 }} gutterBottom>
             Sectorials
           </Typography>
           <Grid container spacing={2}>
@@ -348,15 +348,6 @@ const CompanyPage = () => {
           <Typography variant="subtitle1" gutterBottom>
             Description
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<SaveIcon />}
-            onClick={saveCompanyDetails}
-            disabled={!isModified}
-          >
-            Save
-          </Button>
         </Box>
         <TextField
           fullWidth
@@ -376,16 +367,33 @@ const CompanyPage = () => {
         <Typography variant="body2">
           Total Company Renown: {company.renown}
         </Typography>
-      </Paper>
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <Button
-          onClick={() => setShopModalOpen(true)}
-          variant="contained"
-          color="secondary"
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            mt: 2,
+            mb: 2,
+          }}
         >
-          Open Shop/Inventory
-        </Button>
-      </Box>
+          <Button
+            onClick={() => setShopModalOpen(true)}
+            variant="contained"
+            color="secondary"
+          >
+            Open Shop/Inventory
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<SaveIcon />}
+            onClick={saveCompanyDetails}
+            disabled={!isModified}
+          >
+            Save
+          </Button>
+        </Box>
+      </Paper>
       <TrooperList company={company} setCompany={setCompany} />
       <ShopDialog
         open={shopModalOpen}
