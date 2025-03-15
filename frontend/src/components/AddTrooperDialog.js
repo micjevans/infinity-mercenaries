@@ -9,7 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import Trooper from "./Trooper";
-import SpecOpsForm from "./SpecOpsForm"; // Import the new component
+import SpecOpsForm from "./SpecOpsForm";
+import { produce } from "immer";
 
 const AddTrooperDialog = ({
   open,
@@ -22,6 +23,7 @@ const AddTrooperDialog = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
   const [filteredUnits, setFilteredUnits] = useState([]);
+  const [ogFilteredUnits, setOgFilteredUnits] = useState([]);
   const theme = useTheme();
 
   // Debounce search term update
@@ -36,6 +38,7 @@ const AddTrooperDialog = ({
   useEffect(() => {
     if (!units) {
       setFilteredUnits([]);
+      setOgFilteredUnits([]);
       return;
     }
     const processed = units
@@ -97,6 +100,7 @@ const AddTrooperDialog = ({
       // Sort units by their resume type
       .sort((a, b) => a.resume.type - b.resume.type);
     setFilteredUnits(processed);
+    setOgFilteredUnits(processed);
   }, [units, unitFilter, isCreatingCaptain]);
 
   return (
@@ -177,21 +181,41 @@ const AddTrooperDialog = ({
                   },
                 ],
               });
-              onAddTrooper(cleanUpUnit(unit, group, option));
+              const cleanedUnit = cleanUpUnit(unit, group, option);
+              if (!isCreatingCaptain || cleanedUnit.captain) {
+                onAddTrooper(unit);
+                return;
+              }
 
-              option.includes.forEach((include) => {
-                const includeGroup = unit.profileGroups.find(
-                  (group) => group.id === include.group
-                );
-                const includeOption = includeGroup.options.find(
-                  (option) => option.id === include.option
-                );
-                onAddTrooper(cleanUpUnit(unit, includeGroup, includeOption));
-              });
+              setFilteredUnits((currentUnits) =>
+                currentUnits.map((currentUnit, i) =>
+                  i === unitIndex
+                    ? {
+                        ...cleanedUnit,
+                        captain: true,
+                      }
+                    : currentUnit
+                )
+              );
             }}
           >
             {/* Replace HelloWorld with the new SpecOpsForm component */}
-            <SpecOpsForm specops={specops} />
+            {unit.captain && (
+              <SpecOpsForm
+                editUnit={(key, val) => {
+                  setFilteredUnits((currentUnits) =>
+                    produce(currentUnits, (draft) => {
+                      draft[unitIndex].profileGroups[0].profiles[0][key] = val;
+                    })
+                  );
+                }}
+                profile={
+                  ogFilteredUnits[unitIndex].profileGroups[0].profiles[0]
+                }
+                xp={28 - unit.profileGroups[0].options[0].points}
+                specops={specops}
+              />
+            )}
           </Trooper>
         ))}
       </DialogContent>

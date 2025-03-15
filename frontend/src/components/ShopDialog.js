@@ -182,7 +182,16 @@ const ShopDialog = ({
         </Typography>
         <Grid2 container spacing={2}>
           {items[category].map((item, index) => (
-            <Grid2 item xs={4} key={index}>
+            // Using a more reliable key combining category, index, and uuid if available
+            <Grid2
+              item
+              xs={4}
+              key={`${category}-${index}-${
+                item.uuid ||
+                item.id ||
+                Math.random().toString(36).substring(2, 7)
+              }`}
+            >
               <MapItem
                 item={item}
                 action={handleAction}
@@ -250,7 +259,16 @@ const ShopDialog = ({
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedCompany.map((item, index) => (
-                    <Grid2 item xs={12} key={index}>
+                    <Grid2
+                      item
+                      xs={12}
+                      // Use a more unique key that combines index and uuid/id
+                      key={`staged-company-${index}-${
+                        item.uuid ||
+                        item.id ||
+                        Math.random().toString(36).substring(2, 7)
+                      }`}
+                    >
                       <MapItem
                         item={item}
                         action={handleUnstageCompanyItem}
@@ -269,7 +287,16 @@ const ShopDialog = ({
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedMerchant.map((item, index) => (
-                    <Grid2 item xs={12} key={index}>
+                    <Grid2
+                      item
+                      xs={12}
+                      // Use a more unique key that combines index and uuid/id
+                      key={`staged-merchant-${index}-${
+                        item.uuid ||
+                        item.id ||
+                        Math.random().toString(36).substring(2, 7)
+                      }`}
+                    >
                       <MapItem
                         item={item}
                         action={handleUnstageMerchantItem}
@@ -325,7 +352,8 @@ const ShopDialog = ({
             <Typography variant="h6" align="center" gutterBottom>
               Merchant Items
             </Typography>
-            {slotOrder.map((slot) =>
+            {slotOrder.map((slot, slotIndex) =>
+              // Added slotIndex to make the map iteration key unique
               renderItemsByCategory(
                 groupedMerchantItems,
                 slot,

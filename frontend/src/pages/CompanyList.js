@@ -10,10 +10,6 @@ import {
   Box,
   CircularProgress,
   ListItemButton,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
@@ -35,13 +31,10 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import metadata from "../data/factions/metadata";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState("");
-  const [sectorial1, setSectorial1] = useState(null);
-  const [sectorial2, setSectorial2] = useState(null);
   const { user } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -51,8 +44,6 @@ const CompanyList = () => {
   const [companyToDelete, setCompanyToDelete] = useState(null);
 
   const handleOpen = () => {
-    setSectorial1(null);
-    setSectorial2(null);
     setNewCompany("");
     setOpen(true);
   };
@@ -81,43 +72,15 @@ const CompanyList = () => {
     fetchCompanies();
   }, [user]); // Run when user changes
 
-  const handleSectorial1Change = (e) => {
-    const selectedId = Number(e.target.value);
-    const selectedFaction = metadata.factions.find(
-      (faction) => faction.id === selectedId
-    );
-    if (!selectedFaction) {
-      console.error("Selected faction not found:", selectedId);
-      return;
-    }
-    setSectorial1(selectedFaction);
-    // If the selected faction is a parent faction, reset sectorial2
-    if (selectedFaction.id === selectedFaction.parent) {
-      setSectorial2(null);
-    }
-  };
-
-  const handleSectorial2Change = (e) => {
-    const selectedId = Number(e.target.value);
-    const selectedFaction = metadata.factions.find(
-      (faction) => faction.id === selectedId
-    );
-    if (!selectedFaction) {
-      console.error("Selected faction not found:", selectedId);
-      return;
-    }
-    setSectorial2(selectedFaction);
-  };
-
   const handleAddCompany = async () => {
-    if (!user || !sectorial1) return; // Ensure user is logged in and sectorial1 is selected
+    if (!user) return; // Ensure user is logged in
 
     try {
       const companiesRef = collection(db, "users", user.uid, "companies");
       const newCompanyData = {
         name: newCompany,
-        sectorial1: sectorial1,
-        sectorial2: sectorial2,
+        sectorial1: null, // Initialize as null instead of with selected values
+        sectorial2: null, // Initialize as null instead of with selected values
         credits: 0,
         swc: 0,
         sponsor: "",
@@ -137,8 +100,6 @@ const CompanyList = () => {
 
       setCompanies((prev) => [...prev, addedCompany]);
       setNewCompany("");
-      setSectorial1(null);
-      setSectorial2(null);
       handleClose(); // Close the modal
     } catch (error) {
       console.error("Error adding company:", error);
@@ -276,95 +237,11 @@ const CompanyList = () => {
             InputProps={{ style: { color: "white" } }}
           />
 
-          <FormControl fullWidth style={{ marginBottom: "10px" }}>
-            <InputLabel id="sectorial1-label">Sectorial 1</InputLabel>
-            <Select
-              labelId="sectorial1-label"
-              value={sectorial1 ? sectorial1.id : ""}
-              label="Sectorial 1"
-              onChange={handleSectorial1Change}
-              renderValue={(selected) => {
-                const faction = metadata.factions.find(
-                  (f) => f.id === selected
-                );
-                return faction ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    <span>{faction.name}</span>
-                  </div>
-                ) : (
-                  ""
-                );
-              }}
-            >
-              {metadata.factions.map((faction) => (
-                <MenuItem key={faction.id} value={faction.id}>
-                  <img
-                    src={faction.logo}
-                    alt={faction.name}
-                    style={{ width: 20, height: 20, marginRight: 8 }}
-                  />
-                  {faction.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl
-            fullWidth
-            style={{ marginBottom: "10px" }}
-            disabled={
-              !sectorial1 || (sectorial1 && sectorial1.id === sectorial1.parent)
-            }
-          >
-            <InputLabel id="sectorial2-label">Sectorial 2</InputLabel>
-            <Select
-              labelId="sectorial2-label"
-              value={sectorial2 ? sectorial2.id : ""}
-              label="Sectorial 2"
-              onChange={handleSectorial2Change}
-              renderValue={(selected) => {
-                const faction = metadata.factions.find(
-                  (f) => f.id === selected
-                );
-                return faction ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    <span>{faction.name}</span>
-                  </div>
-                ) : (
-                  ""
-                );
-              }}
-            >
-              {metadata.factions
-                .filter((faction) => faction.id !== faction.parent)
-                .map((faction) => (
-                  <MenuItem key={faction.id} value={faction.id}>
-                    <img
-                      src={faction.logo}
-                      alt={faction.name}
-                      style={{ width: 20, height: 20, marginRight: 8 }}
-                    />
-                    {faction.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-
           <Button
             variant="contained"
             color="primary"
             onClick={handleAddCompany}
-            disabled={!newCompany || !sectorial1}
+            disabled={!newCompany}
           >
             Add Company
           </Button>

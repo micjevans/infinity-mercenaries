@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Container,
@@ -10,14 +10,43 @@ import {
   Snackbar,
   Alert,
   Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ShopDialog from "../components/ShopDialog";
 import baseMarket from "../data/markets/baseMarket.json";
 import TrooperList from "../components/TrooperList";
 import { useAuth } from "../auth/AuthContext";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, getDocs } from "firebase/firestore"; // Add collection and getDocs
 import { db } from "../firebase";
+import metadata from "../data/factions/metadata";
+
+// Add a getTroopers function that was missing
+const getTroopers = async (companyId, userId) => {
+  if (!userId || !companyId) return [];
+
+  try {
+    const troopersRef = collection(
+      db,
+      "users",
+      userId,
+      "companies",
+      companyId,
+      "troopers"
+    );
+    const snapshot = await getDocs(troopersRef);
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error fetching troopers:", error);
+    return [];
+  }
+};
 
 const CompanyPage = () => {
   const location = useLocation();
@@ -45,6 +74,26 @@ const CompanyPage = () => {
 
   const [company, setCompany] = useState(cleanedCompany);
   const [isModified, setIsModified] = useState(false);
+  const [troopers, setTroopers] = useState([]); // Add state to track troopers for disabling sectorial selection
+
+  // Check if sectorials can be edited (no troopers added yet)
+  const canEditSectorials = !troopers || troopers.length === 0;
+
+  // Move useEffect before conditional return
+  useEffect(() => {
+    if (!user || !company?.id) return;
+
+    const fetchTroopers = async () => {
+      try {
+        const troopersList = await getTroopers(company.id, user.uid);
+        setTroopers(troopersList);
+      } catch (error) {
+        console.error("Error fetching troopers:", error);
+      }
+    };
+
+    fetchTroopers();
+  }, [company?.id, user]);
 
   if (!cleanedCompany) return null;
 
@@ -61,7 +110,47 @@ const CompanyPage = () => {
     setIsModified(true);
   };
 
-  // Add function to save company details
+  // Add handlers for sectorial changes
+  const handleSectorial1Change = (e) => {
+    const selectedId = Number(e.target.value);
+    const selectedFaction = metadata.factions.find(
+      (faction) => faction.id === selectedId
+    );
+
+    if (!selectedFaction) return;
+
+    // If sectorial1 changes, we may need to reset sectorial2 if it's no longer compatible
+    let newSectorial2 = company.sectorial2;
+
+    // If the selected faction is a parent faction, reset sectorial2
+    if (selectedFaction.id === selectedFaction.parent) {
+      newSectorial2 = null;
+    }
+
+    setCompany({
+      ...company,
+      sectorial1: selectedFaction,
+      sectorial2: newSectorial2,
+    });
+    setIsModified(true);
+  };
+
+  const handleSectorial2Change = (e) => {
+    const selectedId = Number(e.target.value);
+    const selectedFaction = metadata.factions.find(
+      (faction) => faction.id === selectedId
+    );
+
+    if (!selectedFaction) return;
+
+    setCompany({
+      ...company,
+      sectorial2: selectedFaction,
+    });
+    setIsModified(true);
+  };
+
+  // Add function to save company details including sectorials
   const saveCompanyDetails = async () => {
     if (!user || !company || !company.id) return;
 
@@ -70,6 +159,8 @@ const CompanyPage = () => {
 
       await updateDoc(companyRef, {
         description: company.description,
+        sectorial1: company.sectorial1,
+        sectorial2: company.sectorial2,
         // Add other fields to update if needed
       });
 
@@ -130,45 +221,113 @@ const CompanyPage = () => {
       <Typography variant="h4" gutterBottom>
         {companyName || "Company"}
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        Troopers
-      </Typography>
       <Paper style={{ padding: "16px", marginBottom: "20px" }}>
         <Box sx={{ marginBottom: "16px" }}>
           <Typography variant="subtitle1" gutterBottom>
             Sectorials
           </Typography>
           <Grid container spacing={2}>
+            {/* Sectorial 1 Dropdown */}
             <Grid item xs={12} md={6}>
-              {company.sectorial1 && (
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  <img
-                    src={company.sectorial1.logo}
-                    alt={company.sectorial1.name}
-                    style={{ width: 24, height: 24, marginRight: 8 }}
-                  />
-                  <Typography variant="body1">
-                    {company.sectorial1.name}
-                  </Typography>
-                </Box>
-              )}
+              <FormControl fullWidth disabled={!canEditSectorials}>
+                <InputLabel id="sectorial1-label">Sectorial 1</InputLabel>
+                <Select
+                  labelId="sectorial1-label"
+                  value={company.sectorial1 ? company.sectorial1.id : ""}
+                  label="Sectorial 1"
+                  onChange={handleSectorial1Change}
+                  renderValue={(selected) => {
+                    const faction = metadata.factions.find(
+                      (f) => f.id === selected
+                    );
+                    return faction ? (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={faction.logo}
+                          alt={faction.name}
+                          style={{ width: 20, height: 20, marginRight: 8 }}
+                        />
+                        <span>{faction.name}</span>
+                      </div>
+                    ) : (
+                      "Select Sectorial 1"
+                    );
+                  }}
+                >
+                  {metadata.factions.map((faction) => (
+                    <MenuItem key={faction.id} value={faction.id}>
+                      <img
+                        src={faction.logo}
+                        alt={faction.name}
+                        style={{ width: 20, height: 20, marginRight: 8 }}
+                      />
+                      {faction.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
+
+            {/* Sectorial 2 Dropdown */}
             <Grid item xs={12} md={6}>
-              {company.sectorial2 && (
-                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                  <img
-                    src={company.sectorial2.logo}
-                    alt={company.sectorial2.name}
-                    style={{ width: 24, height: 24, marginRight: 8 }}
-                  />
-                  <Typography variant="body1">
-                    {company.sectorial2.name}
-                  </Typography>
-                </Box>
-              )}
+              <FormControl
+                fullWidth
+                disabled={
+                  !canEditSectorials ||
+                  !company.sectorial1 ||
+                  (company.sectorial1 &&
+                    company.sectorial1.id === company.sectorial1.parent)
+                }
+              >
+                <InputLabel id="sectorial2-label">Sectorial 2</InputLabel>
+                <Select
+                  labelId="sectorial2-label"
+                  value={company.sectorial2 ? company.sectorial2.id : ""}
+                  label="Sectorial 2"
+                  onChange={handleSectorial2Change}
+                  renderValue={(selected) => {
+                    const faction = metadata.factions.find(
+                      (f) => f.id === selected
+                    );
+                    return faction ? (
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <img
+                          src={faction.logo}
+                          alt={faction.name}
+                          style={{ width: 20, height: 20, marginRight: 8 }}
+                        />
+                        <span>{faction.name}</span>
+                      </div>
+                    ) : (
+                      "Select Sectorial 2"
+                    );
+                  }}
+                >
+                  {metadata.factions
+                    .filter((faction) => faction.id !== faction.parent)
+                    .map((faction) => (
+                      <MenuItem key={faction.id} value={faction.id}>
+                        <img
+                          src={faction.logo}
+                          alt={faction.name}
+                          style={{ width: 20, height: 20, marginRight: 8 }}
+                        />
+                        {faction.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
+
+          {!canEditSectorials && (
+            <Alert severity="info" sx={{ mt: 2 }}>
+              Sectorials cannot be changed once troopers have been added to the
+              company.
+            </Alert>
+          )}
         </Box>
+
         <Box
           sx={{
             display: "flex",

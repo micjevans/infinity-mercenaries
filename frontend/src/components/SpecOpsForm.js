@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -15,7 +15,6 @@ import {
   CardContent,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { mapItemData } from "../utils/metadataMapping";
 import MapDetails from "./MapDetails";
 
 // Styled component for attribute option buttons
@@ -29,44 +28,122 @@ const AttributeOption = styled(Button)(({ theme, selected }) => ({
   backgroundColor: selected ? theme.palette.action.selected : "transparent",
 }));
 
-const SpecOpsForm = ({ specops }) => {
-  // Base attribute values
-  const baseAttributes = {
-    cc: 12,
-    bs: 12,
-    ph: 10,
-    wip: 13,
-    arm: 1,
-    bts: 0,
-    w: 1,
-  };
+// Generic ItemAccordion component to handle weapons, skills, and equipment
+const ItemAccordion = ({
+  title,
+  items,
+  selectedItems,
+  metaKey,
+  handleItemToggle,
+}) => {
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{title}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <FormGroup>
+          {items.map((item) => {
+            const isSelected = selectedItems.some(
+              (s) => JSON.stringify(s) === JSON.stringify(item)
+            );
+            const xpCost = item.exp || 0;
 
-  // Define attribute increase rules and maximums with updated W rule
+            return (
+              <FormControlLabel
+                key={item._uniqueKey}
+                control={
+                  <Checkbox
+                    checked={isSelected}
+                    onChange={() => handleItemToggle(item, metaKey)}
+                  />
+                }
+                label={
+                  <MapDetails
+                    list={[item]}
+                    metaKey={metaKey}
+                    postText={` (${xpCost} XP)`}
+                  />
+                }
+              />
+            );
+          })}
+          {items.length === 0 && (
+            <Typography variant="body2">
+              No {title.toLowerCase()} available
+            </Typography>
+          )}
+        </FormGroup>
+      </AccordionDetails>
+    </Accordion>
+  );
+};
+
+const SpecOpsForm = ({ editUnit, profile, xp, specops }) => {
+  const option1 = [0, 0]; // Default first option for attributes
+  const defaultOptions = [option1, [1, 2], [2, 5], [3, 10]]; // Default options for attributes
+
   const attributeRules = {
-    cc: { increments: [0, 2, 5, 10], max: 30 },
-    bs: { increments: [0, 1, 2, 3], max: 15 },
-    ph: { increments: [0, 1, 2, 3], max: 15 },
-    wip: { increments: [0, 1, 2, 3], max: 15 },
-    arm: { increments: [0, 1, 3], max: 10 },
-    bts: { increments: [0, 3, 6, 9], max: 12 },
-    w: { increments: [0, 1], max: 2 }, // Updated: +1 increment with max of 2
+    cc: {
+      options: [option1, [2, 2], [5, 5], [10, 10]].map(([val, xp]) => ({
+        val: val + profile.cc,
+        xp: xp,
+      })),
+      max: 30,
+    },
+    bs: {
+      options: defaultOptions.map(([val, xp]) => ({
+        val: val + profile.bs,
+        xp: xp,
+      })),
+      max: 15,
+    },
+    ph: {
+      options: defaultOptions.map(([val, xp]) => ({
+        val: val + profile.ph,
+        xp: xp,
+      })),
+      max: 15,
+    },
+    wip: {
+      options: defaultOptions.map(([val, xp]) => ({
+        val: val + profile.wip,
+        xp: xp,
+      })),
+      max: 15,
+    },
+    arm: {
+      options: [option1, [1, 5], [3, 10]].map(([val, xp]) => ({
+        val: val + profile.arm,
+        xp: xp,
+      })),
+      max: 10,
+    },
+    bts: {
+      options: [option1, [3, 2], [6, 5], [9, 10]].map(([val, xp]) => ({
+        val: val + profile.bts,
+        xp: xp,
+      })),
+      max: 12,
+    },
+    w: {
+      options: [option1, [1, 10]].map(([val, xp]) => ({
+        val: val + profile.w,
+        xp: xp,
+      })),
+      max: 2,
+    },
   };
-
-  // XP costs for options (index-based)
-  const xpCosts = [0, 2, 5, 10];
-
-  // Selected attribute values (starting with base values)
-  const [attributes, setAttributes] = useState({ ...baseAttributes });
 
   // Track which level is selected for each attribute (0 = base value)
-  const [selectedLevels, setSelectedLevels] = useState({
-    cc: 0,
-    bs: 0,
-    ph: 0,
-    wip: 0,
-    arm: 0,
-    bts: 0,
-    w: 0,
+  const [selectedAttributes, setSelectedAttributes] = useState({
+    cc: attributeRules.cc.options[0],
+    bs: attributeRules.bs.options[0],
+    ph: attributeRules.ph.options[0],
+    wip: attributeRules.wip.options[0],
+    arm: attributeRules.arm.options[0],
+    bts: attributeRules.bts.options[0],
+    w: attributeRules.w.options[0],
   });
 
   // Track selected items and their XP costs
@@ -75,135 +152,98 @@ const SpecOpsForm = ({ specops }) => {
   const [selectedEquipment, setSelectedEquipment] = useState([]);
 
   // Calculate total XP spent from all sources
-  const [totalXP, setTotalXP] = useState(0);
+  const [totalXP, setTotalXP] = useState(xp || 0);
 
-  // Update total XP whenever any selection changes
-  useEffect(() => {
-    let attributeXP = 0;
-    Object.entries(selectedLevels).forEach(([attr, level]) => {
-      attributeXP += xpCosts[level] || 0;
-    });
+  // Check if an XP change would make XP go negative
+  const validateXpChange = (change) => {
+    const newTotal = totalXP + change;
+    return newTotal >= 0;
+  };
 
-    const weaponsXP = selectedWeapons.reduce(
-      (sum, item) => sum + (item.exp || 0),
-      0
-    );
-    const skillsXP = selectedSkills.reduce(
-      (sum, item) => sum + (item.exp || 0),
-      0
-    );
-    const equipmentXP = selectedEquipment.reduce(
-      (sum, item) => sum + (item.exp || 0),
-      0
-    );
+  // Manually add index-based keys to specops items to ensure uniqueness
+  const processedSpecops = useMemo(() => {
+    const addUniqueKeys = (items, prefix) => {
+      return items.map((item, index) => ({
+        ...item,
+        // Create a unique key identifier that can't conflict
+        _uniqueKey: `${prefix}-${index}-${Math.random()
+          .toString(36)
+          .substring(2, 7)}`,
+      }));
+    };
 
-    setTotalXP(attributeXP + weaponsXP + skillsXP + equipmentXP);
-  }, [
-    selectedLevels,
-    selectedWeapons,
-    selectedSkills,
-    selectedEquipment,
-    xpCosts,
-  ]);
+    return {
+      weapons: addUniqueKeys(specops.weapons || [], "weapon"),
+      skills: addUniqueKeys(specops.skills || [], "skill"),
+      equip: addUniqueKeys(specops.equip || [], "equip"),
+    };
+  }, [specops]);
 
-  // Generate valid options for an attribute based on rules
-  const getAttributeOptions = (attribute, baseValue) => {
-    const { increments, max } = attributeRules[attribute];
-    const options = [];
+  // Simplified and clean item selection handling with XP validation
+  const handleItemToggle = (item, type) => {
+    const itemXP = item.exp || 0;
+    const stateMap = {
+      weapons: { state: selectedWeapons, setter: setSelectedWeapons },
+      skills: { state: selectedSkills, setter: setSelectedSkills },
+      equips: { state: selectedEquipment, setter: setSelectedEquipment },
+    };
 
-    // Always include base value
-    options.push({
-      value: baseValue,
-      level: 0,
-      xpCost: 0,
-    });
-
-    // Add options with increments, respecting max value
-    for (let i = 1; i < increments.length; i++) {
-      const newValue = baseValue + increments[i];
-      if (newValue <= max) {
-        options.push({
-          value: newValue,
-          level: i,
-          xpCost: xpCosts[i],
-        });
-      }
+    if (!stateMap[type]) {
+      console.warn("Unhandled item type:", type);
+      return;
     }
 
-    return options;
-  };
-
-  // Handle attribute selection
-  const handleAttributeSelect = (attribute, optionIndex, optionValue) => {
-    setAttributes((prev) => ({
-      ...prev,
-      [attribute]: optionValue,
-    }));
-
-    setSelectedLevels((prev) => ({
-      ...prev,
-      [attribute]: optionIndex,
-    }));
-  };
-
-  // Toggle selection of an item
-  const toggleSelection = (item, currentSelected, setSelected) => {
-    const isSelected = currentSelected.some(
-      (selected) => selected.id === item.id
+    const { state, setter } = stateMap[type];
+    const isSelected = state.some(
+      (existing) => JSON.stringify(existing) === JSON.stringify(item)
     );
 
-    if (isSelected) {
-      setSelected(
-        currentSelected.filter((selected) => selected.id !== item.id)
-      );
-    } else {
-      setSelected([...currentSelected, item]);
+    // Calculate XP change
+    const xpChange = isSelected ? itemXP : -itemXP;
+
+    // Validate XP change before proceeding
+    if (!validateXpChange(xpChange)) {
+      console.warn("Not enough XP for this selection");
+      return; // Exit without making changes
     }
+
+    // If we reach here, the XP change is valid, so update XP first
+    setTotalXP((prevXP) => prevXP + xpChange);
+
+    const newState = isSelected
+      ? state.filter(
+          (existing) => JSON.stringify(existing) !== JSON.stringify(item)
+        )
+      : [...state, item];
+
+    // Update selection state after XP check
+    setter(newState);
+    editUnit(type, [...profile[type], ...newState]);
   };
 
-  // Generate unique keys for each item type
-  const getUniqueKey = (prefix, item) =>
-    `${prefix}-${item.id || Math.random().toString(36).substr(2, 9)}`;
+  // Attribute option click handler with XP validation
+  const handleAttributeOptionClick = (attr, option) => {
+    // Calculate the XP change
+    const currentXpCost = selectedAttributes[attr].xp || 0;
+    const newXpCost = option.xp;
+    const xpChange = currentXpCost - newXpCost; // Positive if we're saving XP, negative if spending more
+    // Validate XP change before proceeding
+    if (!validateXpChange(xpChange)) {
+      console.warn("Not enough XP to upgrade this attribute");
+      return; // Exit without making changes
+    }
 
-  // Render attribute options as tabs
-  const renderAttributeOptions = (attribute, baseValue) => {
-    const options = getAttributeOptions(attribute, baseValue);
+    // If XP change is valid, update XP first
+    setTotalXP((prevXP) => prevXP + xpChange);
 
-    return (
-      <Box sx={{ display: "flex", flexDirection: "column", mb: 2 }}>
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          {attribute.toUpperCase()}
-        </Typography>
-        <Paper elevation={0} sx={{ display: "flex", justifyContent: "center" }}>
-          {options.map((option, index) => (
-            <AttributeOption
-              // Use a compound key that includes the attribute name and index
-              key={`${attribute}-option-${index}`}
-              selected={selectedLevels[attribute] === index}
-              onClick={() =>
-                handleAttributeSelect(attribute, index, option.value)
-              }
-              disableRipple
-              disableElevation
-              variant="text"
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Typography>{option.value}</Typography>
-                {option.xpCost > 0 && (
-                  <Typography variant="caption">{option.xpCost} XP</Typography>
-                )}
-              </Box>
-            </AttributeOption>
-          ))}
-        </Paper>
-      </Box>
-    );
+    // Then update the attribute selection
+    setSelectedAttributes((prevAttr) => ({
+      ...prevAttr,
+      [attr]: option,
+    }));
+
+    // Finally, update the parent component
+    editUnit(attr, option.val);
   };
 
   return (
@@ -221,6 +261,7 @@ const SpecOpsForm = ({ specops }) => {
           Total XP: {totalXP}
         </Typography>
       </CardContent>
+
       {/* Collapsible section: Attributes */}
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -234,165 +275,84 @@ const SpecOpsForm = ({ specops }) => {
               justifyContent: "space-between",
             }}
           >
-            {Object.entries(baseAttributes).map(([attr, baseValue]) => (
+            {Object.entries(attributeRules).map(([attr, attrRules]) => (
               <Box key={attr} sx={{ width: "30%", mb: 2 }}>
-                {renderAttributeOptions(attr, baseValue)}
+                <Box sx={{ display: "flex", flexDirection: "column", mb: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                    {attr.toUpperCase()}
+                  </Typography>
+                  <Paper
+                    elevation={0}
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  >
+                    {attrRules.options.map(
+                      (option) =>
+                        option.val <= attrRules.max && (
+                          <AttributeOption
+                            // Use a compound key that includes the attribute name and index
+                            key={`${attr}-option-${option.val}`}
+                            selected={
+                              selectedAttributes[attr].val === option.val
+                            }
+                            onClick={() =>
+                              handleAttributeOptionClick(attr, option)
+                            }
+                            disableRipple
+                            disableElevation
+                            variant="text"
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Typography>{option.val}</Typography>
+                              {option.xp > 0 && (
+                                <Typography variant="caption">
+                                  {option.xp} XP
+                                </Typography>
+                              )}
+                            </Box>
+                          </AttributeOption>
+                        )
+                    )}
+                  </Paper>
+                </Box>
               </Box>
             ))}
           </Box>
         </AccordionDetails>
       </Accordion>
 
-      {/* Collapsible section: Weapons */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Weapons</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            {specops.weapons.map((weapon) => {
-              const xpCost = weapon.exp || 0;
+      {/* Use the new ItemAccordion component for weapons, skills, and equipment */}
+      <ItemAccordion
+        title="Weapons"
+        items={processedSpecops.weapons}
+        selectedItems={selectedWeapons}
+        itemType="weapon"
+        metaKey="weapons"
+        handleItemToggle={handleItemToggle}
+      />
 
-              return (
-                <FormControlLabel
-                  // Use a unique prefixed key for weapons
-                  key={getUniqueKey("weapon", weapon)}
-                  control={
-                    <Checkbox
-                      checked={selectedWeapons.some((w) => w.id === weapon.id)}
-                      onChange={() =>
-                        toggleSelection(
-                          weapon,
-                          selectedWeapons,
-                          setSelectedWeapons
-                        )
-                      }
-                    />
-                  }
-                  label={
-                    <Typography>
-                      <MapDetails
-                        list={[weapon]}
-                        metaKey="weapons"
-                        postText={` (${weapon.exp} XP)`}
-                      />
-                    </Typography>
-                  }
-                />
-              );
-            })}
-            {specops.weapons.length === 0 && (
-              <Typography variant="body2">No weapons available</Typography>
-            )}
-          </FormGroup>
-        </AccordionDetails>
-      </Accordion>
+      <ItemAccordion
+        title="Skills"
+        items={processedSpecops.skills}
+        selectedItems={selectedSkills}
+        itemType="skill"
+        metaKey="skills"
+        handleItemToggle={handleItemToggle}
+      />
 
-      {/* Collapsible section: Skills */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Skills</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            {specops.skills.map((skill) => {
-              const skillData = mapItemData(skill);
-              const name = skillData?.[0]?.name || `Skill ${skill.id}`;
-              const xpCost = skill.exp || 0;
-
-              return (
-                <FormControlLabel
-                  // Use a unique prefixed key for skills
-                  key={getUniqueKey("skill", skill)}
-                  control={
-                    <Checkbox
-                      checked={selectedSkills.some((s) => s.id === skill.id)}
-                      onChange={() =>
-                        toggleSelection(
-                          skill,
-                          selectedSkills,
-                          setSelectedSkills
-                        )
-                      }
-                    />
-                  }
-                  label={
-                    <Typography>
-                      {name}
-                      {xpCost > 0 && (
-                        <Typography
-                          component="span"
-                          color="primary.light"
-                          sx={{ ml: 1, fontWeight: "bold" }}
-                        >
-                          ({xpCost} XP)
-                        </Typography>
-                      )}
-                    </Typography>
-                  }
-                />
-              );
-            })}
-            {specops.skills.length === 0 && (
-              <Typography variant="body2">No skills available</Typography>
-            )}
-          </FormGroup>
-        </AccordionDetails>
-      </Accordion>
-
-      {/* Collapsible section: Equipment */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Equipment</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormGroup>
-            {specops.equip.map((equipment) => {
-              const equipData = mapItemData(equipment);
-              const name = equipData?.[0]?.name || `Equipment ${equipment.id}`;
-              const xpCost = equipment.exp || 0;
-
-              return (
-                <FormControlLabel
-                  // Use a unique prefixed key for equipment
-                  key={getUniqueKey("equip", equipment)}
-                  control={
-                    <Checkbox
-                      checked={selectedEquipment.some(
-                        (e) => e.id === equipment.id
-                      )}
-                      onChange={() =>
-                        toggleSelection(
-                          equipment,
-                          selectedEquipment,
-                          setSelectedEquipment
-                        )
-                      }
-                    />
-                  }
-                  label={
-                    <Typography>
-                      {name}
-                      {xpCost > 0 && (
-                        <Typography
-                          component="span"
-                          color="primary.light"
-                          sx={{ ml: 1, fontWeight: "bold" }}
-                        >
-                          ({xpCost} XP)
-                        </Typography>
-                      )}
-                    </Typography>
-                  }
-                />
-              );
-            })}
-            {specops.equip.length === 0 && (
-              <Typography variant="body2">No equipment available</Typography>
-            )}
-          </FormGroup>
-        </AccordionDetails>
-      </Accordion>
+      <ItemAccordion
+        title="Equipment"
+        items={processedSpecops.equip}
+        selectedItems={selectedEquipment}
+        itemType="equip"
+        metaKey="equips"
+        handleItemToggle={handleItemToggle}
+      />
     </Card>
   );
 };

@@ -25,8 +25,17 @@ const MapDetails = ({ list, metaKey, preText, postText }) => {
               Array.isArray(item.extra) &&
               item.extra.length > 0
             ) {
+            }
+            if (
+              (item.extra &&
+                Array.isArray(item.extra) &&
+                item.extra.length > 0) ||
+              (item.extras &&
+                Array.isArray(item.extras) &&
+                item.extras.length > 0)
+            ) {
               // Map each extra id to its name using
-              const extras = item.extra.map((extraId) => {
+              const extras = (item.extra || item.extras).map((extraId) => {
                 const found = metadata.extras.find((e) => e.id === extraId);
                 if (found) {
                   if (found.type === "DISTANCE") {

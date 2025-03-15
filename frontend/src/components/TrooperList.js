@@ -54,12 +54,21 @@ const TrooperList = ({ company, setCompany }) => {
         const data = loadFactionData(sector);
         if (!data) return [];
 
+        const addSpecOpsDataType = (prev, type) => [
+          ...prev[type],
+          ...(data.specops[type].filter((toAdd) => {
+            return !prev[type].some(
+              (existing) => JSON.stringify(existing) === JSON.stringify(toAdd)
+            );
+          }) || []),
+        ];
+
         // Add specops data
         if (data.specops) {
           setSpecops((prev) => ({
-            equip: [...prev.equip, ...(data.specops.equip || [])],
-            skills: [...prev.skills, ...(data.specops.skills || [])],
-            weapons: [...prev.weapons, ...(data.specops.weapons || [])],
+            equip: addSpecOpsDataType(prev, "equip"),
+            skills: addSpecOpsDataType(prev, "skills"),
+            weapons: addSpecOpsDataType(prev, "weapons"),
           }));
         }
 
