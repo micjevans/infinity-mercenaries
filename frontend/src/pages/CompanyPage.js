@@ -23,39 +23,19 @@ import ShopDialog from "../components/ShopDialog";
 import baseMarket from "../data/markets/baseMarket.json";
 import TrooperList from "../components/TrooperList";
 import { useAuth } from "../auth/AuthContext";
-import { doc, updateDoc, collection, getDocs } from "firebase/firestore"; // Add collection and getDocs
-import { db } from "../firebase";
+import {
+  updateCompanyDetails,
+  updateInventoryAndCredits,
+} from "../services/companyService";
+import { getTroopers } from "../services/trooperService";
 import metadata from "../data/factions/metadata";
-
-// Add a getTroopers function that was missing
-const getTroopers = async (companyId, userId) => {
-  if (!userId || !companyId) return [];
-
-  try {
-    const troopersRef = collection(
-      db,
-      "users",
-      userId,
-      "companies",
-      companyId,
-      "troopers"
-    );
-    const snapshot = await getDocs(troopersRef);
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    console.error("Error fetching troopers:", error);
-    return [];
-  }
-};
 
 const CompanyPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [shopModalOpen, setShopModalOpen] = useState(false);
+  const [units, setUnits] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -82,7 +62,24 @@ const CompanyPage = () => {
   // Check if sectorials can be edited (no troopers added yet)
   const canEditSectorials = !troopers || troopers.length === 0;
 
-  // Move useEffect before conditional return
+  // Load units data for AddTrooperDialog
+  useEffect(() => {
+    const loadUnits = async () => {
+      try {
+        if (!units) {
+          // Replace this with actual units loading logic
+          const loadedUnits = []; // Should load from your data source
+          setUnits(loadedUnits);
+        }
+      } catch (error) {
+        console.error("Error loading units:", error);
+      }
+    };
+
+    loadUnits();
+  }, [units]);
+
+  // Fetch troopers data
   useEffect(() => {
     if (!user || !company?.id) return;
 
@@ -101,7 +98,6 @@ const CompanyPage = () => {
   if (!cleanedCompany) return null;
 
   const companyName = cleanedCompany?.name;
-
   const merchantItems = baseMarket.items;
 
   // Add handler for description changes
@@ -153,26 +149,27 @@ const CompanyPage = () => {
     setIsModified(true);
   };
 
-  // Add function to save company details including sectorials
+  // Update to use the service function
   const saveCompanyDetails = async () => {
     if (!user || !company || !company.id) return;
 
     try {
-      const companyRef = doc(db, "users", user.uid, "companies", company.id);
-
-      await updateDoc(companyRef, {
+      const result = await updateCompanyDetails(user.uid, company.id, {
         description: company.description,
         sectorial1: company.sectorial1,
         sectorial2: company.sectorial2,
-        // Add other fields to update if needed
       });
 
-      setSnackbar({
-        open: true,
-        message: "Company details saved successfully!",
-        severity: "success",
-      });
-      setIsModified(false);
+      if (result.success) {
+        setSnackbar({
+          open: true,
+          message: "Company details saved successfully!",
+          severity: "success",
+        });
+        setIsModified(false);
+      } else {
+        throw new Error(result.error || "Unknown error");
+      }
     } catch (error) {
       console.error("Error saving company details:", error);
       setSnackbar({
@@ -183,22 +180,27 @@ const CompanyPage = () => {
     }
   };
 
+  // Update to use the service function
   const saveInventoryChanges = async (updatedInventory, updatedCredits) => {
     if (!user || !company || !company.id) return;
 
     try {
-      const companyRef = doc(db, "users", user.uid, "companies", company.id);
+      const result = await updateInventoryAndCredits(
+        user.uid,
+        company.id,
+        updatedInventory,
+        updatedCredits
+      );
 
-      await updateDoc(companyRef, {
-        inventory: updatedInventory,
-        credits: updatedCredits,
-      });
-
-      setSnackbar({
-        open: true,
-        message: "Inventory and credits updated successfully!",
-        severity: "success",
-      });
+      if (result.success) {
+        setSnackbar({
+          open: true,
+          message: "Inventory and credits updated successfully!",
+          severity: "success",
+        });
+      } else {
+        throw new Error(result.error || "Unknown error");
+      }
     } catch (error) {
       console.error("Error saving inventory changes:", error);
       setSnackbar({
@@ -216,6 +218,7 @@ const CompanyPage = () => {
   if (!company) {
     return <div>Loading...</div>;
   }
+
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -394,13 +397,18 @@ const CompanyPage = () => {
           </Button>
         </Box>
       </Paper>
-      <TrooperList company={company} setCompany={setCompany} />
+      <TrooperList
+        company={company}
+        setCompany={setCompany}
+        troopers={troopers}
+      />
+
       <ShopDialog
         open={shopModalOpen}
         onClose={() => setShopModalOpen(false)}
         companyItems={company.inventory || []}
         merchantItems={merchantItems}
-        companyCredits={company.credits || 0} // Pass current company credits
+        companyCredits={company.credits || 0}
         onConfirmExchange={async (exchangeData) => {
           try {
             const updatedInventory = [

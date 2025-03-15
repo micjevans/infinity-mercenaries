@@ -56,18 +56,47 @@ export const getTroopersForCompany = async (companyId) => {
   }
 };
 
-// Create a new company
-export const createCompany = async (companyData) => {
+/**
+ * Create a new company for a user
+ * @param {string} userId - User ID
+ * @param {object} companyData - Company data to save
+ * @returns {Promise<string>} - The ID of the created company
+ */
+export const createCompany = async (userId, companyData) => {
   try {
-    const companyRef = await addDoc(collection(db, "companies"), {
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    const companiesRef = collection(db, "users", userId, "companies");
+    const docRef = await addDoc(companiesRef, {
       ...companyData,
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     });
 
-    return companyRef.id;
+    return docRef.id;
   } catch (error) {
     console.error("Error creating company:", error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a company
+ * @param {string} userId - User ID
+ * @param {string} companyId - Company ID to delete
+ * @returns {Promise<void>}
+ */
+export const deleteCompany = async (userId, companyId) => {
+  try {
+    if (!userId || !companyId) {
+      throw new Error("User ID and Company ID are required");
+    }
+
+    const companyRef = doc(db, "users", userId, "companies", companyId);
+    await deleteDoc(companyRef);
+  } catch (error) {
+    console.error("Error deleting company:", error);
     throw error;
   }
 };
@@ -82,6 +111,65 @@ export const updateCompany = async (companyId, companyData) => {
   } catch (error) {
     console.error("Error updating company:", error);
     throw error;
+  }
+};
+
+/**
+ * Update company details including sectorials
+ * @param {string} userId - User ID
+ * @param {string} companyId - Company ID
+ * @param {object} companyDetails - Company details to update
+ * @returns {Promise<Object>} - Result with success status
+ */
+export const updateCompanyDetails = async (
+  userId,
+  companyId,
+  companyDetails
+) => {
+  try {
+    if (!userId || !companyId) {
+      throw new Error("User ID and Company ID are required");
+    }
+
+    const companyRef = doc(db, "users", userId, "companies", companyId);
+    await updateDoc(companyRef, companyDetails);
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error saving company details:", error);
+    return { success: false, error };
+  }
+};
+
+/**
+ * Update company inventory and credits
+ * @param {string} userId - User ID
+ * @param {string} companyId - Company ID
+ * @param {array} inventory - Updated inventory array
+ * @param {number} credits - Updated credits amount
+ * @returns {Promise<Object>} - Result with success status
+ */
+export const updateInventoryAndCredits = async (
+  userId,
+  companyId,
+  inventory,
+  credits
+) => {
+  try {
+    if (!userId || !companyId) {
+      throw new Error("User ID and Company ID are required");
+    }
+
+    const companyRef = doc(db, "users", userId, "companies", companyId);
+    await updateDoc(companyRef, {
+      inventory,
+      credits,
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error saving inventory changes:", error);
+    return { success: false, error };
   }
 };
 

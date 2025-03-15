@@ -25,14 +25,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import {
-  collection,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import { db } from "../firebase";
+  getUserCompanies,
+  createCompany as createCompanyService,
+  deleteCompany,
+} from "../services/companyService";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -62,12 +58,7 @@ const CompanyList = () => {
 
     const fetchCompanies = async () => {
       try {
-        const companiesRef = collection(db, "users", user.uid, "companies");
-        const snapshot = await getDocs(companiesRef);
-        const companiesList = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const companiesList = await getUserCompanies(user.uid);
         setCompanies(companiesList);
         setLoading(false);
       } catch (error) {
@@ -83,24 +74,23 @@ const CompanyList = () => {
     if (!user) return; // Ensure user is logged in
 
     try {
-      const companiesRef = collection(db, "users", user.uid, "companies");
       const newCompanyData = {
         name: newCompany,
-        sectorial1: null, // Initialize as null instead of with selected values
-        sectorial2: null, // Initialize as null instead of with selected values
+        sectorial1: null,
+        sectorial2: null,
         credits: 0,
         swc: 0,
         sponsor: "",
         notoriety: 0,
         description: "",
-        createdAt: serverTimestamp(),
+        userId: user.uid, // Add userId to the company data
       };
 
-      const docRef = await addDoc(companiesRef, newCompanyData);
+      const companyId = await createCompanyService(user.uid, newCompanyData);
 
       // Add the new company to state with its ID
       const addedCompany = {
-        id: docRef.id,
+        id: companyId,
         ...newCompanyData,
         createdAt: { seconds: Date.now() / 1000 }, // Use current timestamp for UI until it refreshes
       };
@@ -132,28 +122,17 @@ const CompanyList = () => {
     if (!user || !companyToDelete) return;
 
     try {
-      // Delete the company from Firestore
-      const companyRef = doc(
-        db,
-        "users",
-        user.uid,
-        "companies",
-        companyToDelete.id
-      );
-      await deleteDoc(companyRef);
+      await deleteCompany(user.uid, companyToDelete.id);
 
       // Remove the company from state
       setCompanies(
         companies.filter((company) => company.id !== companyToDelete.id)
       );
 
-      // Show success message or other feedback here if needed
-
       // Close the dialog
       handleDeleteDialogClose();
     } catch (error) {
       console.error("Error deleting company:", error);
-      // Handle error (could show an error message)
       handleDeleteDialogClose();
     }
   };
@@ -224,7 +203,7 @@ const CompanyList = () => {
                       edge="end"
                       aria-label="delete"
                       onClick={(event) => handleDeleteClick(event, company)}
-                      color=""
+                      color="error"
                     >
                       <DeleteIcon />
                     </IconButton>
