@@ -7,6 +7,7 @@ import {
   TextField,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 import Trooper from "./Trooper";
 import SpecOpsForm from "./SpecOpsForm";
@@ -19,6 +20,7 @@ const AddTrooperDialog = ({
   isCreatingCaptain,
   specops = { weapons: [], skills: [], equip: [] }, // Default empty arrays
   onAddTrooper,
+  isLocal = true, // Add isLocal prop with default value
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
@@ -107,6 +109,15 @@ const AddTrooperDialog = ({
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
         {isCreatingCaptain ? "Create Captain" : "Select a Trooper Unit"}
+        {isLocal && (
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            style={{ display: "block", marginTop: 4 }}
+          >
+            This trooper will be stored locally on your device.
+          </Typography>
+        )}
       </DialogTitle>
       {/* Filter box placed outside the scrollable DialogContent */}
       <div style={{ padding: "16px" }}>
@@ -180,6 +191,8 @@ const AddTrooperDialog = ({
                     ],
                   },
                 ],
+                // Add local flag to trooper if company is local
+                ...(isLocal && { local: true }),
               });
               const cleanedUnit = cleanUpUnit(unit, group, option);
               if (

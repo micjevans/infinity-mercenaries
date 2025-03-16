@@ -1,13 +1,28 @@
-import { List, Typography, Box, CircularProgress, Button } from "@mui/material";
+import {
+  List,
+  Typography,
+  Box,
+  CircularProgress,
+  Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import Trooper from "./Trooper";
 import EditTrooperDialog from "./EditTrooperDialog";
 import { useAuth } from "../auth/AuthContext";
 import AddTrooperDialog from "./AddTrooperDialog";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-// Import the new trooper service functions
-import { getTroopers, addTrooper } from "../services/trooperService";
+import {
+  getTroopers,
+  addTrooper,
+  updateTrooper,
+  deleteTrooper,
+} from "../services/trooperService";
+import { updateCompanyDetails } from "../services/companyService";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import GroupIcon from "@mui/icons-material/Group";
+import AddIcon from "@mui/icons-material/Add";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -31,8 +46,21 @@ const TrooperList = ({ company, setCompany }) => {
     skills: [],
     weapons: [],
   });
+
+  // Add state for accordion expansion (default to expanded)
+  const [expanded, setExpanded] = useState(true);
+
   // Create a ref for the Add Trooper button
   const addTrooperButtonRef = useRef(null);
+
+  // Extract local flag from company
+  const isLocal = company?.local || true;
+
+  // Handle accordion expansion
+  const handleAccordionChange = (event, isExpanded) => {
+    setExpanded(isExpanded);
+  };
+
   const handleEditTrooper = (trooper) => {
     setEditingTrooper(trooper);
   };
@@ -96,11 +124,16 @@ const TrooperList = ({ company, setCompany }) => {
     company?.sectorial2?.slug,
   ]);
 
-  // Define the handleAddTrooper function - now using the service
+  // Define the handleAddTrooper function - now using the service with local flag
   const handleAddTrooper = async (trooper) => {
     try {
-      // Use the service function instead of direct Firebase calls
-      const newTrooper = await addTrooper(company.id, trooper, user.uid);
+      // Pass isLocal flag to addTrooper service
+      const newTrooper = await addTrooper(
+        company.id,
+        trooper,
+        user.uid,
+        isLocal
+      );
 
       // Append the full trooper object to the company list
       setTroopers((prev) => [...prev, newTrooper]);
@@ -119,15 +152,32 @@ const TrooperList = ({ company, setCompany }) => {
     }
   };
 
+  // Function to handle trooper deletion with local flag
+  const handleDeleteTrooper = async (trooperId) => {
+    if (!user?.uid || !company?.id) return;
+
+    try {
+      // Pass isLocal flag to deleteTrooper service
+      await deleteTrooper(company.id, trooperId, user.uid, isLocal);
+
+      // Update local state after successful deletion
+      setTroopers((prevTroopers) =>
+        prevTroopers.filter((trooper) => trooper.id !== trooperId)
+      );
+    } catch (error) {
+      console.error("Error deleting trooper:", error);
+    }
+  };
+
   useEffect(() => {
     if (!user || !company.id) return;
 
     setLoadingTroopers(true);
 
-    // Use the service function instead of duplicating the fetch logic
+    // Use the service function to fetch troopers with local flag
     const fetchTroopers = async () => {
       try {
-        const troopersList = await getTroopers(company.id, user.uid);
+        const troopersList = await getTroopers(company.id, user.uid, isLocal);
         setTroopers(troopersList);
         console.log("Troopers loaded:", troopersList);
         setLoadingTroopers(false);
@@ -138,105 +188,156 @@ const TrooperList = ({ company, setCompany }) => {
     };
 
     fetchTroopers();
-  }, [company.id, user]);
+  }, [company.id, user, isLocal]);
+
+  // Function to save trooper changes using our service
+  const saveTrooperChanges = async (updatedTrooper, updatedInventory) => {
+    if (!user?.uid || !company?.id) return;
+
+    try {
+      // Update the trooper using the service function with local flag
+      await updateTrooper(company.id, updatedTrooper, user.uid, isLocal);
+
+      // Update local state for troopers
+      setTroopers((prevTroopers) =>
+        prevTroopers.map((t) =>
+          t.id === updatedTrooper.id ? updatedTrooper : t
+        )
+      );
+
+      // Update company inventory using company service with local flag
+      await updateCompanyDetails(
+        user.uid,
+        company.id,
+        {
+          inventory: updatedInventory,
+        },
+        isLocal
+      );
+
+      // Update local company state
+      setCompany((prev) => ({
+        ...prev,
+        inventory: updatedInventory,
+      }));
+
+      // Close the edit dialog
+      setEditingTrooper(null);
+    } catch (error) {
+      console.error("Error updating trooper:", error);
+    }
+  };
 
   return (
-    <>
-      {/* Action Buttons Row */}
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-        <Button
-          ref={addTrooperButtonRef}
-          onClick={() => setTrooperModalOpen(true)}
-          variant="contained"
-          color="primary"
+    <Accordion
+      expanded={expanded}
+      onChange={handleAccordionChange}
+      sx={{
+        mb: 3,
+        boxShadow: 3,
+        "&:before": { display: "none" }, // Remove the default divider
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon sx={{ color: "primary.contrastText" }} />}
+        sx={{
+          bgcolor: "primary.main",
+          color: "primary.contrastText",
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          height: 64,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            pr: 2, // Add padding to right to avoid overlap with expand icon
+          }}
         >
-          {troopers.length === 0 ? "Create Captain" : "Add Trooper"}
-        </Button>
-      </Box>
-      {/* Trooper List Section */}
-      <List>
-        {loadingTroopers ? (
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "20px 0",
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <GroupIcon sx={{ mr: 1 }} />
+            <Typography variant="h6">Troopers</Typography>
+          </Box>
+
+          {/* Add Trooper Button in header */}
+          <Button
+            ref={addTrooperButtonRef}
+            variant="contained"
+            color="secondary"
+            startIcon={<AddIcon />}
+            size="small"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent accordion toggle when clicking button
+              setTrooperModalOpen(true);
+            }}
+            sx={{
+              minWidth: "auto",
+              "&:hover": { backgroundColor: "secondary.dark" },
             }}
           >
-            <CircularProgress />
-          </Box>
-        ) : troopers.length > 0 ? (
-          troopers.map((trooper, index) => (
-            <div key={index}>
-              <Trooper
-                trooper={trooper}
-                onUpdate={() => {}}
-                onClick={() => handleEditTrooper(trooper)}
-              />
-            </div>
-          ))
-        ) : (
-          <Typography>No troopers found.</Typography>
+            {troopers.length === 0 ? "Create Captain" : "Add Trooper"}
+          </Button>
+        </Box>
+      </AccordionSummary>
+
+      <AccordionDetails sx={{ p: 0, pt: 2 }}>
+        {/* Trooper List Section */}
+        <List>
+          {loadingTroopers ? (
+            <Box
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "20px 0",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : troopers.length > 0 ? (
+            troopers.map((trooper, index) => (
+              <div key={index}>
+                <Trooper
+                  trooper={trooper}
+                  onUpdate={() => {}}
+                  onClick={() => handleEditTrooper(trooper)}
+                  onDelete={() => handleDeleteTrooper(trooper.id)}
+                />
+              </div>
+            ))
+          ) : (
+            <Typography align="center" sx={{ py: 3 }}>
+              No troopers found. Add a captain to get started!
+            </Typography>
+          )}
+        </List>
+
+        {editingTrooper && (
+          <EditTrooperDialog
+            open={Boolean(editingTrooper)}
+            onClose={handleCloseEditDialog}
+            trooperToEdit={editingTrooper}
+            companyInventory={company.inventory || []}
+            saveChanges={saveTrooperChanges}
+            isLocal={isLocal} // Pass isLocal to EditTrooperDialog
+          />
         )}
-      </List>
-      {editingTrooper && (
-        <EditTrooperDialog
-          open={Boolean(editingTrooper)}
-          onClose={handleCloseEditDialog}
-          trooperToEdit={editingTrooper}
-          companyInventory={company.inventory || []}
-          saveChanges={async (trooper, updatedInventory) => {
-            try {
-              // Update the trooper in Firestore
-              const trooperRef = doc(
-                db,
-                "users",
-                user.uid,
-                "companies",
-                company.id,
-                "troopers",
-                trooper.id
-              );
-              await updateDoc(trooperRef, trooper);
 
-              // Update the local state for troopers
-              setTroopers((prev) =>
-                prev.map((t) => (t.id === trooper.id ? trooper : t))
-              );
-
-              // Update company inventory in Firestore
-              const companyRef = doc(
-                db,
-                "users",
-                user.uid,
-                "companies",
-                company.id
-              );
-
-              await updateDoc(companyRef, {
-                inventory: updatedInventory,
-              });
-
-              // Update local company state
-              setCompany((prev) => ({
-                ...prev,
-                inventory: updatedInventory,
-              }));
-            } catch (error) {
-              console.error("Error updating trooper:", error);
-            }
-          }}
+        <AddTrooperDialog
+          open={trooperModalOpen}
+          onClose={() => setTrooperModalOpen(false)}
+          units={units}
+          specops={specops}
+          isCreatingCaptain={troopers.length === 0} // Pass prop to indicate captain creation
+          onAddTrooper={handleAddTrooper} // pass down the handler
+          isLocal={isLocal} // Pass isLocal to AddTrooperDialog
         />
-      )}
-      <AddTrooperDialog
-        open={trooperModalOpen}
-        onClose={() => setTrooperModalOpen(false)}
-        units={units}
-        specops={specops}
-        isCreatingCaptain={troopers.length === 0} // Pass prop to indicate captain creation
-        onAddTrooper={handleAddTrooper} // pass down the handler
-      />
-    </>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 

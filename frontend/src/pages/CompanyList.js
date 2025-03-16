@@ -19,9 +19,12 @@ import {
   DialogContentText,
   DialogTitle,
   InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import StorageIcon from "@mui/icons-material/Storage"; // For Firebase companies
+import DevicesIcon from "@mui/icons-material/Devices"; // For local companies
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import {
@@ -58,8 +61,15 @@ const CompanyList = () => {
 
     const fetchCompanies = async () => {
       try {
-        const companiesList = await getUserCompanies(user.uid);
-        setCompanies(companiesList);
+        // Fetch both local and database companies
+        const dbCompanies = await getUserCompanies(user.uid);
+        const localCompanies = await getUserCompanies(user.uid, true);
+
+        // Combine the lists, ensuring we don't have duplicates
+        // (although local and DB companies should have different IDs)
+        const allCompanies = [...dbCompanies, ...localCompanies];
+
+        setCompanies(allCompanies);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching companies:", error);
@@ -86,13 +96,19 @@ const CompanyList = () => {
         userId: user.uid, // Add userId to the company data
       };
 
-      const companyId = await createCompanyService(user.uid, newCompanyData);
+      // Create a local company (pass true as the last parameter)
+      const companyId = await createCompanyService(
+        user.uid,
+        newCompanyData,
+        true
+      );
 
       // Add the new company to state with its ID
       const addedCompany = {
         id: companyId,
         ...newCompanyData,
-        createdAt: { seconds: Date.now() / 1000 }, // Use current timestamp for UI until it refreshes
+        createdAt: { seconds: Date.now() / 1000 }, // Use current timestamp for UI
+        local: true, // Mark as local company
       };
 
       setCompanies((prev) => [...prev, addedCompany]);
@@ -122,7 +138,8 @@ const CompanyList = () => {
     if (!user || !companyToDelete) return;
 
     try {
-      await deleteCompany(user.uid, companyToDelete.id);
+      // Delete from the appropriate storage (local or Firebase)
+      await deleteCompany(user.uid, companyToDelete.id, companyToDelete.local);
 
       // Remove the company from state
       setCompanies(
@@ -135,6 +152,17 @@ const CompanyList = () => {
       console.error("Error deleting company:", error);
       handleDeleteDialogClose();
     }
+  };
+
+  // Helper function to format the creation date
+  const formatCreationDate = (company) => {
+    // Check if createdAt is a timestamp object or an ISO string
+    if (company.createdAt?.seconds) {
+      return new Date(company.createdAt.seconds * 1000).toLocaleString();
+    } else if (company.createdAt) {
+      return new Date(company.createdAt).toLocaleString();
+    }
+    return "Unknown date";
   };
 
   return (
@@ -189,14 +217,30 @@ const CompanyList = () => {
                   key={company.id}
                   divider
                   onClick={() =>
-                    navigate(`/companies/${company.id}`, { state: { company } })
-                  } // Navigate to CompanyPage
+                    navigate(`/companies/${company.id}`, {
+                      state: {
+                        company,
+                        isLocal: !!company.local,
+                      },
+                    })
+                  } // Navigate to CompanyPage with local flag
                 >
+                  <Tooltip
+                    title={
+                      company.local ? "Stored locally" : "Stored in database"
+                    }
+                  >
+                    <IconButton size="small" sx={{ mr: 1 }}>
+                      {company.local ? (
+                        <DevicesIcon color="primary" />
+                      ) : (
+                        <StorageIcon color="secondary" />
+                      )}
+                    </IconButton>
+                  </Tooltip>
                   <ListItemText
                     primary={company.name}
-                    secondary={`Created at: ${new Date(
-                      company.createdAt.seconds * 1000
-                    ).toLocaleString()}`}
+                    secondary={`Created at: ${formatCreationDate(company)}`}
                   />
                   <ListItemSecondaryAction>
                     <IconButton
@@ -220,21 +264,30 @@ const CompanyList = () => {
           </List>
         )}
       </Paper>
+
+      {/* Add Company Modal */}
       <Modal open={open} onClose={handleClose}>
         <Box
           style={{
             padding: "16px",
             margin: "auto",
             marginTop: "20vh",
-            width: "300px", // Changed back to original 300px
+            width: "300px",
             border: "2px solid #3f51b5",
             boxShadow: "0 0 10px #3f51b5",
-            backgroundColor: "#333333", // Added dark grey background color
-            color: "white", // Added white text for better contrast
+            backgroundColor: "#333333",
+            color: "white",
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Add New Company
+            Add New Local Company
+          </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ mb: 2, display: "block" }}
+          >
+            This company will be stored locally on your device.
           </Typography>
           <TextField
             label="New Company Name"
@@ -253,7 +306,7 @@ const CompanyList = () => {
             onClick={handleAddCompany}
             disabled={!newCompany}
           >
-            Add Company
+            Add Local Company
           </Button>
         </Box>
       </Modal>
@@ -268,7 +321,9 @@ const CompanyList = () => {
         <DialogTitle id="alert-dialog-title">{"Delete Company"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete the company "{companyToDelete?.name}
+            Are you sure you want to delete the
+            {companyToDelete?.local ? " local " : " "}
+            company "{companyToDelete?.name}
             "? This action cannot be undone.
           </DialogContentText>
         </DialogContent>

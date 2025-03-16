@@ -21,6 +21,7 @@ import EventManagePage from "./pages/EventManagePage";
 import PairingPage from "./pages/PairingPage";
 // Add this import with your other page imports
 import AdminSetup from "./pages/AdminSetup";
+import GlobalNotification from "./components/GlobalNotification";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -128,6 +129,7 @@ function App() {
           {/* Add this admin setup route */}
           <Route path="/admin-setup" element={<AdminSetup />} />
         </Routes>
+        <GlobalNotification />
       </Router>
     </ThemeProvider>
   );

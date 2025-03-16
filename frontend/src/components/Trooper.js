@@ -7,7 +7,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   useTheme,
-  Button,
 } from "@mui/material";
 import {
   mapCategory,

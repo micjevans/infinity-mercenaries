@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Typography,
   Button,
@@ -16,14 +16,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  IconButton,
-  Tooltip,
   Card,
   CardContent,
-  Divider,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 
 const XP_CATEGORIES = [
   { key: "aid", label: "Aid" },
@@ -61,16 +56,19 @@ const Mission = ({
   const [inducements, setInducements] = useState(0);
 
   // Mock function to get trooper details by ID
-  const getTrooperById = (trooperId) => {
-    return (
-      troopers.find((t) => t.id === trooperId) || {
-        name: "Unknown Trooper",
-        type: "Unknown",
-        rank: "Unknown",
-        renown: 0,
-      }
-    );
-  };
+  const getTrooperById = useCallback(
+    (trooperId) => {
+      return (
+        troopers.find((t) => t.id === trooperId) || {
+          name: "Unknown Trooper",
+          type: "Unknown",
+          rank: "Unknown",
+          renown: 0,
+        }
+      );
+    },
+    [troopers]
+  );
 
   // Calculate inducements (mock calculation - would need actual implementation)
   useEffect(() => {
@@ -85,7 +83,8 @@ const Mission = ({
     const opponentRenown = playerRenown + 25; // Mock value - replace with actual calculation
 
     setInducements(opponentRenown - playerRenown);
-  }, [resultData.troopers]);
+    console.info(inducements); // Log the calculated inducements for debugging
+  }, [resultData.troopers, inducements, getTrooperById]);
 
   // Handle injury selection for a trooper
   const handleInjuryChange = (trooperIndex, injury) => {

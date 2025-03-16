@@ -36,14 +36,6 @@ const DOWNTIME_EVENTS = [
 
 const DOWNTIME_RESULTS = ["Critical Success", "Success", "Failure"];
 
-const XP_CATEGORIES = [
-  "Survived Mission",
-  "Completed Objective",
-  "First Blood",
-  "Eliminated Enemy Officer",
-  "Support Action",
-];
-
 const PairingPage = () => {
   const { eventId, roundId, pairingId } = useParams();
   const navigate = useNavigate();
@@ -176,29 +168,6 @@ const PairingPage = () => {
     setResultData((prev) => ({
       ...prev,
       [field]: value,
-    }));
-  };
-
-  // Handle injuries
-  const handleAddInjury = (trooperIndex, injury) => {
-    const updatedTroopers = [...resultData.troopers];
-    if (!updatedTroopers[trooperIndex].injuries.includes(injury)) {
-      updatedTroopers[trooperIndex].injuries.push(injury);
-
-      setResultData((prev) => ({
-        ...prev,
-        troopers: updatedTroopers,
-      }));
-    }
-  };
-
-  const handleRemoveInjury = (trooperIndex, injuryIndex) => {
-    const updatedTroopers = [...resultData.troopers];
-    updatedTroopers[trooperIndex].injuries.splice(injuryIndex, 1);
-
-    setResultData((prev) => ({
-      ...prev,
-      troopers: updatedTroopers,
     }));
   };
 
