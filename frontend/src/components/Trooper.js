@@ -15,6 +15,7 @@ import {
 } from "../utils/metadataMapping";
 import UnitDetails from "./UnitDetails";
 import ProfileDetails from "./ProfileDetails";
+import { calculateLevel } from "../utils/experienceUtils";
 
 const Trooper = ({ trooper, onClick, children }) => {
   const theme = useTheme();
@@ -38,10 +39,33 @@ const Trooper = ({ trooper, onClick, children }) => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
+            {/* Level Badge */}
+            {trooper.xp >= 0 ? (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  backgroundColor: "primary.main",
+                  color: "primary.contrastText",
+                  borderBottomRightRadius: 8,
+                  px: 1.5,
+                  py: 0.5,
+                  fontWeight: "bold",
+                  zIndex: 1,
+                }}
+              >
+                Lvl {calculateLevel(trooper.xp)}
+              </Box>
+            ) : null}
             <img
               src={trooper.resume.logo}
               alt={trooper.isc}
-              style={{ height: 40, marginRight: 8 }}
+              style={{
+                height: 40,
+                marginRight: 8,
+                marginLeft: trooper.xp >= 0 ? 40 : 0,
+              }}
             />
             <Typography>{trooper.isc}</Typography>
           </div>

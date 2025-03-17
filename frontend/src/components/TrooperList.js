@@ -54,7 +54,7 @@ const TrooperList = ({ company, setCompany }) => {
   const addTrooperButtonRef = useRef(null);
 
   // Extract local flag from company
-  const isLocal = company?.local || true;
+  const isLocal = company?.local;
 
   // Handle accordion expansion
   const handleAccordionChange = (event, isExpanded) => {

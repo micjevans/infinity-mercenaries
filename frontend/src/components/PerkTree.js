@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback } from "react";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme, Chip } from "@mui/material";
 import { getExtra } from "../utils/metadataMapping";
+import ExtensionIcon from "@mui/icons-material/Extension";
 
 const perkTrees = {
   intelligence: [
@@ -8,9 +9,11 @@ const perkTrees = {
       id: 56,
       name: "Minelayer",
       lvl: 1,
+      key: "skills",
       children: [
         {
           id: 56,
+          key: "skills",
           name: "Minelayer (2)",
           extra: [267],
           lvl: 2,
@@ -20,17 +23,20 @@ const perkTrees = {
     {
       id: 35,
       name: "Combat Jump",
+      key: "skills",
       lvl: 2,
       children: [
         {
           id: 35,
           name: "Combat Jump (+3)",
+          key: "skills",
           extra: [1],
           lvl: 3,
         },
         {
           id: 35,
           name: "Combat Jump (Explosion)",
+          key: "skills",
           extra: [255],
           lvl: 4,
         },
@@ -39,23 +45,27 @@ const perkTrees = {
     {
       id: 161,
       name: 'Forward Deployment (+4")',
+      key: "skills",
       extra: [26],
       lvl: 1,
       children: [
         {
           id: 161,
           name: 'Forward Deployment (+8")',
+          key: "skills",
           extra: [22],
           lvl: 2,
           children: [
             {
               id: 47,
               name: "Infiltration",
+              key: "skills",
               lvl: 3,
               children: [
                 {
                   id: 47,
                   name: "Infiltration (+3)",
+                  key: "skills",
                   lvl: 4,
                   extra: [1],
                 },
@@ -64,6 +74,7 @@ const perkTrees = {
             {
               id: 249,
               name: "Impersonation",
+              key: "skills",
               lvl: 4,
             },
           ],
@@ -73,11 +84,13 @@ const perkTrees = {
     {
       id: 33,
       name: "Parachutist",
+      key: "skills",
       lvl: 2,
       children: [
         {
           id: 33,
           name: "Parachutist (Dep. Zone)",
+          key: "skills",
           extra: [48],
           lvl: 5,
         },
@@ -86,11 +99,13 @@ const perkTrees = {
     {
       id: "custom",
       name: "MOV +0, +2",
+      key: "skills",
       lvl: 3,
       children: [
         {
           id: "custom",
           name: "MOV +2, +0",
+          key: "skills",
           lvl: 4,
         },
       ],
@@ -98,11 +113,13 @@ const perkTrees = {
     {
       id: 89,
       name: "Sapper",
+      key: "skills",
       lvl: 1,
     },
     {
       id: "custom",
       name: "Covering Fire",
+      key: "skills",
       lvl: 3,
     },
   ],
@@ -153,7 +170,13 @@ function drawCenteredWrappedText(
   }
 }
 
-const PerkTree = ({ trooper, perk, setTrooper, onBack }) => {
+const PerkTree = ({
+  trooper,
+  perk,
+  setTrooper,
+  onBack,
+  availablePerkPoints = 0,
+}) => {
   const theme = useTheme();
   const canvasRef = useRef(null);
 
@@ -662,6 +685,28 @@ const PerkTree = ({ trooper, perk, setTrooper, onBack }) => {
       >
         Back
       </Button>
+
+      {/* Add perk points display */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 20,
+          left: 20,
+          zIndex: 10,
+          // background: "rgba(0,0,0,0.7)",
+          // px: 2,
+          // py: 1,
+          // borderRadius: 1,
+        }}
+      >
+        <Chip
+          icon={<ExtensionIcon />}
+          label={`${availablePerkPoints} Perk Points`}
+          color={availablePerkPoints > 0 ? "secondary" : "default"}
+          variant={availablePerkPoints > 0 ? "filled" : "outlined"}
+        />
+      </Box>
+
       <canvas
         ref={canvasRef}
         onMouseDown={handleMouseDown}

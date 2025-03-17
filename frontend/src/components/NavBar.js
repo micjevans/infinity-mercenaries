@@ -193,7 +193,7 @@ const NavBar = () => {
   return (
     <AppBar
       position="sticky"
-      style={{ background: "transparent", boxShadow: "none" }}
+      style={{ backgroundColor: theme.palette.background, boxShadow: "none" }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box display="flex" alignItems="center">

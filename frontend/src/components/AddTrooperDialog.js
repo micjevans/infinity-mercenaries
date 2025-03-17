@@ -193,6 +193,7 @@ const AddTrooperDialog = ({
                 ],
                 // Add local flag to trooper if company is local
                 ...(isLocal && { local: true }),
+                xp: 0,
               });
               const cleanedUnit = cleanUpUnit(unit, group, option);
               if (
