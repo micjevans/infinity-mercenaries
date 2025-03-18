@@ -127,6 +127,20 @@ const TrooperList = ({ company, setCompany }) => {
   // Define the handleAddTrooper function - now using the service with local flag
   const handleAddTrooper = async (trooper) => {
     try {
+      // Check if this is the first trooper being added
+      if (troopers.length === 0) {
+        // Save company details first to persist sectorial selections
+        await updateCompanyDetails(
+          user.uid,
+          company.id,
+          {
+            sectorial1: company.sectorial1,
+            sectorial2: company.sectorial2,
+          },
+          isLocal
+        );
+      }
+
       // Pass isLocal flag to addTrooper service
       const newTrooper = await addTrooper(
         company.id,

@@ -15,6 +15,7 @@ import {
   Chip,
   Divider,
   TextField,
+  InputAdornment,
 } from "@mui/material";
 import MapItem from "./MapItem"; // Import MapItem component
 import silhouette from "../assets/images/silhouette.png"; // Ensure the correct path
@@ -114,10 +115,6 @@ const EditTrooperDialog = ({
   const level = calculateLevel(xp);
   const xpForNextLevel = calculateXpForLevel(level + 1);
   const xpProgress = calculateLevelProgress(xp, level);
-  const availablePerkPoints = calculatePerkPoints(
-    level,
-    trooper.usedPerkPoints || 0
-  );
 
   // Add handler for XP changes (only for local troopers)
   const handleXpChange = (e) => {
@@ -125,6 +122,14 @@ const EditTrooperDialog = ({
     setTrooper((prev) => ({
       ...prev,
       xp: newValue,
+    }));
+  };
+
+  // Add handler for available perk points changes (only for local troopers)
+  const handleAvailablePerkPointsChange = (e) => {
+    setTrooper((prev) => ({
+      ...prev,
+      perkPoints: parseInt(e.target.value),
     }));
   };
 
@@ -190,14 +195,37 @@ const EditTrooperDialog = ({
             />
           </Box>
 
-          <Tooltip title="Available perk points to spend on skills">
-            <Chip
-              icon={<ExtensionIcon />}
-              label={`${availablePerkPoints} Perk Points`}
-              color={availablePerkPoints > 0 ? "secondary" : "default"}
-              variant={availablePerkPoints > 0 ? "filled" : "outlined"}
+          {/* Replace static perk points display with editable field for local troopers */}
+          {isLocal ? (
+            <TextField
+              label="Available Perk Points"
+              type="number"
+              size="small"
+              value={trooper.perkPoints}
+              onChange={handleAvailablePerkPointsChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ExtensionIcon />
+                  </InputAdornment>
+                ),
+              }}
+              inputProps={{
+                min: 0,
+                max: level - 1,
+              }}
+              sx={{ width: 160 }}
             />
-          </Tooltip>
+          ) : (
+            <Tooltip title="Available perk points to spend on skills">
+              <Chip
+                icon={<ExtensionIcon />}
+                label={`${trooper.perkPoints} Perk Points`}
+                color={trooper.perkPoints > 0 ? "secondary" : "default"}
+                variant={trooper.perkPoints > 0 ? "filled" : "outlined"}
+              />
+            </Tooltip>
+          )}
         </Box>
 
         {/* Add note for local troopers */}
@@ -379,7 +407,7 @@ const EditTrooperDialog = ({
                   perk={selectedPerkTree}
                   setTrooper={setTrooper}
                   onBack={() => setSelectedPerkTree(null)}
-                  availablePerkPoints={availablePerkPoints}
+                  perkPoints={trooper.perkPoints}
                 />
               </>
             ) : (

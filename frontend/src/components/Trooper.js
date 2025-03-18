@@ -16,6 +16,7 @@ import {
 import UnitDetails from "./UnitDetails";
 import ProfileDetails from "./ProfileDetails";
 import { calculateLevel } from "../utils/experienceUtils";
+import { renderCombinedDetails } from "../utils/trooperUtils";
 
 const Trooper = ({ trooper, onClick, children }) => {
   const theme = useTheme();
@@ -71,7 +72,7 @@ const Trooper = ({ trooper, onClick, children }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          {trooper.profileGroups.map((group, grpIndex) =>
+          {renderCombinedDetails(trooper).profileGroups.map((group, grpIndex) =>
             group.options.length > 0 ? (
               <div
                 key={`group-${trooper.isc}-${grpIndex}`}
@@ -110,7 +111,7 @@ const Trooper = ({ trooper, onClick, children }) => {
                         {renderCharLogos(profile.chars)}
                       </Box>
                     </Box>
-                    <UnitDetails trooper={trooper} profile={profile} />
+                    <UnitDetails profile={profile} />
                   </div>
                 ))}
                 {/* Existing header bar with three titles */}

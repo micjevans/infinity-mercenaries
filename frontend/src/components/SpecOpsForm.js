@@ -218,7 +218,46 @@ const SpecOpsForm = ({ editUnit, profile, xp, specops }) => {
 
     // Update selection state after XP check
     setter(newState);
-    editUnit(type, [...profile[type], ...newState]);
+    const cleanItem = (itemToClean, itemType) => {
+      let subItems = {};
+      ["weapons", "skills", "equip", "peripherals"].forEach((key) => {
+        if (itemToClean[key]) {
+          subItems[key.endsWith("s") ? key : `${key}s`] = itemToClean[key].map(
+            (subItem) => cleanItem(subItem, key.endsWith("s") ? key : `${key}s`)
+          );
+        }
+      });
+      return {
+        ...subItems,
+        id: itemToClean.id,
+        extra: itemToClean.extras,
+        key: itemType,
+      }; // Clean the item to avoid circular references
+    };
+    const perks = [
+      ...newState.map((newItem) => cleanItem(newItem, type)),
+      // ...(type !== "attr"
+      //   ? selectedAttributes.map((selectedAttribute) =>
+      //       cleanItem(selectedAttribute)
+      //     )
+      //   : []), // Only include attributes if not handling them
+      ...(type !== "equips"
+        ? selectedEquipment.map((selectedEquip) =>
+            cleanItem(selectedEquip, "equips")
+          )
+        : []), // Only include equipment if not handling them
+      ...(type !== "weapons"
+        ? selectedWeapons.map((selectedWeapon) =>
+            cleanItem(selectedWeapon, "weapons")
+          )
+        : []), // Only include weapons if not handling them
+      ...(type !== "skills"
+        ? selectedSkills.map((selectedSkill) =>
+            cleanItem(selectedSkill, "skills")
+          )
+        : []),
+    ];
+    editUnit(perks);
   };
 
   // Attribute option click handler with XP validation
@@ -331,7 +370,6 @@ const SpecOpsForm = ({ editUnit, profile, xp, specops }) => {
         title="Weapons"
         items={processedSpecops.weapons}
         selectedItems={selectedWeapons}
-        itemType="weapon"
         metaKey="weapons"
         handleItemToggle={handleItemToggle}
       />
@@ -340,7 +378,6 @@ const SpecOpsForm = ({ editUnit, profile, xp, specops }) => {
         title="Skills"
         items={processedSpecops.skills}
         selectedItems={selectedSkills}
-        itemType="skill"
         metaKey="skills"
         handleItemToggle={handleItemToggle}
       />
@@ -349,7 +386,6 @@ const SpecOpsForm = ({ editUnit, profile, xp, specops }) => {
         title="Equipment"
         items={processedSpecops.equip}
         selectedItems={selectedEquipment}
-        itemType="equip"
         metaKey="equips"
         handleItemToggle={handleItemToggle}
       />

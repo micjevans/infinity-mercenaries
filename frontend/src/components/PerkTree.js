@@ -2,6 +2,9 @@ import React, { useRef, useEffect, useCallback } from "react";
 import { Box, Button, useTheme, Chip } from "@mui/material";
 import { getExtra } from "../utils/metadataMapping";
 import ExtensionIcon from "@mui/icons-material/Extension";
+import { calculateLevel } from "../utils/experienceUtils";
+import store from "../redux/store";
+import { showNotification } from "../redux/notificationsSlice";
 
 const perkTrees = {
   intelligence: [
@@ -170,13 +173,7 @@ function drawCenteredWrappedText(
   }
 }
 
-const PerkTree = ({
-  trooper,
-  perk,
-  setTrooper,
-  onBack,
-  availablePerkPoints = 0,
-}) => {
+const PerkTree = ({ trooper, perk, setTrooper, onBack, perkPoints = 0 }) => {
   const theme = useTheme();
   const canvasRef = useRef(null);
 
@@ -191,29 +188,49 @@ const PerkTree = ({
   const staticBackgroundRef = useRef(null);
   const animationFrameRef = useRef(null);
 
-  function isSkillSelected(node, trooper) {
-    return trooper.profileGroups[0].profiles[0].skills.some((skill) => {
-      // confirm that the skill exists in the trooper's profile
-      if (skill.id !== node.id) {
-        // or that it's children do
-        if (!node.children) return false;
-        return node.children.some((child) => isSkillSelected(child, trooper));
-      }
-      // if the node has extras...
-      if (node.extra) {
-        // confirm that the skill has extras
-        if (!skill.extra) return false;
-        // confirm that every node extra is found in the skills extras
-        const sameExtras = node.extra.every((nodeExtra) =>
-          skill.extra.includes(nodeExtra)
-        );
-        if (sameExtras) return true;
-        // or that it's children are valid
-        if (!node.children) return false;
-        return node.children.some((child) => isSkillSelected(child, trooper));
-      }
-      return true;
-    });
+  // Returns the index of the perk in the trooper.perks array +1 if it's found
+  // We want to do +1 so that we can also use it to check if the skill is found in the skills array
+  function selectedPerkIndex(node, trooper) {
+    // check if the perk is in the troopers perks
+    const inPerksIndex = trooper.perks.findIndex(
+      (perk) =>
+        perk.id === node.id &&
+        perk.key === node.key &&
+        JSON.stringify(perk.extra) === JSON.stringify(node.extra) &&
+        perk.weapons === node.weapons &&
+        perk.equips === node.equips &&
+        perk.peripherals === node.peripherals &&
+        perk.skills === node.skills
+    );
+    return (
+      inPerksIndex + 1 ||
+      trooper.profileGroups[0].profiles[0].skills.some((skill) => {
+        // confirm that the skill exists in the trooper's profile
+        if (skill.id !== node.id) {
+          // or that it's children do
+          if (!node.children) return false;
+          return node.children.some((child) =>
+            selectedPerkIndex(child, trooper)
+          );
+        }
+        // if the node has extras...
+        if (node.extra) {
+          // confirm that the skill has extras
+          if (!skill.extra) return false;
+          // confirm that every node extra is found in the skills extras
+          const sameExtras = node.extra.every((nodeExtra) =>
+            skill.extra.includes(nodeExtra)
+          );
+          if (sameExtras) return true;
+          // or that it's children are valid
+          if (!node.children) return false;
+          return node.children.some((child) =>
+            selectedPerkIndex(child, trooper)
+          );
+        }
+        return true;
+      })
+    );
   }
 
   // Schedule a redraw using requestAnimationFrame
@@ -263,7 +280,7 @@ const PerkTree = ({
       }
 
       // Determine if this node is selected based on the trooper's skills.
-      const selected = isSkillSelected(node, trooper); // 'trooper' must be in scope.
+      const selectedIndex = selectedPerkIndex(node, trooper); // 'trooper' must be in scope.
 
       // Draw the node square (fixed size).
       const cornerRadius = 8;
@@ -287,7 +304,7 @@ const PerkTree = ({
       ctx.closePath();
 
       // Fill style: solid orange if selected, else transparent with an orange outline.
-      ctx.fillStyle = selected ? "orange" : "rgba(0, 0, 0, 0)";
+      ctx.fillStyle = selectedIndex ? "orange" : "rgba(0, 0, 0, 0)";
       ctx.fill();
 
       ctx.strokeStyle = "orange";
@@ -296,7 +313,7 @@ const PerkTree = ({
 
       // Draw centered wrapped text on the node.
       // Use black text if selected, otherwise white.
-      ctx.fillStyle = selected ? "black" : "#fff";
+      ctx.fillStyle = selectedIndex ? "black" : "#fff";
       ctx.font = "12px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -561,8 +578,18 @@ const PerkTree = ({
 
         // Perform Click Action
         if (node) {
+          if (!perkPoints) {
+            store.dispatch(showNotification("Not enough Perk Points", "error"));
+            return null; // don't allow clicks if no perk points are available
+          }
+          if (calculateLevel(trooper.xp) < node.lvl) {
+            store.dispatch(
+              showNotification(`Trooper must be level ${node.lvl}`, "error")
+            );
+            return null; // don't allow clicks if the trooper is not high enough level for the perk
+          }
           // if it's already selected, do nothing.
-          if (isSkillSelected(node, trooper)) return null;
+          if (selectedPerkIndex(node, trooper)) return null;
 
           function findParentById(baseNode, nodeToFind) {
             // If the current node doesn't have children, there's no parent to find here.
@@ -590,54 +617,30 @@ const PerkTree = ({
             .map((treeNode) => findParentById(treeNode, node))
             .filter((e) => e !== null);
 
-          if (parent.length > 0 && !isSkillSelected(parent[0], trooper))
+          if (parent.length > 0 && !selectedPerkIndex(parent[0], trooper)) {
+            store.dispatch(
+              showNotification(`Parent Perk must be selected first`, "error")
+            );
             return null;
+          }
 
           // otherwise, add the skill to the trooper.
-          setTrooper((prevTrooper) => {
-            const updatedTrooper = { ...prevTrooper };
-            const skills = updatedTrooper.profileGroups[0].profiles[0].skills;
-            const existingSkill = skills.find((s) => s.id === node.id);
-
-            if (existingSkill) {
-              // If the node has extras, merge them into the existing skill's extras.
-              if (node.extra) {
-                if (!existingSkill.extra) {
-                  existingSkill.extra = [];
-                }
-                node.extra.forEach((extraValue) => {
-                  // Obtain the mapped extra object using mapExtra.
-                  const newMappedExtra = getExtra(extraValue);
-                  if (newMappedExtra.type === "DISTANCE") {
-                    // Look for an existing extra of type "DISTANCE"
-                    const index = existingSkill.extra.findIndex(
-                      (ex) => getExtra(ex).type === "DISTANCE"
-                    );
-                    if (index !== -1) {
-                      // Override the existing DISTANCE extra.
-                      existingSkill.extra[index] = extraValue;
-                    } else {
-                      existingSkill.extra.push(extraValue);
-                    }
-                  } else {
-                    // For non-DISTANCE extras, only add if not already present.
-                    if (!existingSkill.extra.includes(extraValue)) {
-                      existingSkill.extra.push(extraValue);
-                    }
-                  }
-                });
-              }
-            } else {
-              // If the skill doesn't exist, add it entirely.
-              skills.push({
+          setTrooper((prevTrooper) => ({
+            ...prevTrooper,
+            perkPoints: prevTrooper.perkPoints - 1,
+            perks: [
+              ...prevTrooper.perks,
+              {
                 id: node.id,
-                extra: node.extra || undefined,
-              });
-            }
-            return updatedTrooper;
-          });
-
-          console.log("Clicked skill:", node.name);
+                extra: node.extra,
+                key: node.key,
+                weapons: node.weapons,
+                equips: node.equips,
+                peripherals: node.peripherals,
+                skills: node.skills,
+              },
+            ],
+          }));
           break;
         }
       }
@@ -701,9 +704,9 @@ const PerkTree = ({
       >
         <Chip
           icon={<ExtensionIcon />}
-          label={`${availablePerkPoints} Perk Points`}
-          color={availablePerkPoints > 0 ? "secondary" : "default"}
-          variant={availablePerkPoints > 0 ? "filled" : "outlined"}
+          label={`${perkPoints} Perk Points`}
+          color={perkPoints > 0 ? "secondary" : "default"}
+          variant={perkPoints > 0 ? "filled" : "outlined"}
         />
       </Box>
 

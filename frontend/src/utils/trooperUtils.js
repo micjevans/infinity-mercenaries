@@ -7,41 +7,32 @@
  */
 export const addItemToTrooper = (trooperDraft, item, type) => {
   if (!trooperDraft || !item) return trooperDraft;
-  const profile = trooperDraft.profileGroups[0].profiles[0][type];
+  const profile = trooperDraft.profileGroups[0].profiles[0];
 
   // If the type is present then add the item otherwise move on the add children
   if (type) {
-    if (!profile.type) {
+    if (!profile[type]) {
       trooperDraft.profileGroups[0].profiles[0][type] = []; // Initialize item array if not present
     }
-    const foundItem = profile.some((perk) => perk.id === item.id);
-    if (foundItem) {
-      // Initialize extras array. It's odd like this because CB uses the key extras in specops data and extra in unit data
-      let extras = [];
-      if (item.extras) {
-        extras = item.extras;
-      }
-      if (item.extra) {
-        extras = item.extra;
-      }
-      extras.forEach((extra) => {
-        if (!foundItem.extras) {
-          trooperDraft.profileGroups[0].profiles[0][type].extras = []; // Initialize extras if not present
-        }
-        if (!foundItem.extras.some((e) => e.id === extra.id)) {
-          trooperDraft.profileGroups[0].profiles[0][type].extras.push(extra); // Add extra if it doesn't exist
-        }
-      });
+    const foundItemIndex = profile[type].findIndex(
+      (perk) => perk.id === item.id
+    );
+    if (foundItemIndex !== -1) {
+      trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex].extra = [
+        ...trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex]
+          .extra,
+        ...(item.extra || []),
+      ]; // Merge extras if item already exists
     } else {
       // If item doesn't exist, add it to the profile
       trooperDraft.profileGroups[0].profiles[0][type].push({
         id: item.id,
-        extras: item.extras,
+        extra: item.extra,
       });
     }
   }
 
-  ["equip", "weapons", "skills", "peripherals"].forEach((key) => {
+  ["equips", "weapons", "skills", "peripherals"].forEach((key) => {
     if (item[key]) {
       item[key].forEach((subItem) =>
         addItemToTrooper(trooperDraft, subItem, key)
@@ -51,22 +42,22 @@ export const addItemToTrooper = (trooperDraft, item, type) => {
   return trooperDraft;
 };
 
-export const renderCombinedDetails = (trooper, profile) => {
+export const renderCombinedDetails = (trooper) => {
   let renderedTrooper = JSON.parse(JSON.stringify(trooper)); // Deep clone to avoid mutating original trooper
   ["primary", "secondary", "sidearm", "accessory", "augment", "armor"].forEach(
     (key) => {
-      if (profile[key]) {
+      if (trooper[key]) {
         renderedTrooper = addItemToTrooper(
           renderedTrooper,
-          profile[key],
-          profile[key].key
+          trooper[key],
+          trooper[key].key
         ); // Add the item to the trooper
       }
     }
   );
 
-  if (profile["perks"]) {
-    profile["perks"].forEach((perk) => {
+  if (trooper["perks"]) {
+    trooper["perks"].forEach((perk) => {
       renderedTrooper = addItemToTrooper(renderedTrooper, perk, perk.key); // Add the perk to the trooper
     });
   }

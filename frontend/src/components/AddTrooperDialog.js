@@ -12,6 +12,7 @@ import {
 import Trooper from "./Trooper";
 import SpecOpsForm from "./SpecOpsForm";
 import { produce } from "immer";
+import { addItemToTrooper } from "../utils/trooperUtils";
 
 const AddTrooperDialog = ({
   open,
@@ -151,6 +152,7 @@ const AddTrooperDialog = ({
                 optionToClean
               ) => ({
                 ...unitToClean,
+                perks: [], // Reset perks to avoid duplicates
                 profileGroups: [
                   {
                     ...groupToClean,
@@ -204,6 +206,9 @@ const AddTrooperDialog = ({
                 cleanedUnit.captain = true;
               }
               if (!isCreatingCaptain || cleanedUnit.captain) {
+                unit.perks.forEach((perk) => {
+                  addItemToTrooper(cleanedUnit, perk, perk.key); // Add perks to the cleaned unit
+                });
                 onAddTrooper(cleanedUnit);
                 return;
               }
@@ -226,7 +231,12 @@ const AddTrooperDialog = ({
                 editUnit={(key, val) => {
                   setFilteredUnits((currentUnits) =>
                     produce(currentUnits, (draft) => {
-                      draft[unitIndex].profileGroups[0].profiles[0][key] = val;
+                      if (val) {
+                        draft[unitIndex].profileGroups[0].profiles[0][key] =
+                          val;
+                      } else {
+                        draft[unitIndex].perks = key;
+                      }
                     })
                   );
                 }}
