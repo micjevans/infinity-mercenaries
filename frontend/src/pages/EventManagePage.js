@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import {
   Container,
@@ -29,9 +29,12 @@ import {
   Chip,
   IconButton,
   ListItemSecondaryAction,
+  Tooltip,
+  Link,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   getEvent,
   getRounds,
@@ -270,6 +273,30 @@ const EventManagePage = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* Header with Back Button and Title */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Box display="flex" alignItems="center">
+          <Tooltip title="Back to Event Details">
+            <IconButton
+              onClick={() => navigate(`/events/${eventId}`)}
+              color="primary"
+              sx={{ mr: 2 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
+          <Typography variant="h4" component="h1">
+            Manage Event
+          </Typography>
+        </Box>
+        {/* Any additional header actions */}
+      </Box>
+
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           Manage Event: {event?.name}

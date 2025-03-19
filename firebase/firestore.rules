@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to read basic profile info for any user
+    match /users/{userId} {
+      // Anyone can read basic public profile info
+      allow read: if request.auth != null;
+      
+      // Only the user can modify their own document
+      allow create, update: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+      
+      // Companies subcollection - anyone can read, only owner can write
+      match /companies/{companyId} {
+        // Anyone can read companies
+        allow read: if request.auth != null;
+        // Only owner can write their companies
+        allow write: if request.auth != null && request.auth.uid == userId;
+        
+        // All subcollections under companies follow the same pattern
+        match /{document=**} {
+          allow read: if request.auth != null;
+          allow write: if request.auth != null && request.auth.uid == userId;
+        }
+      }
+    }
+    
+    // Allow authenticated users to read equipment data
+    match /equipment/{document=**} {
+      allow read: if request.auth != null;
+    }
+    
+    // Function to check if a user is an organizer of an event
+    function isOrganizer(eventId) {
+      return request.auth != null && get(/databases/$(database)/documents/events/$(eventId)).data.organizers.hasAny([request.auth.uid]);
+    }
+    
+    // Allow all users to read event data, organizers to modify events
+    match /events/{eventId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                    (resource == null || 
+                     resource.data.organizers.hasAny([request.auth.uid]));
+      
+      // Round subcollection - allow organizers to write
+      match /rounds/{roundId} {
+        allow read: if request.auth != null;
+        allow write: if isOrganizer(eventId);
+        
+        // Pairing subcollection - allow organizers to write
+        match /pairings/{pairingId} {
+          allow read: if request.auth != null;
+          allow write: if isOrganizer(eventId);
+          
+          // Results subcollection - allow organizers to write
+          match /results/{resultId} {
+            allow read: if request.auth != null;
+            allow write: if isOrganizer(eventId);
+          }
+        }
+      }
+      
+      // Add rules for any other event subdocuments
+      match /{document=**} {
+        allow read: if request.auth != null;
+      }
+    }
+    
+    // For development only - comment out in production
+    // match /{document=**} {
+    //   allow read, write: if request.auth != null;
+    // }
+  }
+}

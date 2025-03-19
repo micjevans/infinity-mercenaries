@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Container,
   Typography,
+  Box,
   Paper,
+  Grid,
   CircularProgress,
+  IconButton,
+  Tooltip,
+  Alert,
   Stepper,
   Step,
   StepLabel,
   Snackbar,
-  Alert,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   getEvent,
   getPairings,
@@ -297,7 +302,32 @@ const PairingPage = () => {
   const steps = ["Deploy Troopers", "Mission", "Post Mission"];
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* Header with Back Button */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Box display="flex" alignItems="center">
+          <Tooltip title="Back to Round Details">
+            <IconButton
+              onClick={() => navigate(`/events/${eventId}/rounds/${roundId}`)}
+              color="primary"
+              sx={{ mr: 2 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
+          <Typography variant="h4" component="h1">
+            {/* Keep existing heading */}
+            Pairing Details
+          </Typography>
+        </Box>
+        {/* Keep any existing action buttons */}
+      </Box>
+
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           Mission Pairing

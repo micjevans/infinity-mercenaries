@@ -22,6 +22,7 @@ import PairingPage from "./pages/PairingPage";
 // Add this import with your other page imports
 import AdminSetup from "./pages/AdminSetup";
 import GlobalNotification from "./components/GlobalNotification";
+import RoundDetailsPage from "./pages/RoundDetailsPage";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -99,7 +100,7 @@ function App() {
             }
           />
 
-          {/* New Event Routes */}
+          {/* New Event Routes - Remove EventManagePage route */}
           <Route path="/events" element={<EventListPage />} />
           <Route
             path="/events/create"
@@ -110,6 +111,7 @@ function App() {
             }
           />
           <Route path="/events/:eventId" element={<EventDetailsPage />} />
+          {/* Remove this route as we've integrated it into EventDetailsPage
           <Route
             path="/events/:eventId/manage"
             element={
@@ -118,6 +120,7 @@ function App() {
               </ModRoute>
             }
           />
+          */}
           <Route
             path="/events/:eventId/rounds/:roundId/pairings/:pairingId"
             element={
@@ -125,6 +128,10 @@ function App() {
                 <PairingPage />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="/events/:eventId/rounds/:roundId"
+            element={<RoundDetailsPage />}
           />
           {/* Add this admin setup route */}
           <Route path="/admin-setup" element={<AdminSetup />} />
