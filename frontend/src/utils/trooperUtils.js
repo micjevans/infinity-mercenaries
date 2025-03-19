@@ -11,24 +11,42 @@ export const addItemToTrooper = (trooperDraft, item, type) => {
 
   // If the type is present then add the item otherwise move on the add children
   if (type) {
-    if (!profile[type]) {
-      trooperDraft.profileGroups[0].profiles[0][type] = []; // Initialize item array if not present
-    }
-    const foundItemIndex = profile[type].findIndex(
-      (perk) => perk.id === item.id
-    );
-    if (foundItemIndex !== -1) {
-      trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex].extra = [
-        ...trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex]
-          .extra,
-        ...(item.extra || []),
-      ]; // Merge extras if item already exists
+    // If the type is an attribute we handle it differently
+    if (
+      ["move", "cc", "bs", "wip", "ph", "arm", "bts", "w", "s"].includes(type)
+    ) {
+      if (type === "move") {
+        // Initialize if needed and update mov values
+        trooperDraft.profileGroups[0].profiles[0].move = (
+          trooperDraft.profileGroups[0].profiles[0].move || [0, 0]
+        ).map((movVal, movIndex) => {
+          return (movVal < 0 ? 0 : movVal) + item.extra[movIndex];
+        });
+      } else {
+        trooperDraft.profileGroups[0].profiles[0][type] += item.extra; // Directly add the attribute value
+      }
     } else {
-      // If item doesn't exist, add it to the profile
-      trooperDraft.profileGroups[0].profiles[0][type].push({
-        id: item.id,
-        extra: item.extra,
-      });
+      // If it's not an attribute we add it to its respective array
+      if (!profile[type]) {
+        trooperDraft.profileGroups[0].profiles[0][type] = []; // Initialize item array if not present
+      }
+      const foundItemIndex = profile[type].findIndex(
+        (perk) => perk.id === item.id
+      );
+      if (foundItemIndex !== -1) {
+        trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex].extra =
+          [
+            ...(trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex]
+              .extra || []),
+            ...(item.extra || []),
+          ]; // Merge extras if item already exists
+      } else {
+        // If item doesn't exist, add it to the profile
+        trooperDraft.profileGroups[0].profiles[0][type].push({
+          id: item.id,
+          extra: item.extra,
+        });
+      }
     }
   }
 
@@ -39,6 +57,7 @@ export const addItemToTrooper = (trooperDraft, item, type) => {
       );
     }
   });
+  console.log("Trooper after adding item:", trooperDraft); // Debugging line to check the trooper state
   return trooperDraft;
 };
 

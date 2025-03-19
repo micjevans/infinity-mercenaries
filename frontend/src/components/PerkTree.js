@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { Box, Button, useTheme, Chip } from "@mui/material";
-import { getExtra } from "../utils/metadataMapping";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import { calculateLevel } from "../utils/experienceUtils";
 import store from "../redux/store";
@@ -101,14 +100,16 @@ const perkTrees = {
     },
     {
       id: "custom",
-      name: "MOV +0, +2",
-      key: "skills",
+      name: "MOVE +0, +2",
+      extra: [0, 5],
+      key: "move",
       lvl: 3,
       children: [
         {
           id: "custom",
-          name: "MOV +2, +0",
-          key: "skills",
+          name: "MOVE +2, +0",
+          extra: [5, 0],
+          key: "move",
           lvl: 4,
         },
       ],
@@ -120,7 +121,7 @@ const perkTrees = {
       lvl: 1,
     },
     {
-      id: "custom",
+      id: "Covering Fire (Deploys in Suppressive Fire State)",
       name: "Covering Fire",
       key: "skills",
       lvl: 3,
@@ -200,7 +201,16 @@ const PerkTree = ({ trooper, perk, setTrooper, onBack, perkPoints = 0 }) => {
         perk.weapons === node.weapons &&
         perk.equips === node.equips &&
         perk.peripherals === node.peripherals &&
-        perk.skills === node.skills
+        perk.skills === node.skills &&
+        JSON.stringify(perk.move) === JSON.stringify(node.move) &&
+        perk.cc === node.cc &&
+        perk.bs === node.bs &&
+        perk.wip === node.wip &&
+        perk.ph === node.ph &&
+        perk.arm === node.arm &&
+        perk.bts === node.bts &&
+        perk.w === node.w &&
+        perk.s === node.s
     );
     return (
       inPerksIndex + 1 ||
@@ -638,6 +648,15 @@ const PerkTree = ({ trooper, perk, setTrooper, onBack, perkPoints = 0 }) => {
                 equips: node.equips,
                 peripherals: node.peripherals,
                 skills: node.skills,
+                move: node.move,
+                cc: node.cc,
+                bs: node.bs,
+                wip: node.wip,
+                ph: node.ph,
+                arm: node.arm,
+                bts: node.bts,
+                w: node.w,
+                s: node.s,
               },
             ],
           }));

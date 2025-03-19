@@ -206,7 +206,7 @@ const AddTrooperDialog = ({
                 cleanedUnit.captain = true;
               }
               if (!isCreatingCaptain || cleanedUnit.captain) {
-                unit.perks.forEach((perk) => {
+                (unit.perks || []).forEach((perk) => {
                   addItemToTrooper(cleanedUnit, perk, perk.key); // Add perks to the cleaned unit
                 });
                 onAddTrooper(cleanedUnit);
