@@ -14,7 +14,11 @@ export const renderStat = (stat) => {
       ? `${converted[0]} - ${converted[1]}`
       : converted[0];
   }
-  return stat !== undefined && stat !== null && stat >= 0 ? stat : "-";
+  return stat !== undefined && stat !== null && stat >= 0
+    ? stat === 255
+      ? "T"
+      : stat
+    : "-";
 };
 
 export const mapItemData = (item) => {

@@ -18,7 +18,7 @@ import ProfileDetails from "./ProfileDetails";
 import { calculateLevel } from "../utils/experienceUtils";
 import { renderCombinedDetails } from "../utils/trooperUtils";
 
-const Trooper = ({ trooper, onClick, children }) => {
+const Trooper = ({ trooper, onClick, children, showAva = false }) => {
   const theme = useTheme();
 
   if (!trooper || !trooper.profileGroups) return null;
@@ -111,7 +111,7 @@ const Trooper = ({ trooper, onClick, children }) => {
                         {renderCharLogos(profile.chars)}
                       </Box>
                     </Box>
-                    <UnitDetails profile={profile} />
+                    <UnitDetails profile={profile} showAva={showAva} />
                   </div>
                 ))}
                 {/* Existing header bar with three titles */}

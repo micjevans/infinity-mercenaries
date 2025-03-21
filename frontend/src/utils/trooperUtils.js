@@ -57,7 +57,6 @@ export const addItemToTrooper = (trooperDraft, item, type) => {
       );
     }
   });
-  console.log("Trooper after adding item:", trooperDraft); // Debugging line to check the trooper state
   return trooperDraft;
 };
 

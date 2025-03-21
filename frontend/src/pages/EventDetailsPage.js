@@ -118,7 +118,6 @@ const EventDetailsPage = () => {
   const [isOrganizer, setIsOrganizer] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const navigate = useNavigate();
-  console.log(event);
   // New state for edit mode
   const [editMode, setEditMode] = useState(false);
   const [editedEvent, setEditedEvent] = useState({});

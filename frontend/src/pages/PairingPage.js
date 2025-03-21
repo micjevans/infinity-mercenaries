@@ -14,6 +14,12 @@ import {
   Step,
   StepLabel,
   Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -21,6 +27,8 @@ import {
   getPairings,
   submitResult,
   getResults,
+  addResult,
+  updateResult,
 } from "../services/eventService";
 import { useAuth } from "../auth/AuthContext";
 // Import the new service
@@ -29,7 +37,7 @@ import { getTroopers } from "../services/trooperService";
 import DeployTroopers from "../components/pairing/DeployTroopers";
 import Mission from "../components/pairing/Mission";
 import PostMission from "../components/pairing/PostMission";
-
+import { getCompany } from "../services/companyService";
 // Constants moved to top level for clarity
 const DOWNTIME_EVENTS = [
   "Training",
@@ -40,6 +48,8 @@ const DOWNTIME_EVENTS = [
 ];
 
 const DOWNTIME_RESULTS = ["Critical Success", "Success", "Failure"];
+
+// Add this import for company service
 
 const PairingPage = () => {
   const { eventId, roundId, pairingId } = useParams();
@@ -71,6 +81,18 @@ const PairingPage = () => {
 
   // Check if user has already submitted a result
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  // Add state for confirmation dialog
+  const [deployConfirmOpen, setDeployConfirmOpen] = useState(false);
+
+  // Add state for opponent data
+  const [opponentId, setOpponentId] = useState(null);
+  const [opponentTroopers, setOpponentTroopers] = useState([]);
+  const [allResults, setAllResults] = useState([]);
+
+  // Add state for company data
+  const [playerCompany, setPlayerCompany] = useState(null);
+  const [opponentCompany, setOpponentCompany] = useState(null);
 
   useEffect(() => {
     const loadPairingData = async () => {
@@ -109,15 +131,46 @@ const PairingPage = () => {
           return;
         }
 
+        // Load player's company data
+        try {
+          const playerCompanyData = await getCompany(
+            userParticipation.companyId,
+            user.uid
+          );
+          setPlayerCompany(playerCompanyData);
+        } catch (companyError) {
+          console.error("Error loading player company:", companyError);
+        }
+
+        // Find opponent's ID from the pairing players array
+        const opponent = pairingData.players.find(
+          (playerId) => playerId !== user.uid
+        );
+        setOpponentId(opponent);
+
+        // Find opponent's company
+        if (opponent) {
+          const opponentParticipation = eventData.participants?.find(
+            (p) => p.userId === opponent
+          );
+
+          if (opponentParticipation?.companyId) {
+            try {
+              // Load opponent's company data
+              const opponentCompanyData = await getCompany(
+                opponentParticipation.companyId,
+                opponent
+              );
+              setOpponentCompany(opponentCompanyData);
+            } catch (companyError) {
+              console.error("Error loading opponent company:", companyError);
+            }
+          }
+        }
+
         // Load existing results
         const resultsData = await getResults(eventId, roundId, pairingId);
-
-        // Check if user has already submitted a result
-        const userResult = resultsData.find((r) => r.player === user?.uid);
-        if (userResult) {
-          setHasSubmitted(true);
-          setResultData(userResult);
-        }
+        setAllResults(resultsData);
 
         // Load user's troopers for this company using the new service
         // We need to pass both the companyId and userId
@@ -126,6 +179,58 @@ const PairingPage = () => {
           user.uid
         );
         setTroopers(companyTroopers);
+
+        // Load opponent's troopers if they've submitted a result
+        const opponentResult = resultsData.find((r) => r.player === opponent);
+        if (opponentResult && opponentResult.troopers) {
+          // Find opponent's company
+          const opponentParticipation = eventData.participants?.find(
+            (p) => p.userId === opponent
+          );
+
+          if (opponentParticipation?.companyId) {
+            try {
+              // Get opponent's troopers
+              const opponentTroops = await getTroopers(
+                opponentParticipation.companyId,
+                opponent
+              );
+
+              // Filter to just the deployed ones from their result
+              const deployedOpponentTroopers = opponentTroops.filter(
+                (trooper) =>
+                  opponentResult.troopers.some((t) => t.trooper === trooper.id)
+              );
+
+              setOpponentTroopers(deployedOpponentTroopers);
+            } catch (error) {
+              console.error("Error loading opponent troopers:", error);
+            }
+          }
+        }
+
+        // Check if user has already submitted a result
+        const userResult = resultsData.find((r) => r.player === user?.uid);
+        if (userResult) {
+          setHasSubmitted(userResult.complete);
+          setResultData({
+            ...userResult,
+            resultId: userResult.id, // Make sure to include the resultId
+          });
+          setActiveStep(userResult.troopers.length > 0 ? 1 : 0);
+          return;
+        }
+
+        setResultData((prev) => {
+          return {
+            ...prev,
+            troopers: companyTroopers
+              .filter((t) => t.captain)
+              .map((t) => {
+                return { trooper: t.id, injuries: [], xp: {} };
+              }),
+          };
+        });
       } catch (error) {
         console.error("Error loading pairing data:", error);
         setError("Failed to load pairing data. Please try again.");
@@ -197,20 +302,41 @@ const PairingPage = () => {
     }));
   };
 
-  // New function to save deployed troopers
-  const saveDeployedTroopers = async () => {
-    try {
-      // Validate that troopers are selected
-      if (resultData.troopers.length === 0) {
-        setError("You must deploy at least one trooper.");
-        return;
-      }
+  // Update to show confirmation dialog instead of immediately saving
+  const handleDeployNext = () => {
+    // Validate that troopers are selected
+    if (resultData.troopers.length === 0) {
+      setError("You must deploy at least one trooper.");
+      return;
+    }
 
-      // Save partial result with deployed troopers
-      await submitResult(eventId, roundId, pairingId, {
+    // Show confirmation dialog
+    setDeployConfirmOpen(true);
+  };
+
+  // Add function to handle dialog close
+  const handleDeployConfirmClose = () => {
+    setDeployConfirmOpen(false);
+  };
+
+  // Move the existing save logic to this new confirmation handler
+  const handleDeployConfirm = async () => {
+    try {
+      // Close dialog first
+      setDeployConfirmOpen(false);
+
+      // Use addResult to create the initial result record
+      const resultId = await addResult(eventId, roundId, pairingId, {
         ...resultData,
-        status: "deploying",
+        player: user.uid,
+        phase: "deploy",
       });
+
+      // Store the resultId in the local state
+      setResultData((prev) => ({
+        ...prev,
+        resultId: resultId,
+      }));
 
       // Move to next step
       setActiveStep((prev) => prev + 1);
@@ -224,11 +350,15 @@ const PairingPage = () => {
   const saveMissionResults = async () => {
     try {
       // Will implement validation here
+      if (!resultData.resultId) {
+        setError("Missing result ID. Please try again.");
+        return;
+      }
 
       // Save partial result with mission details
-      await submitResult(eventId, roundId, pairingId, {
+      await updateResult(eventId, roundId, pairingId, resultData.resultId, {
         ...resultData,
-        status: "completed",
+        phase: "mission",
       });
 
       // Move to next step
@@ -248,9 +378,15 @@ const PairingPage = () => {
         return;
       }
 
+      if (!resultData.resultId) {
+        setError("Missing result ID. Please try again.");
+        return;
+      }
+
       // Submit final result with verified status
-      await submitResult(eventId, roundId, pairingId, {
+      await updateResult(eventId, roundId, pairingId, resultData.resultId, {
         ...resultData,
+        phase: "complete",
         status: "verified",
       });
 
@@ -265,6 +401,7 @@ const PairingPage = () => {
 
       if (allVerified) {
         // Mark pairing as complete - This would be implemented in your backend
+        console.log("All players have verified their results");
       }
 
       // Navigate back to event details
@@ -360,7 +497,7 @@ const PairingPage = () => {
             hasSubmitted={hasSubmitted}
             onAddTrooper={handleAddTrooper}
             onRemoveTrooper={handleRemoveTrooper}
-            onNext={saveDeployedTroopers}
+            onNext={handleDeployNext} // Changed from saveDeployedTroopers to handleDeployNext
           />
         )}
 
@@ -376,6 +513,15 @@ const PairingPage = () => {
             troopers={troopers}
             DOWNTIME_EVENTS={DOWNTIME_EVENTS}
             DOWNTIME_RESULTS={DOWNTIME_RESULTS}
+            enemyTroopers={opponentTroopers} // Pass opponent's troopers
+            allResults={allResults} // Pass all results
+            opponentId={opponentId} // Pass opponent's ID
+            setResultData={setResultData} // Pass setResultData to the Mission component
+            eventId={eventId} // Pass through eventId
+            roundId={roundId} // Pass through roundId
+            pairingId={pairingId} // Pass through pairingId
+            playerCompany={playerCompany} // Pass player company
+            opponentCompany={opponentCompany} // Pass opponent company
           />
         )}
 
@@ -388,6 +534,52 @@ const PairingPage = () => {
           />
         )}
       </Paper>
+
+      {/* Add Deployment Confirmation Dialog */}
+      <Dialog
+        open={deployConfirmOpen}
+        onClose={handleDeployConfirmClose}
+        aria-labelledby="deploy-confirm-title"
+        aria-describedby="deploy-confirm-description"
+      >
+        <DialogTitle id="deploy-confirm-title">
+          Confirm Trooper Deployment
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="deploy-confirm-description">
+            Deployed Troopers cannot be changed once the mission starts. Are you
+            sure this is the list you wish to play with?
+          </DialogContentText>
+          {/* Optional: You could show the list of troopers here for final review */}
+          {resultData.troopers.length > 0 && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle2" gutterBottom>
+                Troopers to deploy:
+              </Typography>
+              <ul>
+                {resultData.troopers.map((t) => {
+                  const trooper = troopers.find((tr) => tr.id === t.trooper);
+                  return (
+                    <li key={t.trooper}>
+                      {trooper ? trooper.name : `Trooper ${t.trooper}`}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeployConfirmClose}>Cancel</Button>
+          <Button
+            onClick={handleDeployConfirm}
+            color="primary"
+            variant="contained"
+          >
+            Confirm Deployment
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Feedback messages */}
       <Snackbar

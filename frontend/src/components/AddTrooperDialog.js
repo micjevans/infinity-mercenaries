@@ -224,6 +224,7 @@ const AddTrooperDialog = ({
                 )
               );
             }}
+            showAva={true}
           >
             {/* Replace HelloWorld with the new SpecOpsForm component */}
             {unit.captain && (

@@ -7,6 +7,8 @@ import {
   updateDoc,
   serverTimestamp,
   arrayUnion,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import store from "../redux/store";
@@ -455,9 +457,10 @@ export const completePairing = async (
   }
 };
 
-// Result operations
-export const submitResult = async (eventId, roundId, pairingId, resultData) => {
+// New function to create a new result (used when deploying troopers)
+export const addResult = async (eventId, roundId, pairingId, resultData) => {
   try {
+    // Create a new result document
     const resultRef = await addDoc(
       collection(
         db,
@@ -472,21 +475,107 @@ export const submitResult = async (eventId, roundId, pairingId, resultData) => {
       {
         ...resultData,
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       }
     );
 
-    // Show success notification
-    store.dispatch(showNotification("Result submitted successfully!"));
+    const resultId = resultRef.id;
+    console.log("New result created:", resultId);
 
-    return resultRef.id;
+    // Return the new document ID
+    return resultId;
+  } catch (error) {
+    console.error("Error adding result:", error);
+    store.dispatch(
+      showNotification(`Error adding result: ${error.message}`, "error")
+    );
+    throw error;
+  }
+};
+
+// New function to update an existing result (used for mission outcomes, downtime, etc.)
+export const updateResult = async (
+  eventId,
+  roundId,
+  pairingId,
+  resultId,
+  resultData
+) => {
+  try {
+    // Update the existing result document
+    const resultRef = doc(
+      db,
+      "events",
+      eventId,
+      "rounds",
+      roundId,
+      "pairings",
+      pairingId,
+      "results",
+      resultId
+    );
+
+    await updateDoc(resultRef, {
+      ...resultData,
+      updatedAt: serverTimestamp(),
+    });
+
+    console.log("Result updated successfully:", resultId);
+    store.dispatch(showNotification("Result updated successfully!"));
+
+    return resultId;
+  } catch (error) {
+    console.error("Error updating result:", error);
+    store.dispatch(
+      showNotification(`Error updating result: ${error.message}`, "error")
+    );
+    throw error;
+  }
+};
+
+// Keep the original submitResult function for backward compatibility
+// but update it to use our new functions
+export const submitResult = async (eventId, roundId, pairingId, resultData) => {
+  try {
+    // Get the player ID from the result data
+    const playerId = resultData.player;
+
+    if (!playerId) {
+      throw new Error("Result data must include a player ID");
+    }
+
+    // First check if this player already has a result for this pairing
+    const resultsRef = collection(
+      db,
+      "events",
+      eventId,
+      "rounds",
+      roundId,
+      "pairings",
+      pairingId,
+      "results"
+    );
+
+    const q = query(resultsRef, where("player", "==", playerId));
+    const existingResults = await getDocs(q);
+
+    let resultId;
+
+    if (!existingResults.empty) {
+      // Update existing result
+      const existingResult = existingResults.docs[0];
+      resultId = existingResult.id;
+
+      return updateResult(eventId, roundId, pairingId, resultId, resultData);
+    } else {
+      // Create new result
+      return addResult(eventId, roundId, pairingId, resultData);
+    }
   } catch (error) {
     console.error("Error submitting result:", error);
-
-    // Show error notification
     store.dispatch(
       showNotification(`Error submitting result: ${error.message}`, "error")
     );
-
     throw error;
   }
 };

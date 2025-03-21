@@ -3,7 +3,7 @@ import { Box, useTheme } from "@mui/material";
 import { renderStat } from "../utils/metadataMapping";
 import MapDetails from "./MapDetails";
 
-const UnitDetails = ({ profile }) => {
+const UnitDetails = ({ profile, showAva = false }) => {
   const { move, cc, bs, ph, wip, arm, bts, w, s, ava } = profile;
   const theme = useTheme();
 
@@ -31,7 +31,7 @@ const UnitDetails = ({ profile }) => {
         <span>BTS</span>
         <span>W</span>
         <span>S</span>
-        <span>AVA</span>
+        {showAva && <span>AVA</span>}
       </Box>
       {/* Divider */}
       <Box my={1} width="100%">
@@ -48,7 +48,7 @@ const UnitDetails = ({ profile }) => {
         <span>{renderStat(bts)}</span>
         <span>{renderStat(w)}</span>
         <span>{renderStat(s)}</span>
-        <span>{renderStat(ava)}</span>
+        {showAva && <span>{renderStat(ava)}</span>}
       </Box>
       {/* Weapons Row */}
       <MapDetails

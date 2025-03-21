@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   Button,
@@ -44,27 +44,42 @@ const DeployTroopers = ({
                 Available Troopers
               </Typography>
               <List dense>
-                {troopers.map((trooper) => (
-                  <ListItem key={trooper.id}>
-                    <ListItemText
-                      primary={trooper.name}
-                      secondary={`${trooper.type} - ${trooper.rank}`}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        disabled={
-                          resultData.troopers.some(
-                            (t) => t.trooper === trooper.id
-                          ) || hasSubmitted
-                        }
-                        onClick={() => onAddTrooper(trooper.id)}
-                      >
-                        <AddIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
+                {troopers.map(
+                  (trooper) =>
+                    resultData.troopers.every(
+                      (trooperResult) => trooperResult.trooper !== trooper.id
+                    ) && (
+                      <ListItem key={trooper.id}>
+                        <img
+                          src={trooper.resume.logo}
+                          alt={trooper.isc}
+                          style={{
+                            height: 40,
+                            marginRight: 8,
+                          }}
+                        />
+                        <ListItemText
+                          primary={trooper.name}
+                          secondary={trooper.isc}
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            disabled={
+                              resultData.troopers.length >= 6 ||
+                              resultData.troopers.some(
+                                (t) => t.trooper === trooper.id
+                              ) ||
+                              hasSubmitted
+                            }
+                            onClick={() => onAddTrooper(trooper.id)}
+                          >
+                            <AddIcon sx={{ color: "white" }} />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    )
+                )}
               </List>
             </CardContent>
           </Card>
@@ -74,7 +89,9 @@ const DeployTroopers = ({
           <Card variant="outlined">
             <CardContent>
               <Typography variant="subtitle1" gutterBottom>
-                Deployed Troopers
+                Deployed Troopers{" "}
+                {resultData.troopers.length <= 4 && "(Elite Deployed)"}
+                {resultData.troopers.length === 6 && "(Max Deployment)"}
               </Typography>
               {resultData.troopers.length === 0 ? (
                 <Typography variant="body2" color="textSecondary">
@@ -88,21 +105,31 @@ const DeployTroopers = ({
                     );
                     return (
                       <ListItem key={deployedTrooper.trooper}>
+                        <img
+                          src={trooperDetails.resume.logo}
+                          alt={trooperDetails.isc}
+                          style={{
+                            height: 40,
+                            marginRight: 8,
+                          }}
+                        />
                         <ListItemText
                           primary={trooperDetails.name}
-                          secondary={`${trooperDetails.type} - ${trooperDetails.rank}`}
+                          secondary={trooperDetails.isc}
                         />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            disabled={hasSubmitted}
-                            onClick={() =>
-                              onRemoveTrooper(deployedTrooper.trooper)
-                            }
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
+                        {!trooperDetails.captain && (
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge="end"
+                              disabled={hasSubmitted}
+                              onClick={() =>
+                                onRemoveTrooper(deployedTrooper.trooper)
+                              }
+                            >
+                              <DeleteIcon sx={{ color: "error.main" }} />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        )}
                       </ListItem>
                     );
                   })}
