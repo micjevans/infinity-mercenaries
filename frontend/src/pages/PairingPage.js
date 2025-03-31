@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
   Box,
   Paper,
-  Grid,
   CircularProgress,
   IconButton,
   Tooltip,
@@ -25,7 +24,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   getEvent,
   getPairings,
-  submitResult,
   getResults,
   addResult,
   updateResult,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -16,10 +16,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   List,
   ListItem,
   ListItemText,
@@ -55,9 +51,6 @@ import {
 import { useAuth } from "../auth/AuthContext";
 import { getUserCompanies } from "../services/companyService";
 import { createCompany } from "../services/companyService"; // Add this import
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import PersonIcon from "@mui/icons-material/Person";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -172,6 +165,7 @@ const EventDetailsPage = () => {
           try {
             const userCompanies = await getUserCompanies(user.uid);
             setCompanies(userCompanies);
+            console.info("User companies loaded:", companies);
           } catch (companyError) {
             console.error("Error loading user companies:", companyError);
           }
@@ -299,19 +293,6 @@ const EventDetailsPage = () => {
       setEvent(refreshedEvent);
     } catch (error) {
       console.error("Error creating round:", error);
-    }
-  };
-
-  // Toggle round completion status
-  const handleToggleRoundCompletion = async (roundId, currentStatus) => {
-    try {
-      await completeRound(eventId, roundId, !currentStatus);
-
-      // Refresh event data
-      const refreshedEvent = await getEvent(eventId);
-      setEvent(refreshedEvent);
-    } catch (error) {
-      console.error("Error toggling round completion status:", error);
     }
   };
 

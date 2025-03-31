@@ -36,18 +36,6 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import Trooper from "../Trooper";
 import DowntimeEvent from "../DowntimeEvent";
 
-const XP_CATEGORIES = [
-  { key: "aid", label: "Aid" },
-  { key: "state", label: "State" },
-  { key: "yt", label: "YT" },
-  { key: "op", label: "OP" },
-  { key: "scan", label: "Scan" },
-  { key: "fo", label: "FO" },
-  { key: "tandb", label: "T&B" },
-  { key: "alive", label: "Alive" },
-  { key: "mvp", label: "MVP" },
-];
-
 const INJURY_OPTIONS = [
   "",
   "Battle Fury (1-6)",
@@ -159,18 +147,6 @@ const Mission = ({
       inducements: calculatedInducements > 0 ? calculatedInducements : 0,
     });
   }, [resultData.troopers, troopers, enemyTroopers]);
-
-  const handleInjuryChange = (trooperIndex, injury) => {
-    const updatedTroopers = [...resultData.troopers];
-
-    if (!updatedTroopers[trooperIndex].injury) {
-      updatedTroopers[trooperIndex].injury = injury;
-    } else {
-      updatedTroopers[trooperIndex].injury = injury;
-    }
-
-    handleInputChange("troopers", updatedTroopers);
-  };
 
   const calculateTotalXp = (trooper) => {
     let total = 0;

@@ -27,7 +27,6 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import {
   calculateLevel,
   calculateLevelProgress,
-  calculatePerkPoints,
   calculateXpForLevel,
 } from "../utils/experienceUtils";
 
