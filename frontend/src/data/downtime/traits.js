@@ -118,6 +118,9 @@ export const traits = {
       value: skill,
     },
   }),
+  mvp: (troopers) => ({
+    trooper: troopers.find((trooper) => trooper.mvp === true),
+  }),
   lt: (troopers) => ({
     render: (troopers, value, onChange) => (
       <Box>
@@ -142,6 +145,7 @@ export const traits = {
         </Grid2>
       </Box>
     ),
+    trooper: troopers.find((trooper) => trooper.captain === true),
     pass: {
       key: "captain",
       value: troopers,

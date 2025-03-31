@@ -6,12 +6,12 @@ import {
   Card,
   CardContent,
   CardActions,
-  Grid,
   Divider,
   Alert,
   Chip,
   Avatar,
   CircularProgress,
+  Grid2,
 } from "@mui/material";
 import CasinoIcon from "@mui/icons-material/Casino";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -352,11 +352,11 @@ const DowntimeEvent = ({
                 <Typography variant="subtitle1" gutterBottom>
                   Select a trooper for this event:
                 </Typography>
-                <Grid container spacing={1} sx={{ mt: 1 }}>
+                <Grid2 container spacing={1} sx={{ mt: 1 }}>
                   {deployedTroopers.map((trooper) => {
                     const trooperDetails = getTrooperById(trooper.trooper);
                     return (
-                      <Grid item key={trooper.trooper}>
+                      <Grid2 key={trooper.trooper}>
                         <Chip
                           avatar={<Avatar src={trooperDetails.resume?.logo} />}
                           label={trooperDetails.name}
@@ -366,10 +366,10 @@ const DowntimeEvent = ({
                           color="primary"
                           variant="outlined"
                         />
-                      </Grid>
+                      </Grid2>
                     );
                   })}
-                </Grid>
+                </Grid2>
               </Box>
             ) : !outcomeSelected ? (
               // Step 3: Roll for/select outcome
@@ -393,9 +393,9 @@ const DowntimeEvent = ({
                 <Typography variant="subtitle1" sx={{ mt: 2 }} gutterBottom>
                   Select the outcome of the event:
                 </Typography>
-                <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid2 container spacing={2} sx={{ mt: 1 }}>
                   {OUTCOME_OPTIONS.map((outcome) => (
-                    <Grid item key={outcome.id}>
+                    <Grid2 key={outcome.id}>
                       <Button
                         variant="contained"
                         color={outcome.color}
@@ -413,9 +413,9 @@ const DowntimeEvent = ({
                       >
                         {outcome.label}
                       </Button>
-                    </Grid>
+                    </Grid2>
                   ))}
-                </Grid>
+                </Grid2>
               </Box>
             ) : (
               // Step 4: Show completed downtime event
