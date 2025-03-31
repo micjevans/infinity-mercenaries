@@ -27,32 +27,51 @@ export const addItemToTrooper = (trooperDraft, item, type) => {
       }
     } else {
       // If it's not an attribute we add it to its respective array
-      if (!profile[type]) {
-        trooperDraft.profileGroups[0].profiles[0][type] = []; // Initialize item array if not present
-      }
-      const foundItemIndex = profile[type].findIndex(
-        (perk) => perk.id === item.id
-      );
-      if (foundItemIndex !== -1) {
-        trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex].extra =
-          [
+      if (type === "type") {
+        trooperDraft.resume.type = item.id;
+      } else {
+        if (!profile[type]) {
+          trooperDraft.profileGroups[0].profiles[0][type] = []; // Initialize item array if not present
+        }
+        const foundItemIndex = profile[type].findIndex(
+          (perk) => perk.id === item.id
+        );
+        if (foundItemIndex !== -1) {
+          trooperDraft.profileGroups[0].profiles[0][type][
+            foundItemIndex
+          ].extra = [
             ...(trooperDraft.profileGroups[0].profiles[0][type][foundItemIndex]
               .extra || []),
             ...(item.extra || []),
           ]; // Merge extras if item already exists
-      } else {
-        // If item doesn't exist, add it to the profile
-        trooperDraft.profileGroups[0].profiles[0][type].push({
-          id: item.id,
-          extra: item.extra,
-        });
+        } else {
+          // If item doesn't exist, add it to the profile
+          trooperDraft.profileGroups[0].profiles[0][type].push({
+            id: item.id,
+            extra: item.extra,
+          });
+        }
       }
     }
   }
 
-  ["equips", "weapons", "skills", "peripherals"].forEach((key) => {
+  [
+    "equips",
+    "weapons",
+    "skills",
+    "peripherals",
+    "move",
+    "cc",
+    "bs",
+    "wip",
+    "ph",
+    "arm",
+    "bts",
+    "w",
+    "s",
+  ].forEach((key) => {
     if (item[key]) {
-      item[key].forEach((subItem) =>
+      (Array.isArray(item[key]) || [item[key]]).forEach((subItem) =>
         addItemToTrooper(trooperDraft, subItem, key)
       );
     }

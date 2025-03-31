@@ -51,6 +51,7 @@ const ShopDialog = ({
   merchantItems = [],
   onConfirmExchange,
   companyCredits = 0, // Add companyCredits prop to track available credits
+  seed, // Add seed prop
 }) => {
   // Local state to manage available items so that staged items are removed from display
   const [availableCompanyItems, setAvailableCompanyItems] =
@@ -176,7 +177,7 @@ const ShopDialog = ({
     if (!items[category] || items[category].length === 0) return null;
 
     return (
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 2 }} key={category}>
         <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: "bold" }}>
           {category}
         </Typography>
@@ -184,7 +185,6 @@ const ShopDialog = ({
           {items[category].map((item, index) => (
             // Using a more reliable key combining category, index, and uuid if available
             <Grid2
-              item
               xs={4}
               key={`${category}-${index}-${
                 item.uuid ||
@@ -195,10 +195,8 @@ const ShopDialog = ({
               <MapItem
                 item={item}
                 action={handleAction}
-                width={50}
-                height={50}
                 style={{ marginBottom: 4 }}
-                alt={item.name}
+                alt={item.displayName} // Use displayName instead of name
               />
             </Grid2>
           ))}
@@ -210,7 +208,14 @@ const ShopDialog = ({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg">
-      <DialogTitle>Trading Screen</DialogTitle>
+      <DialogTitle>
+        Trading Screen
+        {seed && (
+          <Typography variant="caption" display="block" color="text.secondary">
+            Shop Seed: {seed}
+          </Typography>
+        )}
+      </DialogTitle>
       <DialogContent dividers>
         <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
           {/* Company Items Grid2 */}
@@ -253,15 +258,14 @@ const ShopDialog = ({
             </Typography>
 
             <Grid2 container spacing={2}>
-              <Grid2 item xs={6}>
+              <Grid2 size={{ xs: 6 }}>
                 <Typography variant="caption" align="center" display="block">
                   Company Items
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedCompany.map((item, index) => (
                     <Grid2
-                      item
-                      xs={12}
+                      size={{ xs: 12 }}
                       // Use a more unique key that combines index and uuid/id
                       key={`staged-company-${index}-${
                         item.uuid ||
@@ -275,21 +279,20 @@ const ShopDialog = ({
                         width={40}
                         height={40}
                         style={{ marginBottom: 2 }}
-                        alt={item.name}
+                        alt={item.displayName} // Use displayName instead of name
                       />
                     </Grid2>
                   ))}
                 </Grid2>
               </Grid2>
-              <Grid2 item xs={6}>
+              <Grid2 size={{ xs: 6 }}>
                 <Typography variant="caption" align="center" display="block">
                   Merchant Items
                 </Typography>
                 <Grid2 container spacing={1}>
                   {stagedMerchant.map((item, index) => (
                     <Grid2
-                      item
-                      xs={12}
+                      size={{ xs: 12 }}
                       // Use a more unique key that combines index and uuid/id
                       key={`staged-merchant-${index}-${
                         item.uuid ||
@@ -303,7 +306,7 @@ const ShopDialog = ({
                         width={40}
                         height={40}
                         style={{ marginBottom: 2 }}
-                        alt={item.name}
+                        alt={item.displayName} // Use displayName instead of name
                       />
                     </Grid2>
                   ))}

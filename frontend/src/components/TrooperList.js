@@ -3,7 +3,6 @@ import {
   Typography,
   Box,
   CircularProgress,
-  Button,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -23,6 +22,7 @@ import { updateCompanyDetails } from "../services/companyService";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import GroupIcon from "@mui/icons-material/Group";
 import AddIcon from "@mui/icons-material/Add";
+import ButtonLikeDiv from "./ButtonLikeDiv";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
 const loadFactionData = (slug) => {
@@ -279,15 +279,19 @@ const TrooperList = ({ company, setCompany }) => {
           </Box>
 
           {/* Add Trooper Button in header */}
-          <Button
-            ref={addTrooperButtonRef}
+          <ButtonLikeDiv
             variant="contained"
             color="secondary"
-            startIcon={<AddIcon />}
-            size="small"
+            role="button"
+            tabIndex={0}
             onClick={(e) => {
               e.stopPropagation(); // Prevent accordion toggle when clicking button
               setTrooperModalOpen(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setTrooperModalOpen(true);
+              }
             }}
             sx={{
               minWidth: "auto",
@@ -295,7 +299,7 @@ const TrooperList = ({ company, setCompany }) => {
             }}
           >
             {troopers.length === 0 ? "Create Captain" : "Add Trooper"}
-          </Button>
+          </ButtonLikeDiv>
         </Box>
       </AccordionSummary>
 

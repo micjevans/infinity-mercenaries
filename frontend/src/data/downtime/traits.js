@@ -1,4 +1,9 @@
 import { Avatar, Box, Chip, Grid2, TextField, Typography } from "@mui/material";
+import {
+  generateLootItem,
+  generateTier,
+  RARITY_TIERS,
+} from "../../utils/lootUtils";
 
 export const traits = {
   chaotic: (downtimeState) => ({
@@ -47,13 +52,25 @@ export const traits = {
     pass: {
       key: "inventory",
       value: () => {
-        return [1, 2, 3, 4, 5]; // Example inventory values
+        generateLootItem(
+          { id: 69, type: "weapon" },
+          generateTier(new Date().now(), [
+            RARITY_TIERS.UNCOMMON,
+            RARITY_TIERS.RARE,
+          ])
+        );
       },
     },
     crit: {
       key: "inventory",
       value: () => {
-        return [1, 2, 3, 4, 5]; // Example inventory values
+        generateLootItem(
+          { id: 69, type: "weapon" },
+          generateTier(new Date().now(), [
+            RARITY_TIERS.UNCOMMON,
+            RARITY_TIERS.RARE,
+          ])
+        );
       },
     },
   },

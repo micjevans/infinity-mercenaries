@@ -412,12 +412,7 @@
   "ammunitions": [
     {
       "id": 1,
-      "name": "Adhesive",
-      "ammunition": "PARA",
-      "properties": ["NON-LETHAL", "State: IMMOBILIZED-A"],
-      "saving": "PH-6",
-      "multiplier": 1.2,
-      "types": ["weapons"]
+      "name": "Adhesive"
     },
     {
       "id": 2,
@@ -427,11 +422,7 @@
     {
       "id": 3,
       "name": "AP",
-      "wiki": "https://infinitythewiki.com/Armour_Piercing_(AP)_Ammunition?version=n4",
-      "ammunition": "AP",
-      "saving": "ARM/2",
-      "multiplier": 1.2,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Armour_Piercing_(AP)_Ammunition?version=n4"
     },
     {
       "id": 4,
@@ -439,59 +430,35 @@
     },
     {
       "id": 5,
-      "name": "N+E/M",
-      "multiplier": 2.5
+      "name": "N+E/M"
     },
     {
       "id": 6,
       "name": "Exp",
-      "wiki": "https://infinitythewiki.com/Explosive_(EXP)_Ammunition?version=n4",
-      "ammunition": "EXP",
-      "savingNum": 3,
-      "properties": ["ANTI-MATERIAL"],
-      "multiplier": 2,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Explosive_(EXP)_Ammunition?version=n4"
     },
     {
       "id": 7,
-      "name": "Monofilament",
-      "saving": "ARM=0",
-      "properties": ["State: DEAD"],
-      "damage": "8",
-      "multiplier": 2.5,
-      "types": ["weapons"]
+      "name": "Monofilament"
     },
     {
       "id": 8,
       "name": "Shock",
-      "wiki": "https://infinitythewiki.com/Shock_Ammunition?version=n4",
-      "ammunition": "SHOCK",
-      "multiplier": 1.1,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Shock_Ammunition?version=n4"
     },
     {
       "id": 9,
       "name": "DA",
-      "wiki": "https://infinitythewiki.com/Double_Action_(DA)_Ammunition?version=n4",
-      "ammunition": "DA",
-      "savingNum": 2,
-      "properties": ["ANTI-MATERIAL"],
-      "multiplier": 1.5,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Double_Action_(DA)_Ammunition?version=n4"
     },
     {
       "id": 10,
       "name": "AP+DA",
-      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4",
-      "multiplier": 1.7
+      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4"
     },
     {
       "id": 11,
-      "name": "Viral",
-      "saving": "BTS",
-      "properties": ["BIOWEAPON (DA+SHOCK)"],
-      "multiplier": 1.5,
-      "types": ["weapons"]
+      "name": "Viral"
     },
     {
       "id": 12,
@@ -500,19 +467,12 @@
     {
       "id": 13,
       "name": "AP+Exp",
-      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4",
-      "multiplier": 2.2
+      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4"
     },
     {
       "id": 14,
       "name": "E/M",
-      "wiki": "https://infinitythewiki.com/Electromagnetic_(E/M)_Ammunition?version=n4",
-      "ammunition": "E/M",
-      "properties": ["NON-LETHAL"],
-      "saving": "BTS/2",
-      "savingNum": 2,
-      "multiplier": 1.7,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Electromagnetic_(E/M)_Ammunition?version=n4"
     },
     {
       "id": 15,
@@ -529,11 +489,7 @@
     {
       "id": 18,
       "name": "T2",
-      "wiki": "https://infinitythewiki.com/T2_Ammunition?version=n4",
-      "ammunition": "T2",
-      "properties": ["ANTI-MATERIAL"],
-      "multiplier": 1.6,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/T2_Ammunition?version=n4"
     },
     {
       "id": 19,
@@ -546,41 +502,20 @@
     {
       "id": 21,
       "name": "Smoke",
-      "wiki": "https://infinitythewiki.com/Smoke_Ammunition?version=n4",
-      "ammunition": "SMOKE",
-      "properties": ["IMPACT TEMPLATE (CIRCULAR)", "NON-LETHAL", "TARGETLESS"],
-      "multiplier": 2,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Smoke_Ammunition?version=n4"
     },
     {
       "id": 22,
       "name": "Eclipse",
-      "wiki": "https://infinitythewiki.com/Eclipse_Ammunition?version=n4",
-      "ammunition": "ECLIPSE",
-      "properties": [
-        "IMPACT TEMPLATE (CIRCULAR)",
-        "NON-LETHAL",
-        "REFLECTIVE",
-        "TARGETLESS"
-      ],
-      "multiplier": 3,
-      "types": ["weapons"]
+      "wiki": "https://infinitythewiki.com/Eclipse_Ammunition?version=n4"
     },
     {
       "id": 23,
-      "name": "Flash",
-      "ammunition": "STUN",
-      "saving": "BTS",
-      "properties": ["NON-LETHAL", "State: STUNNED"],
-      "multiplier": 0.8,
-      "types": ["weapons"]
+      "name": "Flash"
     },
     {
       "id": 24,
-      "name": "Fire",
-      "properties": ["CONTINUOUS DAMAGE"],
-      "multiplier": 1.7,
-      "types": ["weapons"]
+      "name": "Fire"
     },
     {
       "id": 25,
@@ -606,23 +541,15 @@
     {
       "id": 30,
       "name": "AP+Shock",
-      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4",
-      "multiplier": 1.3
+      "wiki": "https://infinitythewiki.com/Combined_Ammunition?version=n4"
     },
     {
       "id": 31,
-      "name": "K1",
-      "saving": "ARM=0",
-      "damage": "7",
-      "multiplier": 1.5,
-      "types": ["weapons"]
+      "name": "K1"
     },
     {
       "id": 32,
-      "name": "Breaker",
-      "saving": "BTS/2",
-      "multiplier": 1.3,
-      "types": ["weapons"]
+      "name": "Breaker"
     },
     {
       "id": 33,
@@ -630,11 +557,7 @@
     },
     {
       "id": 34,
-      "name": "Plasma",
-      "saving": "ARM and BTS",
-      "savingNum": "1 and 1",
-      "multiplier": 2,
-      "types": ["weapons"]
+      "name": "Plasma"
     },
     {
       "id": 35,
@@ -660,8 +583,7 @@
     },
     {
       "id": 40,
-      "name": "AP+T2",
-      "multiplier": 1.8
+      "name": "AP+T2"
     }
   ],
   "weapons": [
@@ -1942,6 +1864,7 @@
       "type": "EQUIPMENT",
       "name": "Deployable Repeater",
       "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4",
+      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
       "ammunition": 0,
       "burst": "1",
       "damage": "-",
@@ -1951,7 +1874,6 @@
       "properties": ["Disposable (3)", "Deployable"],
       "distance": null,
       "abbr": "Deployable Repeater",
-      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
       "cr": 8,
       "swc": 0,
       "slot": "secondary"
@@ -4476,7 +4398,6 @@
         }
       },
       "abbr": "Deployable Repeater",
-      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
       "cr": 8,
       "swc": 0,
       "slot": "secondary"
@@ -4507,7 +4428,6 @@
         }
       },
       "abbr": "Deployable Repeater",
-      "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
       "cr": 8,
       "swc": 0,
       "slot": "secondary"
@@ -4936,30 +4856,6 @@
       "type": "WEAPON",
       "name": "Shock Mine",
       "ammunition": 8,
-      "burst": "1",
-      "damage": "7",
-      "saving": "ARM",
-      "savingNum": "1",
-      "properties": [
-        "Intuitive Attack",
-        "Concealed",
-        "Disposable (3)",
-        "Direct Template (Small Teardrop)",
-        "Deployable",
-        "[*]"
-      ],
-      "distance": null,
-      "abbr": "Shock Mine",
-      "cr": 5,
-      "swc": 0,
-      "slot": "secondary",
-      "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
-    },
-    {
-      "id": "77F8EEBB-3CA6-4C35-94F7-715838C02CA8",
-      "type": "WEAPON",
-      "name": "Mine",
-      "ammunition": 2,
       "burst": "1",
       "damage": "7",
       "saving": "ARM",
@@ -6625,7 +6521,11 @@
     {
       "id": 111,
       "name": "Deployable Repeater",
-      "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4"
+      "wiki": "https://infinitythewiki.com/Deployable_Repeater?version=n4",
+      "abbr": "Deployable Repeater",
+      "cr": 0,
+      "swc": 0,
+      "slot": "accessory"
     },
     {
       "id": 113,
@@ -6640,8 +6540,8 @@
       "id": 114,
       "name": "Multispectral Visor L1",
       "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
-      "abbr": "MSV1",
       "img": "/assets/images/MSV1.jpg",
+      "abbr": "MSV1",
       "cr": 10,
       "swc": 0,
       "slot": "accessory"
@@ -6650,8 +6550,8 @@
       "id": 115,
       "name": "Multispectral Visor L2",
       "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
-      "abbr": "MVS2",
       "img": "/assets/images/MSV2.jpg",
+      "abbr": "MSV2",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -6660,8 +6560,8 @@
       "id": 116,
       "name": "Multispectral Visor L3",
       "wiki": "https://infinitythewiki.com/Multispectral_Visor?version=n4",
+      "img": "/assets/images/MSV2.jpg",
       "abbr": "MSV3",
-      "img": "/assets/images/MSV3.jpg",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -6697,8 +6597,8 @@
       "id": 169,
       "name": "TinBot: Firewall",
       "wiki": "https://infinitythewiki.com/TinBot?version=n4",
-      "abbr": "TinBot: Firewall",
       "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Firewall",
       "cr": 10,
       "swc": 0,
       "slot": "accessory"
@@ -6716,8 +6616,8 @@
       "id": 183,
       "name": "Albedo",
       "wiki": "https://infinitythewiki.com/Albedo?version=n4",
-      "abbr": "Albedo",
       "img": "https://assets.corvusbelli.net/wiki/albedo_a0.jpg",
+      "abbr": "Albedo",
       "cr": 8,
       "swc": 0,
       "slot": "accessory"
@@ -6735,8 +6635,8 @@
       "id": 188,
       "name": "TinBot: Neourocinetics",
       "wiki": "https://infinitythewiki.com/TinBot?version=n4",
-      "abbr": "TinBot: Neourocinetics",
       "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Neourocinetics",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -6773,8 +6673,8 @@
       "id": 235,
       "name": "TinBot",
       "wiki": "https://infinitythewiki.com/TinBot?version=n4",
-      "abbr": "TinBot",
       "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -6846,8 +6746,8 @@
       "id": 244,
       "name": "TinBot: Discover",
       "wiki": "https://infinitythewiki.com/TinBot?version=n4",
-      "abbr": "TinBot: Discover",
       "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: Discover",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -6871,8 +6771,8 @@
     {
       "id": 247,
       "name": "TinBot: ECM Guided",
-      "abbr": "TinBot: ECM Guided",
       "img": "https://assets.corvusbelli.net/wiki/tinbot0.jpg",
+      "abbr": "TinBot: ECM Guided",
       "cr": 0,
       "swc": 0,
       "slot": "accessory"
@@ -7208,24 +7108,18 @@
     {
       "id": 6,
       "name": "-3",
-      "type": "TEXT",
-      "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 7,
       "name": "-6",
-      "type": "TEXT",
-      "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 259,
       "name": "-9",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 2.5,
-      "types": ["weapons", "equips"]
+      "mercs": true
     },
     {
       "id": 298,
@@ -7250,16 +7144,12 @@
     {
       "id": 8,
       "name": "+1B",
-      "type": "TEXT",
-      "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 308,
       "name": "+1SD",
-      "type": "TEXT",
-      "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 11,
@@ -7274,16 +7164,12 @@
     {
       "id": 256,
       "name": "+2B",
-      "type": "TEXT",
-      "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 1,
       "name": "+3",
-      "type": "TEXT",
-      "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "type": "TEXT"
     },
     {
       "id": 310,
@@ -7331,9 +7217,7 @@
       "id": 249,
       "name": "AP",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.3,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 35,
@@ -7491,16 +7375,12 @@
     {
       "id": 30,
       "name": "Shock",
-      "type": "TEXT",
-      "multiplier": 1.1,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 305,
       "name": "SR-1",
-      "type": "TEXT",
-      "multiplier": 1.1,
-      "types": ["weapons", "equips", "hacks"]
+      "type": "TEXT"
     },
     {
       "id": 40,
@@ -7511,9 +7391,7 @@
       "id": 294,
       "name": "T2",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 33,
@@ -7524,33 +7402,25 @@
       "id": 17,
       "name": "UPGRADE: Fairy Dust",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 278,
       "name": "UPGRADE: Total Control (+1B)",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 314,
       "name": "UPGRADE: Total Control (SR-2)",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 287,
       "name": "UPGRADE: Zero Pain",
       "type": "TEXT",
-      "mercs": true,
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "mercs": true
     },
     {
       "id": 34,
@@ -7561,9 +7431,7 @@
     {
       "id": 292,
       "name": "Continous Damage",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 306,
@@ -7583,9 +7451,7 @@
     {
       "id": 12,
       "name": "UPGRADE: Trinity",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 271,
@@ -7605,16 +7471,12 @@
     {
       "id": 2,
       "name": "+6",
-      "type": "TEXT",
-      "multiplier": 3,
-      "types": ["weapons", "equips", "hacks"]
+      "type": "TEXT"
     },
     {
       "id": 337,
       "name": "SR-2",
-      "type": "TEXT",
-      "multiplier": 1.2,
-      "types": ["weapons", "equips", "hacks"]
+      "type": "TEXT"
     },
     {
       "id": 254,
@@ -7644,16 +7506,12 @@
     {
       "id": 363,
       "name": "UPGRADE: Carbonite (PS=6)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 14,
       "name": "UPGRADE: Spotlight",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 260,
@@ -7661,13 +7519,8 @@
       "type": "DISTANCE"
     },
     {
-      "id": 359,
-      "name": "Ad. Launcher Rifle",
-      "type": "TEXT"
-    },
-    {
-      "id": 361,
-      "name": "E/Mitter",
+      "id": 360,
+      "name": "Combi R.",
       "type": "TEXT"
     },
     {
@@ -7676,27 +7529,13 @@
       "type": "TEXT"
     },
     {
-      "id": 13,
-      "name": "UPGRADE: Carbonite",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "id": 362,
+      "name": "Mk12",
+      "type": "TEXT"
     },
     {
       "id": 25,
       "name": "UPGRADE: Cybermask",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
-    },
-    {
-      "id": 334,
-      "name": "UPGRADE: Firewall (-3)",
-      "type": "TEXT"
-    },
-    {
-      "id": 282,
-      "name": "WIP=14",
       "type": "TEXT"
     },
     {
@@ -7730,6 +7569,11 @@
       "type": "TEXT"
     },
     {
+      "id": 359,
+      "name": "Ad. Launcher Rifle",
+      "type": "TEXT"
+    },
+    {
       "id": 265,
       "name": "Zero Pain",
       "type": "TEXT"
@@ -7740,25 +7584,24 @@
       "type": "TEXT"
     },
     {
+      "id": 334,
+      "name": "UPGRADE: Firewall (-3)",
+      "type": "TEXT"
+    },
+    {
       "id": 286,
       "name": "UPGRADE: Trinity (-3)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 335,
       "name": "UPGRADES: Carbonite, Firewall (-3)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 3,
       "name": "+9",
-      "type": "TEXT",
-      "multiplier": 4,
-      "types": ["weapons", "equips", "hacks"]
+      "type": "TEXT"
     },
     {
       "id": 338,
@@ -7766,25 +7609,24 @@
       "type": "TEXT"
     },
     {
+      "id": 13,
+      "name": "UPGRADE: Carbonite",
+      "type": "TEXT"
+    },
+    {
       "id": 269,
       "name": "UPGRADE: Oblivion (+1B)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 270,
       "name": "UPGRADE: Trinity (AP)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 339,
       "name": "UPGRADE: Trinity (SR-1)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 332,
@@ -7809,16 +7651,12 @@
     {
       "id": 285,
       "name": "UPGRADE: Carbonite (+1 B)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 331,
       "name": "UPGRADE: Carbonite (SR-2)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 346,
@@ -7833,35 +7671,27 @@
     {
       "id": 21,
       "name": "UPGRADE: Oblivion",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 344,
       "name": "UPGRADE: SR-1",
-      "type": "TEXT",
-      "multiplier": 1.1,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
-      "id": 373,
-      "name": "UPGRADE: Total Control (PS=3)",
+      "id": 345,
+      "name": "UPGRADE: Total Control (SR-1)",
       "type": "TEXT"
     },
     {
       "id": 290,
       "name": "UPGRADE: Trinity (+1B)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 343,
       "name": "UPGRADE: Trinity (PS=5)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 347,
@@ -7871,13 +7701,6 @@
     {
       "id": 20,
       "name": "UPGRADE: White Noise",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
-    },
-    {
-      "id": 360,
-      "name": "Combi R.",
       "type": "TEXT"
     },
     {
@@ -7886,23 +7709,14 @@
       "type": "TEXT"
     },
     {
-      "id": 362,
-      "name": "Mk12",
-      "type": "TEXT"
-    },
-    {
       "id": 342,
       "name": "PARA",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 350,
       "name": "UPGRADE: Trinity (PS=4)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 353,
@@ -7912,9 +7726,7 @@
     {
       "id": 352,
       "name": "UPGRADE: Trinity (SR-2)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 281,
@@ -7927,6 +7739,16 @@
       "type": "TEXT"
     },
     {
+      "id": 361,
+      "name": "E/Mitter",
+      "type": "TEXT"
+    },
+    {
+      "id": 282,
+      "name": "WIP=14",
+      "type": "TEXT"
+    },
+    {
       "id": 354,
       "name": "3",
       "type": "TEXT"
@@ -7934,9 +7756,7 @@
     {
       "id": 39,
       "name": "Viral",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "type": "TEXT"
     },
     {
       "id": 251,
@@ -8042,158 +7862,158 @@
   ],
   "peripheral": [
     {
-      "id": 38,
+      "id": 86,
       "name": "AUXBOT_3"
     },
     {
-      "id": 39,
+      "id": 87,
       "name": "AUXBOT_3B"
     },
     {
-      "id": 42,
+      "id": 90,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 32,
+      "id": 80,
       "name": "CRABBOT"
     },
     {
-      "id": 33,
+      "id": 81,
       "name": "DRUMBOT_1"
     },
     {
-      "id": 34,
+      "id": 82,
       "name": "DRUMBOT_2"
     },
     {
-      "id": 35,
+      "id": 83,
       "name": "DRUMBOT_3"
     },
     {
-      "id": 36,
+      "id": 84,
       "name": "DRUMBOT_4"
     },
     {
-      "id": 37,
+      "id": 85,
       "name": "DRUMBOT_5"
     },
     {
-      "id": 41,
+      "id": 88,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 40,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 104,
-      "name": "AUXBOT"
-    },
-    {
-      "id": 106,
-      "name": "AUXBOT_2"
-    },
-    {
-      "id": 107,
-      "name": "AUXBOT_3"
-    },
-    {
-      "id": 108,
-      "name": "AUXBOT_3B"
-    },
-    {
-      "id": 111,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 105,
-      "name": "CRABBOT"
-    },
-    {
-      "id": 110,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 109,
+      "id": 89,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
       "id": 1,
+      "name": "AUXBOT"
+    },
+    {
+      "id": 3,
+      "name": "AUXBOT_2"
+    },
+    {
+      "id": 4,
       "name": "AUXBOT_3"
     },
     {
-      "id": 2,
+      "id": 5,
       "name": "AUXBOT_3B"
     },
     {
-      "id": 6,
+      "id": 8,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 3,
+      "id": 2,
       "name": "CRABBOT"
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 4,
+      "id": 7,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 93,
+      "id": 335,
       "name": "AUXBOT_3"
     },
     {
-      "id": 94,
+      "id": 336,
       "name": "AUXBOT_3B"
     },
     {
-      "id": 103,
+      "id": 339,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 95,
+      "id": 334,
       "name": "CRABBOT"
     },
     {
-      "id": 96,
-      "name": "DRUMBOT_1"
-    },
-    {
-      "id": 97,
-      "name": "DRUMBOT_2"
-    },
-    {
-      "id": 98,
-      "name": "DRUMBOT_3"
-    },
-    {
-      "id": 99,
-      "name": "DRUMBOT_4"
-    },
-    {
-      "id": 100,
-      "name": "DRUMBOT_5"
-    },
-    {
-      "id": 102,
+      "id": 337,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 101,
+      "id": 338,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 11,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 12,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 21,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 13,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 14,
+      "name": "DRUMBOT_1"
+    },
+    {
+      "id": 15,
+      "name": "DRUMBOT_2"
+    },
+    {
+      "id": 16,
+      "name": "DRUMBOT_3"
+    },
+    {
+      "id": 17,
+      "name": "DRUMBOT_4"
+    },
+    {
+      "id": 18,
+      "name": "DRUMBOT_5"
+    },
+    {
+      "id": 19,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 20,
       "name": "TURTLEMEK",
       "mercs": true
     },
@@ -8202,86 +8022,101 @@
       "name": "CRABBOT"
     },
     {
-      "id": 18,
+      "id": 74,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 17,
+      "id": 72,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 15,
+      "id": 71,
       "name": "SHÀNGDIÀO"
     },
     {
-      "id": 16,
+      "id": 73,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 31,
+      "id": 129,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 30,
+      "id": 126,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 127,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 28,
+      "id": 125,
       "name": "SHÀNGDIÀO"
     },
     {
-      "id": 29,
+      "id": 128,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 51,
+      "id": 186,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 50,
+      "id": 184,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 48,
+      "id": 183,
       "name": "SHÀNGDIÀO"
     },
     {
-      "id": 49,
+      "id": 185,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 152,
-      "name": "ANTIPODE"
-    },
-    {
-      "id": 157,
+      "id": 382,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 156,
+      "id": 380,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 153,
-      "name": "K-9 ANTIPODE"
+      "id": 379,
+      "name": "SHÀNGDIÀO"
     },
     {
-      "id": 154,
+      "id": 381,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 25,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 23,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 22,
       "name": "RB-235 SAMODELKIN"
     },
     {
-      "id": 155,
+      "id": 24,
       "name": "TURTLEMEK",
       "mercs": true
     },
@@ -8327,225 +8162,303 @@
       "mercs": true
     },
     {
-      "id": 72,
+      "id": 557,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 69,
+      "id": 555,
       "name": "JACKBOT"
     },
     {
-      "id": 70,
+      "id": 554,
       "name": "JANDAB"
     },
     {
-      "id": 71,
+      "id": 556,
       "name": "TURTLEMEK"
     },
     {
-      "id": 81,
+      "id": 105,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 80,
+      "id": 103,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 78,
+      "id": 102,
       "name": "JANDAB"
     },
     {
-      "id": 79,
+      "id": 104,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 68,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 66,
-      "name": "JACKBOT"
-    },
-    {
-      "id": 67,
-      "name": "JANDAB"
-    },
-    {
-      "id": 65,
-      "name": "TURTLEMEK"
-    },
-    {
-      "id": 138,
-      "name": "BÂTARD"
-    },
-    {
-      "id": 139,
-      "name": "JACKBOT"
-    },
-    {
-      "id": 136,
-      "name": "JANDAB"
-    },
-    {
-      "id": 137,
+      "id": 32,
       "name": "NASMAT A2"
-    },
-    {
-      "id": 140,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 160,
-      "name": "NASMAT A2"
-    },
-    {
-      "id": 116,
-      "name": "BÂTARD",
-      "mercs": true
     },
     {
       "id": 114,
-      "name": "GO-BOT"
-    },
-    {
-      "id": 115,
-      "name": "TURTLEMEK",
+      "name": "BÂTARD",
       "mercs": true
     },
     {
       "id": 112,
-      "name": "ZONDMATE"
+      "name": "GO-BOT"
+    },
+    {
+      "id": 109,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 107,
+      "name": "PUPNIK"
+    },
+    {
+      "id": 108,
+      "name": "ROBBYBOT"
     },
     {
       "id": 113,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 110,
+      "name": "ZONDMATE"
+    },
+    {
+      "id": 111,
       "name": "Π-WELL SYNC"
+    },
+    {
+      "id": 44,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 42,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 41,
+      "name": "MORIARTY"
+    },
+    {
+      "id": 40,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 43,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 39,
+      "name": "ZONDCAT"
+    },
+    {
+      "id": 58,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 52,
+      "name": "GO-BOT"
+    },
+    {
+      "id": 53,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 56,
+      "name": "PUPNIK"
+    },
+    {
+      "id": 55,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 57,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 54,
+      "name": "Π-WELL SYNC"
+    },
+    {
+      "id": 106,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 101,
+      "name": "ROBBYBOT"
     },
     {
       "id": 416,
       "name": "ROBBYBOT"
     },
     {
-      "id": 8,
+      "id": 476,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 7,
+      "id": 474,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 61,
-      "name": "RAKDRON"
-    },
-    {
-      "id": 62,
-      "name": "SKURGOT"
-    },
-    {
-      "id": 63,
-      "name": "SYNC PRETA"
-    },
-    {
-      "id": 64,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 21,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 20,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 19,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 27,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 25,
+      "id": 472,
       "name": "KISS!"
     },
     {
-      "id": 24,
+      "id": 471,
       "name": "KISS! (Repeater)"
     },
     {
-      "id": 23,
+      "id": 473,
+      "name": "KYDOIMOS"
+    },
+    {
+      "id": 469,
       "name": "SCINDRON"
     },
     {
-      "id": 22,
+      "id": 470,
       "name": "STALDRON"
     },
     {
-      "id": 26,
+      "id": 475,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 56,
+      "id": 508,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 53,
-      "name": "DEVABOT"
-    },
-    {
-      "id": 55,
+      "id": 506,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 52,
-      "name": "KARKATA"
+      "id": 503,
+      "name": "RAKDRON"
     },
     {
-      "id": 54,
+      "id": 504,
+      "name": "SKURGOT"
+    },
+    {
+      "id": 505,
+      "name": "SYNC PRETA"
+    },
+    {
+      "id": 507,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 75,
-      "name": "DEVABOT CHARYBDIS"
-    },
-    {
-      "id": 76,
-      "name": "KARKATA"
-    },
-    {
-      "id": 77,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 11,
+      "id": 421,
       "name": "BÂTARD",
       "mercs": true
+    },
+    {
+      "id": 419,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 418,
+      "name": "SCINDRON"
+    },
+    {
+      "id": 417,
+      "name": "TAIGHA SYNC"
+    },
+    {
+      "id": 420,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 553,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 551,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 550,
+      "name": "KISS!"
+    },
+    {
+      "id": 549,
+      "name": "KISS! (Repeater)"
+    },
+    {
+      "id": 547,
+      "name": "SCINDRON"
+    },
+    {
+      "id": 548,
+      "name": "STALDRON"
+    },
+    {
+      "id": 552,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 494,
+      "name": "STALDRON"
     },
     {
       "id": 10,
-      "name": "JACKBOT",
+      "name": "BÂTARD",
       "mercs": true
     },
     {
       "id": 9,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 585,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 581,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 583,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 582,
+      "name": "KARKATA"
+    },
+    {
+      "id": 580,
+      "name": "KIRANBOT"
+    },
+    {
+      "id": 584,
       "name": "TURTLEMEK",
       "mercs": true
     },
@@ -8558,12 +8471,117 @@
       "name": "CHAKSA PERIPHERAL"
     },
     {
-      "id": 73,
+      "id": 36,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 57,
+      "id": 35,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 34,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 27,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 26,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 739,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 740,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 741,
+      "name": "BÂTARD"
+    },
+    {
+      "id": 744,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 742,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 743,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 51,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 48,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 50,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 46,
+      "name": "SIDEBOT"
+    },
+    {
+      "id": 45,
+      "name": "SIRIUSBOT"
+    },
+    {
+      "id": 49,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 47,
+      "name": "YUDBOT-B"
+    },
+    {
+      "id": 723,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 719,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 721,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 718,
+      "name": "SIDEBOT"
+    },
+    {
+      "id": 722,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 720,
+      "name": "ZETBOT"
+    },
+    {
+      "id": 70,
+      "name": "ZETBOT"
+    },
+    {
+      "id": 28,
       "name": "BÂTARD",
       "mercs": true
     }
@@ -8574,20 +8592,20 @@
       "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "IRREGULAR",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/irregular.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "IMPETUOUS",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/impetuous.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "LIEUTENANT",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/lieutenant.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "TACTICAL",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/tactical.svg"
     }
   ],
   "chars": [
@@ -8629,248 +8647,5 @@
       "wiki": "https://infinitythewiki.com/Peripheral?version=n4",
       "logo": "https://assets.corvusbelli.net/army/img/icon/peripheral.svg"
     }
-  ],
-  "upgrades": [
-    {
-      "id": 1,
-      "name": "E/M",
-      "saving": "BTS/2",
-      "ammunition": "E/M",
-      "savingNum": "2",
-      "properties": ["Non-lethal"]
-    },
-    {
-      "id": 2,
-      "name": "AP",
-      "ammunition": "AP",
-      "saving": "ARM/2"
-    },
-    {
-      "id": 3,
-      "name": "DA",
-      "ammunition": "DA",
-      "savingNum": "2",
-      "properties": ["Anti-materiel"]
-    },
-    {
-      "id": 3,
-      "name": "EXP",
-      "ammunition": "EXP",
-      "savingNum": "3",
-      "properties": ["Anti-materiel"]
-    },
-    {
-      "id": 4,
-      "name": "T2",
-      "ammunition": "T2",
-      "properties": ["Anti-materiel"]
-    },
-    {
-      "id": 5,
-      "name": "Breaker",
-      "ammunition": "AP",
-      "saving": "BTS/2"
-    },
-    {
-      "id": 6,
-      "name": "Shock",
-      "ammunition": "SHOCK"
-    },
-    {
-      "id": 7,
-      "name": "Viral",
-      "saving": "BTS",
-      "properties": ["Bioweapon (DA+SHOCK)"]
-    },
-    {
-      "id": 8,
-      "name": "K1",
-      "saving": "ARM=0"
-    },
-    {
-      "id": 9,
-      "name": "Monofilament",
-      "saving": "ARM=0",
-      "properties": ["State: Dead"]
-    },
-    {
-      "id": 10,
-      "name": "Plasma",
-      "saving": "ARM and BTS",
-      "savingNum": "1 and 1",
-      "properties": ["Impact Template (Circular)"]
-    },
-    {
-      "id": 11,
-      "name": "Para",
-      "ammunition": "PARA",
-      "saving": "PH-6",
-      "properties": ["State: IMM-A"]
-    },
-    {
-      "id": 14,
-      "name": "Flash",
-      "ammunition": "STUN",
-      "saving": "BTS",
-      "properties": ["Non-lethal", "State: Stunned"]
-    },
-    {
-      "id": 15,
-      "name": "Silent",
-      "properties": ["Silent (-6)"]
-    },
-    {
-      "id": 16,
-      "name": "Targetting",
-      "properties": ["State: Targeted"]
-    },
-    {
-      "id": 17,
-      "name": "Smart",
-      "properties": ["BS Weapon (WIP)"]
-    },
-    {
-      "id": 18,
-      "name": "Propulsive",
-      "burst": 1,
-      "properties": ["BS Weapon (PH)", "*MAY USE 20-PH AS PS"]
-    },
-    {
-      "id": 19,
-      "name": "Disposable",
-      "properties": ["Disposable (3)"]
-    },
-    {
-      "id": 20,
-      "name": "Flaming",
-      "properties": ["Continous Damage"]
-    },
-    {
-      "id": 21,
-      "name": "Impact",
-      "properties": ["Impact Template (Circular)"]
-    },
-    {
-      "id": 22,
-      "name": "(+1 SD)"
-    },
-    {
-      "id": 23,
-      "name": "(+1 B)"
-    },
-    {
-      "id": 24,
-      "name": "(-1 SR)"
-    }
-  ],
-  "upgradesInfo": {
-    "ammunition": [
-      {
-        "search": "T2",
-        "key": "wound",
-        "mod": "OFFSET",
-        "value": 1
-      },
-      {
-        "search": "SHOCK",
-        "key": "wound",
-        "mod": "OFFSET",
-        "value": 0.5
-      },
-      {
-        "search": "DA",
-        "key": "burst",
-        "mod": ["3", "4", "5", "6", "7"]
-      },
-      {
-        "search": "EXP",
-        "key": "burst",
-        "mod": ["3", "4", "5", "6", "7"]
-      }
-    ],
-    "saving": [
-      {
-        "search": "/",
-        "key": "saving",
-        "mod": "MULTIPLIER"
-      },
-      {
-        "search": "=",
-        "key": "saving",
-        "mod": "MULTIPLIER"
-      },
-      {
-        "search": "PH",
-        "key": "saving",
-        "mod": "REPLACE"
-      },
-      {
-        "search": "and",
-        "key": "saving",
-        "mod": "OFFSET"
-      },
-      {
-        "search": "BTS",
-        "key": "saving",
-        "mod": "OFFSET"
-      }
-    ],
-    "savingNum": [
-      {
-        "search": "2",
-        "key": "savingNum",
-        "mod": "REPLACE"
-      },
-      {
-        "search": "3",
-        "key": "savingNum",
-        "mod": "REPLACE"
-      }
-    ],
-    "properties": [
-      {
-        "search": "Non-lethal",
-        "key": "wound",
-        "mod": "REPLACE",
-        "value": "AUTO"
-      },
-      {
-        "search": "Template",
-        "key": "properties",
-        "mod": ["Template", "CC"]
-      },
-      {
-        "search": "BS Weapon",
-        "key": "properties",
-        "mod": ["BS Weapon", "CC"]
-      },
-      {
-        "search": "Disposable",
-        "key": "properties",
-        "mod": "Disposable"
-      },
-      {
-        "search": "Bioweapon (DA+SHOCK)",
-        "key": "wound",
-        "mod": "OFFSET",
-        "value": 0.5
-      },
-      {
-        "search": "Deployable",
-        "key": "properties",
-        "mod": "BS Weapon"
-      },
-      {
-        "search": "Bioweapon (DA+SHOCK)",
-        "key": "savingNum",
-        "mod": "REPLACE"
-      },
-      {
-        "search": "Continous Damage",
-        "key": "wound",
-        "mod": "OFFSET",
-        "value": 0.75
-      }
-    ]
-  }
+  ]
 }

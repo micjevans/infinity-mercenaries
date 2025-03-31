@@ -23,6 +23,8 @@ const Trooper = ({ trooper, onClick, children, showAva = false }) => {
 
   if (!trooper || !trooper.profileGroups) return null;
 
+  const renderedTrooper = renderCombinedDetails(trooper);
+
   return (
     // Wrap the Accordion in a Box that applies a fixed bottom margin so that the spacing is unaffected by expansion.
     <Box sx={{ mb: 0.5 }}>
@@ -30,7 +32,7 @@ const Trooper = ({ trooper, onClick, children, showAva = false }) => {
         <AccordionSummary
           expandIcon={
             <Typography color="white">
-              {mapType(trooper.resume.type)}
+              {mapType(renderedTrooper.resume.type)}
             </Typography>
           }
           sx={{
@@ -72,7 +74,7 @@ const Trooper = ({ trooper, onClick, children, showAva = false }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          {renderCombinedDetails(trooper).profileGroups.map((group, grpIndex) =>
+          {renderedTrooper.profileGroups.map((group, grpIndex) =>
             group.options.length > 0 ? (
               <div
                 key={`group-${trooper.isc}-${grpIndex}`}

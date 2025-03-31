@@ -2,83 +2,223 @@
   "items": [
     {
       "id": 64,
-      "key": "weapons",
-      "cr": 12,
-      "uuid": "c1f8a1d0-3e4f-4e9c-a1b2-001a2bc3def4"
+      "name": "Mk12",
+      "key": "weapons"
     },
     {
       "id": 74,
-      "key": "weapons",
-      "cr": 18,
-      "uuid": "a9e3b2f1-fc3d-4b8a-a2d3-1234567890ab"
+      "name": "Spitfire",
+      "key": "weapons"
     },
     {
       "id": 2,
-      "key": "weapons",
-      "cr": 24,
-      "uuid": "f3c1d412-5678-49e2-bcd3-0987654321ef"
+      "name": "Heavy Machine Gun",
+      "key": "weapons"
     },
     {
       "id": 196,
-      "key": "weapons",
-      "cr": 5,
-      "uuid": "75e1fa3b-c4d5-4e6f-b7a8-23456789abcd"
+      "name": "Shock Mine",
+      "key": "weapons"
     },
     {
       "id": 111,
+      "name": "Deployable Repeater",
+      "type": "EQUIPMENT",
       "key": "weapons",
-      "cr": 8,
-      "uuid": "9abcdeff-1234-4cde-b123-abcdef012345"
+      "upgrades": false,
+      "cr": 8
     },
     {
       "id": 26,
-      "key": "weapons",
-      "cr": 10,
-      "uuid": "11223344-5566-7788-99aa-bbccddeeff00"
+      "name": "Boarding Shotgun",
+      "key": "weapons"
     },
     {
       "id": 92,
-      "key": "weapons",
-      "cr": 1,
-      "uuid": "ffeeddcc-bbaa-9988-7766-554433221100"
+      "name": "Stun Pistol",
+      "key": "weapons"
     },
     {
       "id": 11,
-      "key": "weapons",
-      "cr": 3,
-      "uuid": "00112233-4455-6677-8899-aabbccddeeff"
+      "name": "DA CC Weapon",
+      "key": "weapons"
     },
     {
       "id": 44,
-      "key": "weapons",
-      "cr": 4,
-      "uuid": "a1b2c3d4-e5f6-4789-abcd-ef0123456789"
+      "name": "Grenades",
+      "key": "weapons"
     },
     {
       "id": 71,
-      "key": "weapons",
-      "cr": 4,
-      "uuid": "12345678-90ab-cdef-1234-567890abcdef"
+      "name": "PARA CC Weapon",
+      "key": "weapons"
     },
     {
       "id": 183,
+      "name": "Albedo (-3)",
       "key": "equips",
-      "mods": ["-3"],
-      "cr": 8,
-      "uuid": "fedcba98-7654-3210-fedc-ba9876543210"
+      "extra": [3],
+      "cr": 8
     },
     {
       "id": 114,
+      "name": "Multispectral Visor L1",
       "key": "equips",
-      "cr": 10,
-      "uuid": "0f1e2d3c-4b5a-6978-8a9b-0c1d2e3f4a5b"
+      "cr": 10
     },
     {
       "id": 169,
+      "name": "TinBot: Firewall (-3)",
       "key": "equips",
-      "mods": ["-3"],
-      "cr": 10,
-      "uuid": "9f8e7d6c-5b4a-3210-1a2b-3c4d5e6f7890"
+      "extra": [3],
+      "cr": 10
+    },
+    {
+      "id": 201,
+      "slot": "accessory",
+      "name": "BS Attack (Guided)",
+      "extra": [31],
+      "key": "skills",
+      "cr": 20
+    },
+    {
+      "id": 53,
+      "name": "Doctor (+Medikit)",
+      "slot": "role",
+      "key": "skills",
+      "weapons": [
+        {
+          "id": 106,
+          "name": "Medikit"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 49,
+      "name": "Engineer (+GizmoKit)",
+      "key": "skills",
+      "slot": "role",
+      "weapons": [
+        {
+          "id": 237,
+          "name": "GizmoKit"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 59,
+      "name": "Forward Observer (+Flash Pulse)",
+      "key": "skills",
+      "slot": "role",
+      "weapons": [
+        {
+          "id": 72,
+          "name": "Flash Pulse"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1000,
+      "name": "Hacker (+Hacking Device)",
+      "slot": "role",
+      "key": "skills",
+      "equips": [
+        {
+          "id": 100,
+          "name": "Hacking Device"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1000,
+      "name": "Hacker (+Killer Hacking Device)",
+      "key": "skills",
+      "slot": "role",
+      "equips": [
+        {
+          "id": 145,
+          "name": "Killer Hacking Device"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1,
+      "name": "Mobility Suit",
+      "slot": "armor",
+      "key": "type",
+      "skills": [
+        {
+          "id": 82,
+          "name": "Climbing Plus"
+        },
+        {
+          "id": 58,
+          "name": "Terrain (Total)",
+          "extra": [33]
+        }
+      ],
+      "move": {
+        "id": "custom",
+        "name": "6-4 Move",
+        "extra": [15, 10],
+        "operation": "REPLACE"
+      },
+      "cr": 5
+    },
+    {
+      "id": 2,
+      "name": "Stim Suit",
+      "slot": "armor",
+      "key": "type",
+      "skills": [
+        {
+          "id": 85,
+          "name": "Dogged"
+        }
+      ],
+      "arm": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "bts": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "cr": 15
+    },
+    {
+      "id": 3,
+      "name": "Heavy Armor",
+      "slot": "armor",
+      "key": "type",
+      "arm": {
+        "id": "custom",
+        "name": "4",
+        "extra": 4,
+        "operation": "REPLACE"
+      },
+      "bts": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "w": {
+        "id": "custom",
+        "name": "Wound Skill +1",
+        "extra": 1,
+        "operation": "ADD"
+      },
+      "cr": 20
     }
   ]
 }

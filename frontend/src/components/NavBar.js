@@ -89,10 +89,10 @@ const NavBar = () => {
     if (path === "/" && location.pathname !== "/") return false;
 
     // For other paths, check if current path starts with this path
-    return (
-      location.pathname === path ||
+    return location.pathname === path ||
       (path !== "/" && location.pathname.startsWith(path))
-    );
+      ? {}
+      : undefined;
   };
 
   // Login modal handlers

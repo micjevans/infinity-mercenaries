@@ -109,6 +109,7 @@ const perkTrees = {
           id: "custom",
           name: "MOVE +2, +0",
           extra: [5, 0],
+          operation: "ADD",
           key: "move",
           lvl: 4,
         },

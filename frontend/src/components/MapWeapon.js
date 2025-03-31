@@ -158,7 +158,7 @@ const MapWeapon = ({ weaponProfiles }) => {
                   weapon.burst,
                   metadata["ammunitions"].find(
                     (e) => e.id === weapon.ammunition
-                  )?.name,
+                  )?.name || weapon.ammunition,
                   weapon.saving,
                   weapon.savingNum,
                 ].map((value, index) => (

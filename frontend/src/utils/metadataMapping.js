@@ -22,7 +22,14 @@ export const renderStat = (stat) => {
 };
 
 export const mapItemData = (item) => {
-  return (metadata[item.key] || []).filter((e) => e.id === item.id);
+  return (metadata[item.key] || [])
+    .filter(
+      (e) =>
+        e.id === item.id &&
+        // We need to make sure we only get all weapon or equipment profiles as there is some id overlap
+        (item.type ? e.type === item.type : true)
+    )
+    .map((e) => ({ ...e, ...item }));
 };
 
 export const getExtra = (extraId) => {

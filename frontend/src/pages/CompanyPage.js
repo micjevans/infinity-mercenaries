@@ -37,12 +37,16 @@ import ShopDialog from "../components/ShopDialog";
 import baseMarket from "../data/markets/baseMarket.json";
 import TrooperList from "../components/TrooperList";
 import { useAuth } from "../auth/AuthContext";
+import { v4 as uuid4 } from "uuid";
 import {
   updateCompanyDetails,
   updateInventoryAndCredits,
 } from "../services/companyService";
 import { getTroopers } from "../services/trooperService";
 import metadata from "../data/factions/metadata";
+import CasinoIcon from "@mui/icons-material/Casino";
+import { calcItemCr } from "../utils/costUtils";
+import { generateLootItem, generateTier } from "../utils/lootUtils"; // Add this import
 
 const CompanyPage = () => {
   const location = useLocation();
@@ -84,7 +88,6 @@ const CompanyPage = () => {
         console.error("Error loading units:", error);
       }
     };
-
     loadUnits();
   }, [units]);
 
@@ -123,10 +126,55 @@ const CompanyPage = () => {
     });
   };
 
+  // Replace simple assignment with loot generation for weapons
+  const merchantItems = React.useMemo(() => {
+    // If no company or seed is available, return regular items with uuid and cr
+    if (!company?.seed) {
+      return baseMarket.items.map((item) => ({
+        ...item,
+        cr: item.cr || calcItemCr(item),
+        uuid: uuid4(),
+      }));
+    }
+
+    // Separate weapons from other items
+    const weaponItems = baseMarket.items.filter(
+      (item) => item.key === "weapons" && item.upgrades !== false
+    );
+    const otherItems = baseMarket.items.filter(
+      (item) => item.key !== "weapons" || item.upgrades === false
+    );
+
+    // Generate rarities for weapons based on seed
+    const generatedWeapons = weaponItems.map((weapon) => {
+      // Generate unique seed for this specific weapon
+      const itemSeed = `${company.seed}-weapon-${weapon.id}`;
+      const rarityTier = generateTier(itemSeed);
+      // Generate loot item
+      const lootItem = generateLootItem(weapon, rarityTier, itemSeed);
+
+      // Add uuid and cr properties
+      return {
+        ...lootItem,
+        cr: lootItem.cr || calcItemCr(lootItem),
+        uuid: uuid4(),
+      };
+    });
+
+    // Add uuid and cr to other items as well
+    const processedOtherItems = otherItems.map((item) => ({
+      ...item,
+      cr: item.cr || calcItemCr(item),
+      uuid: uuid4(),
+    }));
+
+    // Combine generated weapons with other items
+    return [...generatedWeapons, ...processedOtherItems];
+  }, [company?.seed]);
+
   if (!cleanedCompany) return null;
 
   const companyName = cleanedCompany?.name;
-  const merchantItems = baseMarket.items;
 
   // Add handler for description changes
   const handleDescriptionChange = (e) => {
@@ -187,25 +235,51 @@ const CompanyPage = () => {
     setIsModified(true);
   };
 
+  // Add a handler for seed changes
+  const handleSeedChange = (e) => {
+    setCompany((prev) => ({
+      ...prev,
+      seed: e.target.value,
+    }));
+    setIsModified(true);
+  };
+
+  // Add a function to generate a random seed
+  const generateRandomSeed = () => {
+    const randomSeed = Math.floor(Math.random() * 1000000).toString();
+    setCompany((prev) => ({
+      ...prev,
+      seed: randomSeed,
+    }));
+    setIsModified(true);
+  };
+
   // Update to use the service function with local flag
   const saveCompanyDetails = async () => {
     if (!user || !company || !company.id) return;
 
-    updateCompanyDetails(
-      user.uid,
-      company.id,
-      {
-        description: company.description,
-        sectorial1: company.sectorial1,
-        sectorial2: company.sectorial2,
-        // Include credits in the update if local
-        ...(company.local && { credits: company.credits }),
-      },
-      company.local
-    ); // Pass local flag
+    try {
+      const isLocal = location?.state?.isLocal || company?.local;
 
-    // Reset modified state after save
-    setIsModified(false);
+      await updateCompanyDetails(
+        user.uid,
+        company.id,
+        {
+          name: company.name,
+          description: company.description,
+          sectorial1: company.sectorial1,
+          sectorial2: company.sectorial2,
+          seed: company.seed,
+          // Include credits in the update if local
+          ...(company.local && { credits: company.credits }),
+        },
+        isLocal
+      );
+
+      setIsModified(false);
+    } catch (error) {
+      console.error("Error saving company details:", error);
+    }
   };
 
   // Update to use the service function with local flag
@@ -520,6 +594,30 @@ const CompanyPage = () => {
             value={company?.description || ""}
             onChange={handleDescriptionChange}
           />
+
+          {/* Add the seed field inside your company info accordion */}
+          {company?.local && (
+            <Box sx={{ mt: 2 }}>
+              <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+                <TextField
+                  label="Shop Seed"
+                  fullWidth
+                  value={company.seed || ""}
+                  onChange={handleSeedChange}
+                  helperText="Changes the random generation of shop items. Leave empty for random seed."
+                  margin="normal"
+                />
+                <IconButton
+                  color="primary"
+                  onClick={generateRandomSeed}
+                  sx={{ mt: 2.5, ml: 1 }}
+                  title="Generate random seed"
+                >
+                  <CasinoIcon />
+                </IconButton>
+              </Box>
+            </Box>
+          )}
         </AccordionDetails>
       </Accordion>
 
@@ -677,6 +775,7 @@ const CompanyPage = () => {
         companyItems={company.inventory || []}
         merchantItems={merchantItems}
         companyCredits={company.credits || 0}
+        seed={company.seed} // Pass the seed to ShopDialog
         onConfirmExchange={async (exchangeData) => {
           try {
             const updatedInventory = [
