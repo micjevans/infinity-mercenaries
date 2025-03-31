@@ -1,6 +1,5 @@
-import { createRNG, nextInt, pickOne, shuffle } from "./randomUtils";
-import { adjectives, createWeapon } from "./randomUtils";
-import metadata from "../data/factions/metadata";
+import { createRNG, nextInt, pickOne } from "./randomUtils";
+import { createWeapon } from "./randomUtils";
 import { calcItemCr } from "./costUtils";
 
 // Rarity tiers and their properties
@@ -71,7 +70,7 @@ export const generateTier = (
   const weights = {
     COMMON: 50,
     UNCOMMON: 30,
-    RARE: 15,
+    RARE: 10,
     EPIC: 4,
     LEGENDARY: 1,
   };
@@ -87,7 +86,7 @@ export const generateTier = (
   });
 
   // Pick a random tier from the pool
-  const [selectedTier, _] = pickOne(rng, rarityPool);
+  const selectedTier = pickOne(rng, rarityPool)[0];
   return selectedTier;
 };
 
@@ -237,7 +236,7 @@ export const generateRandomLoot = (
     });
 
     // Randomly select a tier based on weights
-    const [tier, _] = pickOne(rng, weightedTiers);
+    const tier = pickOne(rng, weightedTiers)[0];
     selectedRarityTier = tier;
   }
 

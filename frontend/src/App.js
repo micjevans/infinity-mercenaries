@@ -17,7 +17,6 @@ import theme from "./theme";
 import EventListPage from "./pages/EventListPage";
 import EventCreatePage from "./pages/EventCreatePage";
 import EventDetailsPage from "./pages/EventDetailsPage";
-import EventManagePage from "./pages/EventManagePage";
 import PairingPage from "./pages/PairingPage";
 // Add this import with your other page imports
 import AdminSetup from "./pages/AdminSetup";
@@ -50,22 +49,6 @@ const AdminRoute = ({ children }) => {
   }
 
   if (!user || !isAdmin) {
-    return <Navigate to="/" />;
-  }
-
-  return children;
-};
-
-// Mod-only route component
-const ModRoute = ({ children }) => {
-  const { user, isMod, loading } = useAuth();
-
-  // Show nothing while authentication is being loaded
-  if (loading) {
-    return null; // Or return a loading spinner if preferred
-  }
-
-  if (!user || !isMod) {
     return <Navigate to="/" />;
   }
 

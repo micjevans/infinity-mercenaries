@@ -21,7 +21,6 @@ import {
 import { updateCompanyDetails } from "../services/companyService";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import GroupIcon from "@mui/icons-material/Group";
-import AddIcon from "@mui/icons-material/Add";
 import ButtonLikeDiv from "./ButtonLikeDiv";
 
 const factionsContext = require.context("../data/factions", false, /\.json$/);
