@@ -45,7 +45,6 @@ import {
   isEventOrganizer,
   updateEvent,
   createRound,
-  completeRound,
   updateRoundDates,
 } from "../services/eventService";
 import { useAuth } from "../auth/AuthContext";
@@ -178,7 +177,7 @@ const EventDetailsPage = () => {
     };
 
     loadEventAndCompanies();
-  }, [eventId, user]);
+  }, [companies, eventId, user]);
 
   // Tab change handler
   const handleTabChange = (event, newValue) => {

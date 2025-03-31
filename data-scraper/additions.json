@@ -63,6 +63,30 @@
   ],
   "weapons": [
     {
+      "id": "77F8EEBB-3CA6-4C35-94F7-715838C02CA8",
+      "type": "WEAPON",
+      "name": "Mine",
+      "ammunition": 2,
+      "burst": "1",
+      "damage": "7",
+      "saving": "ARM",
+      "savingNum": "1",
+      "properties": [
+        "Intuitive Attack",
+        "Concealed",
+        "Disposable (3)",
+        "Direct Template (Small Teardrop)",
+        "Deployable",
+        "[*]"
+      ],
+      "distance": null,
+      "abbr": "Shock Mine",
+      "cr": 5,
+      "swc": 0,
+      "slot": "secondary",
+      "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
+    },
+    {
       "id": 216,
       "abbr": "Adhesive Launcher Rifle",
       "cr": 0,
@@ -1740,5 +1764,663 @@
       "swc": 0,
       "slot": "accessory"
     }
-  ]
+  ],
+  "ammunitions": [
+    {
+      "id": 1,
+      "name": "Adhesive",
+      "ammunition": "PARA",
+      "properties": ["NON-LETHAL", "State: IMMOBILIZED-A"],
+      "saving": "PH-6",
+      "multiplier": 1.2,
+      "types": ["weapons"]
+    },
+    {
+      "id": 3,
+      "name": "AP",
+      "ammunition": "AP",
+      "saving": "ARM/2",
+      "multiplier": 1.2,
+      "types": ["weapons"]
+    },
+    {
+      "id": 5,
+      "name": "N+E/M",
+      "multiplier": 2.5
+    },
+    {
+      "id": 6,
+      "name": "Exp",
+      "ammunition": "EXP",
+      "savingNum": 3,
+      "properties": ["ANTI-MATERIAL"],
+      "multiplier": 2,
+      "types": ["weapons"]
+    },
+    {
+      "id": 7,
+      "name": "Monofilament",
+      "saving": "ARM=0",
+      "properties": ["State: DEAD"],
+      "damage": "8",
+      "multiplier": 2.5,
+      "types": ["weapons"]
+    },
+    {
+      "id": 8,
+      "name": "Shock",
+      "ammunition": "SHOCK",
+      "multiplier": 1.1,
+      "types": ["weapons"]
+    },
+    {
+      "id": 9,
+      "name": "DA",
+      "ammunition": "DA",
+      "savingNum": 2,
+      "properties": ["ANTI-MATERIAL"],
+      "multiplier": 1.5,
+      "types": ["weapons"]
+    },
+    {
+      "id": 10,
+      "name": "AP+DA",
+      "multiplier": 1.7
+    },
+    {
+      "id": 11,
+      "name": "Viral",
+      "saving": "BTS",
+      "properties": ["BIOWEAPON (DA+SHOCK)"],
+      "multiplier": 1.5,
+      "types": ["weapons"]
+    },
+    {
+      "id": 14,
+      "name": "E/M",
+      "ammunition": "E/M",
+      "properties": ["NON-LETHAL"],
+      "saving": "BTS/2",
+      "savingNum": 2,
+      "multiplier": 1.7,
+      "types": ["weapons"]
+    },
+    {
+      "id": 13,
+      "name": "AP+Exp",
+      "multiplier": 2.2
+    },
+    {
+      "id": 18,
+      "name": "T2",
+      "ammunition": "T2",
+      "properties": ["ANTI-MATERIAL"],
+      "multiplier": 1.6,
+      "types": ["weapons"]
+    },
+    {
+      "id": 21,
+      "name": "Smoke",
+      "ammunition": "SMOKE",
+      "properties": ["IMPACT TEMPLATE (CIRCULAR)", "NON-LETHAL", "TARGETLESS"],
+      "multiplier": 2,
+      "types": ["weapons"]
+    },
+    {
+      "id": 22,
+      "name": "Eclipse",
+      "ammunition": "ECLIPSE",
+      "properties": [
+        "IMPACT TEMPLATE (CIRCULAR)",
+        "NON-LETHAL",
+        "REFLECTIVE",
+        "TARGETLESS"
+      ],
+      "multiplier": 3,
+      "types": ["weapons"]
+    },
+    {
+      "id": 23,
+      "name": "Flash",
+      "ammunition": "STUN",
+      "saving": "BTS",
+      "properties": ["NON-LETHAL", "State: STUNNED"],
+      "multiplier": 0.8,
+      "types": ["weapons"]
+    },
+    {
+      "id": 24,
+      "name": "Fire",
+      "properties": ["CONTINUOUS DAMAGE"],
+      "multiplier": 1.7,
+      "types": ["weapons"]
+    },
+    {
+      "id": 30,
+      "name": "AP+Shock",
+      "multiplier": 1.3
+    },
+    {
+      "id": 31,
+      "name": "K1",
+      "saving": "ARM=0",
+      "damage": "7",
+      "multiplier": 1.7,
+      "types": ["weapons"]
+    },
+    {
+      "id": 32,
+      "name": "Breaker",
+      "saving": "BTS/2",
+      "multiplier": 1.3,
+      "types": ["weapons"]
+    },
+    {
+      "id": 34,
+      "name": "Plasma",
+      "saving": "ARM and BTS",
+      "savingNum": "1 and 1",
+      "multiplier": 2,
+      "types": ["weapons"]
+    },
+    {
+      "id": 40,
+      "name": "AP+T2",
+      "multiplier": 1.8
+    }
+  ],
+  "armors": [],
+  "extras": [
+    {
+      "id": 6,
+      "name": "-3",
+      "multiplier": 1.5,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 7,
+      "name": "-6",
+      "multiplier": 2,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 259,
+      "name": "-9",
+      "multiplier": 2.5,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 8,
+      "name": "+1B",
+      "type": "TEXT",
+      "multiplier": 1.5,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 308,
+      "name": "+1SD",
+      "type": "TEXT",
+      "multiplier": 1.5,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 256,
+      "name": "+2B",
+      "multiplier": 2,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 1,
+      "name": "+3",
+      "multiplier": 2,
+      "types": ["weapons", "equips"]
+    },
+    {
+      "id": 249,
+      "name": "AP",
+      "multiplier": 1.3,
+      "types": ["hacks"]
+    },
+    {
+      "id": 30,
+      "name": "Shock",
+      "multiplier": 1.1,
+      "types": ["hacks"]
+    },
+    {
+      "id": 305,
+      "name": "SR-1",
+      "multiplier": 1.1,
+      "types": ["weapons", "equips", "hacks"]
+    },
+    {
+      "id": 294,
+      "name": "T2",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 17,
+      "name": "UPGRADE: Fairy Dust",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 278,
+      "name": "UPGRADE: Total Control (+1B)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 314,
+      "name": "UPGRADE: Total Control (SR-2)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 287,
+      "name": "UPGRADE: Zero Pain",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 292,
+      "name": "Continous Damage",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 12,
+      "name": "UPGRADE: Trinity",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 2,
+      "name": "+6",
+      "multiplier": 3,
+      "types": ["weapons", "equips", "hacks"]
+    },
+    {
+      "id": 337,
+      "name": "SR-2",
+      "multiplier": 1.2,
+      "types": ["weapons", "equips", "hacks"]
+    },
+    {
+      "id": 363,
+      "name": "UPGRADE: Carbonite (PS=6)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 14,
+      "name": "UPGRADE: Spotlight",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 25,
+      "name": "UPGRADE: Cybermask",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 286,
+      "name": "UPGRADE: Trinity (-3)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 335,
+      "name": "UPGRADES: Carbonite, Firewall (-3)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 3,
+      "name": "+9",
+      "multiplier": 4,
+      "types": ["weapons", "equips", "hacks"]
+    },
+    {
+      "id": 13,
+      "name": "UPGRADE: Carbonite",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 269,
+      "name": "UPGRADE: Oblivion (+1B)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 270,
+      "name": "UPGRADE: Trinity (AP)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 339,
+      "name": "UPGRADE: Trinity (SR-1)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 285,
+      "name": "UPGRADE: Carbonite (+1 B)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 331,
+      "name": "UPGRADE: Carbonite (SR-2)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 21,
+      "name": "UPGRADE: Oblivion",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 344,
+      "name": "UPGRADE: SR-1",
+      "multiplier": 1.1,
+      "types": ["hacks"]
+    },
+    {
+      "id": 345,
+      "name": "UPGRADE: Total Control (SR-1)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 290,
+      "name": "UPGRADE: Trinity (+1B)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 343,
+      "name": "UPGRADE: Trinity (PS=5)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 20,
+      "name": "UPGRADE: White Noise",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 342,
+      "name": "PARA",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 350,
+      "name": "UPGRADE: Trinity (PS=4)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 352,
+      "name": "UPGRADE: Trinity (SR-2)",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    },
+    {
+      "id": 39,
+      "name": "Viral",
+      "multiplier": 1.7,
+      "types": ["hacks"]
+    }
+  ],
+  "upgrades": [
+    {
+      "id": 1,
+      "name": "E/M",
+      "saving": "BTS/2",
+      "ammunition": "E/M",
+      "savingNum": "2",
+      "properties": ["Non-lethal"]
+    },
+    {
+      "id": 2,
+      "name": "AP",
+      "ammunition": "AP",
+      "saving": "ARM/2"
+    },
+    {
+      "id": 3,
+      "name": "DA",
+      "ammunition": "DA",
+      "savingNum": "2",
+      "properties": ["Anti-materiel"]
+    },
+    {
+      "id": 3,
+      "name": "EXP",
+      "ammunition": "EXP",
+      "savingNum": "3",
+      "properties": ["Anti-materiel"]
+    },
+    {
+      "id": 4,
+      "name": "T2",
+      "ammunition": "T2",
+      "properties": ["Anti-materiel"]
+    },
+    {
+      "id": 5,
+      "name": "Breaker",
+      "ammunition": "AP",
+      "saving": "BTS/2"
+    },
+    {
+      "id": 6,
+      "name": "Shock",
+      "ammunition": "SHOCK"
+    },
+    {
+      "id": 7,
+      "name": "Viral",
+      "saving": "BTS",
+      "properties": ["Bioweapon (DA+SHOCK)"]
+    },
+    {
+      "id": 8,
+      "name": "K1",
+      "saving": "ARM=0"
+    },
+    {
+      "id": 9,
+      "name": "Monofilament",
+      "saving": "ARM=0",
+      "properties": ["State: Dead"]
+    },
+    {
+      "id": 10,
+      "name": "Plasma",
+      "saving": "ARM and BTS",
+      "savingNum": "1 and 1",
+      "properties": ["Impact Template (Circular)"]
+    },
+    {
+      "id": 11,
+      "name": "Para",
+      "ammunition": "PARA",
+      "saving": "PH-6",
+      "properties": ["State: IMM-A"]
+    },
+    {
+      "id": 14,
+      "name": "Flash",
+      "ammunition": "STUN",
+      "saving": "BTS",
+      "properties": ["Non-lethal", "State: Stunned"]
+    },
+    {
+      "id": 15,
+      "name": "Silent",
+      "properties": ["Silent (-6)"]
+    },
+    {
+      "id": 16,
+      "name": "Targetting",
+      "properties": ["State: Targeted"]
+    },
+    {
+      "id": 17,
+      "name": "Smart",
+      "properties": ["BS Weapon (WIP)"]
+    },
+    {
+      "id": 18,
+      "name": "Propulsive",
+      "burst": 1,
+      "properties": ["BS Weapon (PH)", "*MAY USE 20-PH AS PS"]
+    },
+    {
+      "id": 19,
+      "name": "Disposable",
+      "properties": ["Disposable (3)"]
+    },
+    {
+      "id": 20,
+      "name": "Flaming",
+      "properties": ["Continous Damage"]
+    },
+    {
+      "id": 21,
+      "name": "Impact",
+      "properties": ["Impact Template (Circular)"]
+    },
+    {
+      "id": 22,
+      "name": "(+1 SD)"
+    },
+    {
+      "id": 23,
+      "name": "(+1 B)"
+    },
+    {
+      "id": 24,
+      "name": "(-1 SR)"
+    }
+  ],
+  "upgradesInfo": {
+    "ammunition": [
+      {
+        "search": "T2",
+        "key": "wound",
+        "mod": "OFFSET",
+        "value": 1
+      },
+      {
+        "search": "SHOCK",
+        "key": "wound",
+        "mod": "OFFSET",
+        "value": 0.5
+      },
+      {
+        "search": "DA",
+        "key": "burst",
+        "mod": ["3", "4", "5", "6", "7"]
+      },
+      {
+        "search": "EXP",
+        "key": "burst",
+        "mod": ["3", "4", "5", "6", "7"]
+      }
+    ],
+    "saving": [
+      {
+        "search": "/",
+        "key": "saving",
+        "mod": "MULTIPLIER"
+      },
+      {
+        "search": "=",
+        "key": "saving",
+        "mod": "MULTIPLIER"
+      },
+      {
+        "search": "PH",
+        "key": "saving",
+        "mod": "REPLACE"
+      },
+      {
+        "search": "and",
+        "key": "saving",
+        "mod": "OFFSET"
+      },
+      {
+        "search": "BTS",
+        "key": "saving",
+        "mod": "OFFSET"
+      }
+    ],
+    "savingNum": [
+      {
+        "search": "2",
+        "key": "savingNum",
+        "mod": "REPLACE"
+      },
+      {
+        "search": "3",
+        "key": "savingNum",
+        "mod": "REPLACE"
+      }
+    ],
+    "properties": [
+      {
+        "search": "Non-lethal",
+        "key": "wound",
+        "mod": "REPLACE",
+        "value": "AUTO"
+      },
+      {
+        "search": "Template",
+        "key": "properties",
+        "mod": ["Template", "CC"]
+      },
+      {
+        "search": "BS Weapon",
+        "key": "properties",
+        "mod": ["BS Weapon", "CC"]
+      },
+      {
+        "search": "Disposable",
+        "key": "properties",
+        "mod": "Disposable"
+      },
+      {
+        "search": "Bioweapon (DA+SHOCK)",
+        "key": "wound",
+        "mod": "OFFSET",
+        "value": 0.5
+      },
+      {
+        "search": "Deployable",
+        "key": "properties",
+        "mod": "BS Weapon"
+      },
+      {
+        "search": "Bioweapon (DA+SHOCK)",
+        "key": "savingNum",
+        "mod": "REPLACE"
+      },
+      {
+        "search": "Continous Damage",
+        "key": "wound",
+        "mod": "OFFSET",
+        "value": 0.75
+      }
+    ]
+  }
 }

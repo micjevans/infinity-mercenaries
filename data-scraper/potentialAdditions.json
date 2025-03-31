@@ -1,0 +1,27 @@
+{
+  "potentialUpgrades": [
+    {
+      "id": 12,
+      "name": "Smoke",
+      "ammunition": "SMOKE",
+      "saving": "-",
+      "damage": "-",
+      "savingNum": "-",
+      "properties": ["Impact Template (Circular)", "Non-lethal", "Targetless"]
+    },
+    {
+      "id": 13,
+      "name": "Eclipse",
+      "ammunition": "ECLIPSE",
+      "saving": "-",
+      "damage": "-",
+      "savingNum": "-",
+      "properties": [
+        "Impact Template (Circular)",
+        "Non-lethal",
+        "Reflective",
+        "Targetless"
+      ]
+    }
+  ]
+}

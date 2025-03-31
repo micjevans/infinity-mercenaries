@@ -179,6 +179,10 @@ let additionsMap = [
         if (!metadataJson[key]) {
           metadataJson[key] = additions[key];
         }
+        if (key === "ammunition") {
+          console.log(metadataJson[key]);
+          console.log(additions[key]);
+        }
         // otherwise add the additions to the existing key
         else {
           metadataJson[key] = metadataJson[key].map((item) => ({
