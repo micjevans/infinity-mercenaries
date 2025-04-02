@@ -3,86 +3,64 @@ import {
   Typography,
   Button,
   Box,
-  Grid,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Divider,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
+  Alert,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Alert,
-  Checkbox,
+  Grid,
+  Paper,
+  Table,
+  TableContainer,
+  Divider,
   Avatar,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
-import { submitResult, updateResult } from "../../services/eventService";
+import { updateResult } from "../../services/eventService";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import Trooper from "../Trooper";
-import DowntimeEvent from "../DowntimeEvent";
+import TrooperPerformanceTable from "../mission/TrooperPerformanceTable";
+import MissionResultSummary from "../mission/MissionResultSummary";
 
-const INJURY_OPTIONS = [
-  "",
-  "Battle Fury (1-6)",
-  "Punctured Lung (7-8)",
-  "Arms Injury (9-10)",
-  "Brain Injury (11-12)",
-  "Legs Injury (13-14)",
-  "Body Compromised (15-16)",
-  "Eye Damage (17-18)",
-  "Shell Shocked (19-20)",
+// Constants moved to component level
+const DOWNTIME_EVENTS = [
+  "Training",
+  "Recovery",
+  "Supply Run",
+  "Intel Gathering",
+  "Recruitment",
 ];
 
-const OBJECTIVE_OPTIONS = [
-  { value: "", label: "None", xp: 0 },
-  { value: "attempt", label: "Attempt", xp: 1 },
-  { value: "success", label: "Success", xp: 2 },
-];
-
-const TAG_OPTIONS = [
-  { value: "", label: "None", xp: 0 },
-  { value: "scan", label: "Scan", xp: 1 },
-  { value: "tag", label: "Tag", xp: 2 },
-];
+const DOWNTIME_RESULTS = ["Critical Success", "Success", "Failure"];
 
 const Mission = ({
-  resultData,
+  initialData,
   hasSubmitted,
   onBack,
-  onNext,
-  handleInputChange,
-  handleDowntimeChange,
-  handleXpChange,
+  onComplete,
   troopers,
-  DOWNTIME_EVENTS,
-  DOWNTIME_RESULTS,
   enemyTroopers = [],
   allResults = [],
   opponentId = null,
-  setResultData,
   eventId,
   roundId,
   pairingId,
   playerCompany = null,
   opponentCompany = null,
 }) => {
+  // Manage form data locally in the component
+  const [missionData, setMissionData] = useState(initialData);
   const [inducements, setInducements] = useState(0);
+  const [savingDowntime, setSavingDowntime] = useState(false);
+  const [downtimeError, setDowntimeError] = useState(null);
 
+  // Other state for UI
   const [expandedSections, setExpandedSections] = useState({
     missionRules: true,
     troopers: true,
@@ -90,6 +68,12 @@ const Mission = ({
     missionResults: true,
   });
 
+  // Initialize from props
+  useEffect(() => {
+    setMissionData(initialData);
+  }, [initialData]);
+
+  // Handle accordion expansion
   const handleAccordionChange = (section) => (event, isExpanded) => {
     setExpandedSections({
       ...expandedSections,
@@ -97,6 +81,7 @@ const Mission = ({
     });
   };
 
+  // Get trooper by ID helper
   const getTrooperById = useCallback(
     (trooperId) => {
       return (
@@ -111,8 +96,9 @@ const Mission = ({
     [troopers]
   );
 
+  // Calculate inducements
   useEffect(() => {
-    const playerPoints = resultData.troopers.reduce(
+    const playerPoints = missionData.troopers.reduce(
       (total, deployedTrooper) => {
         const trooper = troopers.find((t) => t.id === deployedTrooper.trooper);
         if (
@@ -140,43 +126,22 @@ const Mission = ({
 
     const calculatedInducements = opponentPoints - playerPoints;
     setInducements(calculatedInducements > 0 ? calculatedInducements : 0);
+  }, [missionData.troopers, troopers, enemyTroopers]);
 
-    console.log("Inducements calculation:", {
-      playerPoints,
-      opponentPoints,
-      inducements: calculatedInducements > 0 ? calculatedInducements : 0,
-    });
-  }, [resultData.troopers, troopers, enemyTroopers]);
-
-  const calculateTotalXp = (trooper) => {
-    let total = 0;
-
-    if (trooper.aid) total += 2;
-    if (trooper.state) total += 2;
-    if (trooper.alive) total += 2;
-
-    if (trooper.objective === "attempt") total += 1;
-    if (trooper.objective === "success") total += 2;
-    if (trooper.tag === "scan") total += 1;
-    if (trooper.tag === "tag") total += 2;
-
-    if (trooper.injury && trooper.injury !== "") total += 1;
-
-    if (trooper.mvp) total += 2;
-
-    return total;
-  };
-
+  // Form update handlers
   const handleCheckboxChange = (trooperIndex, field) => {
-    const updatedTroopers = [...resultData.troopers];
+    const updatedTroopers = [...missionData.troopers];
     updatedTroopers[trooperIndex][field] =
       !updatedTroopers[trooperIndex][field];
 
-    handleInputChange("troopers", updatedTroopers);
+    setMissionData({
+      ...missionData,
+      troopers: updatedTroopers,
+    });
   };
 
   const handleDropdownChange = (trooperIndex, field, value) => {
-    const updatedTroopers = [...resultData.troopers];
+    const updatedTroopers = [...missionData.troopers];
     updatedTroopers[trooperIndex][field] = value;
 
     if (field === "injury" && value !== "") {
@@ -191,21 +156,32 @@ const Mission = ({
       }
     }
 
-    handleInputChange("troopers", updatedTroopers);
+    setMissionData({
+      ...missionData,
+      troopers: updatedTroopers,
+    });
   };
 
   const handleMvpChange = (trooperId) => {
-    const updatedTroopers = [...resultData.troopers].map((trooper) => ({
+    const updatedTroopers = [...missionData.troopers].map((trooper) => ({
       ...trooper,
       mvp: trooper.trooper === trooperId,
     }));
 
-    handleInputChange("troopers", updatedTroopers);
+    setMissionData({
+      ...missionData,
+      troopers: updatedTroopers,
+    });
   };
 
-  const [savingDowntime, setSavingDowntime] = useState(false);
-  const [downtimeError, setDowntimeError] = useState(null);
+  const handleInputChange = (field, value) => {
+    setMissionData({
+      ...missionData,
+      [field]: value,
+    });
+  };
 
+  // Downtime handlers
   const cleanForFirestore = (obj) => {
     const cleaned = {};
     Object.keys(obj).forEach((key) => {
@@ -231,20 +207,18 @@ const Mission = ({
       });
 
       const updatedResultData = {
-        ...resultData,
+        ...missionData,
         downtime: cleanDowntime,
       };
 
-      if (resultData.resultId) {
+      if (missionData.resultId) {
         await updateResult(
           eventId,
           roundId,
           pairingId,
-          resultData.resultId,
+          missionData.resultId,
           updatedResultData
         );
-      } else {
-        await submitResult(eventId, roundId, pairingId, updatedResultData);
       }
 
       console.log("Downtime saved successfully");
@@ -257,7 +231,7 @@ const Mission = ({
   };
 
   const updateDowntime = (newDowntime, save = true) => {
-    setResultData((prev) => ({
+    setMissionData((prev) => ({
       ...prev,
       downtime: newDowntime,
     }));
@@ -267,6 +241,12 @@ const Mission = ({
       console.log("Saving downtime to database:", newDowntime);
       saveDowntime(newDowntime);
     }
+  };
+
+  // Handle next button
+  const handleNext = () => {
+    // Additional validation could be done here
+    onComplete(missionData);
   };
 
   return (
@@ -384,7 +364,7 @@ const Mission = ({
                     <TableRow>
                       <TableCell>Your Company</TableCell>
                       <TableCell align="right">
-                        {resultData.troopers.reduce(
+                        {missionData.troopers.reduce(
                           (total, deployedTrooper) => {
                             const trooper = troopers.find(
                               (t) => t.id === deployedTrooper.trooper
@@ -463,133 +443,16 @@ const Mission = ({
           <Typography variant="h6" gutterBottom>
             Trooper Performance
           </Typography>
-          <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Trooper</TableCell>
-                  <TableCell align="center">XP Gained</TableCell>
-                  <TableCell align="center">Aid</TableCell>
-                  <TableCell align="center">State</TableCell>
-                  <TableCell align="center">Objective</TableCell>
-                  <TableCell align="center">Tag</TableCell>
-                  <TableCell align="center">Alive</TableCell>
-                  <TableCell align="center">Injury</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {resultData.troopers.map((trooper, index) => {
-                  const trooperDetails = getTrooperById(trooper.trooper);
 
-                  return (
-                    <TableRow key={trooper.trooper}>
-                      <TableCell component="th" scope="row">
-                        <Box display="flex" alignItems="center">
-                          <img
-                            src={trooperDetails.resume?.logo}
-                            alt={trooperDetails.isc}
-                            style={{
-                              height: 24,
-                              marginRight: 8,
-                            }}
-                          />
-                          {trooperDetails.name}
-                        </Box>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography variant="body2" fontWeight="bold">
-                          {calculateTotalXp(trooper)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Checkbox
-                          checked={trooper.aid || false}
-                          onChange={() => handleCheckboxChange(index, "aid")}
-                          disabled={hasSubmitted}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Checkbox
-                          checked={trooper.state || false}
-                          onChange={() => handleCheckboxChange(index, "state")}
-                          disabled={hasSubmitted}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <FormControl size="small" sx={{ minWidth: 100 }}>
-                          <Select
-                            value={trooper.objective || ""}
-                            onChange={(e) =>
-                              handleDropdownChange(
-                                index,
-                                "objective",
-                                e.target.value
-                              )
-                            }
-                            disabled={hasSubmitted}
-                            displayEmpty
-                          >
-                            {OBJECTIVE_OPTIONS.map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell align="center">
-                        <FormControl size="small" sx={{ minWidth: 100 }}>
-                          <Select
-                            value={trooper.tag || ""}
-                            onChange={(e) =>
-                              handleDropdownChange(index, "tag", e.target.value)
-                            }
-                            disabled={hasSubmitted}
-                            displayEmpty
-                          >
-                            {TAG_OPTIONS.map((option) => (
-                              <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Checkbox
-                          checked={trooper.alive || false}
-                          onChange={() => handleCheckboxChange(index, "alive")}
-                          disabled={hasSubmitted}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <FormControl size="small" sx={{ minWidth: 140 }}>
-                          <Select
-                            value={trooper.injury || ""}
-                            onChange={(e) =>
-                              handleDropdownChange(
-                                index,
-                                "injury",
-                                e.target.value
-                              )
-                            }
-                            disabled={hasSubmitted}
-                            displayEmpty
-                          >
-                            {INJURY_OPTIONS.map((option) => (
-                              <MenuItem key={option} value={option}>
-                                {option || "None"}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {/* Use the new TrooperPerformanceTable component */}
+          <TrooperPerformanceTable
+            trooperResults={missionData.troopers}
+            getTrooperById={getTrooperById}
+            readOnly={hasSubmitted}
+            onCheckboxChange={handleCheckboxChange}
+            onDropdownChange={handleDropdownChange}
+            onMvpChange={handleMvpChange}
+          />
 
           <Divider sx={{ my: 3 }} />
 
@@ -601,7 +464,7 @@ const Mission = ({
             <Typography variant="subtitle1" sx={{ mb: 2 }}>
               Your Deployed Troopers
             </Typography>
-            {resultData.troopers.length > 0 ? (
+            {missionData.troopers.length > 0 ? (
               <Box
                 sx={{
                   maxHeight: "500px",
@@ -610,7 +473,7 @@ const Mission = ({
                   pr: 1,
                 }}
               >
-                {resultData.troopers.map((deployedTrooper) => {
+                {missionData.troopers.map((deployedTrooper) => {
                   const trooperData = troopers.find(
                     (t) => t.id === deployedTrooper.trooper
                   );
@@ -683,109 +546,29 @@ const Mission = ({
           </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ p: 3 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Mission Outcome
-              </Typography>
-              <RadioGroup
-                row
-                value={resultData.won}
-                onChange={(e) =>
-                  handleInputChange("won", e.target.value === "true")
-                }
-                name="mission-outcome"
-              >
-                <FormControlLabel
-                  value={true}
-                  control={<Radio />}
-                  label="Victory"
-                  disabled={hasSubmitted}
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio />}
-                  label="Defeat"
-                  disabled={hasSubmitted}
-                />
-              </RadioGroup>
-
-              <Box mt={2}>
-                <TextField
-                  label="Objective Points Scored"
-                  type="number"
-                  value={resultData.op || 0}
-                  onChange={(e) =>
-                    handleInputChange("op", parseInt(e.target.value) || 0)
-                  }
-                  fullWidth
-                  disabled={hasSubmitted}
-                  InputProps={{ inputProps: { min: 0 } }}
-                />
-              </Box>
-
-              <Box mt={3}>
-                <Typography variant="subtitle1" gutterBottom>
-                  Most Valuable Player (MVP)
-                </Typography>
-                <FormControl fullWidth margin="normal" disabled={hasSubmitted}>
-                  <InputLabel>Select MVP</InputLabel>
-                  <Select
-                    value={
-                      resultData.troopers.find((t) => t.mvp)?.trooper || ""
-                    }
-                    onChange={(e) => handleMvpChange(e.target.value)}
-                    label="Select MVP"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {resultData.troopers.map((trooper) => {
-                      const trooperDetails = getTrooperById(trooper.trooper);
-                      return (
-                        <MenuItem key={trooper.trooper} value={trooper.trooper}>
-                          {trooperDetails.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-                <Typography variant="caption" color="text.secondary">
-                  The selected trooper will receive +2 XP
-                </Typography>
-              </Box>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <Typography variant="subtitle1" gutterBottom>
-                Downtime Activity
-              </Typography>
-
-              {downtimeError && (
-                <Alert severity="error" sx={{ mb: 2 }}>
-                  {downtimeError}
-                </Alert>
-              )}
-
-              <DowntimeEvent
-                resultData={resultData}
-                onUpdateDowntime={updateDowntime}
-                deployedTroopers={resultData.troopers}
-                getTrooperById={getTrooperById}
-                disabled={hasSubmitted || savingDowntime}
-                isLoading={savingDowntime}
-                playerCompany={playerCompany}
-                opponentCompany={opponentCompany}
-                inducements={inducements}
-              />
-            </Grid>
-          </Grid>
+          {/* Use the new MissionResultSummary component */}
+          <MissionResultSummary
+            resultData={missionData}
+            companyName={playerCompany?.name || "Your Company"}
+            readOnly={hasSubmitted}
+            onInputChange={handleInputChange}
+            onMvpChange={handleMvpChange}
+            troopersData={troopers}
+            getTrooperById={getTrooperById}
+            updateDowntime={updateDowntime}
+            savingDowntime={savingDowntime}
+            downtimeError={downtimeError}
+            playerCompany={playerCompany}
+            opponentCompany={opponentCompany}
+            inducements={inducements}
+          />
         </AccordionDetails>
       </Accordion>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        <Button onClick={onBack}>Back</Button>
         <Button
-          onClick={onNext}
+          onClick={handleNext}
           variant="contained"
           color="primary"
           disabled={hasSubmitted}

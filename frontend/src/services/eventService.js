@@ -520,7 +520,6 @@ export const updateResult = async (
       updatedAt: serverTimestamp(),
     });
 
-    console.log("Result updated successfully:", resultId);
     store.dispatch(showNotification("Result updated successfully!"));
 
     return resultId;

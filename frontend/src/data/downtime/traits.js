@@ -5,25 +5,98 @@ import {
   RARITY_TIERS,
 } from "../../utils/lootUtils";
 
+// Add a helper function to get trait descriptions
+export const getTraitDescription = (traitKey) => {
+  const descriptions = {
+    chaotic: "Increases notoriety on success, decreases on failure",
+    lawful: "Decreases notoriety on success, increases on failure",
+    attack: "May result in injury on failure",
+    cr: "Credits gain/loss based on outcome",
+    xp: "Experience points gain based on outcome",
+    weapon: "Gain a random weapon on success",
+    swc: "Gain SWC on success",
+    p2p: "Spend credits to increase success chance",
+    skill: "Gain a specific skill on success",
+    lt: "Change company leadership",
+    mvp: "Requires the MVP from last mission",
+    captain: "Requires the company captain",
+    renowned: "Requires the trooper with highest renown",
+    opponent: "Involves the opponent from last contract",
+    merc: "Effects apply to a specific merc",
+    crNeg: "Negative impact on company credits",
+    requireHacker: "Requires a trooper with hacking skills",
+    requireTrinity: "Requires a trooper with Trinity program",
+    skillNaturalBornWarrior: "Grants Natural Born Warrior skill",
+    skillStealth: "Grants Stealth skill",
+  };
+
+  return descriptions[traitKey] || "No description available";
+};
+
 export const traits = {
-  chaotic: (downtimeState) => ({
-    fail: [{ key: "company", value: downtimeState.company.notoriety - 1 }],
-    pass: downtimeState.company.notoriety + 1,
-    crit: downtimeState.company.notoriety + 2,
-  }),
-  lawful: (downtimeState) => ({
-    fail: [{ key: "company", value: downtimeState.company.notoriety + 1 }],
-    pass: [{ key: "company", value: downtimeState.company.notoriety - 1 }],
-    crit: [{ key: "company", value: downtimeState.company.notoriety - 2 }],
-  }),
-  attack: {
-    id: 3,
-    fail: (company, trooper) => ({
-      ...company,
-      notoriety: company.notoriety + 1,
+  chaotic: (traitData) => ({
+    name: "chaotic",
+    type: "consequence",
+    fail: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety - 1,
+      },
     }),
-  },
-  cr: {
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety + 1,
+      },
+    }),
+    crit: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety + 2,
+      },
+    }),
+  }),
+  lawful: (traitData) => ({
+    name: "lawful",
+    type: "consequence",
+    fail: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety + 1,
+      },
+    }),
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety - 1,
+      },
+    }),
+    crit: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.notoriety - 2,
+      },
+    }),
+  }),
+  attack: (traitData) => ({
+    name: "attack",
+    id: 3,
+    fail: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) => ({
+        ...trooper,
+        perks: [...trooper.perks, "injury"],
+      })),
+    }),
+  }),
+  cr: (traitData) => ({
+    name: "cr",
     id: 4,
     fail: {
       key: "credits",
@@ -37,8 +110,9 @@ export const traits = {
       key: "credits",
       value: 6,
     },
-  },
-  xp: {
+  }),
+  xp: (traitData) => ({
+    name: "xp",
     pass: {
       key: "xp",
       value: 2,
@@ -47,10 +121,12 @@ export const traits = {
       key: "xp",
       value: 3,
     },
-  },
-  weapon: {
+  }),
+  weapon: (traitData) => ({
+    name: "weapon",
+    type: "consequence",
     pass: {
-      key: "inventory",
+      key: "company.inventory",
       value: () => {
         generateLootItem(
           { id: 69, type: "weapon" },
@@ -62,7 +138,7 @@ export const traits = {
       },
     },
     crit: {
-      key: "inventory",
+      key: "company.inventory",
       value: () => {
         generateLootItem(
           { id: 69, type: "weapon" },
@@ -73,8 +149,10 @@ export const traits = {
         );
       },
     },
-  },
-  swc: {
+  }),
+  swc: (traitData) => ({
+    name: "company.swc",
+    type: "consequence",
     pass: {
       key: "swc",
       value: 1,
@@ -83,8 +161,9 @@ export const traits = {
       key: "swc",
       value: 2,
     },
-  },
-  p2p: {
+  }),
+  p2p: (traitData) => ({
+    name: "p2p",
     render: (value, onChange) => (
       <TextField
         id="outlined-number"
@@ -100,15 +179,17 @@ export const traits = {
       />
     ),
     fail: {
-      key: "credits",
+      key: "company.credits",
       value: "p2p",
     },
     pass: {
-      key: "credits",
+      key: "company.credits",
       value: "p2p",
     },
-  },
-  skill: (skill) => ({
+  }),
+  skill: (traitData, skill) => ({
+    name: `skill (${skill})`,
+    type: "consequence",
     pass: {
       key: "perks",
       value: skill,
@@ -118,10 +199,9 @@ export const traits = {
       value: skill,
     },
   }),
-  mvp: (troopers) => ({
-    trooper: troopers.find((trooper) => trooper.mvp === true),
-  }),
-  lt: (troopers) => ({
+  lt: (traitData) => ({
+    name: "lt",
+    type: "consequence",
     render: (troopers, value, onChange) => (
       <Box>
         <Typography variant="subtitle1" gutterBottom>
@@ -145,14 +225,33 @@ export const traits = {
         </Grid2>
       </Box>
     ),
-    trooper: troopers.find((trooper) => trooper.captain === true),
+    trooper: traitData.troopers.find((trooper) => trooper.captain === true),
     pass: {
       key: "captain",
-      value: troopers,
+      value: traitData.troopers,
     },
     crit: {
       key: "captain",
-      value: troopers,
+      value: traitData.troopers,
     },
+  }),
+  mvp: (troopers) => ({
+    type: "participant",
+    name: "mvp",
+    trooper: troopers.find((trooper) => trooper.mvp === true),
+  }),
+  captain: (troopers) => ({
+    type: "participant",
+    name: "captain",
+    trooper: troopers.find((trooper) => trooper.captain === true),
+  }),
+  renowned: (troopers) => ({
+    type: "participant",
+    name: "renowned",
+    trooper: troopers.find((trooper) => trooper.renowned === true),
+  }),
+  opponent: (traitData) => ({
+    type: "special",
+    name: "opponent",
   }),
 }; // traits.js

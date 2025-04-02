@@ -13,12 +13,6 @@ import {
   Step,
   StepLabel,
   Snackbar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -29,13 +23,12 @@ import {
   updateResult,
 } from "../services/eventService";
 import { useAuth } from "../auth/AuthContext";
-// Import the new service
 import { getTroopers } from "../services/trooperService";
-// Import components
 import DeployTroopers from "../components/pairing/DeployTroopers";
 import Mission from "../components/pairing/Mission";
 import PostMission from "../components/pairing/PostMission";
 import { getCompany } from "../services/companyService";
+
 // Constants moved to top level for clarity
 const DOWNTIME_EVENTS = [
   "Training",
@@ -46,8 +39,6 @@ const DOWNTIME_EVENTS = [
 ];
 
 const DOWNTIME_RESULTS = ["Critical Success", "Success", "Failure"];
-
-// Add this import for company service
 
 const PairingPage = () => {
   const { eventId, roundId, pairingId } = useParams();
@@ -80,9 +71,6 @@ const PairingPage = () => {
   // Check if user has already submitted a result
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  // Add state for confirmation dialog
-  const [deployConfirmOpen, setDeployConfirmOpen] = useState(false);
-
   // Add state for opponent data
   const [opponentId, setOpponentId] = useState(null);
   const [opponentTroopers, setOpponentTroopers] = useState([]);
@@ -91,6 +79,10 @@ const PairingPage = () => {
   // Add state for company data
   const [playerCompany, setPlayerCompany] = useState(null);
   const [opponentCompany, setOpponentCompany] = useState(null);
+
+  // Add state for opponent results and submission status
+  const [opponentResults, setOpponentResults] = useState(null);
+  const [opponentHasSubmitted, setOpponentHasSubmitted] = useState(false);
 
   useEffect(() => {
     const loadPairingData = async () => {
@@ -108,6 +100,10 @@ const PairingPage = () => {
           setError("You are not registered for this event.");
           setLoading(false);
           return;
+        }
+
+        if (!userParticipation.companyId) {
+          console.error("Missing companyId for user in event participants");
         }
 
         // Load pairing details
@@ -135,7 +131,12 @@ const PairingPage = () => {
             userParticipation.companyId,
             user.uid
           );
-          setPlayerCompany(playerCompanyData);
+
+          if (!playerCompanyData) {
+            console.error("getCompany returned null for player company");
+          } else {
+            setPlayerCompany(playerCompanyData);
+          }
         } catch (companyError) {
           console.error("Error loading player company:", companyError);
         }
@@ -159,10 +160,19 @@ const PairingPage = () => {
                 opponentParticipation.companyId,
                 opponent
               );
-              setOpponentCompany(opponentCompanyData);
+
+              if (!opponentCompanyData) {
+                console.error("getCompany returned null for opponent company");
+              } else {
+                setOpponentCompany(opponentCompanyData);
+              }
             } catch (companyError) {
               console.error("Error loading opponent company:", companyError);
             }
+          } else {
+            console.error(
+              "Missing companyId for opponent in event participants"
+            );
           }
         }
 
@@ -170,8 +180,7 @@ const PairingPage = () => {
         const resultsData = await getResults(eventId, roundId, pairingId);
         setAllResults(resultsData);
 
-        // Load user's troopers for this company using the new service
-        // We need to pass both the companyId and userId
+        // Load user's troopers for this company
         const companyTroopers = await getTroopers(
           userParticipation.companyId,
           user.uid
@@ -201,6 +210,8 @@ const PairingPage = () => {
               );
 
               setOpponentTroopers(deployedOpponentTroopers);
+              setOpponentResults(opponentResult);
+              setOpponentHasSubmitted(opponentResult.complete);
             } catch (error) {
               console.error("Error loading opponent troopers:", error);
             }
@@ -213,12 +224,13 @@ const PairingPage = () => {
           setHasSubmitted(userResult.complete);
           setResultData({
             ...userResult,
-            resultId: userResult.id, // Make sure to include the resultId
+            resultId: userResult.id,
           });
           setActiveStep(userResult.troopers.length > 0 ? 1 : 0);
           return;
         }
 
+        // Set up initial result data with captain
         setResultData((prev) => {
           return {
             ...prev,
@@ -245,137 +257,67 @@ const PairingPage = () => {
     }
   }, [eventId, roundId, pairingId, user]);
 
-  // Handle trooper selection
-  const handleAddTrooper = (trooperId) => {
-    if (resultData.troopers.some((t) => t.trooper === trooperId)) {
-      return; // Already added
-    }
-
-    setResultData((prev) => ({
-      ...prev,
-      troopers: [
-        ...prev.troopers,
-        {
-          trooper: trooperId,
-          injuries: [],
-          xp: {},
-        },
-      ],
-    }));
-  };
-
-  const handleRemoveTrooper = (trooperId) => {
-    setResultData((prev) => ({
-      ...prev,
-      troopers: prev.troopers.filter((t) => t.trooper !== trooperId),
-    }));
-  };
-
-  // Handle form fields
-  const handleInputChange = (field, value) => {
-    setResultData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  // Handle XP
-  const handleXpChange = (trooperIndex, category, value) => {
-    const updatedTroopers = [...resultData.troopers];
-    updatedTroopers[trooperIndex].xp[category] = parseInt(value, 10) || 0;
-
-    setResultData((prev) => ({
-      ...prev,
-      troopers: updatedTroopers,
-    }));
-  };
-
-  const handleDowntimeChange = (field, value) => {
-    setResultData((prev) => ({
-      ...prev,
-      downtime: {
-        ...prev.downtime,
-        [field]: value,
-      },
-    }));
-  };
-
-  // Update to show confirmation dialog instead of immediately saving
-  const handleDeployNext = () => {
-    // Validate that troopers are selected
-    if (resultData.troopers.length === 0) {
-      setError("You must deploy at least one trooper.");
-      return;
-    }
-
-    // Show confirmation dialog
-    setDeployConfirmOpen(true);
-  };
-
-  // Add function to handle dialog close
-  const handleDeployConfirmClose = () => {
-    setDeployConfirmOpen(false);
-  };
-
-  // Move the existing save logic to this new confirmation handler
-  const handleDeployConfirm = async () => {
+  // Step 1: Handle deployed troopers update and confirmation
+  const handleDeployTroopersComplete = async (deployedTroopers) => {
     try {
-      // Close dialog first
-      setDeployConfirmOpen(false);
-
-      // Use addResult to create the initial result record
-      const resultId = await addResult(eventId, roundId, pairingId, {
+      // Use the updated troopers from the component
+      const updatedResultData = {
         ...resultData,
+        troopers: deployedTroopers,
         player: user.uid,
         phase: "deploy",
+      };
+
+      // Save to database and get result ID
+      const resultId = await addResult(
+        eventId,
+        roundId,
+        pairingId,
+        updatedResultData
+      );
+
+      // Update local state
+      setResultData({
+        ...updatedResultData,
+        resultId: resultId,
       });
 
-      // Store the resultId in the local state
-      setResultData((prev) => ({
-        ...prev,
-        resultId: resultId,
-      }));
-
       // Move to next step
-      setActiveStep((prev) => prev + 1);
+      setActiveStep(1);
     } catch (error) {
       console.error("Error saving deployed troopers:", error);
       setError("Failed to save deployed troopers. Please try again.");
     }
   };
 
-  // New function to save mission results
-  const saveMissionResults = async () => {
+  // Step 2: Handle mission results update
+  const handleMissionComplete = async (missionData) => {
     try {
-      // Will implement validation here
-      if (!resultData.resultId) {
+      if (!missionData.resultId) {
         setError("Missing result ID. Please try again.");
         return;
       }
 
-      // Save partial result with mission details
-      await updateResult(eventId, roundId, pairingId, resultData.resultId, {
-        ...resultData,
+      // Save updated mission data
+      await updateResult(eventId, roundId, pairingId, missionData.resultId, {
+        ...missionData,
         phase: "mission",
       });
 
+      // Update local state
+      setResultData(missionData);
+
       // Move to next step
-      setActiveStep((prev) => prev + 1);
+      setActiveStep(2);
     } catch (error) {
       console.error("Error saving mission results:", error);
       setError("Failed to save mission results. Please try again.");
     }
   };
 
-  // Final submission function
-  const handleSubmit = async () => {
+  // Step 3: Final submission
+  const handleFinalSubmit = async () => {
     try {
-      // Final validation
-      if (resultData.troopers.length === 0) {
-        setError("You must deploy at least one trooper.");
-        return;
-      }
-
       if (!resultData.resultId) {
         setError("Missing result ID. Please try again.");
         return;
@@ -391,18 +333,7 @@ const PairingPage = () => {
       setSuccess(true);
       setHasSubmitted(true);
 
-      // Check if all players have verified their results
-      const allResults = await getResults(eventId, roundId, pairingId);
-      const allVerified = allResults.every(
-        (result) => result.status === "verified"
-      );
-
-      if (allVerified) {
-        // Mark pairing as complete - This would be implemented in your backend
-        console.log("All players have verified their results");
-      }
-
-      // Navigate back to event details
+      // Navigate back to event details after a short delay
       setTimeout(() => {
         navigate(`/events/${eventId}`);
       }, 2000);
@@ -456,11 +387,9 @@ const PairingPage = () => {
             </IconButton>
           </Tooltip>
           <Typography variant="h4" component="h1">
-            {/* Keep existing heading */}
             Pairing Details
           </Typography>
         </Box>
-        {/* Keep any existing action buttons */}
       </Box>
 
       <Paper elevation={3} sx={{ p: 4 }}>
@@ -491,93 +420,47 @@ const PairingPage = () => {
         {activeStep === 0 && (
           <DeployTroopers
             troopers={troopers}
-            resultData={resultData}
+            initialSelection={resultData.troopers}
             hasSubmitted={hasSubmitted}
-            onAddTrooper={handleAddTrooper}
-            onRemoveTrooper={handleRemoveTrooper}
-            onNext={handleDeployNext} // Changed from saveDeployedTroopers to handleDeployNext
+            onComplete={handleDeployTroopersComplete}
           />
         )}
 
         {activeStep === 1 && (
           <Mission
-            resultData={resultData}
+            initialData={resultData}
             hasSubmitted={hasSubmitted}
             onBack={handleBack}
-            onNext={saveMissionResults}
-            handleInputChange={handleInputChange}
-            handleDowntimeChange={handleDowntimeChange}
-            handleXpChange={handleXpChange}
+            onComplete={handleMissionComplete}
             troopers={troopers}
             DOWNTIME_EVENTS={DOWNTIME_EVENTS}
             DOWNTIME_RESULTS={DOWNTIME_RESULTS}
-            enemyTroopers={opponentTroopers} // Pass opponent's troopers
-            allResults={allResults} // Pass all results
-            opponentId={opponentId} // Pass opponent's ID
-            setResultData={setResultData} // Pass setResultData to the Mission component
-            eventId={eventId} // Pass through eventId
-            roundId={roundId} // Pass through roundId
-            pairingId={pairingId} // Pass through pairingId
-            playerCompany={playerCompany} // Pass player company
-            opponentCompany={opponentCompany} // Pass opponent company
+            enemyTroopers={opponentTroopers}
+            allResults={allResults}
+            opponentId={opponentId}
+            eventId={eventId}
+            roundId={roundId}
+            pairingId={pairingId}
+            playerCompany={playerCompany}
+            opponentCompany={opponentCompany}
           />
         )}
 
         {activeStep === 2 && (
           <PostMission
             resultData={resultData}
+            opponentResults={opponentResults}
+            playerCompany={playerCompany}
+            opponentCompany={opponentCompany}
+            troopers={troopers}
+            opponentTroopers={opponentTroopers}
             hasSubmitted={hasSubmitted}
+            opponentHasSubmitted={opponentHasSubmitted}
             onBack={handleBack}
-            onSubmit={handleSubmit}
+            onSubmit={handleFinalSubmit}
           />
         )}
       </Paper>
-
-      {/* Add Deployment Confirmation Dialog */}
-      <Dialog
-        open={deployConfirmOpen}
-        onClose={handleDeployConfirmClose}
-        aria-labelledby="deploy-confirm-title"
-        aria-describedby="deploy-confirm-description"
-      >
-        <DialogTitle id="deploy-confirm-title">
-          Confirm Trooper Deployment
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="deploy-confirm-description">
-            Deployed Troopers cannot be changed once the mission starts. Are you
-            sure this is the list you wish to play with?
-          </DialogContentText>
-          {/* Optional: You could show the list of troopers here for final review */}
-          {resultData.troopers.length > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                Troopers to deploy:
-              </Typography>
-              <ul>
-                {resultData.troopers.map((t) => {
-                  const trooper = troopers.find((tr) => tr.id === t.trooper);
-                  return (
-                    <li key={t.trooper}>
-                      {trooper ? trooper.name : `Trooper ${t.trooper}`}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeployConfirmClose}>Cancel</Button>
-          <Button
-            onClick={handleDeployConfirm}
-            color="primary"
-            variant="contained"
-          >
-            Confirm Deployment
-          </Button>
-        </DialogActions>
-      </Dialog>
 
       {/* Feedback messages */}
       <Snackbar

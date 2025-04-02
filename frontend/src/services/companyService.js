@@ -63,22 +63,39 @@ export const getUserCompanies = async (userId, local = false) => {
   }));
 };
 
-// Get a single company by ID
-export const getCompany = async (companyId, userId = null, local = false) => {
-  if (local && userId) {
-    return getLocalCompanyById(userId, companyId);
-  }
+// Get a specific company
+export const getCompany = async (companyId, userId) => {
+  try {
+    // Check if companyId is provided
+    if (!companyId || !userId) {
+      console.error("getCompany: No companyId or userId provided");
+      return null;
+    }
 
-  const companyDoc = await getDoc(doc(db, "companies", companyId));
+    // Fetch the company document from the user's companies subcollection
+    // This is the key change - looking in the user's companies subcollection
+    // instead of a top-level companies collection
+    const companyRef = doc(db, "users", userId, "companies", companyId);
+    const companySnap = await getDoc(companyRef);
 
-  if (companyDoc.exists()) {
+    if (!companySnap.exists()) {
+      console.error(
+        `Company document with ID ${companyId} does not exist in user ${userId}'s collection`
+      );
+      return null;
+    }
+
+    // Get the company data
+    const companyData = companySnap.data();
+    // Add the document ID to the returned object
     return {
-      id: companyDoc.id,
-      ...companyDoc.data(),
+      id: companyId,
+      ...companyData,
     };
+  } catch (error) {
+    console.error("Error fetching company:", error);
+    return null;
   }
-
-  return null;
 };
 
 // Get all troopers for a company
