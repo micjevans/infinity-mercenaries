@@ -21,6 +21,12 @@ import {
   Stack,
   Tooltip,
   Grid2,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import CasinoIcon from "@mui/icons-material/Casino";
 import EventIcon from "@mui/icons-material/Event";
@@ -31,36 +37,10 @@ import { events } from "../data/downtime/events";
 import { traits as traitsDefinitions } from "../data/downtime/traits";
 import { useAuth } from "../auth/AuthContext";
 
-// Icons for different traits
-const TRAIT_ICONS = {
-  chaotic: "🔥",
-  lawful: "⚖️",
-  attack: "⚔️",
-  cr: "💰",
-  xp: "⭐",
-  weapon: "🔫",
-  swc: "💎",
-  p2p: "🤝",
-  skill: "🔧",
-  lt: "👑",
-  mvp: "🏆",
-  captain: "🎖️",
-  renowned: "📊",
-  opponent: "🎯",
-  merc: "👤",
-  crNeg: "📉",
-  requireHacker: "💻",
-  requireTrinity: "🔮",
-  skillNaturalBornWarrior: "👊",
-  skillStealth: "🥷",
-};
-
 const DowntimeEvent = ({
   resultData,
   onUpdateDowntime,
   deployedTroopers = [],
-  getTrooperById,
-  disabled = false,
   isLoading = false,
   playerCompany,
   opponentCompany,
@@ -71,8 +51,43 @@ const DowntimeEvent = ({
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedTrooper, setSelectedTrooper] = useState("");
+  const [selectableTroopers, setSelectableTroopers] =
+    useState(deployedTroopers);
   const [rolledEventId, setRolledEventId] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
+  const [traits, setTraits] = useState([]);
+  const [traitData, setTraitData] = useState({
+    resultData: resultData,
+    company: playerCompany,
+    trooper: selectedTrooper,
+    troopers: deployedTroopers,
+  });
+  const disabled = resultData?.downtime?.result;
+
+  useEffect(() => {
+    setTraitData({
+      resultData: resultData,
+      company: playerCompany,
+      trooper: selectedTrooper,
+      troopers: deployedTroopers,
+    });
+  }, [resultData, playerCompany, selectedTrooper, deployedTroopers]);
+
+  console.log("Trait Data:", traitData);
+  // Combine traits from both event and selected option
+  useEffect(() => {
+    if (selectedEvent && selectedOption) {
+      const eventTraits = selectedEvent.traits || [];
+      const optionTraits = selectedOption.traits || [];
+
+      // Don't pass setTraitData anymore
+      setTraits(
+        [...new Set([...eventTraits, ...optionTraits])].map(
+          (trait) => trait(traitData, setTraitData) // Pass traitData to the trait function
+        )
+      );
+    }
+  }, [selectedEvent, selectedOption, traitData]);
 
   // Load any existing downtime data when component mounts
   useEffect(() => {
@@ -98,6 +113,20 @@ const DowntimeEvent = ({
     }
   }, [resultData]);
 
+  useEffect(() => {
+    let trooperTraits = traits.filter(
+      (trait) => trait.type === "participant" || trait.type === "consequence"
+    );
+
+    if (trooperTraits.length === 1) {
+      let troopersToSelect = trooperTraits[0].troopers;
+      if (troopersToSelect?.length > 0) {
+        setSelectableTroopers(troopersToSelect);
+        setSelectedTrooper(troopersToSelect[0].id);
+      }
+    }
+  }, [traits, deployedTroopers, traitData.troopers]);
+
   // Roll for a random event
   const handleRollEvent = () => {
     setIsRolling(true);
@@ -109,8 +138,8 @@ const DowntimeEvent = ({
       const rolledId = Math.floor(Math.random() * (max - min + 1)) + min;
 
       // Find the event that corresponds to the rolled number
-      const rolledEvent = events.find((event) => event.id === rolledId);
-
+      // const rolledEvent = events.find((event) => event.id === rolledId);
+      const rolledEvent = events.find((event) => event.id === 1);
       setRolledEventId(rolledId);
       setSelectedEvent(rolledEvent);
       setSelectedOption(null);
@@ -139,7 +168,7 @@ const DowntimeEvent = ({
     // Update the downtime data with the selected option - pass saveImmediately flag
     onUpdateDowntime(
       {
-        ...resultData.downtime,
+        ...traitData.resultData.downtime,
         optionId: option.id,
         option: option.description,
       },
@@ -155,7 +184,7 @@ const DowntimeEvent = ({
     // Update the downtime data with the selected trooper - pass saveImmediately flag
     onUpdateDowntime(
       {
-        ...resultData.downtime,
+        ...traitData.resultData.downtime,
         trooper: trooperId,
       },
       saveImmediately
@@ -181,9 +210,7 @@ const DowntimeEvent = ({
     console.group(`Trait Processing for ${result}`);
 
     // Process all traits from event and option
-    const combinedTraits = getCombinedTraits();
-
-    combinedTraits.forEach((trait) => {
+    traits.forEach((trait) => {
       const traitName = trait.name;
       const traitDefinition = traitsDefinitions[traitName]?.(); // Most traits are functions
 
@@ -227,12 +254,13 @@ const DowntimeEvent = ({
     }
 
     // Update the downtime data with the result - pass saveImmediately flag
+    console.log("Result changed:", traitData.resultData.downtime);
     onUpdateDowntime(
       {
-        ...resultData.downtime,
+        ...traitData.resultData.downtime,
         result,
       },
-      saveImmediately
+      true // Save immediately when result changes
     );
   };
 
@@ -241,6 +269,7 @@ const DowntimeEvent = ({
     setSelectedEvent(null);
     setSelectedOption(null);
     setSelectedTrooper("");
+    setSelectableTroopers(deployedTroopers);
     setRolledEventId(null);
 
     // Clear downtime data
@@ -260,32 +289,146 @@ const DowntimeEvent = ({
   // Render trait chips for visual representation
   const renderTraitChips = (traitList) => {
     if (!traitList || traitList.length === 0) return null;
-
     return (
       <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1 }}>
-        {traitList.map((trait, index) => (
-          <Tooltip key={index} title={trait.name} arrow>
-            <Chip
-              icon={<Typography>{TRAIT_ICONS[trait.name] || "🔶"}</Typography>}
-              label={trait.name}
-              size="small"
-              sx={{ mb: 0.5, mr: 0.5 }}
-            />
-          </Tooltip>
-        ))}
+        {traitList.map((trait, index) => {
+          let renderedTrait =
+            typeof trait === "function" ? trait(traitData) : trait;
+
+          // Create tooltip content with details table
+          const tooltipContent = (
+            <Box sx={{ p: 1, maxWidth: 300 }}>
+              <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+                {renderedTrait.name}
+              </Typography>
+              <Table size="small">
+                <TableBody>
+                  {renderedTrait.specialDesc && (
+                    <TableRow>
+                      <TableCell
+                        component="th"
+                        sx={{ fontWeight: "bold", padding: "4px 8px" }}
+                      >
+                        Special
+                      </TableCell>
+                      <TableCell sx={{ padding: "4px 8px" }}>
+                        {renderedTrait.specialDesc}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {renderedTrait.failDetails && (
+                    <TableRow>
+                      <TableCell
+                        component="th"
+                        sx={{ fontWeight: "bold", padding: "4px 8px" }}
+                      >
+                        Fail
+                      </TableCell>
+                      <TableCell sx={{ padding: "4px 8px" }}>
+                        {renderedTrait.failDetails}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {renderedTrait.passDetails && (
+                    <TableRow>
+                      <TableCell
+                        component="th"
+                        sx={{ fontWeight: "bold", padding: "4px 8px" }}
+                      >
+                        Pass
+                      </TableCell>
+                      <TableCell sx={{ padding: "4px 8px" }}>
+                        {renderedTrait.passDetails}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {renderedTrait.critDetails && (
+                    <TableRow>
+                      <TableCell
+                        component="th"
+                        sx={{ fontWeight: "bold", padding: "4px 8px" }}
+                      >
+                        Crit
+                      </TableCell>
+                      <TableCell sx={{ padding: "4px 8px" }}>
+                        {renderedTrait.critDetails}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </Box>
+          );
+
+          return (
+            <Tooltip
+              key={index}
+              title={tooltipContent}
+              arrow
+              placement="top"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "background.paper",
+                    color: "text.primary",
+                    boxShadow: 3,
+                  },
+                },
+              }}
+            >
+              <Chip
+                icon={<Typography>{renderedTrait.icon || "🔶"}</Typography>}
+                label={renderedTrait.name}
+                size="small"
+                sx={{ mb: 0.5, mr: 0.5 }}
+              />
+            </Tooltip>
+          );
+        })}
       </Stack>
     );
   };
 
-  // Combine traits from both event and selected option
-  const getCombinedTraits = () => {
-    if (!selectedEvent) return [];
+  // Function to generate the combined traits details table
+  const renderTraitsDetailsTable = (traitList) => {
+    if (!traitList || traitList.length === 0) return null;
 
-    const eventTraits = selectedEvent.traits || [];
-    const optionTraits = selectedOption ? selectedOption.traits : [];
+    // Get rendered trait objects
+    const renderedTraits = traitList.map((trait) =>
+      typeof trait === "function" ? trait(traitData) : trait
+    );
 
-    // Combine and deduplicate traits
-    return [...new Set([...eventTraits, ...optionTraits])];
+    return (
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Trait</TableCell>
+              <TableCell>Special</TableCell>
+              <TableCell>Fail</TableCell>
+              <TableCell>Pass</TableCell>
+              <TableCell>Crit</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {renderedTraits.map((trait, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Typography>{trait.icon || "🔶"}</Typography>
+                    {trait.name}
+                  </Box>
+                </TableCell>
+                <TableCell>{trait.specialDesc || "-"}</TableCell>
+                <TableCell>{trait.failDetails || "-"}</TableCell>
+                <TableCell>{trait.passDetails || "-"}</TableCell>
+                <TableCell>{trait.critDetails || "-"}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
   };
 
   return (
@@ -405,6 +548,9 @@ const DowntimeEvent = ({
                 </Typography>
 
                 <Stack container spacing={2}>
+                  <Grid2 size={12}>
+                    {traits.map((trait) => trait.render && trait.render())}
+                  </Grid2>
                   <Grid2 item xs={12} md={12}>
                     <FormControl
                       fullWidth
@@ -415,33 +561,28 @@ const DowntimeEvent = ({
                       <Select
                         value={selectedTrooper}
                         onChange={handleTrooperChange}
+                        disabled={
+                          disabled ||
+                          selectableTroopers.length == null ||
+                          selectableTroopers.length === 1 ||
+                          selectableTroopers.length === 0
+                        }
                         label="Select Trooper"
                       >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
-                        {deployedTroopers.map((trooper) => {
-                          const trooperDetails = getTrooperById(
-                            trooper.trooper
-                          );
-                          return (
-                            <MenuItem
-                              key={trooper.trooper}
-                              value={trooper.trooper}
-                            >
-                              <Box
-                                sx={{ display: "flex", alignItems: "center" }}
-                              >
-                                <Avatar
-                                  src={trooperDetails?.resume?.logo}
-                                  sx={{ width: 24, height: 24, mr: 1 }}
-                                />
-                                {trooperDetails?.name ||
-                                  `Trooper ${trooper.trooper}`}
-                              </Box>
-                            </MenuItem>
-                          );
-                        })}
+                        {selectableTroopers.map((trooper) => (
+                          <MenuItem key={trooper.id} value={trooper.id}>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              <Avatar
+                                src={trooper?.resume?.logo}
+                                sx={{ width: 24, height: 24, mr: 1 }}
+                              />
+                              {trooper?.name || `Trooper ${trooper.id}`}
+                            </Box>
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Grid2>
@@ -470,7 +611,7 @@ const DowntimeEvent = ({
                   </Grid2>
                 </Stack>
 
-                {resultData?.downtime?.result && (
+                {traits?.length > 0 && (
                   <Paper sx={{ p: 2, mt: 2, bgcolor: "background.paper" }}>
                     <Typography
                       variant="subtitle1"
@@ -479,7 +620,10 @@ const DowntimeEvent = ({
                     >
                       Traits Applied:
                     </Typography>
-                    {renderTraitChips(getCombinedTraits())}
+                    {renderTraitChips([
+                      ...selectedEvent.traits,
+                      ...selectedOption.traits,
+                    ])}
 
                     <Alert severity="info" sx={{ mt: 2 }}>
                       <Typography variant="body2">
@@ -487,6 +631,12 @@ const DowntimeEvent = ({
                         outcome of the event.
                       </Typography>
                     </Alert>
+
+                    {/* Add the combined traits details table */}
+                    {renderTraitsDetailsTable([
+                      ...selectedEvent.traits,
+                      ...selectedOption.traits,
+                    ])}
                   </Paper>
                 )}
               </Box>
@@ -494,19 +644,6 @@ const DowntimeEvent = ({
           </Box>
         )}
       </CardContent>
-
-      <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
-        {isLoading && <CircularProgress size={24} sx={{ mr: 2 }} />}
-
-        <Button
-          startIcon={<InfoIcon />}
-          color="secondary"
-          disabled={disabled || isLoading || !selectedEvent}
-          sx={{ mr: 2 }}
-        >
-          View Trait Details
-        </Button>
-      </CardActions>
     </Card>
   );
 };

@@ -112,7 +112,6 @@ export const createRNG = (seed) => {
     numericSeed = Math.abs(seed || Date.now());
   }
 
-  console.log("Seed value:", seed, "→ numeric:", numericSeed);
   return pureRand.xorshift128plus(numericSeed);
 };
 

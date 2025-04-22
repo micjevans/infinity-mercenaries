@@ -56,7 +56,10 @@ export const events = [
       {
         id: 1,
         description: "(PS=10) …do nothing and see what happens",
-        traits: [traits.xp, traits.cr],
+        traits: [
+          traits.xp,
+          (traitData) => ({ ...traits.cr(traitData), neg: true }),
+        ],
       },
       {
         id: 2,
@@ -84,7 +87,7 @@ export const events = [
       {
         id: 2,
         description: "(WIP) …avoid the confrontation",
-        traits: [traits.skill, traits.attack],
+        traits: [(traitData) => traits.cr(traitData, "Stealth"), traits.attack],
       },
       {
         id: 3,
@@ -112,7 +115,11 @@ export const events = [
       {
         id: 3,
         description: "(PH) …let the Merc escape on their own",
-        traits: [traits.merc, traits.xp, traits.crNeg],
+        traits: [
+          traits.merc,
+          traits.xp,
+          (traitData) => ({ ...traits.cr(traitData), neg: true }),
+        ],
       },
     ],
   },
@@ -125,7 +132,10 @@ export const events = [
       {
         id: 1,
         description: "(PS=10) …allow the change of leadership",
-        traits: [traits.crNeg, traits.lt],
+        traits: [
+          (traitData) => ({ ...traits.cr(traitData), neg: true }),
+          traits.lt,
+        ],
       },
       {
         id: 2,
@@ -177,7 +187,11 @@ export const events = [
       {
         id: 2,
         description: "(WIP) …you hack the computer to shut it down",
-        traits: [traits.attack, traits.xp, traits.requireHacker],
+        traits: [
+          traits.attack,
+          traits.xp,
+          (traitData) => traits.requirement(traitData, "Hacker"),
+        ],
       },
       {
         id: 3,
@@ -186,7 +200,7 @@ export const events = [
           traits.attack,
           traits.chaotic,
           traits.xp,
-          traits.requireTrinity,
+          (traitData) => traits.requirement(traitData, "Hacker"),
         ],
       },
     ],
@@ -205,7 +219,11 @@ export const events = [
       {
         id: 2,
         description: "(CC-10) …you revel in the chaos",
-        traits: [traits.chaotic, traits.skillNaturalBornWarrior, traits.attack],
+        traits: [
+          traits.chaotic,
+          (traitData) => traits.skill(traitData, "Natural Born Warrior"),
+          traits.attack,
+        ],
       },
       {
         id: 3,

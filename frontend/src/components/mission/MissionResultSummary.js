@@ -201,8 +201,7 @@ const MissionResultSummary = ({
           <DowntimeEvent
             resultData={resultData}
             onUpdateDowntime={updateDowntime}
-            deployedTroopers={resultData.troopers}
-            getTrooperById={getTrooperById}
+            deployedTroopers={troopersData}
             disabled={readOnly || savingDowntime}
             isLoading={savingDowntime}
             playerCompany={playerCompany}

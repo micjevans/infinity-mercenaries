@@ -1,42 +1,28 @@
-import { Avatar, Box, Chip, Grid2, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  capitalize,
+  Chip,
+  Grid2,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   generateLootItem,
   generateTier,
   RARITY_TIERS,
 } from "../../utils/lootUtils";
-
-// Add a helper function to get trait descriptions
-export const getTraitDescription = (traitKey) => {
-  const descriptions = {
-    chaotic: "Increases notoriety on success, decreases on failure",
-    lawful: "Decreases notoriety on success, increases on failure",
-    attack: "May result in injury on failure",
-    cr: "Credits gain/loss based on outcome",
-    xp: "Experience points gain based on outcome",
-    weapon: "Gain a random weapon on success",
-    swc: "Gain SWC on success",
-    p2p: "Spend credits to increase success chance",
-    skill: "Gain a specific skill on success",
-    lt: "Change company leadership",
-    mvp: "Requires the MVP from last mission",
-    captain: "Requires the company captain",
-    renowned: "Requires the trooper with highest renown",
-    opponent: "Involves the opponent from last contract",
-    merc: "Effects apply to a specific merc",
-    crNeg: "Negative impact on company credits",
-    requireHacker: "Requires a trooper with hacking skills",
-    requireTrinity: "Requires a trooper with Trinity program",
-    skillNaturalBornWarrior: "Grants Natural Born Warrior skill",
-    skillStealth: "Grants Stealth skill",
-  };
-
-  return descriptions[traitKey] || "No description available";
-};
+import MapItem from "../../components/MapItem";
 
 export const traits = {
   chaotic: (traitData) => ({
     name: "chaotic",
     type: "consequence",
+    icon: "🔥",
+    failDetails: "Decrease company notoriety by 1",
+    passDetails: "Increase company notoriety by 1",
+    critDetails: "Increase company notoriety by 2",
     fail: () => ({
       ...traitData,
       company: {
@@ -59,9 +45,14 @@ export const traits = {
       },
     }),
   }),
+
   lawful: (traitData) => ({
     name: "lawful",
     type: "consequence",
+    icon: "⚖️",
+    failDetails: "Increase company notoriety by 1",
+    passDetails: "Decrease company notoriety by 1",
+    critDetails: "Decrease company notoriety by 2",
     fail: () => ({
       ...traitData,
       company: {
@@ -84,174 +75,368 @@ export const traits = {
       },
     }),
   }),
+
   attack: (traitData) => ({
     name: "attack",
     id: 3,
+    icon: "⚔️",
+    failDetails: "Trooper gains an injury",
     fail: () => ({
       ...traitData,
-      troopers: traitData.troopers.map((trooper) => ({
-        ...trooper,
-        perks: [...trooper.perks, "injury"],
-      })),
+      troopers: traitData.troopers.map((trooper) =>
+        trooper.id === traitData.trooper
+          ? {
+              ...trooper,
+              perks: [...trooper.perks, "injury"],
+            }
+          : trooper
+      ),
     }),
   }),
+
   cr: (traitData) => ({
     name: "cr",
     id: 4,
-    fail: {
-      key: "credits",
-      value: -5,
-    },
-    pass: {
-      key: "credits",
-      value: 5,
-    },
-    crit: {
-      key: "credits",
-      value: 6,
-    },
+    icon: "💰",
+    failDetails: "Lose 5 credits",
+    passDetails: "Gain 5 credits",
+    critDetails: "Gain 6 credits",
+    fail: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.credits - 5,
+      },
+    }),
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.credits + 5,
+      },
+    }),
+    crit: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.credits + 6,
+      },
+    }),
   }),
+
   xp: (traitData) => ({
     name: "xp",
-    pass: {
-      key: "xp",
-      value: 2,
-    },
-    crit: {
-      key: "xp",
-      value: 3,
-    },
+    icon: "⭐",
+    passDetails: "Trooper gains 2 XP",
+    critDetails: "Trooper gains 3 XP",
+    pass: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) =>
+        trooper.id === traitData.trooper
+          ? {
+              ...trooper,
+              xp: trooper.xp + 2,
+            }
+          : trooper
+      ),
+    }),
+    crit: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) =>
+        trooper.id === traitData.trooper
+          ? {
+              ...trooper,
+              xp: trooper.xp + 3,
+            }
+          : trooper
+      ),
+    }),
   }),
+
   weapon: (traitData) => ({
     name: "weapon",
     type: "consequence",
-    pass: {
-      key: "company.inventory",
-      value: () => {
+    icon: "🔫",
+    passDetails: "Gain an Uncommon or Rare Pistol",
+    critDetails: "Gain a Rare or Epic Pistol",
+    render: () => {
+      console.log(
         generateLootItem(
-          { id: 69, type: "weapon" },
-          generateTier(new Date().now(), [
-            RARITY_TIERS.UNCOMMON,
-            RARITY_TIERS.RARE,
-          ])
-        );
-      },
+          { id: 69, key: "weapons", name: "Pistol" },
+          generateTier(traitData.resultData.id, ["UNCOMMON", "RARE"]),
+          traitData.resultData.id
+        )
+      );
+      return (
+        <Box display={"flex"} flexDirection="row" gap={2}>
+          <Stack>
+            <Typography mb={2}>Pass</Typography>
+            <MapItem
+              item={generateLootItem(
+                { id: 69, key: "weapons", name: "Pistol" },
+                generateTier(traitData.resultData.id, ["UNCOMMON", "RARE"]),
+                traitData.resultData.id
+              )}
+            />
+          </Stack>
+          <Stack>
+            <Typography mb={2}>Critical Pass</Typography>
+            <MapItem
+              item={generateLootItem(
+                { id: 69, key: "weapons", name: "Pistol" },
+                generateTier(traitData.resultData.id, ["RARE", "EPIC"]),
+                traitData.resultData.id
+              )}
+            />
+          </Stack>
+        </Box>
+      );
     },
-    crit: {
-      key: "company.inventory",
-      value: () => {
-        generateLootItem(
-          { id: 69, type: "weapon" },
-          generateTier(new Date().now(), [
-            RARITY_TIERS.UNCOMMON,
-            RARITY_TIERS.RARE,
-          ])
-        );
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        inventory: [
+          ...traitData.company.inventory,
+          generateLootItem(
+            { id: 69, key: "weapons", name: "Pistol" },
+            generateTier(traitData.resultData.id, ["UNCOMMON", "RARE"]),
+            traitData.resultData.id
+          ),
+        ],
       },
-    },
+    }),
+    crit: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        inventory: [
+          ...traitData.company.inventory,
+          generateLootItem(
+            { id: 69, type: "weapon", name: "Pistol" },
+            generateTier(traitData.resultData.id, ["RARE", "EPIC"]),
+            traitData.resultData.id
+          ),
+        ],
+      },
+    }),
   }),
+
   swc: (traitData) => ({
-    name: "company.swc",
+    name: "swc",
     type: "consequence",
-    pass: {
-      key: "swc",
-      value: 1,
-    },
-    crit: {
-      key: "swc",
-      value: 2,
-    },
+    icon: "💎",
+    passDetails: "Gain 0.5 SWC",
+    critDetails: "Gain 1 SWC",
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.swc + 0.5,
+      },
+    }),
+    crit: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.swc + 1,
+      },
+    }),
   }),
-  p2p: (traitData) => ({
+
+  p2p: (traitData, setTraitData) => ({
     name: "p2p",
-    render: (value, onChange) => (
-      <TextField
-        id="outlined-number"
-        label="Number"
-        type="number"
-        value={value}
-        onChange={onChange}
-        slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
-        }}
-      />
+    icon: "🤝",
+    specialDesc: "You may spend CR to increase your SR by 1 for each CR spent",
+    failDetails: "Spent CR are lost",
+    passDetails: "Spent CR are lost",
+    critDetails: "Spent CR are not lost",
+    render: () => (
+      <Stack>
+        <Typography mb={2}>
+          Available Credits: {traitData.company.credits}
+        </Typography>
+        <TextField
+          id="outlined-number"
+          label="P2P"
+          type="number"
+          disabled={traitData?.resultData?.downtime?.result}
+          value={traitData?.resultData?.downtime?.p2p || 0}
+          onChange={(e) => {
+            if (traitData.company.credits - e.target.value > 0) {
+              setTraitData((prev) => ({
+                ...prev,
+                resultData: {
+                  ...prev?.resultData,
+                  downtime: {
+                    ...prev?.resultData?.downtime,
+                    p2p: e.target.value,
+                  },
+                },
+              }));
+            }
+          }}
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+          }}
+        />
+      </Stack>
     ),
-    fail: {
-      key: "company.credits",
-      value: "p2p",
-    },
-    pass: {
-      key: "company.credits",
-      value: "p2p",
-    },
+    fail: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.credits - traitData.p2p,
+      },
+    }),
+    pass: () => ({
+      ...traitData,
+      company: {
+        ...traitData.company,
+        notoriety: traitData.company.credits - traitData.p2p,
+      },
+    }),
   }),
+
   skill: (traitData, skill) => ({
     name: `skill (${skill})`,
     type: "consequence",
-    pass: {
-      key: "perks",
-      value: skill,
-    },
-    crit: {
-      key: "perks",
-      value: skill,
-    },
+    icon: "🔧",
+    passDetails: `Trooper gains ${skill} skill`,
+    critDetails: `Trooper gains ${skill} skill`,
+    pass: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) =>
+        trooper.id === traitData.trooper
+          ? {
+              ...trooper,
+              perks: [...trooper.perks, skill],
+            }
+          : trooper
+      ),
+    }),
+    crit: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) =>
+        trooper.id === traitData.trooper
+          ? {
+              ...trooper,
+              perks: [...trooper.perks, skill],
+            }
+          : trooper
+      ),
+    }),
   }),
+
   lt: (traitData) => ({
     name: "lt",
     type: "consequence",
-    render: (troopers, value, onChange) => (
-      <Box>
-        <Typography variant="subtitle1" gutterBottom>
-          Select a trooper to be the lieutenant:
-        </Typography>
-        <Grid2 container spacing={1} sx={{ mt: 1 }}>
-          {troopers.map((trooper) => {
-            return (
-              <Grid2 item key={trooper}>
-                <Chip
-                  avatar={<Avatar src={trooper.resume?.logo} />}
-                  label={trooper.name}
-                  onClick={() => onChange(trooper)}
-                  clickable
-                  color="primary"
-                  variant="outlined"
-                />
-              </Grid2>
-            );
-          })}
-        </Grid2>
-      </Box>
-    ),
-    trooper: traitData.troopers.find((trooper) => trooper.captain === true),
-    pass: {
-      key: "captain",
-      value: traitData.troopers,
-    },
-    crit: {
-      key: "captain",
-      value: traitData.troopers,
-    },
+    icon: "👑",
+    passDetails: "You may select any member of your team to be the new Captain",
+    critDetails: "You may select any member of your team to be the new Captain",
+    pass: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) => {
+        // If it's the captain then change them to no longer be the captain
+        if (trooper.captain)
+          return {
+            ...trooper,
+            captain: false,
+          };
+        // If its the trooper we want then make them the captain
+        if (trooper.id === traitData.trooper)
+          return {
+            ...trooper,
+            captain: true,
+          };
+        return trooper;
+      }),
+    }),
+    crit: () => ({
+      ...traitData,
+      troopers: traitData.troopers.map((trooper) => {
+        // If it's the captain then change them to no longer be the captain
+        if (trooper.captain)
+          return {
+            ...trooper,
+            captain: false,
+          };
+        // If its the trooper we want then make them the captain
+        if (trooper.id === traitData.trooper)
+          return {
+            ...trooper,
+            captain: true,
+          };
+        return trooper;
+      }),
+    }),
   }),
-  mvp: (troopers) => ({
+
+  mvp: (traitData) => ({
     type: "participant",
     name: "mvp",
-    trooper: troopers.find((trooper) => trooper.mvp === true),
+    icon: "🏆",
+    specialDesc: "The MVP of the last contract must perform the event",
+    troopers: [
+      traitData.troopers.find(
+        (trooper) =>
+          traitData.resultData.troopers.find(
+            (resultTrooper) => resultTrooper.mvp === true
+          ).trooper === trooper.id
+      ),
+    ],
   }),
-  captain: (troopers) => ({
+
+  captain: (traitData) => ({
     type: "participant",
     name: "captain",
-    trooper: troopers.find((trooper) => trooper.captain === true),
+    icon: "🎖️",
+    specialDesc: "The Captain of the company must perform the event",
+    troopers: [traitData.troopers.find((trooper) => trooper.captain === true)],
   }),
-  renowned: (troopers) => ({
+
+  renowned: (traitData) => ({
     type: "participant",
     name: "renowned",
-    trooper: troopers.find((trooper) => trooper.renowned === true),
+    icon: "📊",
+    specialDesc:
+      "The highest renown member of the company must perform the event",
+    troopers: [
+      traitData.troopers.reduce(
+        (renownedTrooer, trooper) =>
+          trooper.xp > renownedTrooer.xp ? trooper : renownedTrooer,
+        traitData.troopers[0]
+      ),
+    ],
   }),
-  opponent: (traitData) => ({
+
+  requirement: (traitData, requirement) => ({
+    type: "participant",
+    name: requirement,
+    icon: "📋",
+    specialDesc: `The trooper performing the event must have ${requirement}`,
+    troopers: [
+      traitData.troopers.filter(
+        (trooper) =>
+          trooper.perks.find((perk) => perk === requirement) !== undefined
+      ),
+    ],
+  }),
+
+  opponent: (traitData, mutual = false) => ({
     type: "special",
     name: "opponent",
+    icon: "🎯",
+    mutual: mutual,
+    specialDesc:
+      "Opponent of the last contract gains any CR spent for P2P choices",
+    failDetails:
+      "If not Opp (Mutual) then the Opponent of the last contract gets the benefits of if you passed except for Notoriety. Opponent may choose the benefiting trooper if one is not specified by another trait.",
+    passDetails:
+      "If Opp (Mutual) then the Opponent of the last contract gets the benefits of if you passed except for Notoriety. Opponent may choose the benefiting trooper if one is not specified by another trait.",
+    critDetails:
+      "If Opp (Mutual) then the Opponent of the last contract gets the benefits of if you passed except for Notoriety. Opponent may choose the benefiting trooper if one is not specified by another trait.",
   }),
 }; // traits.js
