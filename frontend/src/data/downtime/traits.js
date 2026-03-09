@@ -79,6 +79,7 @@ export const traits = {
   attack: (traitData) => ({
     name: "attack",
     id: 3,
+    type: "consequence",
     icon: "⚔️",
     failDetails: "Trooper gains an injury",
     fail: () => ({
@@ -98,6 +99,7 @@ export const traits = {
     name: "cr",
     id: 4,
     icon: "💰",
+    type: "consequence",
     failDetails: "Lose 5 credits",
     passDetails: "Gain 5 credits",
     critDetails: "Gain 6 credits",
@@ -127,6 +129,7 @@ export const traits = {
   xp: (traitData) => ({
     name: "xp",
     icon: "⭐",
+    type: "consequence",
     passDetails: "Trooper gains 2 XP",
     critDetails: "Trooper gains 3 XP",
     pass: () => ({
@@ -135,7 +138,7 @@ export const traits = {
         trooper.id === traitData.trooper
           ? {
               ...trooper,
-              xp: trooper.xp + 2,
+              xp: (trooper.xp || 0) + 2,
             }
           : trooper
       ),
@@ -146,7 +149,7 @@ export const traits = {
         trooper.id === traitData.trooper
           ? {
               ...trooper,
-              xp: trooper.xp + 3,
+              xp: (trooper.xp || 0) + 3,
             }
           : trooper
       ),
@@ -247,6 +250,7 @@ export const traits = {
   p2p: (traitData, setTraitData) => ({
     name: "p2p",
     icon: "🤝",
+    type: "consequence",
     specialDesc: "You may spend CR to increase your SR by 1 for each CR spent",
     failDetails: "Spent CR are lost",
     passDetails: "Spent CR are lost",
@@ -288,14 +292,14 @@ export const traits = {
       ...traitData,
       company: {
         ...traitData.company,
-        notoriety: traitData.company.credits - traitData.p2p,
+        credits: traitData.company.credits - traitData.p2p,
       },
     }),
     pass: () => ({
       ...traitData,
       company: {
         ...traitData.company,
-        notoriety: traitData.company.credits - traitData.p2p,
+        credits: traitData.company.credits - traitData.p2p,
       },
     }),
   }),

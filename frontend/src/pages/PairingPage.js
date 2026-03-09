@@ -315,17 +315,82 @@ const PairingPage = () => {
     }
   };
 
+  const findDifferences = (obj1, obj2) => {
+    const differences = {};
+
+    for (const key in obj1) {
+      if (obj1.hasOwnProperty(key)) {
+        if (!obj2.hasOwnProperty(key)) {
+          differences[key] = { old: obj1[key], new: undefined };
+        } else if (obj1[key] !== obj2[key]) {
+          differences[key] = { old: obj1[key], new: obj2[key] };
+        }
+      }
+    }
+
+    for (const key in obj2) {
+      if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
+        differences[key] = { old: undefined, new: obj2[key] };
+      }
+    }
+
+    return differences;
+  };
+
   // Step 3: Final submission
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = async (processedData) => {
     try {
       if (!resultData.resultId) {
         setError("Missing result ID. Please try again.");
         return;
       }
 
+      // Check if company data has been updated by trait processing
+      if (processedData && processedData.company) {
+        try {
+          // Update the company in the database
+          console.log(
+            "Updating company with processed changes:",
+            findDifferences(playerCompany, processedData.company)
+          );
+          // Add code here to update company data in database
+          // Example: await updateCompany(userParticipation.companyId, processedData.company);
+        } catch (companyError) {
+          console.error("Error updating company data:", companyError);
+        }
+      }
+
+      // Check if any troopers have been updated by trait processing
+      if (processedData && processedData.troopers) {
+        try {
+          // Find troopers that were modified (e.g., gained XP, skills, etc.)
+          // Update them in the database
+          troopers.forEach((trooper) => {
+            const updatedTrooper = processedData.troopers.find(
+              (t) => t.id === trooper.id
+            );
+            console.log(
+              "Updating troopers with processed changes:",
+              findDifferences(trooper, updatedTrooper)
+            );
+          });
+
+          // Add code here to update troopers in database
+          // Example: for each trooper that changed
+          // await updateTrooper(trooperId, updatedTrooperData);
+        } catch (trooperError) {
+          console.error("Error updating trooper data:", trooperError);
+        }
+      }
+
+      // Use the processed data for the final submission if available
+      const updatedResult = processedData.resultData;
+
+      return;
+
       // Submit final result with verified status
       await updateResult(eventId, roundId, pairingId, resultData.resultId, {
-        ...resultData,
+        ...updatedResult,
         phase: "complete",
         status: "verified",
       });

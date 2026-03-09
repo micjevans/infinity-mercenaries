@@ -19,6 +19,8 @@ import Chip from "@mui/material/Chip";
 
 import TrooperPerformanceTable from "../mission/TrooperPerformanceTable";
 import MissionResultSummary from "../mission/MissionResultSummary";
+import { traits as traitsDefinitions } from "../../data/downtime/traits";
+import { events } from "../../data/downtime/events"; // Import the events array
 
 const PostMission = ({
   resultData,
@@ -43,15 +45,114 @@ const PostMission = ({
     );
   };
 
+  // Process downtime traits based on result
+  const processDowntimeTraits = () => {
+    // Skip if no downtime data exists
+    if (
+      !resultData?.downtime ||
+      !resultData.downtime.eventId ||
+      !resultData.downtime.optionId ||
+      !resultData.downtime.result
+    ) {
+      console.log("No downtime event data to process");
+      return resultData;
+    }
+
+    console.group("Processing Downtime Event Traits");
+
+    try {
+      // Find the appropriate result key based on the selected outcome
+      const resultKey =
+        resultData.downtime.result === "Critical Success"
+          ? "crit"
+          : resultData.downtime.result === "Success"
+          ? "pass"
+          : resultData.downtime.result === "Failure"
+          ? "fail"
+          : null;
+
+      if (!resultKey) {
+        console.log("Invalid result type:", resultData.downtime.result);
+        return resultData;
+      }
+
+      console.log(
+        `Processing traits for outcome: ${resultData.downtime.result} (${resultKey})`
+      );
+
+      // Find the event and option objects
+      const event = events.find((e) => e.id === resultData.downtime.eventId);
+      if (!event) {
+        console.log(`Event with ID ${resultData.downtime.eventId} not found`);
+        return resultData;
+      }
+
+      const option = event.options.find(
+        (o) => o.id === resultData.downtime.optionId
+      );
+      if (!option) {
+        console.log(`Option with ID ${resultData.downtime.optionId} not found`);
+        return resultData;
+      }
+
+      console.log("Found event:", event.description);
+      console.log("Found option:", option.description);
+
+      // Prepare the trait data
+      let traitData = {
+        resultData: resultData,
+        company: playerCompany,
+        trooper: resultData.downtime.trooper,
+        troopers: troopers,
+        p2p: resultData.downtime.p2p || 0,
+      };
+
+      // Get all traits from the event and option
+      const eventTraits = event.traits || [];
+      const optionTraits = option.traits || [];
+
+      console.log(
+        `Event traits: ${eventTraits.length}, Option traits: ${optionTraits.length}`
+      );
+
+      // Process each trait in sequence
+      [...eventTraits, ...optionTraits].forEach((traitRaw) => {
+        const trait = traitRaw(traitData); // Call the trait function with the updated data
+        const traitFunction = trait[resultKey];
+        if (traitFunction && trait.type === "consequence") {
+          console.log(`Processing trait: ${trait.name}`);
+          // Update the data with each trait's effect
+          traitData = traitFunction();
+          console.log("Trait processed, updated data:", traitData);
+        } else {
+          console.log(`Trait ${trait.name} has no ${resultKey} function`);
+        }
+      });
+
+      console.log("Trait processing complete");
+      return traitData;
+    } catch (error) {
+      console.error("Error processing downtime traits:", error);
+      return resultData;
+    } finally {
+      console.groupEnd();
+    }
+  };
+
   // Handle submit button click
   const handleSubmit = () => {
     setSubmitting(true);
 
-    // Call the parent's onSubmit after a slight delay to simulate processing
-    setTimeout(() => {
+    try {
+      // Process the downtime traits
+      const processedData = processDowntimeTraits();
+      onSubmit(processedData); // Call the parent's onSubmit with processed data
       setSubmitting(false);
-      onSubmit();
-    }, 1000);
+    } catch (error) {
+      console.error("Error during submission:", error);
+      setSubmitting(false);
+      // You might want to show an error message to the user here
+    }
   };
 
   // Check if both players have completed their results

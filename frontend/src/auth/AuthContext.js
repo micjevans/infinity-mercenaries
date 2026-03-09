@@ -3,6 +3,15 @@ import { onAuthStateChange, logOut as firebaseLogOut } from "./auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
+const USE_MOCK_AUTH = process.env.REACT_APP_MOCK_AUTH === "true";
+
+const MOCK_USER = {
+  uid: "mock-user-uid",
+  email: "dev@local.com",
+  displayName: "Dev User",
+  isAdmin: true,
+};
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,6 +20,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // If mock auth is enabled, skip Firebase and use the mock user
+    if (USE_MOCK_AUTH) {
+      setUser(MOCK_USER);
+      setUserRoles({
+        isAdmin: MOCK_USER.isAdmin,
+        isMod: MOCK_USER.isAdmin, // Assuming moderators are also admins in mock
+      });
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChange(async (currentUser) => {
       if (currentUser) {
         // Set the basic user info from Firebase Auth
