@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Infinity: Mercenaries"
+  description="A narrative mercenary campaign framework for Infinity N5."
+>
+  <section class="hero">
+    <img
+      class="hero-image"
+      src="/images/hero-operations.png"
+      alt="A sci-fi mercenary team planning around a holographic mission table."
+    />
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Unofficial Infinity N5 campaign framework</p>
+      <h1>Infinity: Mercenaries</h1>
+      <p class="hero-copy">
+        Build a persistent mercenary company, take dangerous contracts, and watch
+        your operators earn scars, reputation, credits, and enemies across a season.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="/rules/">Read the Rules</a>
+        <a class="button secondary" href="/contracts/">Browse Contracts</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section intro-grid" aria-labelledby="field-manual">
+    <div>
+      <p class="eyebrow">Field manual</p>
+      <h2 id="field-manual">Small battles. Long consequences.</h2>
+    </div>
+    <p>
+      Mercenaries turns Infinity into a compact campaign experience built around
+      4-7 unit strike teams, persistent progression, downtime choices, and mission
+      variety. The rules are designed for narrative pressure without losing the
+      sharp tactical feel of the base game.
+    </p>
+  </section>
+
+  <section class="feature-band" id="campaign" aria-label="Campaign pillars">
+    <article>
+      <span class="kicker">01</span>
+      <h3>Companies</h3>
+      <p>Recruit from chosen sectorials, appoint a captain, track credits, and shape a roster over time.</p>
+    </article>
+    <article>
+      <span class="kicker">02</span>
+      <h3>Contracts</h3>
+      <p>Play focused missions with custom objectives, twists, deployment rules, and narrative stakes.</p>
+    </article>
+    <article>
+      <span class="kicker">03</span>
+      <h3>Progression</h3>
+      <p>Earn XP, suffer injuries, buy equipment, and make downtime decisions between engagements.</p>
+    </article>
+    <article>
+      <span class="kicker">04</span>
+      <h3>Balance Pressure</h3>
+      <p>Inducements and elite deployment help underdogs stay dangerous without flattening company identity.</p>
+    </article>
+  </section>
+
+  <section class="section split" id="resources">
+    <div>
+      <p class="eyebrow">Rules-first website</p>
+      <h2>Built to evolve with the campaign.</h2>
+      <p>
+        The new site stores rules as Markdown content, making it easier to revise
+        wording, reorganize sections, generate references, and collaborate with AI
+        while keeping the public reading experience polished on desktop and mobile.
+      </p>
+    </div>
+    <div class="terminal-panel" aria-label="Site structure preview">
+      <p>/rules/company-creation</p>
+      <p>/rules/campaign-seasons</p>
+      <p>/rules/experience</p>
+      <p>/contracts/extraction</p>
+      <p>/contracts/titan</p>
+    </div>
+  </section>
+</BaseLayout>

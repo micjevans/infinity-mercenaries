@@ -1,0 +1,55 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Infinity: Mercenaries",
+  description = "A narrative campaign framework for Infinity N5 mercenary companies."
+} = Astro.props;
+
+const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infinity: Mercenaries`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Main navigation">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">IM</span>
+          <span>Infinity: Mercenaries</span>
+        </a>
+        <div class="nav-links">
+          <a href="/rules/">Rules</a>
+          <a href="/contracts/">Contracts</a>
+          <a href="/#campaign">Campaign</a>
+          <a href="/#resources">Resources</a>
+        </div>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>Infinity: Mercenaries</strong>
+        <p>A community-made campaign framework for Infinity N5.</p>
+      </div>
+      <p class="legal-note">
+        Unofficial fan project. Infinity is owned by Corvus Belli.
+      </p>
+    </footer>
+  </body>
+</html>

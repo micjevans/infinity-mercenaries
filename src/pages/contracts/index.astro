@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const contracts = await getCollection("contracts");
+---
+
+<BaseLayout
+  title="Contracts"
+  description="Mission contracts for Infinity: Mercenaries campaigns."
+>
+  <section class="page-hero compact">
+    <p class="eyebrow">Mission archive</p>
+    <h1>Contracts</h1>
+    <p>
+      Contracts are the scenario engine of a season: compact missions with objectives,
+      deployment rules, rewards, and mid-game twists.
+    </p>
+  </section>
+
+  <section class="index-list" aria-label="Contract examples">
+    {contracts.map((contract) => (
+      <a href={`/contracts/${contract.id.replace(/\.mdx?$/, "")}/`}>
+        <span>{contract.data.contractType ?? "Contract"}</span>
+        <strong>{contract.data.title}</strong>
+        <p>{contract.data.description}</p>
+      </a>
+    ))}
+    <a href="#">
+      <span>Survival</span>
+      <strong>Battle Royale</strong>
+      <p>Hold the field as rival operators, hazards, and shifting objectives collapse the fight.</p>
+    </a>
+    <a href="#">
+      <span>PvE</span>
+      <strong>Titan Protocol</strong>
+      <p>Coordinate against an oversized threat while still chasing your own contract payout.</p>
+    </a>
+  </section>
+</BaseLayout>

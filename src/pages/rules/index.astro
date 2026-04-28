@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const rules = await getCollection("rules");
+---
+
+<BaseLayout
+  title="Rules"
+  description="Rules index for the Infinity: Mercenaries campaign framework."
+>
+  <section class="page-hero compact">
+    <p class="eyebrow">Rules reference</p>
+    <h1>Mercenaries Field Manual</h1>
+    <p>
+      A mobile-friendly home for the campaign rules. This index will grow as the
+      Google Docs rules are converted into structured pages.
+    </p>
+  </section>
+
+  <section class="index-list" aria-label="Rules sections">
+    {rules.map((rule) => (
+      <a href={`/rules/${rule.id.replace(/\.mdx?$/, "")}/`}>
+        <span>{rule.data.section ?? "Rules"}</span>
+        <strong>{rule.data.title}</strong>
+        <p>{rule.data.description}</p>
+      </a>
+    ))}
+    <a href="#">
+      <span>Company Rules</span>
+      <strong>Company Creation</strong>
+      <p>Sectorials, captains, starting credits, recruitment limits, and AVA.</p>
+    </a>
+    <a href="#">
+      <span>Campaign Rules</span>
+      <strong>Seasons and Downtime</strong>
+      <p>Round structure, post-game steps, healing, purchases, and random events.</p>
+    </a>
+    <a href="#">
+      <span>Progression</span>
+      <strong>XP, Injuries, and Renown</strong>
+      <p>How units grow, what setbacks mean, and how company strength is tracked.</p>
+    </a>
+  </section>
+</BaseLayout>
