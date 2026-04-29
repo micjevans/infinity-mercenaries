@@ -1,0 +1,83 @@
+---
+title: "Services"
+description: "One-time Downtime services for healing injuries, removing disruptive traits, retraining perks, and regularizing troops."
+section: "Reference"
+order: 66
+status: "review"
+updated: "2026-04-29"
+---
+
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+
+Sometimes, mercenaries need external help to keep a Company functional. Services can be purchased for a **one-time effect** during Downtime.
+
+Any Service may be purchased any number of times, paying the listed cost each time.
+
+<RulesTable
+  eyebrow="Downtime"
+  title="Services"
+  variant="text"
+  columns={["Service", "Cost", "Effect"]}
+  rows={[
+    {
+      label: "Advanced Therapy",
+      cells: [
+        "4/8 CR",
+        "Select an injured unit and write off one chosen injury for 4 CR. Optionally, pay 8 CR to remove all injuries from that unit.",
+      ],
+    },
+    {
+      label: "Anger Management",
+      cells: [
+        "4/8 CR",
+        "Target unit no longer has Frenzy for 4 CR or Impetuous for 8 CR. Additionally, they lose No Cover or Partial Cover. No Cover on Aerial or Nanoscreen units cannot be removed.",
+      ],
+    },
+    {
+      label: "Forced Retraining",
+      cells: [
+        "15 CR",
+        "Select a unit of Rank 1 or above. A single Perk may be replaced with another Perk of the same tier.",
+      ],
+    },
+    {
+      label: "Regular Training",
+      cells: [
+        "11 CR",
+        "Target unit is now considered Regular.",
+      ],
+    },
+  ]}
+/>
+
+## New Recruits
+
+The Company can be reinforced with new members during Downtime. CR gained from Contracts can be spent to buy new units and add them to the Company roster. Treat the unit's point value as its CR cost.
+
+All rules listed in initial Recruitment apply to new recruits.
+
+<RuleCard eyebrow="Recruitment" title="Roster Limits Still Apply">
+
+Recruiting during Downtime does not bypass normal Company construction restrictions. Character, TAG, SWC-cost, AVA, and other recruitment restrictions continue to apply unless another rule specifically says otherwise.
+
+</RuleCard>
+
+## Retirement
+
+Occasionally, it is time for a unit to leave the Company. A unit can be retired, freeing its roster slot for a new recruit.
+
+The following rules apply during retirement:
+
+1. All equipment assigned to the retired unit is returned to the Company inventory.
+2. The unit is removed from the roster, freeing its roster slot.
+3. The unit cannot be used in any following Contracts.
+4. The Renown of the retired troop, minus the equipment returned to inventory, is counted toward final victory points.
+
+Write the retired Renown value on the Company Sheet and add it to the value of other retired troops.
+
+<RuleCard eyebrow="Restriction" title="Captains Cannot Retire">
+
+The Captain represents the focal point of the Company and cannot be retired in any way. They accompany the Company until the end of the campaign.
+
+</RuleCard>
