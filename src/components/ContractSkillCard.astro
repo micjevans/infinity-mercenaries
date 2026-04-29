@@ -1,0 +1,30 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  type: string;
+}
+
+const { eyebrow = "Interaction", title, type } = Astro.props;
+---
+
+<aside class="contract-skill-card">
+  <header>
+    <div>
+      <span>{eyebrow}</span>
+      <strong>{title}</strong>
+    </div>
+    <p>{type}</p>
+  </header>
+  <section class="skill-mode">
+    <slot name="mode" />
+  </section>
+  <section class="skill-row requirements">
+    <h4>Requirements</h4>
+    <slot name="requirements" />
+  </section>
+  <section class="skill-row effects">
+    <h4>Effects</h4>
+    <slot name="effects" />
+  </section>
+</aside>

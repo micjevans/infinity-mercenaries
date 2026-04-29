@@ -6,6 +6,7 @@ const rules = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     section: z.string().optional(),
+    order: z.number().optional(),
     status: z.enum(["draft", "review", "published"]).default("draft"),
     updated: z.string().optional()
   })
@@ -16,9 +17,11 @@ const contracts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    attribution: z.string().optional(),
     contractType: z.string().optional(),
     status: z.enum(["draft", "review", "published"]).default("draft"),
-    updated: z.string().optional()
+    updated: z.string().optional(),
+    sourceUrl: z.string().url().optional()
   })
 });
 

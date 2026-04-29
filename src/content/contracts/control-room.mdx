@@ -1,0 +1,143 @@
+---
+title: "Control Room"
+description: "A sealed command chamber sits at the heart of the battlefield. Crack the doors, seize the consoles, and hold the room when the mission turns ugly."
+contractType: "Objective Control"
+status: "draft"
+updated: "2025-12-14"
+sourceUrl: "https://docs.google.com/document/d/1dRwv0NiKkjsnJkxgUQztO6k3kGBKyjtrEe0TRzs8fDU/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ScenarioObjectCard from "../../components/ScenarioObjectCard.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+
+<ContractMission
+  objectives={[
+    {
+      points: "2 OP",
+      text: "Control the Control Room, or tie Renown inside the room."
+    },
+    {
+      points: "1 OP",
+      text: "Per allied trooper in a non-Null state inside the Control Room, to a maximum of 2 OP."
+    },
+    {
+      points: "1 OP",
+      text: "Per Console activation, on or off, to a maximum of 2 OP."
+    },
+    {
+      points: "1 OP",
+      text: "Per Console last pushed by you at the end of the game, to a maximum of 2 OP."
+    }
+  ]}
+  deployment={{
+    title: "Control Room Deployment",
+    width: 36,
+    height: 48,
+    zones: [
+      { label: "Deployment Zone A", x: 0, y: 0, width: 36, height: 12, className: "zone-a" },
+      { x: 0, y: 12, width: 36, height: 4, className: "neutral-zone" },
+      { x: 0, y: 16, width: 36, height: 16, className: "exclusion-zone" },
+      { x: 0, y: 32, width: 36, height: 4, className: "neutral-zone" },
+      { label: "Deployment Zone B", x: 0, y: 36, width: 36, height: 12, className: "zone-b" }
+    ],
+    features: [
+      { label: "6\" x 6\"", x: 15, y: 21, width: 6, height: 6, className: "control-room-feature" }
+    ],
+    markers: [
+      { x: 6, y: 24, className: "console-marker" },
+      { x: 30, y: 24, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: "12\"", className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: "8\"", className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: "6\"", className: "console-left-distance", x: 0.9, y: 24, width: 4.2 },
+      { label: "6\"", className: "console-right-distance", x: 30.9, y: 24, width: 4.2 }
+    ],
+    legend: [
+      { label: "Console", className: "console-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  }}
+  twistTitle="Control Room Twist"
+  twistIntro="After the end of Round 2, but before the beginning of Round 3, roll a single d20 and apply the result below."
+  twistRows={[
+    {
+      roll: "1-5",
+      name: "No Twist",
+      effect: "Nothing happens."
+    },
+    {
+      roll: "6-10",
+      name: "Auto Turret!",
+      effect: "Place a Total Reaction remote in the middle of the Control Room. Use the Sierra Dronbot profile. The unit is considered hostile to both forces."
+    },
+    {
+      roll: "11-15",
+      name: "Boobytrapped!",
+      effect: "Each player may place a CrazyKoala or a Shock Mine inside the Control Room."
+    },
+    {
+      roll: "16-20",
+      name: "Gas!",
+      effect: "Each model inside the Control Room immediately suffers a PS 6 hit to their BTS."
+    }
+  ]}
+  endConditions={[
+    {
+      title: "Round Limit",
+      text: "This scenario automatically ends at the end of the fourth Game Round."
+    },
+    {
+      title: "No Troopers Remaining",
+      text: "If one player starts their Active Turn with no troopers on the board, including Null troopers, the game ends immediately."
+    }
+  ]}
+>
+  <div slot="forces">
+    <p><strong>Side A and Side B:</strong> both players deploy on either side of the game table, in the Deployment Zones.</p>
+    <p><strong>Exclusion Zone:</strong> the Exclusion Zone covers the area 8 inches on either side of the central line of the game table. Special Skills with the Airborne Deployment (AD) or Superior Deployment Labels cannot be used to deploy inside this area.</p>
+  </div>
+
+  <div slot="specialRules">
+    <h3>Control Room</h3>
+    <p>Place a Control Room in the center of the table. It covers a <strong>6 by 6 inch</strong> area. In game terms, it has walls of infinite height that completely block Line of Fire.</p>
+    <p>The Control Room has <strong>4 Reinforced Doors</strong> granting Wide Gate Access, one in the middle of each wall. The gates of the Control Room are closed at the start of the game.</p>
+
+    <ScenarioObjectCard
+      eyebrow="Scenery Profile"
+      title="Reinforced Door"
+      stats={[
+        { label: "ARM", value: "8" },
+        { label: "BTS", value: "8" },
+        { label: "STR", value: "3" },
+        { label: "Access", value: "Wide Gate" }
+      ]}
+    >
+      <p>The doors can be attacked using both CC and ranged weapons.</p>
+      <p>If the weapon is not designed as Anti-Material, resolve the attack with <strong>-3 to the weapon Damage</strong>.</p>
+    </ScenarioObjectCard>
+
+    <h3>Consoles</h3>
+    <p>There are <strong>2 Consoles</strong>, placed on the central line of the game table 6 inches from either side. Each Console must be represented by a Console A Token or by a scenery piece of the same diameter.</p>
+
+    <ContractSkillCard title="Console Activation" type="Short Skill">
+      <p slot="mode"><strong>Attack</strong></p>
+      <ul slot="requirements">
+        <li>The trooper must be in Silhouette contact with a Console.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Specialist Troop to make a WIP -3 Roll to Connect a Console.</li>
+        <li>Engineers and Hackers roll a Normal WIP Roll.</li>
+        <li>If the roll is failed, it can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll.</li>
+        <li>By passing the roll, the Console is Activated. The player chooses 2 Doors of the Control Room. The chosen doors change their state from Open to Closed, or from Closed to Open.</li>
+        <li>You cannot Activate again a Console previously activated until it is activated by the other player.</li>
+        <li>Destroyed doors can still be opened and closed for the sake of scoring points.</li>
+        <li>An open door still retains all the STR it possesses.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>No Quarter</h3>
+    <p>The Retreat! rules are not applied in this scenario.</p>
+  </div>
+</ContractMission>

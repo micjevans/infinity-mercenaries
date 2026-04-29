@@ -1,0 +1,83 @@
+---
+title: "Progression"
+description: "Ranks, Perk Points, perk selection, random perk rolls, and how troopers convert XP into battlefield growth."
+section: "Core Rules"
+order: 7
+status: "review"
+updated: "2026-04-28"
+---
+
+import RankTrack from "../../components/RankTrack.astro";
+import RuleCard from "../../components/RuleCard.astro";
+
+## Ranking Up
+
+When a unit gains enough XP during a round to advance to the next rank, it gains a new title, a single **Perk Point**, and occasionally a free skill.
+
+Perk Points must be spent immediately. They cannot be saved for later ranks.
+
+<RankTrack
+  ranks={[
+    { rank: "0", xp: "-", name: "Green" },
+    { rank: "1", xp: "5 XP", name: "Newbie" },
+    { rank: "2", xp: "15 XP", name: "Hired Gun", freeSkill: "Courage" },
+    { rank: "3", xp: "30 XP", name: "Hitman", freeSkill: "Fireteam: Mercs*" },
+    { rank: "4", xp: "50 XP", name: "Operative" },
+    { rank: "5", xp: "75 XP", name: "Veteran", freeSkill: "Counts as Merc**" },
+    { rank: "6", xp: "105 XP", name: "Officer" },
+    { rank: "7", xp: "140 XP", name: "Legend" },
+  ]}
+/>
+
+\* **Fireteam: Mercs** allows the unit to form Fireteams with other units that have this skill.
+
+\** **Counts as Merc** means the unit counts as Merc when forming a Mercs Fireteam for pure bonuses.
+
+## Perks
+
+As units gain experience, they can translate that experience into tangible battlefield benefits. When a unit gains a rank, it gains **1 Perk Point** and must immediately spend it.
+
+When spending a Perk Point, refer to the Perk trees and either select an eligible Perk or roll for a random Perk.
+
+<RuleCard eyebrow="Perk Selection" title="Choosing a Perk">
+
+To select a Perk directly, all of the following must be true:
+
+1. The unit's rank is equal to or greater than the Perk's tier.
+2. The unit has every directly connected lower-tier Perk leading to the chosen Perk.
+3. The Perk has not already been selected.
+4. The unit has the needed equipment slot, if the Perk grants gear or a slotted skill.
+
+</RuleCard>
+
+Connected lower-tier Perks may come from the original unit profile, equipment, previous Perk choices, or other rules. Some Perks grant gear or skills that fill slots, such as **360 Visor** as an Accessory or **Hacker** and **Doctor** as Roles.
+
+If a unit does not have the needed slot, it may override an existing slot as normal. The unit receives no compensation for lost CR.
+
+## Random Perks
+
+Instead of selecting a Perk directly, a player may roll for a random Perk.
+
+When rolling randomly, first roll to determine the Perk tree, then roll again on that tree. The player may select a legal Perk from the matching row.
+
+Random Perks are slightly more flexible: a randomly rolled Perk may be **one tier higher** than the unit's current rank. If no Perk can be selected from the result, reroll on the table until a legal Perk can be selected.
+
+<RuleCard eyebrow="Example" title="Rolling for a Perk">
+
+A player chooses to roll instead of selecting a Perk. They roll a 4, which lets them select either **Initiative** or **Cool**. They choose **Initiative** and roll again.
+
+The second roll is a 19, which would allow **MOV** or **Covering Fire**, but the trooper is only Rank 1. The player rerolls and gets an 11, allowing **Forward Deployment** or **Parachutist**. They select **Parachutist**.
+
+</RuleCard>
+
+## Skill Stacking
+
+Skills do not stack unless a rule specifically says otherwise.
+
+For example, if a trooper already has **Dodge (+3)**, selecting a Perk that grants **Dodge (+3)** does not increase that skill to **Dodge (+6)**.
+
+<RuleCard eyebrow="Reference" title="Perk Trees">
+
+Perk trees now live in the Reference section as a structured page instead of being embedded as large images. Use the **Perks** reference page when selecting or rolling for a Perk.
+
+</RuleCard>

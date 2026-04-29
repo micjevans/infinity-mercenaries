@@ -1,0 +1,53 @@
+---
+type DowntimeChoice = {
+  check: string;
+  text: string;
+  traits: string[];
+};
+
+type DowntimeEvent = {
+  roll: string;
+  event: string;
+  traits?: string[];
+  choices?: DowntimeChoice[];
+};
+
+interface Props {
+  events: DowntimeEvent[];
+}
+
+const { events } = Astro.props;
+---
+
+<div class="downtime-event-list">
+  {events.map((event) => (
+    <article class="downtime-event-card">
+      <header>
+        <span>{event.roll}</span>
+        <h3>{event.event}</h3>
+      </header>
+
+      {event.traits && event.traits.length > 0 && (
+        <div class="downtime-event-traits" aria-label="Event traits">
+          {event.traits.map((trait) => <span>{trait}</span>)}
+        </div>
+      )}
+
+      {event.choices && event.choices.length > 0 ? (
+        <div class="downtime-choice-grid">
+          {event.choices.map((choice) => (
+            <section class="downtime-choice-card">
+              <strong>{choice.check}</strong>
+              <p>{choice.text}</p>
+              <div>
+                {choice.traits.map((trait) => <span>{trait}</span>)}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <p class="downtime-no-event">You may reroll until you get an incident, or choose to have no event.</p>
+      )}
+    </article>
+  ))}
+</div>

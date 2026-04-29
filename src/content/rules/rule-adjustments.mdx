@@ -1,0 +1,381 @@
+---
+title: "Rule Adjustments"
+description: "Banned skills, modified Infinity N5 rules, and new Mercenaries-specific rules used across the campaign."
+section: "Reference"
+order: 70
+status: "review"
+updated: "2026-04-28"
+---
+
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+
+Unless stated otherwise, all rules in **Infinity N5** apply. This page collects the rules that Mercenaries bans, rewrites, or adds for campaign play.
+
+## Banned Skills
+
+<WarningCallout title="These options are not available in Mercenaries">
+
+These bans are here for campaign stability. Persistent units, small model counts, and long-term progression make some normal Infinity tools much more disruptive than they are in a single game.
+
+</WarningCallout>
+
+<RuleCard eyebrow="Banned Skill" title="BS Attack (T2)(DA)(EXP)(CONT)">
+
+Any BS Attack Skill that gives T2, DA, EXP, or Continuous to all attacks may not be utilized.
+
+</RuleCard>
+
+<RuleCard eyebrow="Banned Skill" title="Speedball">
+
+Command Tokens may **not** be utilized to gain Speedball Tokens.
+
+</RuleCard>
+
+<RuleCard eyebrow="Banned Skill" title="Transmutation (Auto)">
+
+Transmutation (Auto) is banned from use due to balance issues.
+
+When recruiting a unit with this skill, select only one of the Forms for that profile. Only that selected profile is utilized by the recruited unit.
+
+</RuleCard>
+
+## Core Modifications
+
+<RuleCard eyebrow="Order Economy" title="Extra Order">
+
+An extra Regular Order is granted to the Company. When counting orders during the Tactical Phase of a Turn, add one additional order to the order pool.
+
+</RuleCard>
+
+<RuleCard eyebrow="Order Economy" title="Command Tokens">
+
+No Command Tokens are given to players by default. Command Tokens can be gained through Lieutenant special skills, Inducements, or other game mechanics, but players begin with **0 Command Tokens**.
+
+When spending a Command Token for Strategic Use, the player who has the second Player Turn can only strip a single Regular Order rather than the usual two.
+
+</RuleCard>
+
+<RuleCard eyebrow="Combat" title="CC Attack">
+
+When making a CC Attack or throwing a CC Weapon, if a Trooper has a weapon with a specified PS, they may use that PS for all available CC weapons.
+
+The exceptions are **Monofilament** and **Vorpal**. This rule cannot be used to change the PS of weapons that cause **State: Dead**.
+
+</RuleCard>
+
+<RuleCard eyebrow="Fireteams" title="Fireteams">
+
+Only **Fireteam Duos** may be made, using the appropriate charts for the chosen Sectorial or Sectorials. Any number of Duo Fireteams may be made.
+
+During Contracts, Fireteams may be created by spending an Order instead of a Command Token. When doing so, no Order is actually performed and no AROs are generated.
+
+</RuleCard>
+
+<RuleCard eyebrow="Peripherals" title="Peripheral Rework">
+
+The Peripheral skill is reworked, except for **Peripheral Servants** and **Ancillary**, which follow normal Peripheral rules.
+
+For all other Peripherals, "own Peripheral" means the Peripheral the Controller started with or otherwise gained, and only that specific Peripheral.
+
+<dl>
+  <dt>Controllers</dt>
+  <dd>Gain <strong>FT Master (own Peripheral)</strong>.</dd>
+  <dd>May form and join a Fireteam with their own Peripheral.</dd>
+  <dd>Count as their own Peripheral for Fireteam bonuses.</dd>
+  <dd>Do not need to spend an Order or Command Token to reform a Fireteam with their own Peripheral.</dd>
+  <dt>Peripherals</dt>
+  <dd>May gain XP, level ups, and equipment, and otherwise count as normal Troopers on the roster.</dd>
+  <dd>Gain the Irregular classification, providing an Irregular Order instead of a Regular Order.</dd>
+  <dd>Count as their own Controller for Fireteam bonuses.</dd>
+</dl>
+
+</RuleCard>
+
+<RuleCard eyebrow="Leadership" title="Lieutenant and Loss of Lieutenant">
+
+In Mercenaries, the Lieutenant is always Open Information and is always the Company's Captain.
+
+Loss of Lieutenant is not applied. Instead:
+
+1. If the current Lieutenant enters a Null State, the role immediately transfers to the deployed unit with the highest WIP at the end of the same Order. In a tie, the player possessing the Lieutenant chooses how to break it.
+2. If a unit with higher WIP than the current Lieutenant leaves the Null State, the Lieutenant role automatically transfers to that unit at the end of the Order in which it is healed.
+3. If the Captain leaves the Null State, the Lieutenant role automatically transfers back to the Captain at the end of the Order in which the Captain is healed or restored, regardless of other deployed units' WIP values.
+
+</RuleCard>
+
+<RuleCard eyebrow="Mission State" title="Retreat!">
+
+All missions are played without Retreat.
+
+</RuleCard>
+
+<RuleCard eyebrow="Recovery" title="Healing and Recovery">
+
+If a WIP Roll for healing or repairing a Troop is failed, no further W/STR are lost. This applies to all relevant rolls, including Doctor, Engineer, Medikit, Regeneration, and similar effects.
+
+At the start of each Round, after the Order Count Phase, the acting player makes a **PH-6 Roll** for each of their unconscious units on the field. If successful, the unit heals 1 W/STR and can act that Turn, though the related Order is not generated.
+
+</RuleCard>
+
+<ContractSkillCard eyebrow="Rule Adjustment" title="Regeneration" type="Automatic Skill">
+  <p slot="mode">States Phase, Optional</p>
+  <ul slot="requirements">
+    <li>Automatic during the active player's States Phase, if the player decides to use this Special Skill.</li>
+  </ul>
+  <ul slot="effects">
+    <li>During the States Phase, the user makes a Normal PH Roll.</li>
+    <li>If the Roll is a success, the Trooper recovers 1 lost Wound or STR point.</li>
+    <li>This Special Skill remains active even when its owner is in a Null State.</li>
+    <li>This skill replaces the roll made for Healing and Recovery.</li>
+  </ul>
+</ContractSkillCard>
+
+<RuleCard eyebrow="Durability" title="Wounds Skill">
+
+A Wounds Skill refers to the total punishment a unit can take. It incorporates both the unit's Wounds Attribute and the skills **Dogged** and **NWI**.
+
+When perks or armor increase a unit's Wounds Skill, follow this path: **Dogged -> NWI -> +1 VITA/STR**. Losing Wounds Skills reverses that path.
+
+A unit can never decrease its Wounds Skill below **1 VITA/STR**.
+
+</RuleCard>
+
+## Skill and State Adjustments
+
+<ContractSkillCard eyebrow="Rule Adjustment" title="Counterintelligence" type="Automatic Skill">
+  <p slot="mode">Optional</p>
+  <ul slot="requirements">
+    <li>Counterintelligence has not been used by this army this game.</li>
+  </ul>
+  <ul slot="effects">
+    <li>Once per game, this Special Skill counteracts all effects of a single Command Token use.</li>
+    <li>When a Command Token use is stopped, the Command Token is lost and another Token may not be used for the same purpose.</li>
+  </ul>
+</ContractSkillCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Strategos">
+
+Strategos is modified slightly.
+
+At **Strategos L1**, only the effect of "set aside two Troopers to deploy" is applied.
+
+At **Strategos L2**, all effects of Strategos L1 are applied.
+
+</RuleCard>
+
+<ContractSkillCard eyebrow="Rule Adjustment" title="Impersonation" type="Deployment Skill">
+  <p slot="mode">Optional, NFB, Superior Deployment</p>
+  <ul slot="requirements">
+    <li>Units may never enter or be in Impersonation-1 state. They may only use Impersonation-2.</li>
+  </ul>
+  <ul slot="effects">
+    <li>During the Deployment Phase, the Trooper may be deployed anywhere in the player's half of the table.</li>
+    <li>The user may deploy in the opponent's half of the table by making an Infiltration Roll using WIP.</li>
+    <li>The user may deploy in the Impersonation (IMP-2) State.</li>
+    <li>The user may activate Impersonation during the game as normal, but can only ever enter the Impersonation-2 State.</li>
+    <li>The user cannot deploy in contact with enemy or neutral Models, Markers, Tokens, or any mission objective.</li>
+  </ul>
+</ContractSkillCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Transmutation (X, WIP, Hatching)">
+
+When a unit gains skills or attribute modifications from perks, armor bonuses, or similar effects, those changes are only applied to the first profile of a Transmutation (X) Trooper.
+
+Full VITA/STR increases increase the Transmutation value by an equivalent amount. For example, gaining 1 full VITA would increase the Transmutation number by 1.
+
+For Transmutation (WIP) or Transmutation (Hatching), the changes apply to the profile the unit transforms into.
+
+Non-armor equipment, such as weapons, is available to both profiles. Use the transformed profile when determining requirements for perks or equipment.
+
+**Exception:** Neurocinetics applies to both profiles to prevent ignoring the active turn drawback of the skill.
+
+</RuleCard>
+
+<RuleCard eyebrow="States" title="Sepsitorized and Possessed">
+
+Sepsitorized and Total Control states function as normal, except they are automatically cancelled at the end of the Turn, not Round, in which they were gained.
+
+</RuleCard>
+
+<RuleCard eyebrow="States" title="Shasvastii">
+
+Shasvastii units count as not being in a Null State at the end of the game for all purposes if they are in the Shasvastii Embryo State.
+
+</RuleCard>
+
+<ContractSkillCard eyebrow="Rule Adjustment" title="Booty" type="Recruit Skill">
+  <p slot="mode">Obligatory</p>
+  <ul slot="requirements">
+    <li>When a player first purchases a unit with Booty, they must make a public roll on the Booty table.</li>
+  </ul>
+  <ul slot="effects">
+    <li>The rolled result is gained permanently.</li>
+    <li>Booty (Reroll) allows a reroll.</li>
+    <li>Bonuses from Booty are always applied after all other stats, such as armor or Transmutation states.</li>
+  </ul>
+</ContractSkillCard>
+
+<ContractSkillCard eyebrow="Rule Adjustment" title="Metachemistry" type="Recruit Skill">
+  <p slot="mode">Obligatory</p>
+  <ul slot="requirements">
+    <li>When a player first purchases a unit with Metachemistry, they must make a public roll on the Metachemistry table.</li>
+  </ul>
+  <ul slot="effects">
+    <li>The rolled result is gained permanently.</li>
+    <li>Metachemistry (Reroll) allows a reroll.</li>
+    <li>Bonuses from Metachemistry are always applied after all other stats, such as armor or Transmutation states.</li>
+  </ul>
+</ContractSkillCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Morpho-Scan">
+
+After performing a Morpho-Scan, the bonuses are persistent until the skill is performed again in a later Contract.
+
+Morpho-Scan entirely replaces the specified Attributes. Any bonuses the unit previously had from perks or other sources are lost.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Journalist">
+
+A unit possessing the Journalist skill may add or subtract **1 Notoriety** from their Company at the end of a game in which it is deployed.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Holomask">
+
+Holomask works as described in the N5 rules. However, the imitated model must be a unit already existing in the Company roster.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Dogged">
+
+When a unit enters the Dogged State, instead of dying at the end of the Round it enters the Unconscious State instead.
+
+</RuleCard>
+
+<RuleCard eyebrow="State Adjustment" title="Marker State">
+
+Units that gain Marker States cannot use that Marker State if they are Impetuous.
+
+Repeaters are inactive while a unit is in a Marker State.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Chain of Command">
+
+All units with the Chain of Command skill count as if they have the **NCO** skill.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="Number 2">
+
+In addition to the benefits listed in the base rules, a Trooper with Number 2 may automatically form a Fireteam at any time on the Active Turn without spending Orders or Command Tokens.
+
+The Fireteam must still be legal.
+
+</RuleCard>
+
+<RuleCard eyebrow="Skill Adjustment" title="NFB">
+
+By performing any Skill on the Active Turn, a Trooper may switch which NFB-listed option in their Unit Profile is active.
+
+This change always happens at the beginning of the Order, applying the new Unit Profile until the next change. **Albedo** and **Mimetism** are NFB.
+
+</RuleCard>
+
+## New Rules
+
+### Loot Boxes
+
+Organizers can introduce Loot Boxes in a variety of ways. They can be Season prizes, rewards for special tasks, or appear in shops, events, or other game systems as the rules are updated.
+
+<RulesTable
+  eyebrow="Loot Boxes"
+  title="Loot Box Rarity"
+  columns={["Name", "Rarity", "Dice", "Renown"]}
+  rows={[
+    { label: "Contract Crate", cells: ["Common", "2", "5"] },
+    { label: "Field Pack", cells: ["Uncommon", "4", "10"] },
+    { label: "Black Market Cache", cells: ["Rare", "6", "15"] },
+    { label: "Sponsor Drop", cells: ["Epic", "8", "20"] },
+    { label: "Legendary Bounty", cells: ["Legendary", "10", "25"] },
+    { label: "Artifact Vault", cells: ["Mythic", "12", "30"] },
+  ]}
+  variant="text"
+  note="When a weapon earned from a Loot Box is equipped, and it is not already an existing weapon, use the listed Renown value."
+/>
+
+<RuleCard eyebrow="Loot Boxes" title="Rolling a Loot Box">
+
+When rolling a Loot Box, first roll the weapon type.
+
+Select a number of dice equal to or less than the number listed for the Loot Box. A player may select up to 4 dice and subtract that number from the Loot Box's remaining dice. Only the last die is rolled; the others are treated as 6s. The result is found in the Weapons tab of the Loot Sheet.
+
+Then the player may use any remaining dice for upgrades. Follow the same process, selecting up to 4 dice each time and rolling for an upgrade. This process can be repeated until the Loot Box has exhausted all of its dice.
+
+If an illegal or duplicate upgrade is rolled, reroll until a legal buff is earned.
+
+</RuleCard>
+
+<ContractSkillCard eyebrow="New Rule" title="Tag and Bag" type="Short Skill">
+  <p slot="mode">Attack, Optional</p>
+  <ul slot="requirements">
+    <li>The user must be in Silhouette contact with the target Trooper.</li>
+    <li>The target must not have an artichoke token.</li>
+  </ul>
+  <ul slot="effects">
+    <li>Mark a unit in the Unconscious, Immobilized, or Shasvastii State with an artichoke token.</li>
+    <li>Once marked, this skill cannot be used against that unit again for the rest of the game.</li>
+    <li>Inflict the IMM-A or IMM-B State on that unit.</li>
+  </ul>
+</ContractSkillCard>
+
+<ContractSkillCard eyebrow="New Rule" title="Scan" type="Short Skill">
+  <p slot="mode">Attack, Optional</p>
+  <ul slot="requirements">
+    <li>The user must be able to draw LoF to the target Trooper.</li>
+    <li>The target must not have an artichoke token.</li>
+  </ul>
+  <ul slot="effects">
+    <li>Mark a unit in the Unconscious, Immobilized, or Shasvastii State.</li>
+    <li>Once marked, this skill cannot be used against that unit again for the rest of the game.</li>
+    <li>Inflict the Targeted State on that unit.</li>
+  </ul>
+</ContractSkillCard>
+
+<ContractSkillCard eyebrow="New Rule" title="Covering Fire" type="Deployment Skill">
+  <p slot="mode">Optional</p>
+  <ul slot="requirements">
+    <li>The user must have a weapon with the Suppressive Fire Trait.</li>
+  </ul>
+  <ul slot="effects">
+    <li>During the Deployment Phase, the user may deploy in the Suppressive Fire State.</li>
+  </ul>
+</ContractSkillCard>
+
+<ContractSkillCard eyebrow="New Rule" title="Network Support" type="Deployment Skill">
+  <p slot="mode">Optional</p>
+  <ul slot="requirements">
+    <li>The user must have an EVO Hacking Device.</li>
+  </ul>
+  <ul slot="effects">
+    <li>During the Deployment Phase, the user may activate any single EVO Hacking ability anywhere on the field without spending an Order.</li>
+    <li>Normal EVO Hacking rules apply. For example, using another program with this user would cancel the existing one.</li>
+  </ul>
+</ContractSkillCard>
+
+<ContractSkillCard eyebrow="New Rule" title="Logistician" type="Deployment Skill">
+  <p slot="mode">Optional</p>
+  <ul slot="requirements">
+    <li>The user must have the Baggage Special Skill.</li>
+    <li>The user must not be in a Null, Isolated, or Immobilized State.</li>
+    <li>The Logistician Special Skill has not been used during this game by this army.</li>
+  </ul>
+  <ul slot="effects">
+    <li>At any point during the game, refill an unloaded Trooper anywhere on the map without spending an Order.</li>
+    <li>Once this Special Skill has been used by an army, that army cannot use the skill again.</li>
+  </ul>
+</ContractSkillCard>

@@ -1,0 +1,68 @@
+---
+import type { WarMarket } from "../data/markets";
+
+interface Props {
+  markets: WarMarket[];
+}
+
+const { markets } = Astro.props;
+
+const labels = {
+  name: "Name",
+  cost: "CR",
+  swc: "SWC",
+  req: "Req",
+  type: "Type",
+  arm: "ARM",
+  bts: "BTS",
+  effect: "Abilities / Equipment"
+};
+---
+
+<div class="market-reference">
+  {markets.map((market) => (
+    <section class:list={["market-card", `alignment-${market.alignment.toLowerCase()}`]} id={market.name.toLowerCase().replaceAll(" ", "-")}>
+      <header>
+        <div>
+          <span>{market.roll ? `Roll ${market.roll}` : "Always Available"}</span>
+          <h2>{market.name}</h2>
+          <p>
+            {[market.faction, market.specialty, market.alignment].filter(Boolean).join(" / ")}
+          </p>
+        </div>
+        <strong>{market.alignment}</strong>
+      </header>
+
+      <div class="market-section-grid">
+        {market.sections.map((section) => (
+          <section class:list={["market-section", section.columns.includes("effect") && "wide"]}>
+            <h3>{section.name}</h3>
+            <div class="market-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    {section.columns.map((column) => <th>{labels[column]}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section.items.map((item) => (
+                    <tr>
+                      {section.columns.map((column) => <td>{item[column] ?? "-"}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {section.note && <p>{section.note}</p>}
+          </section>
+        ))}
+      </div>
+
+      {market.notes && market.notes.length > 0 && (
+        <ul class="market-notes">
+          {market.notes.map((note) => <li>{note}</li>)}
+        </ul>
+      )}
+    </section>
+  ))}
+</div>

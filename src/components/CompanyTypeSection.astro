@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  tone?: "setup" | "benefits" | "restrictions" | "notes";
+}
+
+const { title, tone = "notes" } = Astro.props;
+---
+
+<section class:list={["company-type-section", `tone-${tone}`]}>
+  <h4>{title}</h4>
+  <div>
+    <slot />
+  </div>
+</section>

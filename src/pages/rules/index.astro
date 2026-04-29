@@ -2,7 +2,9 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const rules = await getCollection("rules");
+const rules = (await getCollection("rules")).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
 ---
 
 <BaseLayout
@@ -26,20 +28,10 @@ const rules = await getCollection("rules");
         <p>{rule.data.description}</p>
       </a>
     ))}
-    <a href="#">
-      <span>Company Rules</span>
-      <strong>Company Creation</strong>
-      <p>Sectorials, captains, starting credits, recruitment limits, and AVA.</p>
-    </a>
-    <a href="#">
-      <span>Campaign Rules</span>
-      <strong>Seasons and Downtime</strong>
-      <p>Round structure, post-game steps, healing, purchases, and random events.</p>
-    </a>
-    <a href="#">
-      <span>Progression</span>
-      <strong>XP, Injuries, and Renown</strong>
-      <p>How units grow, what setbacks mean, and how company strength is tracked.</p>
+    <a href="/rules/npcs/">
+      <span>Reference</span>
+      <strong>NPC Profiles</strong>
+      <p>Scalable NPC profiles, priorities, weapons, and traits imported from the NPC sheet.</p>
     </a>
   </section>
 </BaseLayout>

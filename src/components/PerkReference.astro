@@ -1,0 +1,86 @@
+---
+import type { PerkTree } from "../data/perks";
+
+interface Props {
+  trees: PerkTree[];
+}
+
+const { trees } = Astro.props;
+const tiers = [1, 2, 3, 4, 5];
+
+const rollSortValue = (roll: string) => {
+  const match = roll.match(/\d+/);
+  return match ? Number(match[0]) : 999;
+};
+---
+
+<div class="perk-reference">
+  {trees.map((tree) => (
+    <section class="perk-tree" id={`perk-${tree.name.toLowerCase().replaceAll(" ", "-")}`}>
+      <header>
+        <div>
+          <span>Perk Tree</span>
+          <h2>{tree.name}</h2>
+          <p>{tree.summary}</p>
+        </div>
+        <strong>{tree.roll}</strong>
+      </header>
+
+      <div
+        class="perk-grid"
+        style={`--perk-columns: ${[...new Set(tree.perks.map((perk) => perk.roll))].length};`}
+        aria-label={`${tree.name} perk tree`}
+      >
+        <div class="perk-grid-corner" aria-hidden="true">Tier</div>
+        {[...new Set(tree.perks.map((perk) => perk.roll))]
+          .sort((a, b) => rollSortValue(a) - rollSortValue(b))
+          .map((roll) => <div class="perk-grid-roll">{roll}</div>)}
+
+        {tiers.map((tier) => {
+          const rolls = [...new Set(tree.perks.map((perk) => perk.roll))].sort(
+            (a, b) => rollSortValue(a) - rollSortValue(b)
+          );
+
+          return (
+            <>
+              <div class="perk-grid-tier">
+                <span>Tier</span>
+                {tier}
+              </div>
+              {rolls.map((roll) => {
+                const perks = tree.perks.filter((perk) => perk.tier === tier && perk.roll === roll);
+
+                return (
+                  <div class:list={["perk-grid-cell", perks.length === 0 && "empty"]}>
+                    {perks.map((perk) => (
+                    <article class="perk-card">
+                      <strong>{perk.name}</strong>
+                      {perk.detail && <p>{perk.detail}</p>}
+                      {perk.requires && perk.requires.length > 0 && (
+                        <small>
+                          <b>Requires</b>
+                          {perk.requires.join(", ")}
+                        </small>
+                      )}
+                      {perk.note && <em>{perk.note}</em>}
+                    </article>
+                    ))}
+                  </div>
+                );
+              })}
+            </>
+          );
+        })}
+      </div>
+
+      {tree.notes && tree.notes.length > 0 && (
+        <aside class="perk-notes">
+          <strong>Special Notes</strong>
+          <ul>
+            {tree.notes.map((note) => <li>{note}</li>)}
+          </ul>
+        </aside>
+      )}
+    </section>
+  ))}
+</div>

@@ -1,0 +1,25 @@
+---
+interface Props {
+  variant?: "standard" | "cohesive" | "leader" | "airborne" | "tag" | "proxy";
+}
+
+const { variant = "standard" } = Astro.props;
+
+const iconPaths: Record<string, string> = {
+  standard: "M4 16h16M6 16l2-8h8l2 8M9 8l3-4 3 4",
+  cohesive: "M7 8h10M7 16h10M4 12h16M7 8l-3 4 3 4M17 8l3 4-3 4",
+  leader: "M12 4l3 6 6 .8-4.4 4.2 1.1 6-5.7-3-5.7 3 1.1-6L3 10.8l6-.8 3-6z",
+  airborne: "M12 4l8 7h-5l-3 9-3-9H4l8-7z",
+  tag: "M5 9h14v8H5zM8 9V6h8v3M8 17v3M16 17v3M3 12h2M19 12h2",
+  proxy: "M12 4l7 4v8l-7 4-7-4V8l7-4zM8.5 10.5h7M8.5 13.5h7M12 4v16"
+};
+---
+
+<section class:list={["company-type-card", `variant-${variant}`]}>
+  <span class="company-type-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" role="img">
+      <path d={iconPaths[variant]} />
+    </svg>
+  </span>
+  <slot />
+</section>

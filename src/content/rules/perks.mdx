@@ -1,0 +1,26 @@
+---
+title: "Perks"
+description: "Structured reference for perk trees, roll ranges, tiers, and special notes."
+section: "Reference"
+order: 60
+status: "review"
+updated: "2026-04-28"
+---
+
+import PerkReference from "../../components/PerkReference.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import { perkTrees } from "../../data/perks";
+
+Perks are the long-term growth choices that make a mercenary feel like a person instead of a disposable profile. Use this reference when a Trooper earns a Perk Point or rolls for a random Perk.
+
+<RuleCard eyebrow="Reference Status" title="First Perk Trees Imported">
+
+This page currently includes the trees from the images provided: **Initiative**, **Cool**, **Body**, **Reflex**, **Intelligence**, and **Empathy**.
+
+The remaining perk trees can be added into the same data structure as we convert more source material.
+
+</RuleCard>
+
+## Perk Trees
+
+<PerkReference trees={perkTrees} />

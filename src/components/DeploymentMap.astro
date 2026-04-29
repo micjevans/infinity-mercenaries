@@ -1,0 +1,128 @@
+---
+type Zone = {
+  label?: string;
+  note?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  className?: string;
+};
+
+type Marker = {
+  label?: string;
+  note?: string;
+  x: number;
+  y: number;
+  className?: string;
+};
+
+type Feature = {
+  label?: string;
+  note?: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  className?: string;
+};
+
+type Dimension = {
+  label: string;
+  className: string;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+};
+
+interface Props {
+  title: string;
+  width: number;
+  height: number;
+  zones: Zone[];
+  markers?: Marker[];
+  features?: Feature[];
+  dimensions?: Dimension[];
+  legend?: { label: string; className: string }[];
+  showMidline?: boolean;
+}
+
+const {
+  title,
+  width,
+  height,
+  zones,
+  markers = [],
+  features = [],
+  dimensions = [],
+  legend = [],
+  showMidline = true
+} = Astro.props;
+
+const left = (x: number) => `${(x / width) * 100}%`;
+const top = (y: number) => `${(y / height) * 100}%`;
+const sizeX = (value: number) => `${(value / width) * 100}%`;
+const sizeY = (value: number) => `${(value / height) * 100}%`;
+---
+
+<figure class="deployment-map">
+  <figcaption>
+    <span>Deployment</span>
+    <strong>{title}</strong>
+  </figcaption>
+  <div class="deployment-board-wrap">
+  <div class="deployment-board" aria-label={title} style={`--table-ratio:${width} / ${height};`}>
+    {zones.map((zone) => (
+      <div
+        class:list={["deployment-zone", zone.className]}
+        style={`left:${left(zone.x)};top:${top(zone.y)};width:${sizeX(zone.width)};height:${sizeY(zone.height)};`}
+      >
+        {zone.label && <strong>{zone.label}</strong>}
+        {zone.note && <span>{zone.note}</span>}
+      </div>
+    ))}
+    {showMidline && <div class="deployment-midline"><span>Midline</span></div>}
+    {features.map((feature) => (
+      <div
+        class:list={["deployment-feature", feature.className]}
+        style={`left:${left(feature.x)};top:${top(feature.y)};width:${sizeX(feature.width)};height:${sizeY(feature.height)};`}
+      >
+        {feature.label && <span>{feature.label}</span>}
+        {feature.note && <em>{feature.note}</em>}
+      </div>
+    ))}
+    {markers.map((marker) => (
+      <div
+        class:list={["deployment-marker", marker.className]}
+        style={`left:${left(marker.x)};top:${top(marker.y)};`}
+      >
+        {marker.label && <span>{marker.label}</span>}
+        {marker.note && <em>{marker.note}</em>}
+      </div>
+    ))}
+    {dimensions.map((dimension) => (
+      <div
+        class:list={[
+          "deployment-measure",
+          dimension.width ? "horizontal" : "vertical",
+          dimension.className
+        ]}
+        style={`left:${left(dimension.x)};top:${top(dimension.y)};width:${sizeX(dimension.width ?? 0)};height:${sizeY(dimension.height ?? 0)};`}
+      >
+        <span>{dimension.label}</span>
+      </div>
+    ))}
+  </div>
+  </div>
+  {legend.length > 0 && (
+    <div class="deployment-legend">
+      {legend.map((item) => (
+        <span>
+          <i class={item.className} aria-hidden="true"></i>
+          {item.label}
+        </span>
+      ))}
+    </div>
+  )}
+</figure>

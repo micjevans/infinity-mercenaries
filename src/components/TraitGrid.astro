@@ -1,0 +1,38 @@
+---
+type Trait = {
+  name: string;
+  label?: string;
+  text: string;
+  note?: string;
+};
+
+interface Props {
+  title: string;
+  intro?: string;
+  traits: Trait[];
+}
+
+const { title, intro, traits } = Astro.props;
+---
+
+<section class="trait-group">
+  <header>
+    <div>
+      <span>Trait Category</span>
+      <strong>{title}</strong>
+    </div>
+    {intro && <p>{intro}</p>}
+  </header>
+  <div class="trait-grid">
+    {traits.map((trait) => (
+      <article>
+        <div class="trait-item-header">
+          <h4>{trait.name}</h4>
+          {trait.label && <span>{trait.label}</span>}
+        </div>
+        <p>{trait.text}</p>
+        {trait.note && <p class="trait-note">{trait.note}</p>}
+      </article>
+    ))}
+  </div>
+</section>

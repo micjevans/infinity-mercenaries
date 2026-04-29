@@ -2,6 +2,7 @@
 title: "Getting Started"
 description: "Start here for the Infinity: Mercenaries rules website."
 section: "Start Here"
+order: 0
 status: "draft"
 updated: "2026-04-27"
 ---

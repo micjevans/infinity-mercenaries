@@ -1,0 +1,287 @@
+---
+import { npcGroups, npcScaling } from "../data/npcs";
+import ProfileCard from "./ProfileCard.astro";
+
+interface Props {
+  groupIds?: string[];
+  compact?: boolean;
+}
+
+const { groupIds, compact = false } = Astro.props;
+const visibleGroups = groupIds?.length
+  ? npcGroups.filter((group) => groupIds.includes(group.id))
+  : npcGroups;
+
+const initialRenown = {
+  playerOne: 75,
+  playerTwo: 72
+};
+---
+
+<section class:list={["npc-reference", compact && "compact"]} data-npc-reference>
+  <div class="npc-reference-panel">
+    {!compact && (
+      <div>
+        <span>Scaling Calculator</span>
+        <strong>NPC Level</strong>
+        <p>
+          Profiles scale from both players' deployed Renown. The current sheet formula is
+          <code>round((P1 + P2) / 100)</code>, clamped from 1 to 20.
+        </p>
+      </div>
+    )}
+    <form class="npc-renown-form" aria-label="NPC scaling controls">
+      <label>
+        <span>Player 1</span>
+        <input data-npc-renown="playerOne" type="number" min="0" step="1" value={initialRenown.playerOne} />
+      </label>
+      <label>
+        <span>Player 2</span>
+        <input data-npc-renown="playerTwo" type="number" min="0" step="1" value={initialRenown.playerTwo} />
+      </label>
+      <output class="npc-level-output" data-npc-level>Level 1</output>
+    </form>
+  </div>
+
+  {!compact && (
+    <div class="npc-view-note">
+      <strong>Reference structure</strong>
+      <p>
+        This page is grouped by source scenario for now. The data model also stores category
+        and contract tags, so the same NPC cards can later power faction views, global filters,
+        and contract-specific embeds.
+      </p>
+    </div>
+  )}
+
+  {visibleGroups.map((group) => (
+    <section class="npc-group" aria-labelledby={`${group.id}-title`}>
+      {!compact && (
+        <header>
+          <span>NPC Group</span>
+          <h2 id={`${group.id}-title`}>{group.title}</h2>
+          <p>{group.description}</p>
+        </header>
+      )}
+      <div class="npc-profile-grid">
+        {group.profiles.map((profile) => (
+          <ProfileCard profile={profile} interactive showTts />
+        ))}
+      </div>
+    </section>
+  ))}
+</section>
+
+<script define:vars={{ npcScaling }}>
+  const numericAttributes = ["cc", "bs", "ph", "wip", "arm", "bts", "vita"];
+  const bullet = " \u2022 ";
+
+  function roundToNearest(value, multiple) {
+    return Math.round(value / multiple) * multiple;
+  }
+
+  function clampLevel(playerOne, playerTwo) {
+    const raw = Math.round((playerOne + playerTwo) / 100);
+    return Math.min(Math.max(raw, 1), npcScaling.maxLevel);
+  }
+
+  function scaleAttribute(profile, key, level) {
+    const base = profile.attributes[key];
+    const max = profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
+    const usesMinimumLevel = profile.scaling?.useMinimumLevel ?? true;
+    const floor = usesMinimumLevel ? Math.max(Math.round(profile.minimumLevel), 1) : 0;
+
+    if ((usesMinimumLevel && level <= floor) || max === base) {
+      return base;
+    }
+
+    const progress = usesMinimumLevel
+      ? (level - floor) / (npcScaling.maxLevel - floor)
+      : level / npcScaling.maxLevel;
+
+    if (key === "vita" && profile.scaling?.linearVita) {
+      return Math.round(base + progress * (max - base));
+    }
+
+    const curve = Math.pow(base / max, npcScaling.growthFactor);
+    const value = base + progress * (max - base) * curve;
+
+    return key === "bts" ? roundToNearest(value, 3) : Math.round(value);
+  }
+
+  function specialDiceBonus(profile, key, scaled) {
+    const base = profile.attributes[key];
+    const max = profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
+    if (max === base) {
+      return 0;
+    }
+
+    return Math.max(0, Math.round((3 * (scaled - base)) / (max - base)));
+  }
+
+  function formatSkills(profile, scaled) {
+    const bonuses = [];
+    const ccBonus = specialDiceBonus(profile, "cc", scaled.cc);
+    const bsBonus = specialDiceBonus(profile, "bs", scaled.bs);
+    const phBonus = specialDiceBonus(profile, "ph", scaled.ph);
+    const wipBonus = specialDiceBonus(profile, "wip", scaled.wip);
+
+    if (ccBonus) bonuses.push(`CC Attack (+${ccBonus}SD)`);
+    if (bsBonus) bonuses.push(`BS Attack (+${bsBonus}SD)`);
+    if (phBonus) bonuses.push(`Dodge (+${phBonus}SD)`);
+    if (wipBonus) bonuses.push(`Comms Attack (+${wipBonus}SD)`, `Reset (+${wipBonus}SD)`);
+
+    return [...bonuses, ...profile.baseSkills].join(bullet);
+  }
+
+  function ttsName(profile) {
+    const separator = profile.ttsSubtitleSeparator ?? ", ";
+    return `[${profile.ttsColor}]${profile.name}${profile.subtitle ? `${separator}${profile.subtitle}` : ""}`;
+  }
+
+  function ttsProfile(profile, scaled) {
+    const equipment = profile.equipment.join(", ");
+    const skills = formatSkills(profile, scaled);
+    const silhouette = profile.ttsUsesSilhouette ? profile.silhouette : profile.troopClass;
+    const spawn = profile.spawn
+      ? `
+[ddddff][sub]----------Spawn---------
+${profile.spawn}
+[/sub]`
+      : "";
+    const description = profile.description
+      ? `
+[ddddff][sub]----------Description---------
+${profile.description}
+[/sub]`
+      : "";
+
+    return `${profile.troopClass}
+[sub]---------Attributes-------
+[/sub]
+[b]MOV[/b]: ${scaled.mov}
+[b]CC[/b]: ${scaled.cc}
+[b]BS[/b]: ${scaled.bs}
+[b]PH[/b]: ${scaled.ph}
+[b]WIP[/b]: ${scaled.wip}
+[b]ARM[/b]: ${scaled.arm}
+[b]BTS[/b]: ${scaled.bts}
+[-][B]W[/B]: ${scaled.vita}
+[B]S[/B]: ${silhouette}
+[ffdddd][sub]----------Equipment---------
+${equipment}
+[ffdddd][sub]----------Skills---------
+${skills}
+[/sub]
+[ddddff][sub]----------Weapons---------
+${profile.weapons.join(", ")}
+[/sub]
+[ddddff][sub]----------Priority---------
+${profile.priority.join(" > ")}
+[/sub]
+[ddddff][sub]----------Traits---------
+${profile.traits.join(", ")}
+[/sub]${spawn}${description}`;
+  }
+
+  async function copyText(text, statusNode, label) {
+    const fallbackCopy = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else if (!fallbackCopy()) {
+        throw new Error("Fallback copy failed");
+      }
+      if (statusNode) {
+        statusNode.textContent = `${label} copied.`;
+      }
+    } catch {
+      if (fallbackCopy()) {
+        if (statusNode) {
+          statusNode.textContent = `${label} copied.`;
+        }
+      } else if (statusNode) {
+        statusNode.textContent = "Copy failed. Open the text preview and select it manually.";
+      }
+    }
+  }
+
+  function updateProfiles(root) {
+    const playerOne = Number(root.querySelector("[data-npc-renown='playerOne']")?.value || 0);
+    const playerTwo = Number(root.querySelector("[data-npc-renown='playerTwo']")?.value || 0);
+    const level = clampLevel(playerOne, playerTwo);
+    const levelOutput = root.querySelector("[data-npc-level]");
+
+    if (levelOutput) {
+      levelOutput.textContent = `Level ${level}`;
+    }
+
+    root.querySelectorAll("[data-npc-profile]").forEach((card) => {
+      const profile = JSON.parse(card.getAttribute("data-npc-profile-json"));
+      const scaled = { mov: profile.attributes.mov };
+
+      numericAttributes.forEach((key) => {
+        scaled[key] = scaleAttribute(profile, key, level);
+        const node = card.querySelector(`[data-npc-stat='${key}']`);
+        if (node) {
+          node.textContent = scaled[key];
+        }
+      });
+
+      const formattedSkills = formatSkills(profile, scaled);
+      const skills = card.querySelector("[data-npc-skills]");
+      if (skills) {
+        skills.textContent = formattedSkills;
+      }
+
+      const generatedName = ttsName(profile);
+      const generatedProfile = ttsProfile(profile, scaled);
+      const preview = card.querySelector("[data-npc-tts-preview]");
+      const status = card.querySelector("[data-copy-status]");
+
+      card.dataset.ttsName = generatedName;
+      card.dataset.ttsProfile = generatedProfile;
+
+      if (preview) {
+        preview.textContent = generatedProfile;
+      }
+
+      if (status) {
+        status.textContent = "";
+      }
+    });
+  }
+
+  document.querySelectorAll("[data-npc-reference]").forEach((root) => {
+    root.querySelectorAll("[data-npc-renown]").forEach((input) => {
+      input.addEventListener("input", () => updateProfiles(root));
+    });
+
+    root.querySelectorAll("[data-copy-tts]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest("[data-npc-profile]");
+        const status = card?.querySelector("[data-copy-status]");
+        const mode = button.getAttribute("data-copy-tts");
+        const text = mode === "name" ? card?.dataset.ttsName : card?.dataset.ttsProfile;
+        const label = mode === "name" ? "Name" : "Profile";
+        copyText(text || "", status, label);
+      });
+    });
+
+    updateProfiles(root);
+  });
+</script>

@@ -1,0 +1,104 @@
+---
+title: "Equipment and Loadouts"
+description: "Company inventories, trooper loadouts, equipment slots, armor rules, purchasing, selling, and SWC limits."
+section: "Core Rules"
+order: 8
+status: "review"
+updated: "2026-04-28"
+---
+
+import LoadoutSlotGrid from "../../components/LoadoutSlotGrid.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+
+## Equipment Overview
+
+Before the first Contract and between Contracts, players may upgrade their units with equipment. Equipment is purchased from the Base Market or an available War Market, added to the Company's inventory, and then assigned to individual trooper loadouts.
+
+This page covers the rules for owning, assigning, equipping, and selling equipment. The actual market catalogs live in the [War Markets](/rules/war-markets/) reference page.
+
+## Inventory
+
+Each Company has an inventory of unlimited size where purchased equipment is stored.
+
+Whenever equipment is purchased, add it to the Company inventory. Each piece of equipment may only be assigned to a single trooper's loadout, but players may purchase multiple copies of the same equipment to assign it to multiple troopers.
+
+<RuleCard eyebrow="Inventory" title="Selling Equipment">
+
+Equipment may be sold during Downtime for half of its full cost, rounded up.
+
+Notoriety is not considered when selling equipment. When equipment is sold, remove it from the inventory and add the appropriate CR to the Company's treasury.
+
+</RuleCard>
+
+## Loadouts
+
+Each trooper has a loadout made from equipment assigned from the Company's inventory. A loadout consists of **7 slots**, and each slot may only be filled by one piece of equipment.
+
+Weapons and equipment that are part of a unit's original profile do not count toward filling these loadout slots.
+
+<LoadoutSlotGrid
+  slots={[
+    { name: "Primary", description: "The trooper's main weapon. Primary weapons are often longer-ranged and carry more firepower." },
+    { name: "Secondary", description: "Support weapons, deployables, and other weapons that are still formidable but usually less defining than primaries." },
+    { name: "Sidearm", description: "Close-range weapons such as pistols or CC Weapons. See the CC Attack adjustment for CC Save Roll clarification." },
+    { name: "Accessories", description: "Situational pieces of equipment that provide tactical advantages." },
+    { name: "Augments", description: "Niche upgrades that often have requirements and help sharpen a trooper's role in the Company." },
+    { name: "Roles", description: "Specialist loadouts that define how a trooper contributes, such as Doctor, Engineer, Forward Observer, or Hacker." },
+    { name: "Armor", description: "Protective equipment that may change troop type, ARM, BTS, Wounds, or other defensive rules." },
+  ]}
+/>
+
+## Company SWC Limit
+
+SWC is not spent permanently when equipment is purchased. Instead, a Company can only equip gear across its troopers up to the Company's current SWC value.
+
+For example, if a Company has **2.5 SWC**, the total SWC value of all equipment assigned to all active loadouts may never exceed **2.5 SWC**.
+
+## Armor Rules
+
+Armor can increase a trooper's ARM, BTS, Wounds, or other abilities. Armor has special handling because it may change a trooper's underlying troop type and profile values.
+
+<RulesTable
+  eyebrow="Armor"
+  title="Armor Resolution Steps"
+  variant="text"
+  columns={["Step", "Rule"]}
+  rows={[
+    { label: "1. Convert troop type", cells: ["If the armor lists a troop type, the unit changes to that troop type."] },
+    { label: "2. Apply HI changes", cells: ["If a unit goes from non-HI to HI, it gains 2 Wounds Skills, the Hackable trait, and Immunity (Shock)."] },
+    { label: "3. Remove HI changes", cells: ["If a unit goes from HI to non-HI, it loses 2 Wounds Skills, the Hackable trait, and Immunity (Shock)."] },
+    { label: "4. Preserve REM status", cells: ["REM troopers always retain the REM characteristic and whatever type of armor they wear. They remain Hackable and can still benefit from EVO hacking programs."] },
+    { label: "5. Replace listed attributes", cells: ["If the armor lists ARM or BTS, replace the unit's underlying ARM or BTS with the listed value. Bonuses from Metachemistry, Perks, and similar effects are added on top of the new value."] },
+    { label: "6. Apply ARM caps", cells: ["If armor changes a unit's troop type, cap the unit's underlying ARM at 2 for LI and 3 for MI."] },
+  ]}
+/>
+
+## Purchasing Equipment
+
+To purchase equipment, choose the market the item is being purchased from, note the item's CR cost, then modify that cost using the Company's Notoriety if the market has a Lawful or Chaotic alignment.
+
+After paying the final CR cost, subtract it from the Company's treasury and add one instance of the equipment to the Company inventory.
+
+<RuleCard eyebrow="Notoriety" title="Market Price Reminder">
+
+Lawful markets add the Company's Notoriety to item costs. Chaotic markets subtract the Company's Notoriety instead. Neutral markets are unaffected.
+
+An item may only be discounted to a minimum of half its original price, rounded up.
+
+</RuleCard>
+
+## Selling Equipment
+
+Equipment can be sold at any point during Downtime for half of its full cost, rounded up.
+
+Notoriety is not considered when selling equipment. Remove the item from the Company inventory, then add the sale value to the Company's treasury.
+
+## Market Access
+
+Before the first Contract and during Downtime, Companies have access to **2 markets**:
+
+- The **Base Market**.
+- One available **War Market**.
+
+Players may either select a War Market associated with one of their chosen factions or sectorials, or, after the first Contract, randomly roll for one. War Markets contain most of the stranger and more specialized gear, while the Base Market should contain core essentials.

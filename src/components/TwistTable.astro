@@ -1,0 +1,35 @@
+---
+type Row = {
+  roll: string;
+  name: string;
+  effect: string;
+};
+
+interface Props {
+  title?: string;
+  rows: Row[];
+}
+
+const { title = "Twist Table", rows } = Astro.props;
+---
+
+<aside class="twist-card">
+  <header>
+    <div>
+      <span>Random Event</span>
+      <strong>{title}</strong>
+    </div>
+    <p>d20</p>
+  </header>
+  <div class="twist-rows">
+    {rows.map((row) => (
+      <article>
+        <div class="twist-roll">{row.roll}</div>
+        <div class="twist-detail">
+          <h4>{row.name}</h4>
+          <p>{row.effect}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</aside>

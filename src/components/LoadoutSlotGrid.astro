@@ -1,0 +1,21 @@
+---
+type Slot = {
+  name: string;
+  description: string;
+};
+
+interface Props {
+  slots: Slot[];
+}
+
+const { slots } = Astro.props;
+---
+
+<div class="loadout-slot-grid">
+  {slots.map((slot) => (
+    <article>
+      <span>{slot.name}</span>
+      <p>{slot.description}</p>
+    </article>
+  ))}
+</div>

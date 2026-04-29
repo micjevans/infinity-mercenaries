@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<aside class="warning-callout">
+  <header>
+    <span aria-hidden="true">!</span>
+    <strong>{title}</strong>
+  </header>
+  <div>
+    <slot />
+  </div>
+</aside>

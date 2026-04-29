@@ -21,6 +21,14 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/images/m2-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <title>{pageTitle}</title>
   </head>
   <body>
@@ -28,14 +36,16 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
     <header class="site-header">
       <nav class="site-nav" aria-label="Main navigation">
         <a class="brand" href="/">
-          <span class="brand-mark" aria-hidden="true">IM</span>
+          <img class="brand-mark" src="/images/m2-logo.png" alt="" aria-hidden="true" />
           <span>Infinity: Mercenaries</span>
         </a>
         <div class="nav-links">
           <a href="/rules/">Rules</a>
           <a href="/contracts/">Contracts</a>
           <a href="/#campaign">Campaign</a>
+          <a href="/#tutorial">Tutorial</a>
           <a href="/#resources">Resources</a>
+          <a href="https://discord.gg/QJyzrQZGvG" target="_blank" rel="noreferrer">Discord</a>
         </div>
       </nav>
     </header>
@@ -44,7 +54,10 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
     </main>
     <footer class="site-footer">
       <div>
-        <strong>Infinity: Mercenaries</strong>
+        <div class="footer-brand">
+          <img src="/images/m2-logo.png" alt="" aria-hidden="true" />
+          <strong>Infinity: Mercenaries</strong>
+        </div>
         <p>A community-made campaign framework for Infinity N5.</p>
       </div>
       <p class="legal-note">

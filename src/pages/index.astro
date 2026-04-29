@@ -1,5 +1,43 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const leagueLinks = [
+  {
+    title: "Current League",
+    href: "https://sites.google.com/view/infinity-mercenaries/home"
+  },
+  {
+    title: "Sign Ups",
+    href: "https://sites.google.com/view/infinity-mercenaries/sign-up?usp=sharing"
+  },
+  {
+    title: "TTS Mod",
+    href: "https://steamcommunity.com/sharedfiles/filedetails/?id=3433312056"
+  }
+];
+
+const missionLinks = [
+  ["Titanomachy", "https://docs.google.com/document/d/1oa8nNV8dTXX4Q0AQ6O1VVK28JX1Cbf2aDDXwNUPVlmA/edit?usp=sharing"],
+  ["The Mole", "https://docs.google.com/document/d/1c0tU-M9AsuwyDjU8stp3yer--tLa2b-3C7dDkHWayO0/edit?usp=drive_link"],
+  ["Containment", "https://docs.google.com/document/d/1o_loTZLd-ISB43YPLwLLKcGNANrXNrDOMTTE9Lui4E0/edit?usp=drive_link"],
+  ["Monster Hunt", "https://docs.google.com/document/d/1xbuoX1FMC_S0JzgvMPbC0DwIgDXr1yuebXGecS8cs00/edit?usp=drive_link"],
+  ["Escort", "https://docs.google.com/document/d/1Lj1z2qPAeH_CC8qMHTKbsnL594XHnpBdAHBb2GeQKUY/edit?usp=drive_link"],
+  ["Battle Royale", "https://docs.google.com/document/d/1jFWpvMjOXiJNKn3W7L_k4SWNSgwJ7bkQJ2S5u9WdNKA/edit?usp=drive_link"],
+  ["Secure the Data", "https://docs.google.com/document/d/1vu0PsPJFmircwRYQYgdK8YV3A0niV9c95NFuO9ett5U/edit?usp=drive_link"],
+  ["Power Puzzle", "https://docs.google.com/document/d/1f3JW0qtGi1MgGd49JE0245fw9Kx6e2lHBtAVyoFqAHU/edit?usp=drive_link"],
+  ["Holo Blink", "https://docs.google.com/document/d/1ZpP_8KsHIHn0ArPlk8sYe3hr9sSR0kZx0ahUCrlqc1M/edit?usp=drive_link"],
+  ["Retrieve and Extract", "https://docs.google.com/document/d/1Wr84HLWWQuuagTX-OaiD6zaBTz6klnO-kCh2i69y8pg/edit?usp=drive_link"],
+  ["Gladatoria", "https://docs.google.com/document/d/1qvaVnGhg6NNtG73_z4dxMTN9_4agEw09y8kY2vFQ3eg/edit?usp=drive_link"],
+  ["Escape with the Shuttle", "https://docs.google.com/document/d/1nsO-wFYW-BzvHJaeg-8lQnzlt--z0PPfs_-B0EsbEqs/edit?usp=drive_link"],
+  ["Control Room", "https://docs.google.com/document/d/1dRwv0NiKkjsnJkxgUQztO6k3kGBKyjtrEe0TRzs8fDU/edit?usp=drive_link"]
+].map(([title, href]) => ({ title, href }));
+
+const toolLinks = [
+  ["Company Template", "https://docs.google.com/spreadsheets/d/1L3TsN5BppFUQQKwXGWQ5Gmd3piBxRoFOwMT1a6flPM0/edit?usp=sharing"],
+  ["Proxy Template", "https://docs.google.com/spreadsheets/d/1gWnkm-m_pDCX_xncDfVgEQuA7oAnR8BPxRgwYaGykf4/edit?usp=sharing"],
+  ["TAG Template", "https://docs.google.com/spreadsheets/d/1yljy5xOY2BHz6_CymJAJOk_BoxQzzQcrKSIhVuQ0a2M/edit?usp=sharing"],
+  ["Roundel Maker", "https://chatgpt.com/g/g-68405bf7b7a08191af8fef07f4b68600-mercenaries-roundel-maker"]
+].map(([title, href]) => ({ title, href }));
 ---
 
 <BaseLayout
@@ -23,6 +61,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="hero-actions">
         <a class="button primary" href="/rules/">Read the Rules</a>
         <a class="button secondary" href="/contracts/">Browse Contracts</a>
+        <a class="button secondary" href="#tutorial">Watch Tutorial</a>
       </div>
     </div>
   </section>
@@ -33,10 +72,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h2 id="field-manual">Small battles. Long consequences.</h2>
     </div>
     <p>
-      Mercenaries turns Infinity into a compact campaign experience built around
-      4-7 unit strike teams, persistent progression, downtime choices, and mission
-      variety. The rules are designed for narrative pressure without losing the
-      sharp tactical feel of the base game.
+      Infinity: Mercenaries is an RPG-oriented campaign framework for Infinity
+      built around the harsh world of smaller mercenary companies in the Human
+      Sphere. Form a company, manage it through contracts, survive random events,
+      and fight long enough to earn a sanctioned place in the wider mercenary world.
     </p>
   </section>
 
@@ -63,22 +102,78 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </article>
   </section>
 
-  <section class="section split" id="resources">
+  <section class="section split tutorial-section" id="tutorial">
     <div>
-      <p class="eyebrow">Rules-first website</p>
-      <h2>Built to evolve with the campaign.</h2>
+      <p class="eyebrow">Tutorial</p>
+      <h2>Campaign primer.</h2>
       <p>
-        The new site stores rules as Markdown content, making it easier to revise
-        wording, reorganize sections, generate references, and collaborate with AI
-        while keeping the public reading experience polished on desktop and mobile.
+        The original site featured this overview video as the main onboarding path.
+        It stays here while the rules and missions move into native site pages.
       </p>
     </div>
-    <div class="terminal-panel" aria-label="Site structure preview">
-      <p>/rules/company-creation</p>
-      <p>/rules/campaign-seasons</p>
-      <p>/rules/experience</p>
-      <p>/contracts/extraction</p>
-      <p>/contracts/titan</p>
+    <div class="video-panel">
+      <iframe
+        src="https://www.youtube.com/embed/XmBbcz1Fp0Y"
+        title="Infinity: Mercenaries tutorial"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="section resource-section" id="resources">
+    <div>
+      <p class="eyebrow">Resource hub</p>
+      <h2>Legacy links, ready for migration.</h2>
+      <p>
+        The current Google Docs and Sheets stay available while we convert the
+        rules, contracts, and tools into the site. Discord and the Tabletop
+        Simulator mod will remain external.
+      </p>
+    </div>
+
+    <div class="resource-grid">
+      <article class="resource-group">
+        <p class="eyebrow">Core</p>
+        <h3>Rules and community</h3>
+        <div class="resource-links">
+          <a href="/rules/">Native Rules Index</a>
+          <a href="https://docs.google.com/document/d/1texIeV5-3QSkuvRmUHAXWgQnwuUwmX4ojWfcOh6wY4U/edit?usp=sharing" target="_blank" rel="noreferrer">Original Ruleset Doc</a>
+          <a href="https://discord.gg/QJyzrQZGvG" target="_blank" rel="noreferrer">Discord</a>
+          <a href="https://www.youtube.com/watch?v=XmBbcz1Fp0Y&t=5s" target="_blank" rel="noreferrer">Tutorial on YouTube</a>
+        </div>
+      </article>
+
+      <article class="resource-group">
+        <p class="eyebrow">Online league</p>
+        <h3>Season play</h3>
+        <div class="resource-links">
+          {leagueLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">{link.title}</a>
+          ))}
+        </div>
+      </article>
+
+      <article class="resource-group wide">
+        <p class="eyebrow">Missions</p>
+        <h3>Contract documents</h3>
+        <div class="resource-links columns">
+          <a href="/contracts/">Native Contracts Index</a>
+          {missionLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">{link.title}</a>
+          ))}
+        </div>
+      </article>
+
+      <article class="resource-group">
+        <p class="eyebrow">Tools</p>
+        <h3>Templates</h3>
+        <div class="resource-links">
+          {toolLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">{link.title}</a>
+          ))}
+        </div>
+      </article>
     </div>
   </section>
 </BaseLayout>

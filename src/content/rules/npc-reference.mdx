@@ -1,0 +1,171 @@
+---
+title: "NPC Reference"
+description: "Rules for controlling non-player troopers, resolving their activations, and applying behavior traits during Mercenaries contracts."
+section: "Reference"
+order: 80
+status: "draft"
+updated: "2025-12-18"
+---
+
+import RuleCard from "../../components/RuleCard.astro";
+import TraitGrid from "../../components/TraitGrid.astro";
+
+Some contracts call for non-player troopers that act on their own. Use this reference when a mission introduces hostile NPCs, neutral actors, mobs, monsters, or other automated units.
+
+## Activating an NPC
+
+<RuleCard eyebrow="Procedure" title="NPC Activation Sequence">
+  <ol>
+    <li>NPCs activate before Player 1's turn unless otherwise specified.</li>
+    <li>If there are multiple NPCs, activate them clockwise, starting from Player 1's Deployment Zone and continuing around the table.</li>
+    <li>An NPC performs all of its available Orders before moving to the next NPC.</li>
+    <li>When an NPC activates, it first performs a Movement Short Skill.</li>
+    <li>Players then declare AROs.</li>
+    <li>Finally, draw a card from the NPC's deck to determine its second Short Skill.</li>
+  </ol>
+</RuleCard>
+
+### Unconscious Troopers
+
+By default, NPCs do not target Unconscious troopers unless all other troopers are also Unconscious.
+
+### Movement
+
+NPCs always move according to their traits, whether the movement is their first Short Skill, second Short Skill, Dodge, or another movement effect. Each NPC has at least one Movement trait, though some have several traits that further refine how they move.
+
+### Facing
+
+At the end of any Order, whether their own or a player's, NPCs orient their facing perpendicular to the target of their most recent interaction. If there was no interaction, they face perpendicular to their most recent movement.
+
+## Second Short Skill
+
+<RuleCard eyebrow="Priority List" title="Choosing an Active Skill">
+  <p>Each NPC has a priority list of Skills and weapons. Read down the list and use the first option the NPC can legally use. Skip anything marked ARO Only.</p>
+  <p>By default, an NPC tries to target as many targets as possible by splitting Burst evenly or placing templates to affect as many targets as it can.</p>
+  <p>When activating outside of ARO, NPCs ignore Long Skill restrictions. For example, if an NPC has Grenades or another Speculative weapon, it can perform a Speculative Attack if it has no other valid targets, as if it had not moved.</p>
+</RuleCard>
+
+### Generated AROs
+
+Players can only generate AROs against the first Movement Skill an NPC trooper performs. Even if the drawn card or second Skill would normally generate additional AROs, it does not.
+
+### Backup
+
+If no Skill can be selected from the list, or all generated AROs are left uncontested, the NPC Dodges or Resets. If there are no AROs to contest, the NPC takes a second Move using its second MOV value. This second Move generates no AROs.
+
+## AROs
+
+Each NPC has a priority list of Skills and weapons for AROs. Read down the list and use the first option the NPC can legally use. During AROs, NPCs must respect normal Skill requirements, meaning they cannot place a Deployable without LoF or perform Long Skills.
+
+In a Coordinated Order or Fireteam, NPCs always target the Spearhead or Fireteam Leader.
+
+### Backup
+
+If no Skill can be selected from the list, the NPC Dodges or Resets.
+
+### Delaying and Discovering
+
+By default, an NPC always Discovers a Camo Marker in LoF unless a trait says otherwise. When an NPC Discovers, its roll contests any action performed against it if that Marker reveals. It becomes a Face to Face Roll, but a win for the NPC simply cancels the effects of the action.
+
+## Traits
+
+Troopers often have traits that further define their behavior.
+
+### Movement Direction
+
+<TraitGrid
+  title="Movement Direction"
+  intro="These traits decide the NPC's basic path before any special movement priorities are applied."
+  traits={[
+    {
+      name: "One Track Mind",
+      label: "Override",
+      text: "The mission specifies a target. The trooper always moves to end as close as possible to that target, ignoring other Movement traits."
+    },
+    {
+      name: "Aggressive",
+      label: "Advance",
+      text: "The trooper moves up to its full MOV value to end as close to an enemy trooper as possible."
+    },
+    {
+      name: "Defensive",
+      label: "Withdraw",
+      text: "The trooper moves up to its full MOV value to end as far from all enemy troopers as possible."
+    },
+    {
+      name: "Stalwart",
+      label: "Hold",
+      text: "The trooper does not move and is always considered to be in the Foxhole State."
+    }
+  ]}
+/>
+
+### Movement Modifiers
+
+<TraitGrid
+  title="Movement Modifiers"
+  intro="Apply these after the NPC has a direction. They refine the path, exposure, cover, and firing position."
+  traits={[
+    {
+      name: "Escapist",
+      label: "Exit",
+      text: "When this trooper ends an Order in a non-Null state in a designated area, it is removed from the table and considered escaped."
+    },
+    {
+      name: "Sneaky",
+      label: "LoF",
+      text: "The trooper moves so it is seen by no troopers, or by as few as possible, and will not move into LoF if it is not already seen.",
+      note: "If it is in Marker State, it may move through enemy LoF as long as it ends outside of it."
+    },
+    {
+      name: "Sneaky Attack",
+      label: "Exception",
+      text: "A Sneaky trooper may move to be seen if it can make an attack that would generally be favorable and requires that movement."
+    },
+    {
+      name: "Careful",
+      label: "Cover",
+      text: "The trooper tries to retain Partial Cover while moving and only leaves Partial Cover if it cannot be shot outside of cover."
+    },
+    {
+      name: "Precise",
+      label: "ARO",
+      text: "The trooper attempts to generate only 1 ARO with its movement."
+    },
+    {
+      name: "Pursuant",
+      label: "Attack",
+      text: "If the trooper cannot attack any enemies from its current position, it moves to allow an attack or follows a path that would eventually generate one."
+    },
+    {
+      name: "Overwatch",
+      label: "Lane",
+      text: "The trooper moves so its final position can see as many firelanes as possible."
+    }
+  ]}
+/>
+
+### General Traits
+
+<TraitGrid
+  title="General Traits"
+  intro="These traits change targeting, dice, or profile behavior rather than basic movement."
+  traits={[
+    {
+      name: "Mob (X)",
+      label: "Group",
+      text: "This trooper represents a group. Multiply the base profile's Health by X. For any Skill the Mob performs, including Dodge, Reset, and AROs, it receives a Special Dice bonus equal to the remaining members in the Mob minus 1.",
+      note: "Remaining members equals remaining Health divided by base Health, rounded up. A 2-Wound trooper with Mob (4) has 8 Health and +3SD; at 5 Health remaining, it has 3 members and +2SD."
+    },
+    {
+      name: "Quick Draw",
+      label: "Weapon",
+      text: "After checking ranges for an activation or ARO, this trooper switches to the weapon with the highest modifier. It Dodges instead if its Dodge is higher than its success value plus Burst."
+    },
+    {
+      name: "Merciless",
+      label: "Targeting",
+      text: "This trooper targets Unconscious models."
+    }
+  ]}
+/>

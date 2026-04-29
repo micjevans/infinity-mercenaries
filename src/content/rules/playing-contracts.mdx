@@ -1,0 +1,130 @@
+---
+title: "Playing Contracts"
+description: "How contract rounds work, including classified objectives, inducements, deployment limits, XP, rewards, and bye rounds."
+section: "Core Rules"
+order: 4
+status: "review"
+updated: "2026-04-28"
+---
+
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+
+## Contract Overview
+
+Each round is centered around the **Contract**. A Contract is a modified mission where players face off using their mercenary Companies and the Infinity ruleset by Corvus Belli.
+
+All Contracts designed by the Mercenaries development team are intended to be played on a **32 by 48 inch** game table. Games use the full Infinity ruleset with the Mercenaries adjustments layered on top.
+
+## Rule Adjustments
+
+Some Infinity rules are adjusted for the Mercenaries format. The most important adjustments for contract play are **Extra Order**, **Command Tokens**, **Lieutenant and Loss of Lieutenant**, **Retreat!**, **Fireteams**, and **Healing and Recovery**.
+
+Those adjustments should eventually live in the reference section as a dedicated lookup page, but they are called out here because they strongly affect contract play.
+
+## Classified Objectives
+
+At the start of each Contract, players receive **two Classified Objectives**. One may be chosen from the deck, while the second must be randomly drawn.
+
+Classified Objectives are always used unless a Contract specifically says otherwise. They may contribute to scoring, grant small buffs, or reward players for completing side objectives.
+
+When Classified Objectives are used, each player places an HVT following the normal Infinity HVT rules. If both players deploy on the same side of the table, both HVTs must be placed **4 inches from the center line** on the opposite side of the table.
+
+## Inducements
+
+Corporations are always watching their hirelings. When a Contract looks lopsided, they may offer additional temporary resources to the underdog to make the job worth finishing.
+
+When players are paired with different deployed Renown totals, the player with lower deployed Renown receives Inducements before the Contract begins. Cooperative Contracts do not provide Inducements for Renown difference.
+
+Inducements are temporary funds. They can only be spent on benefits for the current Contract, and anything purchased with Inducements disappears at the end of that Contract before Downtime.
+
+<RuleCard eyebrow="Formula" title="Calculating Inducements">
+
+Take half the difference between the players' deployed Renown totals, then round down to the nearest 5.
+
+For example, if Jack deploys **90 Renown** and Jill deploys **143 Renown**, the difference is 53. Half of that is 26.5, which rounds down to **25 Inducements**.
+
+</RuleCard>
+
+Inducements may be spent on Troops for Hire, rented equipment, or up to **2 Command Tokens** at **10 Inducements** each.
+
+<WarningCallout title="Reference Tables Coming Soon">
+
+The full Troops for Hire and rented equipment lists are better suited to a reference page. This page keeps the core contract procedure readable while preserving the main rules for when Inducements are gained and how they work.
+
+</WarningCallout>
+
+## Deploying a Company
+
+When selecting troopers for a Contract, a Company may deploy a maximum of **6 troopers**. One of those troopers must be the **Captain**.
+
+The Captain is considered the list's Lieutenant and gains the Lieutenant Order as normal. Troopers should be selected before the players meet for the Contract, as if building an army list for a standard game of Infinity.
+
+## Elite Deployment
+
+A Company is **Elite Deployed** when it deploys only the Captain and no more than **3 additional troopers**.
+
+Troopers gain the following benefits during a Contract where the Company is Elite Deployed:
+
+- Non-Captain troopers gain **Tactical Awareness**. If a unit already has Tactical Awareness, it gains no additional benefit.
+- The Captain's injury-healing ability may be used on a trooper other than the Captain for that round.
+- All troopers deployed this way gain an additional **+3 XP**, in addition to normal deployment XP.
+
+Elite Deployment is based on the models deployed for that Contract, not the total Company roster.
+
+## Experience Gain
+
+Troopers gain XP during Contracts by deploying, completing objectives, supporting allies, surviving, and enduring the hazards of mercenary work.
+
+<RulesTable
+  eyebrow="Contract Rewards"
+  title="Experience Gain"
+  variant="text"
+  columns={["Action", "XP", "Limit"]}
+  rows={[
+    { label: "Assist an allied unit with engineering, doctoring, medikit, gizmokit, or casevac", cells: ["1", "2"] },
+    { label: "Inflict a state such as Stunned, Spotlighted, Immobilized, or Isolated", cells: ["1", "3"] },
+    { label: "Attempt to push a button or make a non-attack objective roll", cells: ["1", "1"] },
+    { label: "Succeed at pushing a button or making a non-attack objective roll", cells: ["1", "1"] },
+    { label: "Scan Enemy", cells: ["1", "1"] },
+    { label: "Scan Enemy with the Forward Observer Skill", cells: ["1", "1"] },
+    { label: "Tag and Bag", cells: ["2", "1"] },
+    { label: "Be deployed in a Contract", cells: ["1 x Round Number", "1"] },
+    { label: "Be Elite Deployed", cells: ["3", "1"] },
+    { label: "Be conscious at the end of the game", cells: ["2", "1"] },
+    { label: "Be named MVP by the opponent", cells: ["2", "1"] },
+    { label: "Gain an Injury", cells: ["2", "1"] },
+  ]}
+  note="The Forward Observer version of Scan Enemy awards both its own XP and the normal Scan Enemy XP."
+/>
+
+## CR and SWC Gain
+
+At the end of a Contract, players gain the following rewards:
+
+<RulesTable
+  eyebrow="Economy"
+  title="End of Contract Rewards"
+  variant="text"
+  columns={["Reward", "Amount"]}
+  rows={[
+    { label: "Round reward", cells: ["CR equal to 10 x Round Number, to a maximum of 40 CR"] },
+    { label: "Objective Points", cells: ["4 CR per Objective Point achieved during the Contract"] },
+    { label: "SWC", cells: ["0.5 SWC"] },
+    { label: "Winning Renown", cells: ["10 Renown to the winning player; in cooperative missions this may be both players"] },
+  ]}
+/>
+
+## Bye Rounds
+
+Occasionally, a player may be unable to play a round or an event may have an odd number of players. In that case, the player receives a **bye round**.
+
+A player with a bye round gains the normal rewards for the round, plus **12 CR** as if they had achieved 3 Objective Points.
+
+To make up for the lost opportunity to gain XP, choose one of the following:
+
+- Select up to **4 units** in the roster. Each selected unit gains **7 XP**.
+- Select up to **6 units** in the roster. Each selected unit gains **5 XP**.
+
+The player may also select one injured unit in their roster and remove one injury from that unit.

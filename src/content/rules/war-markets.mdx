@@ -1,0 +1,47 @@
+---
+title: "War Markets"
+description: "Equipment market catalogs, War Market access, Notoriety alignments, and faction market references."
+section: "Reference"
+order: 65
+status: "review"
+updated: "2026-04-28"
+---
+
+import MarketReference from "../../components/MarketReference.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { na2MarketAccess, warMarkets } from "../../data/markets";
+
+Before the first Contract and during Downtime, Companies have access to **2 markets**: the **Base Market** and one special **War Market**.
+
+Players may select a War Market associated with one of their chosen factions or sectorials. After the first Contract, they may instead roll **1d20** to determine which War Market is available.
+
+<RuleCard eyebrow="Random Market" title="Rolling a War Market">
+
+Roll **1d20** and use the roll value listed on each War Market.
+
+If a **19 or 20** is rolled, select any market. If the selected market is one the Company could already access because of its faction, reroll until the result is not a market they could have selected.
+
+</RuleCard>
+
+<RuleCard eyebrow="Notoriety" title="Market Alignment">
+
+Each War Market has an Alignment that determines how Notoriety affects prices.
+
+**Lawful** markets add the Company's Notoriety to item costs. **Chaotic** markets subtract the Company's Notoriety instead. **Neutral** markets are unaffected.
+
+An item may only be discounted to a minimum of half its original cost, rounded up.
+
+</RuleCard>
+
+<RulesTable
+  eyebrow="NA2"
+  title="NA2 Market Access"
+  variant="text"
+  columns={["Sectorial", "War Market"]}
+  rows={na2MarketAccess.map((entry) => ({ label: entry.sectorial, cells: [entry.market] }))}
+/>
+
+## Market Catalogs
+
+<MarketReference markets={warMarkets} />

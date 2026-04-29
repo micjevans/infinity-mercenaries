@@ -1,0 +1,30 @@
+---
+type Objective = {
+  points: string;
+  text: string;
+};
+
+interface Props {
+  title?: string;
+  objectives: Objective[];
+}
+
+const { title = "Mission Objectives", objectives } = Astro.props;
+---
+
+<aside class="objective-card">
+  <header>
+    <div>
+      <span>Scoring</span>
+      <strong>{title}</strong>
+    </div>
+  </header>
+  <div class="objective-list">
+    {objectives.map((objective) => (
+      <article>
+        <div class="objective-points">{objective.points}</div>
+        <p>{objective.text}</p>
+      </article>
+    ))}
+  </div>
+</aside>

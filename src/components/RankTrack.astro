@@ -1,0 +1,27 @@
+---
+type Rank = {
+  rank: string;
+  xp: string;
+  name: string;
+  freeSkill?: string;
+};
+
+interface Props {
+  ranks: Rank[];
+}
+
+const { ranks } = Astro.props;
+---
+
+<ol class="rank-track">
+  {ranks.map((rank) => (
+    <li>
+      <span>{rank.rank}</span>
+      <div>
+        <strong>{rank.name}</strong>
+        <p>{rank.xp}</p>
+        {rank.freeSkill && <em>{rank.freeSkill}</em>}
+      </div>
+    </li>
+  ))}
+</ol>

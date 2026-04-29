@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+type TocHeading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+interface Props {
+  title: string;
+  description?: string;
+  section?: string;
+  currentPath: string;
+  headings?: TocHeading[];
+  contentClass?: string;
+}
+
+const {
+  title,
+  description,
+  section = "Rules",
+  currentPath,
+  headings = [],
+  contentClass = ""
+} = Astro.props;
+
+const rules = (await getCollection("rules")).sort(
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+);
+
+const ruleLinks = [
+  ...rules.map((rule) => ({
+    href: `/rules/${rule.id.replace(/\.mdx?$/, "")}/`,
+    title: rule.data.title,
+    section: rule.data.section ?? "Rules"
+  })),
+  {
+    href: "/rules/npcs/",
+    title: "NPC Profiles",
+    section: "Reference"
+  }
+];
+
+const navGroups = ruleLinks.reduce<Record<string, typeof ruleLinks>>((groups, link) => {
+  groups[link.section] ??= [];
+  groups[link.section].push(link);
+  return groups;
+}, {});
+
+const visibleHeadings = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="rules-shell">
+    <aside class="rules-sidebar" aria-label="Rules navigation">
+      <div class="rules-sidebar-inner">
+        <a class="rules-sidebar-home" href="/rules/">Field Manual</a>
+        <nav class="rules-page-nav" aria-label="Rules pages">
+          {Object.entries(navGroups).map(([group, links]) => (
+            <details class="rules-nav-group" open={links.some((link) => link.href === currentPath)}>
+              <summary>{group}</summary>
+              <div>
+                {links.map((link) => (
+                  <a class:list={[link.href === currentPath && "active"]} href={link.href}>
+                    {link.title}
+                  </a>
+                ))}
+              </div>
+            </details>
+          ))}
+        </nav>
+
+        {visibleHeadings.length > 0 && (
+          <details class="rules-toc" open>
+            <summary>On This Page</summary>
+            <nav aria-label="Current page sections">
+              {visibleHeadings.map((heading) => (
+                <a class:list={[`depth-${heading.depth}`]} href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              ))}
+            </nav>
+          </details>
+        )}
+      </div>
+    </aside>
+
+    <div class="rules-main">
+      <section class="page-hero compact markdown-hero">
+        <p class="eyebrow">{section}</p>
+        <h1>{title}</h1>
+        {description && <p>{description}</p>}
+      </section>
+
+      <article class:list={["rules-content", contentClass]}>
+        <slot />
+      </article>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,120 @@
+---
+title: "The Mole"
+description: "Four HVTs enter the kill zone, but only one is the asset that matters. Scan the field, identify the mole, and get them out before the other company does."
+contractType: "HVT Extraction"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1c0tU-M9AsuwyDjU8stp3yer--tLa2b-3C7dDkHWayO0/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+
+<ContractMission
+  objectives={[
+    {
+      points: "1 OP",
+      text: "For each HVT analyzed."
+    },
+    {
+      points: "1 OP",
+      text: "At the end of the game, if the mole is not controlled by a friendly unit, but the CivEvac action was performed on it at least once."
+    },
+    {
+      points: "2 OP",
+      text: "At the end of the game, if the mole is in CivEvac with a friendly unit outside its own Deployment Zone."
+    },
+    {
+      points: "4 OP",
+      text: "At the end of the game, if the mole is in CivEvac with a friendly unit inside its own Deployment Zone."
+    }
+  ]}
+  deployment={{
+    title: "The Mole Deployment",
+    width: 36,
+    height: 48,
+    zones: [
+      { label: "Deployment Zone A", x: 0, y: 0, width: 36, height: 12, className: "zone-a" },
+      { x: 0, y: 12, width: 36, height: 4, className: "neutral-zone" },
+      { x: 0, y: 16, width: 36, height: 16, className: "exclusion-zone" },
+      { x: 0, y: 32, width: 36, height: 4, className: "neutral-zone" },
+      { label: "Deployment Zone B", x: 0, y: 36, width: 36, height: 12, className: "zone-b" }
+    ],
+    features: [
+      { label: "HVT Placement", x: 0, y: 20, width: 36, height: 8, className: "hvt-placement-feature" }
+    ],
+    dimensions: [
+      { label: "12\"", className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: "8\"", className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: "4\"", className: "hvt-distance", x: -2, y: 24.35, height: 3.65 }
+    ],
+    legend: [
+      { label: "HVT Placement", className: "hvt-placement-swatch" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  }}
+  twistTitle="The Mole Twist"
+  twistIntro="After the end of Round 2, but before the beginning of Round 3, roll a single d20 and apply the result below."
+  twistRows={[
+    {
+      roll: "1-10",
+      name: "No Twist",
+      effect: "Nothing happens."
+    },
+    {
+      roll: "11-15",
+      name: "Rush Hour",
+      effect: "All removed HVTs are reinstated on the field in the previous spots where they were placed. If the mole is already discovered, remove it from the table and place the HVT again on the table, unscanned."
+    },
+    {
+      roll: "16-20",
+      name: "We Got Company!",
+      effect: "Two Brawler NPCs using the Rifle/Light Shotgun profile are placed inside the mole's ZoC. Each player places one Brawler. The Brawlers are hostile to both players. If the mole is discovered and/or in CivEvac, deploy them immediately. If the mole is not yet discovered, deploy them at the end of the action that reveals it."
+    }
+  ]}
+  endConditions={[
+    {
+      title: "Round Limit",
+      text: "This scenario automatically ends at the end of the fourth Game Round."
+    },
+    {
+      title: "No Troopers Remaining",
+      text: "If one player starts their Active Turn with no troopers on the board, including Null troopers, the game ends immediately."
+    }
+  ]}
+>
+  <div slot="forces">
+    <p><strong>Side A and Side B:</strong> both players deploy on opposite sides of the game table, in the Deployment Zones.</p>
+    <p><strong>Exclusion Zone:</strong> the Exclusion Zone covers the area 8 inches on either side of the central line of the game table. Special Skills with the Airborne Deployment (AD) or Superior Deployment Labels cannot be used to deploy inside this area.</p>
+  </div>
+
+  <div slot="specialRules">
+    <h3>Moles</h3>
+    <p>After the Deployment Rolls, place <strong>4 HVTs</strong> within 4 inches of the centerline of the table.</p>
+    <p>Place two HVTs on Player A's side of the table, placed by Player B, and two HVTs on Player B's side of the table, placed by Player A.</p>
+    <p>The ZoC of each HVT is considered an Exclusion Zone.</p>
+
+    <ContractSkillCard title="Analyzing HVTs" type="Short Movement Skill">
+      <ul slot="requirements">
+        <li>The user must be in ZoC of the target HVT.</li>
+        <li>This Skill can only be used once per turn per trooper.</li>
+        <li>The mole must not currently be on the table. Only one may exist.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP -6 Roll, the HVT is discovered to be the mole.</li>
+        <li>Hackers and Forward Observers must succeed on a WIP -3 Roll.</li>
+        <li>If the analyzing roll is failed, the HVT is not the mole and is removed from the table.</li>
+        <li>If the analyzing roll is successful, the target HVT is the mole.</li>
+        <li>If no other HVTs are present on the field, no roll is required and the trooper automatically passes the roll.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>No Quarter</h3>
+    <p>The Retreat! rules are not applied in this scenario.</p>
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["the-mole-escort"]} compact />
+  </div>
+</ContractMission>

@@ -1,0 +1,181 @@
+---
+title: "Downtime"
+description: "Random events between contracts, event traits, skill checks, and the consequences of post-mission decisions."
+section: "Core Rules"
+order: 6
+status: "review"
+updated: "2026-04-28"
+---
+
+import DowntimeEventList from "../../components/DowntimeEventList.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+
+## Downtime Events
+
+Between Contracts, each Company resolves a single random event. Roll a **d20**, find the listed event, note any event Traits, then choose one of the available responses.
+
+Each response lists a skill check in parentheses. After choosing a response and identifying the participating trooper, make the listed roll:
+
+- A **pass** is equal to or lower than the target number.
+- A **failure** is higher than the target number.
+- A **critical pass** is rolling the exact number required.
+
+Some Traits define who must participate, some define rewards or consequences, and some add special rules. It can look like a lot at first, but most Traits become easy to remember after a few events.
+
+<RuleCard eyebrow="Example" title="Resolving a Downtime Event">
+
+First, a 20 is rolled. The player chooses to reroll and gets a 5. That event has **MVP** and **Opponent (Mutual)** traits.
+
+The player chooses the response "...do nothing and see what happens" and rolls against **PS=10**. They roll exactly 10, scoring a critical pass. The MVP of their last Contract gains **3 XP**, and because the event is mutual, the opponent's MVP also gains **3 XP**.
+
+</RuleCard>
+
+<DowntimeEventList
+  events={[
+    {
+      roll: "1-2",
+      event: "A cop pulls you over for driving erratically...",
+      choices: [
+        { check: "CC -10", text: "...you reach for the cop's gun", traits: ["Attack", "Weapon", "Chaotic", "XP"] },
+        { check: "PH", text: "...you floor it and drive away", traits: ["Chaotic", "XP"] },
+        { check: "WIP", text: "...you try to talk your way out with money", traits: ["Lawful", "P2P"] },
+      ],
+    },
+    {
+      roll: "3-4",
+      event: "An ammo dealer supplies you with faulty ammo and refuses to refund you...",
+      traits: ["SWC"],
+      choices: [
+        { check: "BS", text: "...you attack the dealer's crew", traits: ["Attack", "Chaotic", "XP"] },
+        { check: "PS=10+ARM", text: "...you let him shoot you to prove your point", traits: ["Attack"] },
+        { check: "WIP", text: "...you intimidate the dealer into giving you an honest refund", traits: ["CR"] },
+      ],
+    },
+    {
+      roll: "5-6",
+      event: "You catch one of your Mercs in romantic cahoots with a rival Merc team member after they met in the most recent Contract...",
+      traits: ["MVP", "Opponent (Mutual)"],
+      choices: [
+        { check: "PS=10", text: "...do nothing and see what happens", traits: ["XP", "CR (Neg)"] },
+        { check: "WIP", text: "...convince them to stop seeing each other", traits: ["CR"] },
+        { check: "PH", text: "...knock some sense into them", traits: ["XP", "Attack"] },
+      ],
+    },
+    {
+      roll: "7-8",
+      event: "You get wind that a rival Merc team is planning an ambush after some unfinished business from the most recent Contract...",
+      traits: ["Opponent"],
+      choices: [
+        { check: "CC -10", text: "...hide in wait and counter-ambush them", traits: ["Attack", "Chaotic", "XP"] },
+        { check: "WIP", text: "...avoid the confrontation", traits: ["Skill (Stealth)", "Attack"] },
+        { check: "WIP", text: "...report them to the cops", traits: ["Lawful"] },
+      ],
+    },
+    {
+      roll: "9-10",
+      event: "Select a Merc that went Unconscious this Contract. A rival Merc team has taken them hostage after the most recent Contract...",
+      traits: ["Opponent"],
+      choices: [
+        { check: "WIP", text: "...you negotiate a ransom", traits: ["P2P", "Lawful", "XP"] },
+        { check: "BS", text: "...you ambush them at the drop site", traits: ["Chaotic", "Attack", "XP"] },
+        { check: "PH", text: "...you let the Merc escape on their own", traits: ["Merc", "XP", "CR (Neg)"] },
+      ],
+    },
+    {
+      roll: "11-12",
+      event: "One of your Mercs has decided they are better suited to be the Captain...",
+      choices: [
+        { check: "PS=10", text: "...allow the change of leadership", traits: ["CR (Neg)", "LT"] },
+        { check: "WIP", text: "...negotiate a new salary", traits: ["Captain", "XP", "P2P"] },
+        { check: "CC -10", text: "...agni kai", traits: ["Captain", "Attack", "Chaotic"] },
+      ],
+    },
+    {
+      roll: "13-14",
+      event: "The Merc with the highest Renown has run into legal trouble and must present themselves in court...",
+      traits: ["Renowned"],
+      choices: [
+        { check: "PS=10", text: "...you settle the issue out of court", traits: ["P2P", "XP"] },
+        { check: "WIP", text: "...they defend themselves in court", traits: ["CR", "Lawful"] },
+        { check: "CC -10", text: "...they attempt to intimidate the opposing legal team", traits: ["CR", "Chaotic"] },
+      ],
+    },
+    {
+      roll: "15-16",
+      event: "You left behind your work laptop at the last Contract and the opposing Merc team took it to see what they could gain...",
+      choices: [
+        { check: "WIP", text: "...you ask nicely for it back with some incentive", traits: ["P2P", "SWC", "Lawful"] },
+        { check: "WIP", text: "...you hack the computer to shut it down", traits: ["Attack", "XP", "Requirement (Hacker)"] },
+        { check: "WIP", text: "...you counter-hack whoever is on the other end", traits: ["Attack", "Chaotic", "XP", "Requirement (Trinity Program)"] },
+      ],
+    },
+    {
+      roll: "17-18",
+      event: "Your team gets caught in a brawl after a heated discussion turns to fists...",
+      choices: [
+        { check: "PH", text: "...you intimidate them into stopping", traits: ["Attack", "Lawful"] },
+        { check: "CC -10", text: "...you revel in the chaos", traits: ["Chaotic", "Skill (Natural Born Warrior)", "Attack"] },
+        { check: "BS", text: "...you bring a gun to a fist fight", traits: ["Chaotic", "CR"] },
+      ],
+    },
+    {
+      roll: "19-20",
+      event: "No incident occurs.",
+    },
+  ]}
+/>
+
+## Event Trait Reference
+
+<RulesTable
+  eyebrow="Downtime"
+  title="Reward and Consequence Traits"
+  variant="text"
+  columns={["Trait", "Special", "Fail", "Pass", "Critical Pass"]}
+  rows={[
+    { label: "Chaotic", cells: ["-", "Lose 1 Notoriety", "Gain 1 Notoriety", "Gain 2 Notoriety"] },
+    { label: "Lawful", cells: ["-", "Gain 1 Notoriety", "Lose 1 Notoriety", "Lose 2 Notoriety"] },
+    { label: "Attack", cells: ["-", "Gain an Injury", "-", "-"] },
+    { label: "CR", cells: ["-", "Lose 5 CR", "Gain 5 CR", "Gain 6 CR"] },
+    { label: "XP", cells: ["-", "-", "Gain 2 XP", "Gain 3 XP"] },
+    { label: "SWC", cells: ["-", "-", "Gain 0.5 SWC", "Gain 0.5 SWC"] },
+    { label: "P2P", cells: ["You may spend CR to increase your Success Rating by 1 for each CR spent.", "Spent CR are lost", "Spent CR are lost", "Spent CR are not lost"] },
+    { label: "Skill (*)", cells: ["The trait will name a specific skill.", "-", "Gain the named skill", "Gain the named skill"] },
+    { label: "LT", cells: ["-", "-", "You may select any member of your team to be the new Captain", "You may select any member of your team to be the new Captain"] },
+  ]}
+/>
+
+<RulesTable
+  eyebrow="Downtime"
+  title="Weapon Trait Pistol Roll"
+  variant="text"
+  columns={["Roll", "Pistol Type"]}
+  rows={[
+    { label: "1-4", cells: ["MULTI"] },
+    { label: "5-8", cells: ["AP Heavy"] },
+    { label: "9-12", cells: ["Breaker"] },
+    { label: "13-16", cells: ["Silenced"] },
+    { label: "17-20", cells: ["Viral"] },
+  ]}
+  note="On a pass, roll a random pistol using this chart. On a critical pass, roll a random pistol with +1 SD using this chart."
+/>
+
+## Participant and Special Traits
+
+<RulesTable
+  eyebrow="Downtime"
+  title="Participant Traits"
+  variant="text"
+  columns={["Trait", "Meaning"]}
+  rows={[
+    { label: "MVP", cells: ["The MVP of the last Contract must perform the event."] },
+    { label: "Captain", cells: ["The Company's Captain must perform the event."] },
+    { label: "Renowned", cells: ["The highest Renown member of the Company must perform the event."] },
+    { label: "Merc", cells: ["The event description specifies which Merc participates."] },
+    { label: "Requirement (*)", cells: ["The response has a requirement that must be met, such as Hacker or Trinity Program."] },
+    { label: "Opponent", cells: ["The opponent from the last Contract gains any CR spent for P2P choices. If this is not Opponent (Mutual), the opponent also gets the pass benefit, except Notoriety."] },
+    { label: "Opponent (Mutual)", cells: ["The opponent from the last Contract receives the pass or critical pass benefits, except Notoriety. The opponent may choose the benefiting trooper if another trait does not specify one."] },
+    { label: "(Neg)", cells: ["Only the fail portion of that trait matters. No benefit is gained on a pass or critical pass."] },
+  ]}
+/>
