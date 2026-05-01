@@ -1,0 +1,138 @@
+---
+title: "Retrieve and Extract"
+description: "Supply boxes are scattered around a locked objective room. Drag them to the comms arrays, hold the room, and keep your Lieutenant standing."
+contractType: "Supplies"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1Wr84HLWWQuuagTX-OaiD6zaBTz6klnO-kCh2i69y8pg/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import ScenarioObjectCard from "../../components/ScenarioObjectCard.astro";
+import { standardOpposedDeployment, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", maxPoints: "2", text: "Extract a Supply Box at a Communications Array that is not within the Objective Room." },
+    { points: "2 OP", maxPoints: "2", text: "Extract a Supply Box at the Communications Array within the Objective Room." },
+    { points: "1 OP", text: "Extract more Supply Boxes at Communications Arrays than your opponent." },
+    { points: "2 OP", text: "Have more total Renown within the Objective Room at the end of the game." },
+    { points: "1 OP", text: "Have your Lieutenant not in a Null state at the end of the game." }
+  ]}
+  deployment={standardOpposedDeployment("Retrieve and Extract Deployment", {
+    zones: [
+      { label: "Deployment Zone A", x: 0, y: 0, width: 36, height: 12, className: "zone-a" },
+      { x: 0, y: 12, width: 36, height: 4, className: "neutral-zone" },
+      { x: 0, y: 16, width: 36, height: 16, className: "saturation-zone" },
+      { x: 0, y: 32, width: 36, height: 4, className: "neutral-zone" },
+      { label: "Deployment Zone B", x: 0, y: 36, width: 36, height: 12, className: "zone-b" }
+    ],
+    features: [
+      { label: "6\" x 6\"", x: 15, y: 21, width: 6, height: 6, className: "control-room-feature retrieve-objective-room-feature" }
+    ],
+    markers: [
+      { label: "Array", x: 4, y: 24, className: "console-marker" },
+      { label: "Array", x: 18, y: 24, className: "console-marker" },
+      { label: "Array", x: 32, y: 24, className: "console-marker" },
+      { label: "Supply", x: 8, y: 4, className: "supply-marker" },
+      { label: "Supply", x: 28, y: 4, className: "supply-marker" },
+      { label: "Supply", x: 8, y: 44, className: "supply-marker" },
+      { label: "Supply", x: 28, y: 44, className: "supply-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: '8"', className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: '4"', className: "retrieve-array-distance", x: 0, y: 49.3, width: 4 },
+      { label: '8"', className: "retrieve-supply-horizontal-distance", x: 28, y: 49.4, width: 8 },
+      { label: '4"', className: "retrieve-supply-vertical-distance", x: -2.2, y: 44, height: 4 }
+    ],
+    legend: [
+      { label: "Communications Array", className: "console-marker" },
+      { label: "Supply Box", className: "supply-marker" },
+      { label: "Saturation Zone", className: "saturation-swatch" }
+    ]
+  })}
+  twistTitle="Retrieve and Extract Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Supply Drop", effect: "Additional Supply Boxes are placed where the first Supply Boxes were at the start of the game. If a Supply Box has not moved from its original position, no additional Supply Box is placed there." },
+    { roll: "11-15", name: "Mutagenic Parcels", effect: "Troopers carrying Supply Boxes no longer have a penalty and instead make all rolls with a +3 bonus. This does not include Saving Rolls." },
+    { roll: "16-20", name: "Anti-Personnel Protocol", effect: "All troopers within the Objective Room take a Damage 16 Continuous Damage hit against BTS." }
+  ]}
+  deploymentType="opposed"
+>
+  <div slot="specialRules">
+    <h3>Saturation Zone</h3>
+    <p>The area 8 inches on either side of the central line of the game table is a Saturation Zone.</p>
+
+    <h3>Objective Room</h3>
+    <p>Place an Objective Room in the center of the table. It covers a <strong>6 by 6 inch</strong> area, has walls of infinite height that completely block Line of Fire, and has 4 Wide Access Doors. The doors are closed at the start of the game.</p>
+
+    <ScenarioObjectCard
+      eyebrow="Scenery Profile"
+      title="Door"
+      stats={[
+        { label: "ARM", value: "6" },
+        { label: "BTS", value: "6" },
+        { label: "STR", value: "2" },
+        { label: "Access", value: "Wide Gate" }
+      ]}
+    >
+      <p>The doors can be attacked using both CC and ranged weapons. If the weapon is not Anti-Material, resolve the attack with <strong>-3 to the weapon Damage</strong>.</p>
+      <p>A closed Door cannot be closed.</p>
+    </ScenarioObjectCard>
+
+    <ContractSkillCard title="Open/Close Door" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Door.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Trooper to make a WIP -3 Roll to Open the Door. On a success, the Door is opened.</li>
+        <li>Alternatively, a Trooper fully within the Objective Room and in Silhouette contact with the Door may close the door without a Roll.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Supply Boxes</h3>
+    <p>There are <strong>4 Supply Boxes</strong>, placed 4 inches from the table edges and 8 inches from the sides.</p>
+    <ul>
+      <li>Each Model can carry a maximum of 1 Supply Box. Troopers with Baggage may carry up to 2.</li>
+      <li>Only Models, not Markers, can carry Supply Boxes.</li>
+      <li>The Supply Box Token remains on the table even if its carrier enters a Null State.</li>
+      <li>While carrying a Supply Box, a trooper has a -3 penalty to all rolls except Saving Rolls.</li>
+      <li>A trooper may drop a Supply Box at the start of any declaration with the Movement tag.</li>
+    </ul>
+
+    <ContractSkillCard title="Pick Up Supply Boxes" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper should be in one of the following situations:</li>
+        <li>Be in Silhouette contact with an allied Trooper in a Normal State with a SUPPLY BOX Token.</li>
+        <li>Be in Silhouette contact with an unaccompanied SUPPLY BOX Token.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Spending one Short Skill, without Roll, any Trooper can pick up a Supply Box in any of the situations previously mentioned.</li>
+        <li>The Troops must accomplish the Common Rules of Supply Box.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Communications Array</h3>
+    <p>There are three Communications Arrays on the central line. One is in the center, and the other two are 4 inches from the sides of the table.</p>
+
+    <ContractSkillCard title="Extract Supplies" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Communications Array.</li>
+        <li>The Trooper must be carrying a Supply Box.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Trooper to make a Normal WIP Roll to Extract the Supply Box. On a success, the Supply Box is removed and considered to be extracted.</li>
+        <li>This roll is not affected by -3 penalty imposed by carrying a Supply Box.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+</ContractMission>
+

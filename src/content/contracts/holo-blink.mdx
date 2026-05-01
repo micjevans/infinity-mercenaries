@@ -1,0 +1,136 @@
+---
+title: "Holo Blink"
+description: "Portals throw combatants across the table while hostile Holoechoes flicker into existence. Hunt projections, breach the enemy zone, and survive the overload."
+contractType: "Portal Skirmish"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1ZpP_8KsHIHn0ArPlk8sYe3hr9sSR0kZx0ahUCrlqc1M/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { standardOpposedDeploymentWithExclusion, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", text: "Destroy at least 3 Holoechoes." },
+    { points: "2 OP", text: "Destroy more Holoechoes than your opponent, but only if you destroyed at least 3 Holoechoes." },
+    { points: "2 OP", text: "Have at least 1 allied trooper in your opponent's Deployment Zone at the end of the game." },
+    { points: "2 OP", text: "Have more than 1 allied trooper in your opponent's Deployment Zone at the end of the game." },
+    { points: "1 OP", text: "Have the enemy Captain in a Null State at the end of the game." }
+  ]}
+  deployment={standardOpposedDeploymentWithExclusion("Holo Blink Deployment", {
+    markers: [
+      { x: 18, y: 24, className: "holo-portal-marker" },
+      { x: 8, y: 16, className: "holo-portal-marker" },
+      { x: 28, y: 16, className: "holo-portal-marker" },
+      { x: 8, y: 32, className: "holo-portal-marker" },
+      { x: 28, y: 32, className: "holo-portal-marker" },
+      { x: 18, y: 12, className: "console-marker" },
+      { x: 18, y: 36, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: '8"', className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: '16"', className: "holo-blink-bottom-distance", x: 0, y: 50, width: 16 },
+      { label: '8"', className: "holo-blink-bottom-distance", x: 28, y: 50, width: 8 }
+    ],
+    legend: [
+      { label: "Holo Portal", className: "holo-portal-marker" },
+      { label: "Console", className: "console-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  })}
+  twistTitle="Holo Blink Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Portals Unleashed", effect: "Blink Teleport no longer has a cooldown period." },
+    { roll: "11-15", name: "Echo of Echoes", effect: "The player that went second places an additional Holoecho following the same rules. It must be placed at a different Portal than the current Holoecho and uses the same rules for the rest of the game." },
+    { roll: "16-20", name: "Holo Overload", effect: "Holo Beam ammunition changes from AP + Stun to AP + DA + Shock against BTS." }
+  ]}
+  deploymentType="opposed"
+  exclusionZone={true}
+>
+  <div slot="specialRules">
+    <h3>Holo Blink Portals</h3>
+    <p>There are <strong>5 Holo Portals</strong>: one in the center of the map and four placed 12 inches from the table edge and 8 inches from the side of the table.</p>
+
+    <ContractSkillCard title="Blink Teleport" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Holo Portal.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP-6 Roll, the trooper may teleport to any other Portal on the map.</li>
+        <li>Upon failing the WIP Roll, the trooper is teleported randomly to any Portal except the one they had previously chosen, but including the Portal they are currently in. Roll a d20 to determine the Portal the unit is transported to.</li>
+        <li>This movement occurs during the Resolution step, does not provoke AROs, and the activating player may place their teleported trooper anywhere that is entirely within the Holo Zone.</li>
+        <li>Portals that have been used for Blink Teleportation (both sending and receiving) may not be used again until the next player turn.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <RulesTable
+      eyebrow="Teleport"
+      title="Portal Table"
+      columns={["Roll", "Portal"]}
+      rows={[
+        { label: "1-4", cells: ["First Player Left"] },
+        { label: "5-8", cells: ["Second Player Right"] },
+        { label: "9-12", cells: ["Center"] },
+        { label: "13-16", cells: ["First Player Right"] },
+        { label: "17-20", cells: ["Second Player Left"] }
+      ]}
+      variant="text"
+    />
+
+    <h3>Consoles</h3>
+    <p>There are <strong>2 Consoles</strong> placed 12 inches from the table edge and halfway from each side.</p>
+
+    <ContractSkillCard title="Connect a Console" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Holo Portal.</li>
+      </ul>
+      <ul slot="effects">
+        <li>
+        <p>By succeeding at a WIP Roll, the player may choose one of the following effects:</p>
+          <ul>
+            <li>The next use of Blink Teleport is a guaranteed success.</li>
+            <li>Deactivate a single Portal; neither you, nor your opponent nor the Holoecho may use it until the beginning of your next turn.</li>
+          </ul>
+        </li>
+        <li>Troopers that are specialists may roll two dice at WIP+3 instead.</li>
+        <li>Consoles cannot be activated during the final player round.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Holoecho</h3>
+    <p>At the start of the game, after Initiative but before Deployment, the player going second places a Holoecho anywhere entirely within the Holo Zone of the central portal.</p>
+    <p>Holoechoes are hostile to both players, generate no Orders, cannot go Prone, and their AROs are chosen by the reactive player. Each is an S2 projection represented by any S2 model.</p>
+
+    <p>When a Holoecho is destroyed, the reactive player rolls a d20 and places a new Holoecho entirely within the Holo Zone of the rolled Portal.</p>
+
+    <RulesTable
+      eyebrow="Holoecho"
+      title="Respawn Portal"
+      columns={["Roll", "Portal"]}
+      rows={[
+        { label: "1-3", cells: ["First Player Left"] },
+        { label: "4-6", cells: ["Second Player Right"] },
+        { label: "7-14", cells: ["Center"] },
+        { label: "15-17", cells: ["First Player Right"] },
+        { label: "18-20", cells: ["Second Player Left"] }
+      ]}
+      note="This chart is for Holoechoes only and is different from the Blink Teleport chart."
+      variant="text"
+    />
+
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["holo-blink"]} compact />
+  </div>
+</ContractMission>
+

@@ -1,0 +1,94 @@
+---
+title: "Escort"
+description: "A protected asset is moving through contested territory. One side hunts the real HVT while the other controls the ground and keeps the decoys alive."
+contractType: "Asymmetric HVT"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1Lj1z2qPAeH_CC8qMHTKbsnL594XHnpBdAHBb2GeQKUY/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+import { standardOpposedDeployment, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[]}
+  objectiveGroups={[
+    {
+      title: "Attacker",
+      objectives: [
+        { points: "1 OP", maxPoints: "2", text: "Discover an HVT." },
+        { points: "1 OP", maxPoints: "2", text: "Kill an HVT." },
+        { points: "1 OP", maxPoints: "1", text: "Have the real HVT in CivEvac at the end of a player round." },
+        { points: "1 OP", maxPoints: "1", text: "Move the real HVT away from where it was first placed at the end of a player round." },
+        { points: "2 OP", text: "Have the real HVT in the Attacker's Deployment Zone at the end of the game." }
+      ]
+    },
+    {
+      title: "Defender",
+      objectives: [
+        { points: "1 OP", maxPoints: "6", text: "For each zone dominated at the end of each round." },
+        { points: "1 OP", maxPoints: "2", text: "For each HVT in CivEvac at the end of the game." }
+      ]
+    }
+  ]}
+  deployment={standardOpposedDeployment("Escort Deployment", {
+    zones: [
+      { label: "Deployment Zone A", x: 0, y: 0, width: 36, height: 12, className: "zone-a" },
+      { label: "Zone 1", x: 0, y: 12, width: 36, height: 12, className: "neutral-zone" },
+      { label: "Zone 2", x: 0, y: 24, width: 36, height: 12, className: "neutral-zone" },
+      { label: "Deployment Zone B", x: 0, y: 36, width: 36, height: 12, className: "zone-b" }
+    ],
+    markers: [
+      { label: "Control Panel", x: 18, y: 24, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "deployment-distance", x: -2, y: 0, height: 12 }
+    ],
+    legend: [
+      { label: "Control Panel", className: "console-marker" }
+    ]
+  })}
+  twistTitle="Escort Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Bioweapon", effect: "All models within the Zone of Control of each HVT immediately take a DAM 14 hit against BTS. STR units take 2 hits." },
+    { roll: "11-15", name: "Who's This?", effect: "Any HVTs in CivEvac immediately become unsynced and re-enter Impersonation-1 State." },
+    { roll: "16-20", name: "A Third Player!", effect: "Each player places 1 Brawler within 8 inches of an HVT. The reactive player controls the Brawlers, but they may only declare AROs when they are the target of an attack." }
+  ]}
+  deploymentType="opposed"
+>
+  <div slot="specialRules">
+    <h3>Escort the HVT</h3>
+    <p>After Initiative is rolled, the player who takes Initiative is the Attacker and the player who takes Deployment is the Defender.</p>
+    <p>The Defender places <strong>2 HVTs</strong> anywhere outside their Deployment Zone. Both HVTs start in Impersonation-1 State. The Defender secretly notes which HVT is real and which is the Decoy.</p>
+    <p>The HVTs can be discovered with a Discover roll or through the Control Panel.</p>
+
+    <WarningCallout title="CivEvac Restriction">
+      <p>Impetuous units and REMs cannot use CivEvac.</p>
+    </WarningCallout>
+
+    <h3>Control Panel</h3>
+    <p>There is a single Control Panel in the center of the table. It must be represented by an Objective Token or scenery piece of the same diameter.</p>
+
+    <ContractSkillCard title="Control Panel" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Control Panel.</li>
+        <li>The Trooper must belong to the Attacker.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP -3 Roll, select one of the HVTs and that HVT loses Impersonation State. Additionally, the Defender must reveal whether it is the real HVT or the Decoy.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["the-mole-escort"]} compact />
+  </div>
+</ContractMission>
+

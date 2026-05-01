@@ -1,0 +1,127 @@
+---
+title: "Inducements"
+description: "Complete inducements reference including formula, troops for hire, command tokens, and rented equipment."
+section: "Reference"
+order: 64
+status: "review"
+updated: "2026-04-30"
+---
+
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import FormulaCalculator from "../../components/FormulaCalculator.astro";
+
+Inducements are temporary funds offered to the underdog when a Contract pairing is uneven in deployed Renown.
+
+## Core Rule
+
+Corporations are always watching their hirelings. When they notice a Contract may be lost due to an unfair fight, they offer additional services to the underdog to get the job done.
+
+When an organizer pairs players, they will not always be matched evenly in Renown. To make matches more even, Inducements are offered to the player with lower deployed Renown before the start of the Contract.
+
+Some Contracts are cooperative. In a cooperative Contract, Inducements are not provided for Renown difference.
+
+Inducements can only be used to purchase Contract benefits during the Contract where they are gained. Any benefits purchased with Inducements last only for that Contract and disappear at the end of the Contract before Downtime.
+
+<RuleCard eyebrow="Formula" title="Calculating Inducements">
+
+Take half the difference between the players' deployed Renown totals, then round down to the nearest 5.
+
+Example: Jack deploys **90 Renown** and Jill deploys **143 Renown**. The difference is 53. Half is 26.5. Rounded down to the nearest 5, Jack receives **25 Inducements**.
+
+</RuleCard>
+
+<FormulaCalculator
+  title="Inducement Calculator"
+  formula="floor((higher deployed Renown - lower deployed Renown) / 2 to nearest 5)"
+  mode="inducements"
+  inputLabel="Higher deployed Renown"
+  inputDefault={143}
+  secondaryInputLabel="Lower deployed Renown"
+  secondaryInputDefault={90}
+  outputLabel="Inducements awarded"
+/>
+
+Below are the benefits available for purchase. These benefits can only be purchased with Inducements, not CR.
+
+## Troops for Hire
+
+Troops can be hired for the relevant Contract only by paying the listed Inducements cost.
+
+Hiring troops with Inducements increases the deployable trooper cap to **7 troopers**. Hired troops above the normal 6-trooper cap generate no additional Orders except Impetuous Orders. Hired troops within the normal 6-trooper cap provide Orders as normal.
+
+<RulesTable
+  eyebrow="Inducement Options"
+  title="Troops for Hire"
+  variant="text"
+  columns={["Trooper", "Profile", "Cost (Ind)"]}
+  rows={[
+    { label: "Authorized Bounty Hunter", cells: ["SMG or BSG", "10"] },
+    { label: "Monstruckers", cells: ["Any", "15"] },
+    { label: "Motorized Bounty Hunters", cells: ["Any", "15"] },
+    { label: "Wardriver", cells: ["Any", "15"] },
+    { label: "Bashi Bazouks", cells: ["Any", "15"] },
+    { label: "Authorized Bounty Hunter", cells: ["Sniper or Spitfire", "20"] },
+    { label: "Digger", cells: ["Any", "20"] },
+    { label: "Brawler", cells: ["Sniper", "25"] },
+    { label: "Freelance Operator Samsa", cells: ["Any", "30"] },
+    { label: "Anaconda, Mercenary TAG Squad", cells: ["Any + Gains Immunity (POS)", "50"] },
+  ]}
+/>
+
+## Command Tokens
+
+Up to **2 Command Tokens** can be purchased at a cost of **10 Inducements each**.
+
+## Rented Equipment
+
+Equipment can be rented by following the listed AVA and paying the listed Inducements cost.
+
+Rented equipment follows normal equipment-slot rules (one primary, one secondary, and so on). One exception applies: after the Contract, any overridden equipment is restored automatically at no cost.
+
+Example: a unit with a primary weapon rents a Spitfire for the Contract. At the end of the Contract, the Spitfire is returned and the original primary weapon is restored.
+
+Troops for Hire may be given equipment as if they were newly purchased troops with no slots filled.
+
+<RulesTable
+  eyebrow="Rental Primary"
+  title="Rented Equipment: Primary"
+  variant="text"
+  columns={["Name", "AVA", "Cost (Ind)"]}
+  rows={[
+    { label: "AP Marksman Rifle", cells: ["T", "5"] },
+    { label: "Breaker Combi Rifle", cells: ["T", "5"] },
+    { label: "Spitfire", cells: ["2", "10"] },
+    { label: "MULTI Sniper", cells: ["1", "15"] },
+    { label: "HMG", cells: ["1", "15"] },
+  ]}
+/>
+
+<RulesTable
+  eyebrow="Rental Secondary"
+  title="Rented Equipment: Secondary"
+  variant="text"
+  columns={["Name", "AVA", "Cost (Ind)"]}
+  rows={[
+    { label: "Panzerfaust", cells: ["T", "5"] },
+    { label: "Flammenspeer", cells: ["T", "5"] },
+    { label: "Blitzen", cells: ["T", "5"] },
+    { label: "Symbiobomb", cells: ["1", "10"] },
+    { label: "Symbiomate", cells: ["1", "10"] },
+  ]}
+/>
+
+<RulesTable
+  eyebrow="Rental Utility"
+  title="Rented Equipment: Equipment"
+  variant="text"
+  columns={["Name", "AVA", "Cost (Ind)"]}
+  rows={[
+    { label: "Tinbot: Firewall (-3)", cells: ["2", "5"] },
+    { label: "MSV1", cells: ["2", "5"] },
+    { label: "Albedo (-3)", cells: ["2", "5"] },
+    { label: "Tinbot: Firewall (-6)", cells: ["1", "10"] },
+    { label: "MSV2", cells: ["1", "10"] },
+    { label: "Albedo (-6)", cells: ["1", "10"] },
+  ]}
+/>

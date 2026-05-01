@@ -1,0 +1,75 @@
+---
+title: "Secure the Data"
+description: "Praxis Laborants carry valuable data, but nobody knows which pieces are clean. Extract what you can before the evidence dissolves."
+contractType: "Data Recovery"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1vu0PsPJFmircwRYQYgdK8YV3A0niV9c95NFuO9ett5U/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import { standardOpposedDeploymentWithExclusion, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", maxPoints: "4", text: "For each carried Data Piece at the end of the game." },
+    { points: "2 OP", text: "Have at least 2 Data Pieces carried by friendly models at the end of the game." },
+    { points: "1 OP", text: "Have more Data Pieces extracted than your opponent." },
+    { points: "1 OP", text: "Attempt a Data Piece extraction from a Praxis Laborant at least once, regardless of the result." }
+  ]}
+  deployment={standardOpposedDeploymentWithExclusion("Secure the Data Deployment", {
+    features: [
+      { label: "Laborant Deployment", x: 0, y: 18, width: 36, height: 12, className: "hvt-placement-feature feature-label-top" }
+    ],
+    dimensions: [
+      { label: "12\"", className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: "8\"", className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: "6\"", className: "hvt-distance", x: -2, y: 24, height: 6 }
+    ],
+    legend: [
+      { label: "Laborant Deployment Area", className: "hvt-placement-swatch" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  })}
+  twistTitle="Secure the Data Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Duds!", effect: "Starting with the player carrying fewer Data Pieces, players each nominate one already extracted Data Piece as a dud. A dud is discarded immediately. The remaining Data Pieces are worth double OP." },
+    { roll: "11-15", name: "Aaaaaaagh (*Thud*)", effect: "Immediately place and scatter 4 more Praxis Laborants using the same table setup rules." },
+    { roll: "16-20", name: "Dissolve", effect: "Any Praxis Laborants still remaining on the table are removed from the game." }
+  ]}
+  deploymentType="opposed"
+  exclusionZone="the Exclusion Zone covers 8 inches on either side of the central line, plus the Zone of Control of each Laborant."
+>
+  <div slot="specialRules">
+    <h3>Praxis Laborants</h3>
+    <p>After Deployment Rolls, place <strong>4 Praxis Laborants</strong> within 6 inches of the centerline of the table. Each Laborant must be represented by a Silhouette 2 model.</p>
+    <p>Starting with the player with first turn, each player places two Laborants on the opponent's half of the table, at least 6 inches away from each other Laborant. After placement, both players may reposition the Laborants placed by their opponent by 4 inches, in the same order.</p>
+    <p>The Zone of Control of each Laborant is considered an Exclusion Zone to the players.</p>
+
+    <ContractSkillCard title="Collect the Data" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Praxis Laborant.</li>
+      </ul>
+      <ul slot="effects">
+        <li>
+          <p>Allows the trooper to make a normal PH Roll to collect and pick up a Data Piece token.</p>
+          <ul>
+            <li>Doctors and Engineers can use Servants, but the roll is at PH-3 (using the servant PH value).</li>
+            <li>Specialists can re-roll a failed roll once each order.</li>
+          </ul>
+        </li>
+        <li>If the roll is successful, remove the Praxis Laborant and give the acting model a Data Piece token.</li>
+        <li>Each unit can carry any number of Data Pieces.</li>
+        <li>By spending a short skill, a unit can pass one or more Data Pieces to a friendly model in silhouette contact.</li>
+        <li>If a unit carrying any Data Pieces goes in a NULL-state, place all carried Data Pieces to the ground, in base contact with the model.</li>
+        <li>A unit with one or more Data Pieces cannot go in marker state.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+</ContractMission>
+

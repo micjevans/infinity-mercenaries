@@ -2,10 +2,17 @@
 import DeploymentMap from "./DeploymentMap.astro";
 import ObjectiveList from "./ObjectiveList.astro";
 import TwistTable from "./TwistTable.astro";
+import type { ContractDeployment } from "../data/contractMaps";
 
 type Objective = {
   points: string;
   text: string;
+  maxPoints?: string;
+};
+
+type ObjectiveGroup = {
+  title: string;
+  objectives: Objective[];
 };
 
 type TwistRow = {
@@ -21,47 +28,133 @@ type EndCondition = {
 
 interface Props {
   objectives: Objective[];
-  deployment: Record<string, unknown>;
+  objectiveGroups?: ObjectiveGroup[];
+  deployment: ContractDeployment;
   twistTitle: string;
   twistIntro: string;
   twistRows: TwistRow[];
-  endConditions: EndCondition[];
+  endConditions?: EndCondition[];
+  deploymentType?: "opposed" | "cooperative";
+  exclusionZone?: boolean | string;
+  direCircumstances?: boolean | string;
+  noQuarter?: boolean;
+  roundLimit?: boolean;
+  noTroopsRemaining?: boolean;
 }
 
 const {
   objectives,
+  objectiveGroups = [],
   deployment,
   twistTitle,
   twistIntro,
   twistRows,
-  endConditions
+  endConditions = [],
+  deploymentType,
+  exclusionZone,
+  direCircumstances,
+  noQuarter = true,
+  roundLimit = true,
+  noTroopsRemaining = true,
 } = Astro.props;
 
 const hasNpcs = Astro.slots.has("npcs");
+
+const EXCLUSION_ZONE_TEXT =
+  "the Exclusion Zone covers 8 inches on either side of the central line. Airborne Deployment and Superior Deployment skills cannot be used to deploy inside it.";
+
+const DIRE_CIRCUMSTANCES_TEXT =
+  "Both mercenary teams act as allies and score Objective Points together. All player troopers are considered allies for this mission. Players act on the same turn but do not share an Order Pool.";
+
+const builtEndConditions: EndCondition[] = [
+  ...(roundLimit
+    ? [
+        {
+          title: "Round Limit",
+          text: "This scenario automatically ends at the end of the fourth Game Round.",
+        },
+      ]
+    : []),
+  ...endConditions,
+  ...(noTroopsRemaining
+    ? [
+        {
+          title: "No Troopers Remaining",
+          text: "If one player starts their Active Turn with no troopers on the board, including Null troopers, the game ends immediately.",
+        },
+      ]
+    : []),
+];
 ---
 
 <section class="contract-section">
   <h2>Mission Objectives</h2>
-  <ObjectiveList objectives={objectives} />
+  <ObjectiveList objectives={objectives} objectiveGroups={objectiveGroups} />
 </section>
 
 <section class="contract-section">
   <h2>Forces and Deployment</h2>
+  {
+    deploymentType === "opposed" && (
+      <p>
+        <strong>Side A and Side B:</strong> both players deploy on opposite
+        sides of the game table, in the Deployment Zones.
+      </p>
+    )
+  }
+  {
+    deploymentType === "cooperative" && (
+      <p>
+        <strong>Cooperative Deployment:</strong> both players deploy on the same
+        side of the game table, in the Deployment Zone.
+      </p>
+    )
+  }
+  {
+    exclusionZone && (
+      <p>
+        <strong>Exclusion Zone:</strong>{" "}
+        {exclusionZone === true ? EXCLUSION_ZONE_TEXT : exclusionZone}
+      </p>
+    )
+  }
   <slot name="forces" />
   <DeploymentMap {...deployment} />
 </section>
 
 <section class="contract-section">
   <h2>Scenario Special Rules</h2>
+  {
+    direCircumstances && (
+      <Fragment>
+        <h3>Dire Circumstances</h3>
+        <p>
+          {direCircumstances === true
+            ? DIRE_CIRCUMSTANCES_TEXT
+            : direCircumstances}
+        </p>
+      </Fragment>
+    )
+  }
   <slot name="specialRules" />
+  {
+    noQuarter && (
+      <Fragment>
+        <h3>No Quarter</h3>
+        <p>The Retreat! rules are not applied in this scenario.</p>
+      </Fragment>
+    )
+  }
 </section>
 
-{hasNpcs && (
-  <section class="contract-section">
-    <h2>NPC Profiles</h2>
-    <slot name="npcs" />
-  </section>
-)}
+{
+  hasNpcs && (
+    <section class="contract-section">
+      <h2>NPC Profiles</h2>
+      <slot name="npcs" />
+    </section>
+  )
+}
 
 <section class="contract-section">
   <h2>Twist</h2>
@@ -77,12 +170,14 @@ const hasNpcs = Astro.slots.has("npcs");
       <strong>Mission End Conditions</strong>
     </header>
     <div class="end-condition-list">
-      {endConditions.map((condition) => (
-        <article>
-          {condition.title && <h3>{condition.title}</h3>}
-          <p>{condition.text}</p>
-        </article>
-      ))}
+      {
+        builtEndConditions.map((condition) => (
+          <article>
+            {condition.title && <h3>{condition.title}</h3>}
+            <p>{condition.text}</p>
+          </article>
+        ))
+      }
     </div>
   </aside>
 </section>

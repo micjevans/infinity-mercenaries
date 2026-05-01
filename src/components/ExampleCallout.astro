@@ -1,0 +1,16 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = "Example" } = Astro.props;
+---
+
+<section class="rules-example-callout" aria-label={title}>
+  <header>
+    <span>{title}</span>
+  </header>
+  <div>
+    <slot />
+  </div>
+</section>

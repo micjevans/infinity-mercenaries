@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CompanyListPage from "../../components/CompanyListPage";
+---
+
+<BaseLayout
+  title="Companies"
+  description="Create and manage local Infinity: Mercenaries companies."
+>
+  <CompanyListPage client:load />
+</BaseLayout>

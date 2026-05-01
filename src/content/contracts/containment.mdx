@@ -1,0 +1,156 @@
+---
+title: "Containment"
+description: "Something is coming through the tunnels. Two companies must hold the line, stop the raid waves, and collapse the entry points before the breach spills over."
+contractType: "Cooperative Defense"
+status: "draft"
+updated: "2025-08-26"
+sourceUrl: "https://docs.google.com/document/d/1o_loTZLd-ISB43YPLwLLKcGNANrXNrDOMTTE9Lui4E0/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import ScenarioObjectCard from "../../components/ScenarioObjectCard.astro";
+import { standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "Up to 5 OP", text: "Stop Raid Troopers from escaping. For each escaped trooper, subtract 1 OP from the 5 OP maximum, to a minimum of 0 OP." },
+    { points: "1 OP", text: "Per Tunnel destroyed, up to 3 OP." },
+    { points: "Victory", text: "The round is considered a win for both players if all Tunnels are destroyed and no more than 3 troopers escaped." }
+  ]}
+  deployment={{
+    title: "Containment Deployment",
+    width: 36,
+    height: 48,
+    zones: [
+      { label: "Deployment Zone", x: 0, y: 0, width: 12, height: 48, className: "zone-b" },
+      { x: 12, y: 0, width: 24, height: 48, className: "neutral-zone" }
+    ],
+    markers: [
+      { label: "Tunnel 1", x: 36, y: 4, className: "tunnel-marker" },
+      { label: "Tunnel 2", x: 36, y: 12, className: "tunnel-marker" },
+      { label: "Tunnel 3", x: 36, y: 36, className: "tunnel-marker" },
+      { label: "Tunnel 4", x: 36, y: 44, className: "tunnel-marker" },
+      { label: "Panoply", x: 24, y: 24, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "containment-deploy-width", x: 0, y: 50, width: 12 },
+      { label: '12"', className: "containment-panoply-distance", x: 24, y: 50, width: 12 },
+      { label: '4"', className: "containment-tunnel-top", x: 38, y: 0, height: 4 },
+      { label: '8"', className: "containment-tunnel-spacing", x: 38, y: 4, height: 8 }
+    ],
+    legend: [
+      { label: "Tunnel", className: "tunnel-marker" },
+      { label: "Special Panoply", className: "console-marker" }
+    ],
+    showMidline: false
+  }}
+  twistTitle="Containment Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Break Through", effect: "A randomly chosen Tunnel that was previously destroyed is returned to full health." },
+    { roll: "11-15", name: "Frantic!", effect: "All Raid Troopers gain +2/+2 MOV for the remainder of the mission." },
+    { roll: "16-20", name: "Revenant Surge", effect: "Increase each Raid Trooper's current Mob value by one." }
+  ]}
+  deploymentType="cooperative"
+  direCircumstances={true}
+  endConditions={[
+    { title: "Contained", text: "If at the start of a round after the twist all enemy troopers are Unconscious and all Tunnels are destroyed, players may choose to end the game." }
+  ]}
+>
+  <div slot="specialRules">
+    <h3>Waves</h3>
+    <RulesTable
+      eyebrow="Waves"
+      title="Spawn and Regen Timing"
+      columns={["Phase", "When", "Procedure"]}
+      rows={[
+        {
+          label: "Waves Spawn",
+          cells: [
+            "Before Player 1's turn at the beginning of each round, except Round 4.",
+            {
+              bullets: [
+                "Each newly spawned trooper begins its first Order moving from the outside edge of its Tunnel nearest the Deployment Zone.",
+                "Resolve each spawned trooper one at a time; do not spawn the next trooper until the previous one completes its activation.",
+                "Use the Tunnel Selection chart below to determine spawns based on both players' deployed Renown.",
+                "After all troops have spawned, Raid Troopers perform all remaining Orders clockwise starting at the 12 o'clock position of Deployment Zone A (including Orders such as Impetuous or Tactical Awareness, if applicable)."
+              ]
+            }
+          ]
+        },
+        {
+          label: "Waves Regen",
+          cells: [
+            "During the players' States Phase, and once when half of the players' collective Order Pool has been spent.",
+            {
+              bullets: [
+                "All Raid Troopers perform a PH-3 check.",
+                "On a success, each Raid Trooper regenerates a single wound."
+              ]
+            }
+          ]
+        }
+      ]}
+      variant="text"
+    />
+
+    <h3>Raid NPCs</h3>
+    <p>Raid Troopers use the profiles in the NPC table with the additional <strong>One Track Mind</strong> trait. Their target is the nearest players' Deployment Zone. They also have <strong>Escapist</strong>: any Order ending in a Deployment Zone while in a non-Null state removes the trooper from the map and counts it as escaped.</p>
+
+    <h3>Tunnels</h3>
+    <p>There are <strong>4 Tunnels</strong> on the long edge opposite the players' Deployment Zone. One is 4 inches from the top, the next 8 inches from that, with the same mirrored placement from the bottom. Each Tunnel must be represented by an Objective Token or Silhouette 7 or 8 scenery.</p>
+
+    <RulesTable
+      eyebrow="Spawn Table"
+      title="Tunnel Selection"
+      columns={["Tunnel", "4 Tunnels", "3 Tunnels", "2 Tunnels", "1 Tunnel"]}
+      rows={[
+        { label: "Tunnel 1", cells: ["1-5", "1-7", "1-10", "1-20"] },
+        { label: "Tunnel 2", cells: ["6-10", "8-13", "11-20", "-"] },
+        { label: "Tunnel 3", cells: ["11-15", "14-20", "-", "-"] },
+        { label: "Tunnel 4", cells: ["16-20", "-", "-", "-"] }
+      ]}
+    />
+
+    <ScenarioObjectCard
+      eyebrow="Scenery Profile"
+      title="Tunnel"
+      stats={[
+        { label: "ARM", value: "8" },
+        { label: "BTS", value: "8" },
+        { label: "STR", value: "3" }
+      ]}
+    >
+      <p>Tunnels can only be attacked using CC attacks with the Anti-Material trait. Destroyed Tunnels can no longer spawn Raid Troopers.</p>
+    </ScenarioObjectCard>
+
+    <h3>Special Panoply</h3>
+    <p>One special Panoply is placed 12 inches from the edge with the Tunnels and 24 inches from the short edge of the table.</p>
+
+    <ContractSkillCard title="Use Panoplies" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Panoply</li>
+        <li>This Panoply has not already been activated by this trooper this turn</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll the Trooper may gain D-Charges for the Contract.</li>
+        <li>Troopers possessing the Booty Special Skill, or any other Skill which specifies so, don't need to make the WIP Roll.</li>
+        <li>A Trooper in Silhouette contact with this piece of scenery may spend one Short Skill of an Order to cancel their unloaded State.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Waves Chart</h3>
+    <p>The current recommended wave is <strong>TAG Raid</strong>: 4 Diggers with Mob (3) and One Track Mind, 4 Motorized Bounty Hunters with Mob (3) and One Track Mind, and 2 Triphammers with Mob (2) and One Track Mind.</p>
+
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["containment"]} compact />
+  </div>
+</ContractMission>
+

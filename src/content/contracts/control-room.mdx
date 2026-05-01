@@ -19,15 +19,18 @@ import ContractSkillCard from "../../components/ContractSkillCard.astro";
     },
     {
       points: "1 OP",
-      text: "Per allied trooper in a non-Null state inside the Control Room, to a maximum of 2 OP."
+      maxPoints: "2",
+      text: "Per allied trooper in a non-Null state inside the Control Room."
     },
     {
       points: "1 OP",
-      text: "Per Console activation, on or off, to a maximum of 2 OP."
+      maxPoints: "2",
+      text: "Per Console activation, on or off."
     },
     {
       points: "1 OP",
-      text: "Per Console last pushed by you at the end of the game, to a maximum of 2 OP."
+      maxPoints: "2",
+      text: "Per Console last pushed by you at the end of the game."
     }
   ]}
   deployment={{
@@ -83,22 +86,9 @@ import ContractSkillCard from "../../components/ContractSkillCard.astro";
       effect: "Each model inside the Control Room immediately suffers a PS 6 hit to their BTS."
     }
   ]}
-  endConditions={[
-    {
-      title: "Round Limit",
-      text: "This scenario automatically ends at the end of the fourth Game Round."
-    },
-    {
-      title: "No Troopers Remaining",
-      text: "If one player starts their Active Turn with no troopers on the board, including Null troopers, the game ends immediately."
-    }
-  ]}
+  deploymentType="opposed"
+  exclusionZone={true}
 >
-  <div slot="forces">
-    <p><strong>Side A and Side B:</strong> both players deploy on either side of the game table, in the Deployment Zones.</p>
-    <p><strong>Exclusion Zone:</strong> the Exclusion Zone covers the area 8 inches on either side of the central line of the game table. Special Skills with the Airborne Deployment (AD) or Superior Deployment Labels cannot be used to deploy inside this area.</p>
-  </div>
-
   <div slot="specialRules">
     <h3>Control Room</h3>
     <p>Place a Control Room in the center of the table. It covers a <strong>6 by 6 inch</strong> area. In game terms, it has walls of infinite height that completely block Line of Fire.</p>
@@ -137,7 +127,5 @@ import ContractSkillCard from "../../components/ContractSkillCard.astro";
       </ul>
     </ContractSkillCard>
 
-    <h3>No Quarter</h3>
-    <p>The Retreat! rules are not applied in this scenario.</p>
   </div>
 </ContractMission>

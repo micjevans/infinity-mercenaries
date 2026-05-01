@@ -1,395 +1,193 @@
 ---
 title: "The Company"
-description: "Company types, Captains, recruitment limits, Renown, Notoriety, and the core steps for creating a mercenary company."
+description: "Captains, recruitment limits, Renown, Notoriety, and the core steps for creating a mercenary company."
 section: "Core Rules"
 order: 2
 status: "review"
-updated: "2026-04-28"
+updated: "2026-04-30"
 ---
 
-import RuleCard from "../../components/RuleCard.astro";
-import ProfileCard from "../../components/ProfileCard.astro";
-import CompanyTypeCard from "../../components/CompanyTypeCard.astro";
-import CompanyTypeSection from "../../components/CompanyTypeSection.astro";
-import WarningCallout from "../../components/WarningCallout.astro";
 import RulesTable from "../../components/RulesTable.astro";
-
-Infinity: Mercenaries is built around Companies: persistent mercenary teams that meet each other while completing contracts. Before a season begins, each player creates a Company.
-
-The first step is choosing one or two sectorials for the Company. These represent the Captain's contacts and the pool of units the Company can recruit from. The two sectorials can come from different factions. Rivalries can be put aside for money.
-
-## Company Types
-
-Vanilla armies do **not** count as sectorials for company type requirements.
-
-<div className="company-type-list">
-<CompanyTypeCard variant="standard">
-
-### Standard Company
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **2 sectorials** or **1 vanilla army**.
-
-A faction's Reinforcements count as a single distinct sectorial.
-
-</CompanyTypeSection>
-
-</CompanyTypeCard>
-<CompanyTypeCard variant="cohesive">
-
-### Cohesive Company
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **1 sectorial** and choose one Fireteam Core available to that sectorial. The Captain and all other purchased troopers must be able to join that fireteam.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Benefits" tone="benefits">
-
-- All fireteam members are considered the same unit for fireteam bonuses.
-- This Company may form 1 Fireteam Core from its sectorial with 6 or fewer Troopers.
-- Gain +1 WIP at Fireteam Level 6.
-- The Captain gains **FT Master**.
-- All troopers gain **Number 2**.
-- Ignore the Core Fireteam's minimum trooper restriction.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Restrictions" tone="restrictions">
-
-- Tactical Awareness may never be spent on the Core Fireteam.
-- Troopers purchased with Tactical Awareness are discounted by 3 CR.
-- Troopers that are not part of the Core link are considered Irregular.
-
-</CompanyTypeSection>
-
-</CompanyTypeCard>
-<CompanyTypeCard variant="leader">
-
-### Inspiring Leader
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **1 sectorial** and choose a Captain from that sectorial.
-
-Aside from the Captain, all other troopers must be Irregular troopers and may be purchased from any sectorial or vanilla army.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Benefits" tone="benefits">
-
-The Captain gains **Inspiring Leadership**. Use any single sectorial's AVA for each trooper type without combining AVAs.
-
-</CompanyTypeSection>
-
-</CompanyTypeCard>
-<CompanyTypeCard variant="airborne">
-
-### Airborne Company
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **1 sectorial** and choose a Captain from that sectorial.
-
-Aside from the Captain, all other troopers must have an Airborne Deployment skill and may be purchased from any sectorial or vanilla army.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Benefits" tone="benefits">
-
-The Captain gains **Parachutist** and **Network Support (Only Controlled Jump)**.
-
-- The Company gets one free use of Speedball per contract, dropping only one Speedball.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Restrictions" tone="restrictions">
-
-- Troopers in this Company must use an AD skill when deployed during the Deployment Phase.
-- When deployed this way, troopers treat the opponent's Deployment Zone plus an additional 8 inches outside it as an Exclusion Zone.
-- The Captain must be deployed during the Deployment Phase.
-
-</CompanyTypeSection>
-
-</CompanyTypeCard>
-<CompanyTypeCard variant="tag">
-
-### TAG Company
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **1 sectorial** and gain access to a special TAG profile with a cost of **40 CR** and AVA 1.
-
-</CompanyTypeSection>
-
-#### TAG Profile
-
-<div className="npc-profile-grid">
-  <ProfileCard
-    category="TAG"
-    name="Repurposed Mining Equipment"
-    subtitle="Heavy industrial chassis refit for mercenary deployment"
-    tags={["TAG Company", "TAG"]}
-    stats={[
-      { label: "MOV", value: "6-2" },
-      { label: "CC", value: 15 },
-      { label: "BS", value: 12 },
-      { label: "PH", value: 14 },
-      { label: "WIP", value: 12 },
-      { label: "ARM", value: 5 },
-      { label: "BTS", value: 3 },
-      { label: "STR", value: 2 },
-      { label: "S", value: 5 }
-    ]}
-    details={[
-      { title: "Weapons", value: ["Combi Rifle", "Pistol", "CCW (PS=6)", "CC Weapon (Antimaterial)"] },
-      { title: "Skills and Rules", value: ["NWI", "Dodge (PH=11)", "Gizmokit (PH=11)", "Immunity (Shock)", "ECM (Guided -6)"], list: true },
-      { title: "Peripheral", value: "Bonus Peripheral: Turtlemek", wide: true }
-    ]}
-  />
-
-  <ProfileCard
-    category="Peripheral"
-    name="Turtlemek"
-    subtitle="Ancillary support remote"
-    tags={["TAG Company", "REM"]}
-    stats={[
-      { label: "MOV", value: "6-4" },
-      { label: "CC", value: "-" },
-      { label: "BS", value: "-" },
-      { label: "PH", value: 10 },
-      { label: "WIP", value: 12 },
-      { label: "ARM", value: 0 },
-      { label: "BTS", value: 3 },
-      { label: "STR", value: 1 },
-      { label: "S", value: 1 }
-    ]}
-    details={[
-      { title: "Skills and Rules", value: ["Courage", "Dodge (+3)", "Mimetism (-3)", "Peripheral (Ancillary)", "Specialist Operative"], wide: true, list: true }
-    ]}
-  />
-</div>
-
-#### TAG Profile Customization
-
-<CompanyTypeSection title="Customization" tone="notes">
-
-When purchased, the TAG may use **20 Spec-Ops XP** to customize the profile using the Spec-Ops equipment and skills for the Company's sectorial.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Restrictions" tone="restrictions">
-
-- ARM, BTS, and STR may not be modified using Spec-Ops XP.
-- The TAG may be the Company's Captain, but does not gain additional Spec-Ops XP.
-- The TAG may not purchase Forward Deployment, Strategic Deployment, Infiltration, Impersonation, Parachutist, Combat Jump, or Engineer with Spec-Ops XP.
-- The TAG may never gain those skills by any other means.
-
-</CompanyTypeSection>
-
-<RuleCard eyebrow="Reminder" title="Outdated Spec-Ops Skills">
-  <p>
-    The Spec-Ops skill list contains some outdated skills. Those outdated skills are not purchasable.
-  </p>
-</RuleCard>
-
-#### Upgrading and Deploying a TAG
-
-<CompanyTypeSection title="Progression" tone="benefits">
-
-When a TAG receives enough experience to level up, it receives a TAG Perk in addition to the normally earned perk. The TAG Perk must be chosen from the TAG Perk Tree and may not be rolled randomly.
-
-TAGs purchase and use equipment from markets like regular troopers for all slots except **Armor**.
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Deployment" tone="restrictions">
-
-When a TAG deploys in a contract, it takes up **two slots**. This means a Company may deploy only 3 total troopers for Elite Deployment and 5 total troopers for non-Elite Deployment if the TAG is included.
-
-</CompanyTypeSection>
-
-</CompanyTypeCard>
-<CompanyTypeCard variant="proxy">
-
-### Proxy Pack
-
-<WarningCallout title="Proxy Pack Balance Warning">
-Proxy Pack is poorly balanced in the current ruleset and is recommended not to be used at this time. These rules remain here for tracking and development purposes.
-
-Players should consult their event organizer before choosing Proxy Pack as a company type.
-</WarningCallout>
-
-<CompanyTypeSection title="Setup" tone="setup">
-
-Select any **1 sectorial or vanilla army** and choose a Captain from that force. This is the only trooper the Company may gain. The trooper does not need the Lieutenant skill, but must have Regular Training.
-
-This trooper is the **Lone Wolf** and gains:
-
-</CompanyTypeSection>
-<CompanyTypeSection title="Benefits" tone="benefits">
-
-- 10 additional Spec-Ops XP, regardless of trooper cost.
-- 2 Perks and 10 Renown whenever they level up.
-- The ability to Doctor themselves even when not Unconscious, and to do so to regain VITA up to their maximum.
-- Elite Deployment and Tactical Awareness.
-- 1 Aspect at the start, 2 at Level 2, 3 at Level 3, and 4 at Level 5, to a maximum of 4 Aspects.
-- The **Transfer Consciousness** skill.
-
-</CompanyTypeSection>
-
-#### Aspects of the Wolf
-
-<CompanyTypeSection title="Aspect Rules" tone="notes">
-
-Instead of having multiple troopers, the Lone Wolf has multiple Aspects. Players may copy the Lone Wolf into as many trooper slots as they have Aspects and purchase/equip gear as if they were separate troopers, while keeping the underlying stats, skills, and perks.
-
-The multiple profiles contribute to Company Renown, but the trooper's initial CR cost only counts once.
-
-</CompanyTypeSection>
-
-#### Deploying the Wolf
-
-<CompanyTypeSection title="Deployment" tone="restrictions">
-
-When deploying the Lone Wolf, choose one profile to deploy as the Lone Wolf. Additional Aspects deploy using the profile below. For each Aspect deployed, note publicly which profile is deployed in each location.
-
-Aspects provide Orders as normal Troopers.
-
-</CompanyTypeSection>
-
-<ProfileCard
-  category="Proxy Pack"
-  name="Aspect of the Wolf"
-  subtitle="Remote aspect body for the Lone Wolf"
-  tags={["Proxy Pack", "LI"]}
-  stats={[
-    { label: "MOV", value: "-" },
-    { label: "CC", value: "-" },
-    { label: "BS", value: "-" },
-    { label: "PH", value: "-" },
-    { label: "WIP", value: 13 },
-    { label: "ARM", value: 1 },
-    { label: "BTS", value: 3 },
-    { label: "STR", value: "-*" },
-    { label: "S", value: 2 }
-  ]}
-  details={[
-    { title: "Skills", value: ["Combat Jump (PH=20)", "Nanoscreen", "Inactive"], list: true },
-    {
-      title: "Rules",
-      value: [
-        "Aspects have the same number of VITA as the Lone Wolf, including Wounds skills such as NWI.",
-        "This trooper must be deployed by Combat Jump during the Deployment Phase.",
-        "This trooper may only Combat Jump on its player's half of the map.",
-        "Exclusion Zones may be ignored.",
-        "This trooper may never declare Long Skills or Short Skills."
-      ],
-      list: true
-    }
+import RuleCard from "../../components/RuleCard.astro";
+import ProcedureCard from "../../components/ProcedureCard.astro";
+import FormulaCalculator from "../../components/FormulaCalculator.astro";
+import ExampleCallout from "../../components/ExampleCallout.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
+import { defaultSpecOpsAttributeLimitNote, defaultSpecOpsAttributeTableRows } from "../../lib/mercs/specops";
+
+Infinity: Mercenaries is built around Companies: persistent mercenary teams that grow over a season of contracts.
+
+Before a season begins, each player creates one Company.
+
+<ProcedureCard
+  title="Company Setup Flow"
+  steps={[
+    "Pick your company type.",
+    "Build your Captain.",
+    "Recruit your starting roster with starting Credits.",
+    "Track Renown and Notoriety as the campaign progresses."
   ]}
 />
 
-<RuleCard eyebrow="Skill" title="Transfer Consciousness">
-  <p><strong>Type:</strong> Long Skill / Automatic Skill, Optional</p>
-  <p><strong>Requirements:</strong></p>
-  <ul>
-    <li>The user must have made a Saving Roll or declared a Long Skill.</li>
-    <li>The Lone Wolf must not have been in a non-Null, Isolated, or Immobilized state at the start of the Order.</li>
-    <li>At least one Aspect must be in a non-Null and non-Isolated state.</li>
-  </ul>
-  <p><strong>Effects:</strong></p>
-  <ul>
-    <li>After Order Resolution, the Lone Wolf may target any non-Null, non-Isolated Aspect.</li>
-    <li>The Lone Wolf immediately replaces itself with the target Aspect and gains the profile, states, and wounds of that Aspect.</li>
-    <li>An Aspect is placed in the Lone Wolf's previous position with the Lone Wolf's previous profile. Any states and wounds are left behind on that Aspect.</li>
-  </ul>
-</RuleCard>
+Choose one or two sectorials for the Company. These represent the Captain's contacts and define the unit pool your Company can recruit from. The two sectorials can come from different factions.
 
-</CompanyTypeCard>
-</div>
+## Company Types
+
+Company types are the broad framework your Company is built around. They shape how you assemble the roster, what bonuses the Company gains, and what restrictions it must follow.
+
+Some company types are flexible and general-purpose. Others trade that flexibility for a stronger theme, a special benefit, or a more demanding recruitment structure.
+
+<ReferenceLinkCallout
+  title="Company Types"
+  href="/rules/company-types/"
+  linkLabel="Open company types"
+>
+  <p>Use the reference page to compare setup requirements, benefits, restrictions, and special profiles for each company type.</p>
+</ReferenceLinkCallout>
+
+## Sponsors
+
+Sponsors are in-world corporations that take notice of mercenary Companies as a Season progresses. Each sponsor has a specific objective — usually tied to a style of play or a piece of equipment — and tracks each player's individual progress toward that objective over the course of the event.
+
+During Company creation, each player may align with one Sponsor if Sponsors are available for the event. A player may only receive benefits from their chosen Sponsor.
+
+<ReferenceLinkCallout
+  title="Sponsor Reference"
+  href="/rules/sponsors/"
+  linkLabel="Open sponsors"
+>
+  <p>See the sponsor reference page for all current sponsors, paired comparisons, milestone ladders, and searchable details.</p>
+</ReferenceLinkCallout>
+
+### How Sponsors Work
+
+Each sponsor defines an objective and a set of milestones. As a player accomplishes the sponsor's objective during Contracts, they record their progress and report it to the organizer. When cumulative progress reaches a milestone, the player unlocks the associated benefit immediately.
+
+Milestone thresholds typically are achieved solo by the player but in rare instances an event may have collective objectives aligned to that sponsor.
+
+### Sponsor Benefits
+
+Each sponsor offers a tiered set of benefits that unlock as milestones are reached. Early tiers tend to offer small discounts or minor upgrades, while later tiers unlock more powerful or unique options. Each sponsor entry describes exactly what is offered at each tier and any conditions that apply to receiving it.
 
 ## The Captain
 
-Every Company needs a leader. The Captain represents the main pillar of the Company.
+Every Company needs a leader. The Captain is the core of the Company.
 
-To build a Captain, select a unit profile available to the chosen Sectorial Army or armies. The profile must be either a Spec-Ops unit or have the Lieutenant skill, following all recruitment restrictions.
+To build a Captain, select a unit profile available to your chosen sectorial or sectorials. The profile must be either:
+
+- A Spec-Ops unit, or
+- A profile with the Lieutenant skill.
+
+All normal recruitment restrictions still apply.
+
+<ProcedureCard
+  title="Build Your Captain"
+  steps={[
+    "Choose an eligible profile from your selected sectorial or sectorials.",
+    "Pay that profile's CR cost.",
+    "Calculate Captain Spec-Ops XP as 28 minus the unit's CR cost, to a minimum of 0.",
+    "Spend that XP to customize the Captain using one of the available Spec-Ops charts from your chosen sectorials.",
+    "Apply any normal Lieutenant bonuses and add Specialist Operative."
+  ]}
+/>
 
 Lieutenant special skill bonuses apply normally, such as +1 Order, +1 Command Token, and +1 SWC.
 
-First, pay the unit's CR cost. Then spend **28 minus the unit's cost** as Spec-Ops XP to configure the Captain's loadout using one of the Spec-Ops charts available to the chosen sectorials.
+<p className="rules-formula"><code>Captain Spec-Ops XP = 28 - unit CR cost</code></p>
 
-The Captain also gains **Specialist Operative**.
+If the formula would give a negative number, use **0 XP** instead.
 
-Examples:
+<FormulaCalculator
+  title="Captain XP Calculator"
+  formula="28 - unit CR cost"
+  inputLabel="Unit CR cost"
+  inputDefault={10}
+  baseValue={28}
+  outputLabel="Captain Spec-Ops XP"
+  clampMin={0}
+/>
+
+<ExampleCallout title="Captain XP Examples">
 
 - Keisotsu Spec-Ops: 18 XP (28 - 10)
 - Muyib Spec-Ops: 4 XP (28 - 24)
 - Knight of Santiago: 0 XP
 
-### Non Spec-Ops Attribute Bonuses
+</ExampleCallout>
+
+If your Captain is not already an Infinity Spec-Ops profile, or if your chosen sectorials do not provide a Spec-Ops chart, use the default attribute upgrade chart below when spending Captain XP.
+
+### Non-Spec-Ops Attribute Bonuses
 
 <RulesTable
   eyebrow="Spec-Ops"
-  title="Attribute Upgrade Costs"
+  title="Default Attribute Upgrade Costs"
   columns={["Attribute", "2 XP", "5 XP", "10 XP"]}
-  rows={[
-    { label: "CC", cells: ["+2", "+5", "+10"] },
-    { label: "BS", cells: ["+1", "+2", "+3"] },
-    { label: "PH", cells: ["+1", "+2", "+3"] },
-    { label: "WIP", cells: ["+1", "+2", "+3"] },
-    { label: "ARM", cells: ["-", "+1", "+3"] },
-    { label: "BTS", cells: ["+3", "+6", "+9"] },
-    { label: "VITA", cells: ["-", "-", "+1"] }
-  ]}
-  note="Limits: BS max 15, PH max 14, WIP max 15, BTS max 9, and VITA max 2."
+  rows={defaultSpecOpsAttributeTableRows}
+  note={defaultSpecOpsAttributeLimitNote}
 />
-
-## Sponsor
-
-When creating a Company, a player may optionally align with a Sponsor if the event organizer has announced any.
-
-Sponsors often provide an initial benefit and further benefits as players accomplish missions. Players may only benefit from the Sponsor they are aligned with.
 
 ## Recruitment
 
-Starting Credits are set by the organizer. Recommended starts are **60**, **75**, or **90 CR** depending on how strong teams should be at the beginning of the season. The online league uses **75 CR**.
+Starting Credits are set by the organizer. Recommended starting values are **60**, **75**, or **90 CR**, depending on desired campaign power level. The online league uses **75 CR**.
 
-Players may spend up to their starting CR to recruit units from the Company's sectorials. Treat a trooper's Infinity point value as its CR cost.
+Players may spend up to their starting CR to recruit units from the Company's sectorials. Treat a trooper's Infinity points value as its CR cost.
+
+<ReferenceLinkCallout
+  title="Other Starting CR Uses"
+  links={[
+    { href: "/rules/equipment-and-loadouts/", label: "Equipment and Loadouts" },
+    { href: "/rules/services/", label: "Services and Personnel" }
+  ]}
+>
+  <p>Initial CR does not have to be spent on recruitment alone. Players may also spend starting CR in other valid ways, such as buying equipment or purchasing services.</p>
+</ReferenceLinkCallout>
 
 Recruitment restrictions:
 
-- Characters and TAGs cannot be bought.
-- Profiles with an SWC cost cannot be bought.
-- When purchasing a profile with Transmutation (Auto), choose only one form. The use of Transmutation (Auto) is banned.
-- The number of units purchased over the life of a Company, including the Captain, cannot exceed their own AVA.
-- If a unit is listed in both chosen sectorials, use the higher AVA.
+- Characters and TAGs cannot be recruited.
+- Profiles with an SWC cost cannot be recruited.
+- For profiles with Transmutation (Auto), choose only one form at purchase. Transmutation (Auto) is otherwise banned.
+- Over the life of the Company, the number of purchased copies of a unit (including the Captain if applicable) cannot exceed that unit's AVA.
+- If a unit is listed in both chosen sectorials, use the higher AVA value.
+
+<ReferenceLinkCallout
+  title="Recruitment Rule Adjustments"
+  href="/rules/rule-adjustments/"
+  linkLabel="Open rule adjustments"
+>
+  <p>Before recruiting, check Rule Adjustments for banned and modified skills that can affect unit selection and how recruited profiles work in the campaign.</p>
+  <p>This is especially relevant for skills like Transmutation (Auto) and for adjusted rules such as the broader Peripheral rework.</p>
+</ReferenceLinkCallout>
 
 ### Peripheral Recruitment
 
 When purchasing Peripherals for a Company:
 
 - A Peripheral (Servant) must be associated with another unit in the Company that has Doctor or Engineer.
-- The Peripheral (Servant) is considered equipment, takes no slot, and is part of the Doctor/Engineer loadout.
-- The Peripheral counts toward its owner's Renown.
+- The Peripheral (Servant/Ancillary) is considered equipment, takes no slot, and is part of the Doctor/Engineer loadout.
+- The Peripheral (Servant/Ancillary) counts toward its owner's Renown.
 - When purchasing Peripheral Controller combos, only one Peripheral may be purchased per Controller. Subtract the cost of excess Peripherals that are not gained.
 
-Example: A Chimera purchased with three Pupniks only gains one Pupnik. The player pays 17 CR for the pair instead of 19 CR by subtracting the cost of the two unused 1-point Pupniks.
+<ExampleCallout>
+  <p>A Chimera purchased with three Pupniks only gains one Pupnik. The player pays 17 CR for the pair instead of 19 CR, subtracting the cost of the two unused 1-point Pupniks.</p>
+</ExampleCallout>
 
 ## Renown
 
-Renown measures how much attention and strength a Company has accumulated.
+Renown measures how much attention and power a Company has accumulated.
 
-A Company's Renown is calculated by adding together the Renown of each unit in the Company, plus any additional Renown gained by the Company.
+<p className="rules-formula"><code>Company Renown = total Unit Renown + any additional Company Renown (winning contracts)</code></p>
 
-A unit's Renown is the sum of:
+<p className="rules-formula"><code>Unit Renown = initial cost + base cost of equipped items + unit XP</code></p>
 
-- The unit's initial cost.
-- The base cost of all equipment in the unit's loadout.
-- The unit's XP.
-
-For event organizers, Renown is an important number to track. It contributes to Inducements during contracts, may affect round pairings, and can be used as a win condition.
+For event organizers, Renown is an important number to track as it is a rough indicator of how strong a Company is. It contributes to Inducements during contracts, may affect round pairings, and can be used as an events win condition.
 
 ## Notoriety
 
-Notoriety represents how certain factions view the Company. Criminal or illegal choices often increase Notoriety, while lawful choices may decrease it.
+Notoriety represents how factions perceive the Company. Criminal or illegal choices often increase Notoriety, while lawful choices may decrease it.
 
-Notoriety primarily affects equipment costs through War Market alignment.
+Notoriety may matter in other parts of campaign play, but it primarily affects equipment costs through War Market alignment.
 
 <RulesTable
   eyebrow="War Markets"
@@ -398,9 +196,24 @@ Notoriety primarily affects equipment costs through War Market alignment.
   columns={["Market Alignment", "Cost Adjustment"]}
   rows={[
     { label: "Lawful", cells: ["Item cost equals base cost plus Company Notoriety. Negative Notoriety provides a discount."] },
-    { label: "Chaotic", cells: ["Item cost equals base cost minus Company Notoriety."] },
+    { label: "Chaotic", cells: ["Item cost equals base cost minus Company Notoriety. Negative Notoriety increases the cost instead."] },
     { label: "Neutral", cells: ["Notoriety has no effect."] }
   ]}
+  note="There is no limit to surcharges. Discounts are capped at half the item's cost (rounded up)."
 />
 
-There is no limit to surcharges. Discounts are capped at half the item's cost, rounded up.
+<ReferenceLinkCallout
+  title="Organizing an Event"
+  href="/rules/organizing-an-event/"
+  linkLabel="Open Organizing an Event"
+>
+  <p>Ready to run a season? This section covers event formats, round structures, starting conditions, and pairing rules.</p>
+</ReferenceLinkCallout>
+
+<ReferenceLinkCallout
+  title="Playing Contracts"
+  href="/rules/playing-contracts/"
+  linkLabel="Open Playing Contracts"
+>
+  <p>Once your Company is built, this section covers how each Contract round works — classified objectives, inducements, deployment, XP, and rewards.</p>
+</ReferenceLinkCallout>

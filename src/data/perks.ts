@@ -243,3 +243,120 @@ export const perkTrees: PerkTree[] = [
     ],
   },
 ];
+
+// TAG Company exclusive perk tree — exported separately for use in CompanyManager
+export const mechaPerkTree: PerkTree = {
+  name: "Mecha",
+  roll: "TAG Only",
+  summary:
+    "TAG Company exclusive upgrades covering armor scaling, ECM suites, weapon modifications, mobility, equipment access, ancillary enhancements, and endurance.",
+  notes: [
+    "This tree is exclusive to TAG Company TAGs. Perks must be chosen and cannot be rolled randomly.",
+  ],
+  perks: [
+    // Armor column
+    { tier: 1, roll: "1 Armor", name: "S6 + +1 ARM" },
+    {
+      tier: 2,
+      roll: "1 Armor",
+      name: "S7 + +1 ARM + SR-1",
+      requires: ["S6 + +1 ARM"],
+    },
+    {
+      tier: 4,
+      roll: "1 Armor",
+      name: "+1 ARM",
+      requires: ["S7 + +1 ARM + SR-1"],
+    },
+    {
+      tier: 5,
+      roll: "1 Armor",
+      name: "S8 + +1 ARM + Baggage",
+      requires: ["+1 ARM"],
+    },
+
+    // ECM column
+    { tier: 1, roll: "2 ECM", name: "BTS +3" },
+    {
+      tier: 2,
+      roll: "2 ECM",
+      name: "ECM",
+      detail: "Total Control -3",
+      requires: ["BTS +3"],
+    },
+    {
+      tier: 4,
+      roll: "2 ECM",
+      name: "ECM",
+      detail: "Hacker -3",
+      requires: ["ECM (Total Control -3)"],
+    },
+    { tier: 5, roll: "2 ECM", name: "BTS +3", requires: ["ECM (Hacker -3)"] },
+
+    // Weapons column
+    {
+      tier: 3,
+      roll: "3 Weapons",
+      name: "Give Primary Anti-Material Mode",
+      detail: "B1 EXP",
+    },
+    {
+      tier: 4,
+      roll: "3 Weapons",
+      name: "Buy HRMC for MULTI HMG Price",
+      requires: ["Give Primary Anti-Material Mode"],
+    },
+
+    // Mobility column
+    {
+      tier: 1,
+      roll: "4 Mobility",
+      name: "Aerial + No Cover + Super Jump (Jet Prop) + Tech Recovery",
+    },
+    {
+      tier: 2,
+      roll: "4 Mobility",
+      name: "Dodge",
+      detail: "+3, -3",
+      requires: ["Aerial + No Cover + Super Jump (Jet Prop) + Tech Recovery"],
+    },
+    {
+      tier: 3,
+      roll: "4 Mobility",
+      name: "Super Jump",
+      detail: '3"',
+      requires: ["Dodge"],
+    },
+    { tier: 4, roll: "4 Mobility", name: "Move 8-2", requires: ["Super Jump"] },
+
+    // Equipment column
+    { tier: 2, roll: "5 Equipment", name: "TAG may equip two primaries" },
+    {
+      tier: 4,
+      roll: "5 Equipment",
+      name: "Tac Aware",
+      requires: ["TAG may equip two primaries"],
+    },
+
+    // Ancillary column
+    { tier: 1, roll: "6 Ancillary", name: "Ancillary: Gains any role TAG has" },
+    {
+      tier: 2,
+      roll: "6 Ancillary",
+      name: "Ancillary: +3 WIP",
+      requires: ["Ancillary: Gains any role TAG has"],
+    },
+    {
+      tier: 5,
+      roll: "6 Ancillary",
+      name: "Ancillary: Gain Explode Skill and can self trigger",
+      requires: ["Ancillary: +3 WIP"],
+    },
+
+    // Endurance column
+    { tier: 1, roll: "7 Endurance", name: "+1 Wound Skill" },
+    { tier: 5, roll: "7 Endurance", name: "+1 Wound Skill" },
+  ],
+};
+
+perkTrees.push(mechaPerkTree);

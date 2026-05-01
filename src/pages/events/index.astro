@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EventManager from "../../components/EventManager";
+---
+
+<BaseLayout
+  title="Events"
+  description="Create and manage local Infinity: Mercenaries events."
+>
+  <EventManager mode="list" client:load />
+</BaseLayout>

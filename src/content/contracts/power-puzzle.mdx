@@ -1,0 +1,110 @@
+---
+title: "Power Puzzle"
+description: "Critical infrastructure is live and dangerously unstable. Activate the generator network, control the center, and avoid turning the board into a disaster site."
+contractType: "Generator Control"
+status: "draft"
+updated: "2025-09-25"
+sourceUrl: "https://docs.google.com/document/d/1f3JW0qtGi1MgGd49JE0245fw9Kx6e2lHBtAVyoFqAHU/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+import { standardOpposedDeploymentWithExclusion, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", text: "Activate the Central Generator once." },
+    { points: "1 OP", text: "Activate a Support Generator once." },
+    { points: "2 OP", text: "Control the Central Generator at the end of the game." },
+    { points: "1 OP", maxPoints: "3", text: "For every enemy model in both Immobilized-A and Immobilized-B states." },
+    { points: "1 OP", text: "Have the fewest units in an Immobilized State of any kind." }
+  ]}
+  deployment={standardOpposedDeploymentWithExclusion("Power Puzzle Deployment", {
+    markers: [
+      { x: 18, y: 24, className: "central-generator-marker" },
+      { x: 4, y: 24, className: "support-generator-marker" },
+      { x: 32, y: 24, className: "support-generator-marker" },
+      { x: 18, y: 12, className: "support-generator-marker" },
+      { x: 18, y: 36, className: "support-generator-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: '8"', className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: '16"', className: "power-puzzle-bottom-distance", x: 0, y: 50, width: 16 },
+      { label: '4"', className: "power-puzzle-bottom-distance", x: 32, y: 50, width: 4 }
+    ],
+    legend: [
+      { label: "Central Generator", className: "central-generator-marker" },
+      { label: "Support Generator", className: "support-generator-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  })}
+  twistTitle="Power Puzzle Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Power Outage", effect: "All controlled Generators become uncontrolled." },
+    { roll: "11-15", name: "Bad Security Protocol", effect: "The Central Generator now only requires 1 controlled Support Generator to be activated." },
+    { roll: "16-20", name: "It's Gonna Blow!", effect: "For the remainder of the game, failed WIP Rolls on the Central Generator cause all units in ZoC to take a PS 5 Normal hit against BTS." }
+  ]}
+  deploymentType="opposed"
+  exclusionZone={true}
+>
+  <div slot="specialRules">
+    <h3>Generators</h3>
+    <p>Place <strong>4 Support Generators</strong> and <strong>1 Central Generator</strong>. The Central Generator is in the center. One Support Generator is on the centerline 4 inches from each table edge, and one Support Generator is centered on the forward edge of each Deployment Zone.</p>
+
+    <ContractSkillCard title="Activate Support Generator" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Support Generator</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll, if the generator is not currently controlled, the player gains control of that generator. If the generator is currently controlled by your opponent, then a success sets the generator back to a neutral state.</li>
+        <li>If the generator is currently controlled by the player, the player may select any currently activated Generator or the Central Generator and place a Large Template with the blast focus touching the Generator targeting an enemy unit. Any units affected by the template may declare Reset in a Face-to-Face against the activating model's WIP Roll. A unit that fails to Reset will take a PS-4 save against BTS, and on a failed save enter the Immobilized-B state. This attack is considered Non-lethal and a Comms Attack (similar to a Cybermine), and ignores Immunity (Enhanced) but is affected by Firewall modifiers.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <WarningCallout title="Immobilized State Restriction">
+      <p>Reminder: Units simultaneously in Immobilized-A and Immobilized-B states are unable to declare any skills due to each state's restriction.</p>
+    </WarningCallout>
+
+    <ContractSkillCard title="Activate Central Generator" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with the Central Generator</li>
+        <li>The player must be in control of at least 2 Support Generators</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll, the generator is considered to have been activated by that trooper.</li>
+        <li>Select any Support Generator. That Generator is now considered to be neutral and unactivated.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Control a Generator</h3>
+    <p>The Central Generator is controlled by a player while that player is the only one with at least one non-Null, non-Immobilized Trooper, as a Model and not a Marker, in Silhouette contact with it.</p>
+
+    <h3>High-Risk Zone</h3>
+    <p>All Lethal ammunition is converted to Tranq rounds.</p>
+    <RuleCard eyebrow="Ammunition" title="Tranq Rounds">
+      <p>Tranq rounds retain their previous ammo properties, but instead of causing a trooper to enter Unconscious or Dead when reduced to 0 Vitality, they prevent that wound and apply IMM-A if the save was against ARM or IMM-B if the save was against BTS. Plasma causes both states.</p>
+      <p>Tranq rounds never cause a trooper to enter Unconscious or Dead. They have no effect on already Non-Lethal attacks or Comms Attacks such as Oblivion or Trinity.</p>
+    </RuleCard>
+
+    <h3>First Aid Certified</h3>
+    <ContractSkillCard title="First Aid Certified" type="SHORT SKILL">
+      <span slot="mode">Support</span>
+      <ul slot="requirements">
+        <li>The user must be in Silhouette contact with a trooper in Immobilized-A and/or Immobilized-B state.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By spending one Short Skill, any trooper may attempt to remove Immobilized-A and/or Immobilized-B from that target with a successful WIP-3 Roll.</li>
+        <li>Doctors and Engineers apply WIP+3 to this Roll instead.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+</ContractMission>
+

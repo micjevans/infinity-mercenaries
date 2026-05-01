@@ -5,21 +5,30 @@ interface Props {
 
 const { variant = "standard" } = Astro.props;
 
-const iconPaths: Record<string, string> = {
-  standard: "M4 16h16M6 16l2-8h8l2 8M9 8l3-4 3 4",
-  cohesive: "M7 8h10M7 16h10M4 12h16M7 8l-3 4 3 4M17 8l3 4-3 4",
-  leader: "M12 4l3 6 6 .8-4.4 4.2 1.1 6-5.7-3-5.7 3 1.1-6L3 10.8l6-.8 3-6z",
-  airborne: "M12 4l8 7h-5l-3 9-3-9H4l8-7z",
-  tag: "M5 9h14v8H5zM8 9V6h8v3M8 17v3M16 17v3M3 12h2M19 12h2",
-  proxy: "M12 4l7 4v8l-7 4-7-4V8l7-4zM8.5 10.5h7M8.5 13.5h7M12 4v16"
+// Lucide icon inner SVG content (v1.14.0)
+const iconContent: Record<string, string> = {
+  // shield-check
+  standard: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>`,
+  // link-2
+  cohesive: `<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/>`,
+  // crown
+  leader: `<path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/>`,
+  // plane-takeoff
+  airborne: `<path d="M2 22h20"/><path d="M6.36 17.4 4 17l-2-4 1.1-.55a2 2 0 0 1 1.8 0l.17.1a2 2 0 0 0 1.8 0L8 12 5 6l.9-.45a2 2 0 0 1 2.09.2l4.02 3a2 2 0 0 0 2.1.2l4.19-2.06a2.41 2.41 0 0 1 1.73-.17L21 7a1.4 1.4 0 0 1 .87 1.99l-.38.76c-.23.46-.6.84-1.07 1.08L7.58 17.2a2 2 0 0 1-1.22.18Z"/>`,
+  // bot
+  tag: `<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>`,
+  // layers
+  proxy: `<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>`,
 };
 ---
 
 <section class:list={["company-type-card", `variant-${variant}`]}>
   <span class="company-type-icon" aria-hidden="true">
-    <svg viewBox="0 0 24 24" role="img">
-      <path d={iconPaths[variant]} />
-    </svg>
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      set:html={iconContent[variant]}
+    />
   </span>
   <slot />
 </section>

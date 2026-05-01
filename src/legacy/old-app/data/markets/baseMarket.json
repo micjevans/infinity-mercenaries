@@ -1,0 +1,224 @@
+{
+  "items": [
+    {
+      "id": 64,
+      "name": "Mk12",
+      "key": "weapons"
+    },
+    {
+      "id": 74,
+      "name": "Spitfire",
+      "key": "weapons"
+    },
+    {
+      "id": 2,
+      "name": "Heavy Machine Gun",
+      "key": "weapons"
+    },
+    {
+      "id": 196,
+      "name": "Shock Mine",
+      "key": "weapons"
+    },
+    {
+      "id": 111,
+      "name": "Deployable Repeater",
+      "type": "EQUIPMENT",
+      "key": "weapons",
+      "upgrades": false,
+      "cr": 8
+    },
+    {
+      "id": 26,
+      "name": "Boarding Shotgun",
+      "key": "weapons"
+    },
+    {
+      "id": 92,
+      "name": "Stun Pistol",
+      "key": "weapons"
+    },
+    {
+      "id": 11,
+      "name": "DA CC Weapon",
+      "key": "weapons"
+    },
+    {
+      "id": 44,
+      "name": "Grenades",
+      "key": "weapons"
+    },
+    {
+      "id": 71,
+      "name": "PARA CC Weapon",
+      "key": "weapons"
+    },
+    {
+      "id": 183,
+      "name": "Albedo (-3)",
+      "key": "equips",
+      "extra": [3],
+      "cr": 8
+    },
+    {
+      "id": 114,
+      "name": "Multispectral Visor L1",
+      "key": "equips",
+      "cr": 10
+    },
+    {
+      "id": 169,
+      "name": "TinBot: Firewall (-3)",
+      "key": "equips",
+      "extra": [3],
+      "cr": 10
+    },
+    {
+      "id": 201,
+      "slot": "accessory",
+      "name": "BS Attack (Guided)",
+      "extra": [31],
+      "key": "skills",
+      "cr": 20
+    },
+    {
+      "id": 53,
+      "name": "Doctor (+Medikit)",
+      "slot": "role",
+      "key": "skills",
+      "weapons": [
+        {
+          "id": 106,
+          "name": "Medikit"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 49,
+      "name": "Engineer (+GizmoKit)",
+      "key": "skills",
+      "slot": "role",
+      "weapons": [
+        {
+          "id": 237,
+          "name": "GizmoKit"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 59,
+      "name": "Forward Observer (+Flash Pulse)",
+      "key": "skills",
+      "slot": "role",
+      "weapons": [
+        {
+          "id": 72,
+          "name": "Flash Pulse"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1000,
+      "name": "Hacker (+Hacking Device)",
+      "slot": "role",
+      "key": "skills",
+      "equips": [
+        {
+          "id": 100,
+          "name": "Hacking Device"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1000,
+      "name": "Hacker (+Killer Hacking Device)",
+      "key": "skills",
+      "slot": "role",
+      "equips": [
+        {
+          "id": 145,
+          "name": "Killer Hacking Device"
+        }
+      ],
+      "cr": 10
+    },
+    {
+      "id": 1,
+      "name": "Mobility Suit",
+      "slot": "armor",
+      "key": "type",
+      "skills": [
+        {
+          "id": 82,
+          "name": "Climbing Plus"
+        },
+        {
+          "id": 58,
+          "name": "Terrain (Total)",
+          "extra": [33]
+        }
+      ],
+      "move": {
+        "id": "custom",
+        "name": "6-4 Move",
+        "extra": [15, 10],
+        "operation": "REPLACE"
+      },
+      "cr": 5
+    },
+    {
+      "id": 2,
+      "name": "Stim Suit",
+      "slot": "armor",
+      "key": "type",
+      "skills": [
+        {
+          "id": 85,
+          "name": "Dogged"
+        }
+      ],
+      "arm": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "bts": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "cr": 15
+    },
+    {
+      "id": 3,
+      "name": "Heavy Armor",
+      "slot": "armor",
+      "key": "type",
+      "arm": {
+        "id": "custom",
+        "name": "4",
+        "extra": 4,
+        "operation": "REPLACE"
+      },
+      "bts": {
+        "id": "custom",
+        "name": "3",
+        "extra": 3,
+        "operation": "REPLACE"
+      },
+      "w": {
+        "id": "custom",
+        "name": "Wound Skill +1",
+        "extra": 1,
+        "operation": "ADD"
+      },
+      "cr": 20
+    }
+  ]
+}

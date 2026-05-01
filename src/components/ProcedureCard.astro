@@ -1,0 +1,19 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  steps: string[];
+}
+
+const { eyebrow = "Procedure", title, steps } = Astro.props;
+---
+
+<section class="procedure-card" aria-label={title}>
+  <header>
+    <span>{eyebrow}</span>
+    <strong>{title}</strong>
+  </header>
+  <ol>
+    {steps.map((step) => <li>{step}</li>)}
+  </ol>
+</section>

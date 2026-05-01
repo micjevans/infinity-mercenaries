@@ -10,10 +10,14 @@ updated: "2026-04-28"
 import RuleCard from "../../components/RuleCard.astro";
 import RulesTable from "../../components/RulesTable.astro";
 import WarningCallout from "../../components/WarningCallout.astro";
+import ProcedureCard from "../../components/ProcedureCard.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
 
 ## Season Overview
 
-A Mercenaries event is usually run as a series of Contracts called a **Season**. Players should create a new Company at the start of a Season, or all begin with Companies of similar strength.
+This page is written for the person running the event. It covers how a Season is structured, what decisions the organizer makes before play begins, and how to run a shorter one-day format if needed. Players looking for rules that apply during play should refer to the individual rules pages instead.
+
+A Mercenaries event is usually run as a series of Contracts called a **Season**. Players create a new Company at the start of a Season, or all begin with Companies of similar strength.
 
 During a Season, players are paired into Contracts. Each Contract is a game of Infinity played with both players' mercenary Companies. Between Contracts, Companies resolve downtime, rank up units, purchase equipment, recruit new troops, and deal with the consequences of earlier games.
 
@@ -21,31 +25,54 @@ At the end of a Season, a winner is often declared. The simplest win condition i
 
 ## Organizer Responsibilities
 
-To organize an event, choose a series of Contracts for players to play during the Season. Mercenaries Contracts are custom missions designed for this format.
+To run a Season, the organizer selects the Contracts, sets the starting conditions, and manages pairings and progression throughout the event. Players handle the rest. Pairings may be narrative-driven, round robin, Swiss-style, or any other structure that fits.
 
-After choosing the Contracts, each player creates their Company. When the event begins, the organizer creates pairings before each round. Pairings may be narrative-driven, round robin, Swiss-style, or any other structure that fits the event.
-
-<RuleCard eyebrow="Organizer Flow" title="Basic Season Setup">
-
-1. Choose the number of rounds.
-2. Choose the Contract pool.
-3. Decide whether sponsors are in use.
-4. Set starting CR and any event-specific restrictions.
-5. Have players create Companies.
-6. Pair players each round.
-7. Track results, Renown, sponsor progress, and any organizer-defined win condition.
-
-</RuleCard>
+<ProcedureCard eyebrow="Organizer Flow" title="Basic Season Setup" steps={[
+  "Choose the number of rounds.",
+  "Choose the Contract pool.",
+  "Decide whether sponsors are in use.",
+  "Set starting CR and any event-specific restrictions.",
+  "Have players create Companies.",
+  "Pair players each round.",
+  "Track results, Renown, sponsor progress, and any organizer-defined win condition."
+]} />
 
 ## Sponsors
 
-Sponsors are a thematic way to show how in-world corporations take notice of mercenary Companies. When sponsors enter the Mercenaries sphere, they offer benefits in exchange for work. They do not care who performs the work, only that it gets done.
+When setting up a Season, the organizer decides whether Sponsors are in use and which ones players may choose from. Sponsors are written in pairs so **Two Sponsors** is a good default for a Season however organizers may choose to allow any number or all if they wish.
 
-When creating an event, the organizer may optionally select one or more sponsors. **Two sponsors** is the recommended default for a full Season.
+Announce the available Sponsors before Company creation begins so players can factor the rewards into how they build their Companies.
 
-Each sponsor has several tiers of objectives and an associated reward for each tier. Players unlock these rewards by collectively working toward sponsor objectives, tracking their individual progress during Contracts, and reporting that progress to the organizer.
+By default, each player individually tracks their own progress toward their chosen Sponsor's milestones. Two organizer-controlled variants are also available:
 
-Announce sponsors before the start of the Season so players can consider the rewards when creating their Companies.
+- **Limited pool.** Often the organizer may only offer a subset of available Sponsors rather than all of them. This can focus the event narrative.
+- **Collective contribution.** In rare cases, all players aligned with a Sponsor may contribute progress toward shared milestone thresholds rather than tracking individually. This creates a cooperative dynamic but increases organizer bookkeeping and can make rewards feel less personal.
+
+<ReferenceLinkCallout
+  title="Sponsor Reference"
+  href="/rules/sponsors/"
+  linkLabel="Open sponsors"
+>
+  <p>Use the sponsor reference page to review current sponsor pairs, milestone ladders, and searchable reward details before finalizing your event sponsor pool.</p>
+</ReferenceLinkCallout>
+
+## Starting Conditions
+
+Before Company creation begins, the organizer sets the starting CR. All players must use the same value.
+
+<RulesTable
+  eyebrow="Normal Season"
+  title="Recommended Starting CR"
+  variant="text"
+  columns={["Starting CR", "Best For"]}
+  rows={[
+    { label: "60 CR", cells: ["Slow-burn campaigns where Companies grow significantly over many rounds. Units start scarce and every recruit matters."] },
+    { label: "75 CR", cells: ["The standard recommendation. Companies feel functional from round one without making early rounds feel predetermined."] },
+    { label: "90 CR", cells: ["Higher-powered starts. Good for experienced groups or shorter seasons where players want a stronger Company from the outset."] }
+  ]}
+/>
+
+Use **75 CR** if you are unsure. It is the most playtested value and keeps the first few rounds competitive regardless of faction choice.
 
 ## Rounds
 
@@ -70,6 +97,14 @@ Mercenaries Contracts designed by the development team are intended to be played
 
 Contracts should be chosen with the event's format in mind. A long Season can support more unusual missions and narrative variance. A short event should use clearer, faster Contracts with fewer edge-case rules.
 
+<ReferenceLinkCallout
+  title="Playing Contracts"
+  href="/rules/playing-contracts/"
+  linkLabel="Open Playing Contracts"
+>
+  <p>See the Playing Contracts page for full rules on how a Contract is run, including setup, special rules, and post-game steps.</p>
+</ReferenceLinkCallout>
+
 ## One-Day Event Format
 
 Mercenaries can also be run as a one-day event in a more standard tournament format. This is best treated as a compressed Season, not as a replacement for the normal long-form campaign.
@@ -88,64 +123,24 @@ Short events magnify every reward, injury, and pairing result. Keep progression 
   variant="text"
   columns={["Format", "Recommendation"]}
   rows={[
-    { label: "3 Rounds", cells: ["Best for a shorter store event, beginner day, or 6-10 players. Use simple Contracts, fast downtime, and a modest accelerated reward package."] },
-    { label: "4 Rounds", cells: ["Best for a full-day tournament or larger group. Use Swiss-style pairings, include one more complex Contract at most, and schedule a longer break after round 2."] },
-    { label: "Starting CR", cells: ["Use 75 CR for a conservative event or 90 CR if players want Companies to feel developed from the first round. Keep all players on the same starting CR."] },
-    { label: "Sponsors", cells: ["Use 0-1 sponsors for a 3-round event or 1-2 sponsors for a 4-round event. Lower sponsor milestones so they can realistically complete during the event."] }
+    { label: "3 Rounds", cells: ["Best for a typical store event or beginner day. Use simple Contracts and fast downtime."] },
+    { label: "4 Rounds", cells: ["Best for a full-day or two-day event. Include one more complex Contract at most, and schedule a longer break after round 2."] }
   ]}
 />
 
 ### Balance Recommendations
 
-For a compressed Season, use these adjustments unless the organizer has a specific narrative reason to do otherwise.
-
-- Start all Companies at the same CR and do not allow pre-event XP advantages.
-- Use Contracts with clear scoring and limited bookkeeping.
-- Keep downtime short. Resolve one downtime event after each round except the final round.
-- Preselect War Markets or other purchasing options before the event starts.
-- Use Inducements normally to help lower-Renown Companies remain competitive.
-- Do not allow players to make purchases after the final round unless the event continues later.
-- Pair by Objective Points first, then Renown or strength of schedule as a tiebreaker.
-- If prizes are involved, reward sportsmanship, narrative moments, or sponsor contribution alongside final standing.
-
-### Accelerated Progression
-
-Short events need enough progression to feel like Mercenaries, but not so much that the event becomes unstable.
-
-For a **3-round event**, consider:
-
-- 90 starting CR.
-- Normal XP gain.
-- Normal CR gain, plus a flat **+10 CR** after rounds 1 and 2.
-- One downtime event after rounds 1 and 2 only.
-- Sponsor milestones reduced by roughly half.
-
-For a **4-round event**, consider:
-
-- 75 or 90 starting CR.
-- Normal XP gain.
-- Normal CR gain.
-- One downtime event after rounds 1, 2, and 3.
-- Sponsor milestones reduced by roughly one third.
-
-### Contract Selection
-
-Choose Contracts that let players finish reliably. For one-day events, avoid stacking too many missions with heavy PvE, complex custom objects, or long post-game resolution.
-
-A good compressed Season Contract pool should include:
-
-- One straightforward objective-control Contract.
-- One movement or extraction Contract.
-- One combat-forward Contract.
-- One optional narrative or set-piece Contract for a 4-round event.
-
-### Time Management
-
-Set round times before the event starts. A practical structure is:
-
-- 10-15 minutes for pairings and table assignment.
-- 90-120 minutes for each Contract.
-- 15-20 minutes after each round for reporting, rewards, purchases, and downtime.
-- 30-45 minutes for a meal break during a 4-round event.
-
-If players are new to Mercenaries, choose the longer end of each range.
+<RulesTable
+  eyebrow="One-Day Event"
+  title="Settings and Progression"
+  variant="text"
+  columns={["Setting", "Recommendation"]}
+  rows={[
+    { label: "Starting CR", cells: ["75 CR for a conservative event. 90 CR if players want Companies to feel developed from the first round. Keep all players on the same value."] },
+    { label: "XP", cells: ["Double XP gain."] },
+    { label: "CR Rewards", cells: ["Double CR gain."] },
+    { label: "Downtime", cells: ["One downtime event after each round except the final round."] },
+    { label: "Sponsors", cells: ["Reduce all milestone thresholds by roughly half (if possible) rounded down. Announce the adjusted values before Company creation."] },
+    { label: "Pairings", cells: ["For a purely competitive event pair players by Renown although Mercenaries is often more narrative and casual."] },
+  ]}
+/>

@@ -1,0 +1,235 @@
+---
+title: "The Heist"
+description: "A secure tech vault is buried deep in hostile territory. Infiltrate the sectors, disable the defenses, decrypt the prize, and drag it home."
+contractType: "Cooperative Infiltration"
+status: "draft"
+updated: "2026-01-08"
+sourceUrl: "https://docs.google.com/document/d/1aIUCANt6Jc9pQsTpY4axKrFY9ELYWfoLeepAx9X_xR0/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { sameSideDeployment } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "2 OP", text: "Extract the Supply Box." },
+    { points: "2 OP", text: "Fully decrypt the Supply Box." },
+    { points: "2 OP", text: "Control the Supply Box at the end of the Contract." },
+    { points: "2 OP", text: "Control the Supply Box in your Deployment Zone at the end of the Contract." },
+    { points: "Victory", text: "The contract is only considered won if the Supply Box is decrypted and controlled by the players at the end of the Contract." }
+  ]}
+  deployment={sameSideDeployment("The Heist Deployment", {
+    zones: [
+      { label: "Sector 3 / Vault", x: 0, y: 0, width: 36, height: 12, className: "exclusion-zone" },
+      { label: "Sector 2", x: 0, y: 12, width: 36, height: 12, className: "neutral-zone" },
+      { label: "Sector 1", x: 0, y: 24, width: 36, height: 12, className: "neutral-zone" },
+      { label: "Player Deployment Zone", x: 0, y: 36, width: 36, height: 12, className: "zone-b" }
+    ],
+    markers: [
+      { label: "Console", x: 4, y: 16, className: "console-marker" },
+      { label: "Console", x: 32, y: 28, className: "console-marker" },
+      { label: "Tech-Coffin", x: 32, y: 4, className: "tech-coffin-marker" }
+    ],
+    dimensions: [
+      { label: "12\"" , className: "deployment-distance", x: -2, y: 36, height: 12 },
+      { label: "12\"" , className: "exclusion-distance", x: -2, y: 0, height: 12 },
+      { label: "4\"" , className: "sector-offset sector-offset-vertical", x: -2, y: 12, height: 4 },
+      { label: "4\"" , className: "sector-offset sector-offset-vertical", x: -2, y: 24, height: 4 },
+      { label: "4\"" , className: "sector-offset sector-offset-horizontal", x: 0, y: 50, width: 4 },
+      { label: "4\"" , className: "sector-offset sector-offset-horizontal", x: 32, y: 50, width: 4 }
+    ],
+    legend: [
+      { label: "Console", className: "console-marker" },
+      { label: "Tech-Coffin / Supply Box", className: "tech-coffin-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ],
+    showMidline: false
+  })}
+  twistTitle="The Heist Twist"
+  twistIntro="After the end of Round 2, but before the beginning of Round 3, roll a single d20 and apply the result below."
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Reinforcements", effect: "The Personnel cap on each Sector is increased by 1." },
+    { roll: "11-15", name: "Backup Defenses", effect: "Redeploy any initial automated defenses that have been destroyed." },
+    { roll: "16-20", name: "Unstable Supplies", effect: "Place a template over the Supply Box. All troopers under it make a PS 6 Saving Roll against EXP ammo." }
+  ]}
+  deploymentType="cooperative"
+  direCircumstances={true}
+  exclusionZone="the far 12 inches of the table opposite the players' Deployment Zone is an Exclusion Zone. Airborne Deployment and Superior Deployment skills cannot be used to deploy inside it."
+  endConditions={[
+    { title: "Clean Extraction", text: "If the twist has occurred, the Supply Box is controlled and fully decrypted in the Deployment Zone, all Sectors are cleared, and there are no conscious NPCs, the game ends immediately." }
+  ]}
+>
+  <div slot="specialRules">
+    <h3>Automated Defenses</h3>
+    <p>In each Sector, place <strong>1 Armed Turret</strong> and <strong>1 Repeater</strong> near each Console before the Deployment Phase. These defenses are hostile to the players.</p>
+    <ul>
+      <li>Armed Turrets are placed where they can see the entire Console, within 8 inches of it, in Cover, and as far as possible from the Deployment Zone.</li>
+      <li>Repeaters are placed so the Console is entirely within ZoC, in Total Cover from as many directions as possible, and as far as possible from the Deployment Zone.</li>
+    </ul>
+
+    <h3>Security Personnel</h3>
+    <p>Each Sector contains hidden Security Personnel. A Sector has a minimum of 2 and maximum of 5 Personnel, revealed as players move and act through the table.</p>
+
+    <div class="rules-table-card npc-trigger-card">
+      <header>
+        <span>Personnel</span>
+        <strong>Reveal Triggers</strong>
+      </header>
+
+      <div class="npc-trigger-block">
+        <div class="npc-trigger-header">Seen from Exclusion Zone</div>
+        <div class="npc-trigger-cases">
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-if">If</span>
+            <span class="npc-trigger-cond">Seen through smoke or has Mimetism</span>
+            <span class="npc-trigger-npc">Brawler Sniper</span>
+          </div>
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-else">Else</span>
+            <span class="npc-trigger-cond"></span>
+            <span class="npc-trigger-npc">Brawler HRL</span>
+          </div>
+        </div>
+        <div class="npc-trigger-placement">In the Exclusion Zone, with LoF to the trooper, in Cover, as far from enemies as possible.</div>
+      </div>
+
+      <div class="npc-trigger-block">
+        <div class="npc-trigger-header">Short Skill inside Repeater ZoC</div>
+        <div class="npc-trigger-cases">
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-if">If</span>
+            <span class="npc-trigger-cond">Trooper has the Hacker skill</span>
+            <span class="npc-trigger-npc">Brawler KHD</span>
+          </div>
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-else">Else</span>
+            <span class="npc-trigger-cond"></span>
+            <span class="npc-trigger-npc">Brawler HD</span>
+          </div>
+        </div>
+        <div class="npc-trigger-placement">In the trooper's Sector, Prone, in Total Cover from all troopers, as far from enemies as possible.</div>
+      </div>
+
+      <div class="npc-trigger-block">
+        <div class="npc-trigger-header">Non-Movement Short Skill inside a Sector</div>
+        <div class="npc-trigger-cases">
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-if">If</span>
+            <span class="npc-trigger-cond">Trooper has Martial Arts</span>
+            <span class="npc-trigger-npc">Ninja (Tactical Bow)</span>
+          </div>
+          <div class="npc-trigger-case">
+            <span class="trigger-label trigger-else">Else</span>
+            <span class="npc-trigger-cond"></span>
+            <span class="npc-trigger-npc">Ext. Zellenkrieger (Pulzar)</span>
+          </div>
+        </div>
+        <div class="npc-trigger-placement">In the trooper's Sector, in base contact with the trooper, in Total Cover from all other troopers.</div>
+      </div>
+    </div>
+
+    <p>When a reveal requirement is met, the active trooper rolls a d20. If the trooper has Stealth, the roll is PS 13; otherwise it is PS 10. On a failed roll, Personnel reveal themselves immediately. Multiple requirements in one Order require multiple rolls.</p>
+
+    <h3>Discovering Personnel</h3>
+    <ul>
+      <li>Pass a Discover Roll in the 96 inch range band while fully within a Sector.</li>
+      <li>Pass a Sensor Roll while fully within a Sector.</li>
+      <li>Succeed at Hack Console, which reveals 2 Personnel.</li>
+    </ul>
+    <p>Once 5 Personnel have been revealed in a Sector, that Sector is cleared. The 2 Personnel minimum can only be reached by Hacking the Sector's Console before any troopers are revealed there.</p>
+
+    <h3>NPCs Second</h3>
+    <p>NPCs act after the players' turn in this contract. The fourth round is not over until NPCs have taken their turn.</p>
+
+    <h3>Consoles and Tech-Coffin</h3>
+    <p>There are 2 Consoles: one in Sector 1, 4 inches from Sector 2 and 4 inches from the right side; the other in Sector 2, 4 inches from Sector 3 and 4 inches from the left side.</p>
+    <p>There is 1 Tech-Coffin in Sector 3, 4 inches from the far edge and 4 inches from the right side. It contains one Supply Box.</p>
+
+    <h3>Supply Box</h3>
+    <p>When the Supply Box is first extracted, it is encrypted and must be decrypted twice using the Consoles. When it is extracted, the Personnel cap of each Sector immediately increases by 2.</p>
+    <ul>
+      <li>Each Model can carry a maximum of 1 Supply Box. Troopers with Baggage can carry up to 2.</li>
+      <li>Only Models, not Markers, can carry Supply Boxes.</li>
+      <li>The Supply Box remains on the table even if its carrier enters a Null State.</li>
+      <li>A Supply Box is controlled at the end of the game by a non-Null Model carrying it that is not in Silhouette contact with an enemy Model.</li>
+    </ul>
+
+    <ContractSkillCard title="Hack Console" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Console</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Troop to make a Normal WIP Roll to Hack a Console</li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll</li>
+        <li>On a successful roll, a maximum of 2 Personnel are placed at the end of order resolution.</li>
+        <li>The sector corresponding to the Console is then considered to have met its Personnel cap. This does not further Personnel will be revealed in this sector unless that sectors Personnel cap is increased</li>
+        <li>You cannot Activate again a Console previously activated.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Extract Supply Box" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Tech-Coffin</li>
+        <li>Both Consoles must be activated</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Troop to make a Normal WIP Roll to Extract and pick up the Supply Box</li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll</li>
+        <li>On a successful roll, a Supply Box Token must be placed beside the Tech-Coffin. In addition, apply the success of the Hack Console skill as well to this Sector.</li>
+        <li>Once the roll is successful, the Tech-Coffin Token is removed from the game table.</li>
+        <li>If a scenery item is used instead of a Token, then it can be kept on the game table but a Player A and Player B must indicate besides it that the Supply Box was extracted.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Decrypt Supply Box" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Console</li>
+        <li>The Trooper must be controlling the Supply Box</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Troop to make a Normal WIP Roll to Decrypt the Supply Box</li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll</li>
+        <li>On a successful roll, use an artillery, wound marker, or other token to mark the decryption state of the Supply Box</li>
+        <li>Once a Console has been used for decryption it may not be used again for the remainder of the Contract</li>
+        <li>The Supply Box must be decrypted twice to be considered fully decrypted</li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Pick Up Supply Box" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper should be in one of the following situations</li>
+        <li>
+          <ul>
+            <li>Be in Silhouette contact with an allied Trooper in a Normal State with a SUPPLY BOX Token</li>
+            <li>Be in Silhouette contact with an unaccompanied SUPPLY BOX Token.</li>
+          </ul>
+        </li>
+      </ul>
+      <ul slot="effects">
+        <li>Spending one Short Skill, without Roll, any Trooper can pick up a Supply Box in any of the situations previously mentioned</li>
+        <li>The Troops must meet the Common Rules of Supply Box.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Specialist Bonuses" type="Mission Bonus">
+      <ul slot="effects">
+        <li>Hackers gain +3 to WIP Rolls to Hack Consoles and Decrypt the Supply Box, and may make two WIP Rolls each time they spend a Short Skill for either action.</li>
+        <li>Doctors and Paramedics gain +3 to WIP Rolls to Extract Supply Boxes, and may make two WIP Rolls each time they spend a Short Skill to Extract them.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["the-heist"]} compact />
+  </div>
+</ContractMission>
+

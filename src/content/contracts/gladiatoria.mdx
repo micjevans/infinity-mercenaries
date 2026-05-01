@@ -1,0 +1,81 @@
+---
+title: "Gladiatoria"
+description: "The arena lights are on and the audience wants spectacle. Name your Gladiator, earn Acclaim, and decide how far you are willing to go for the crowd."
+contractType: "Arena Match"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1qvaVnGhg6NNtG73_z4dxMTN9_4agEw09y8kY2vFQ3eg/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { standardOpposedDeployment, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "2 OP", text: "At the end of each round, have more Acclaim than your opponent." },
+    { points: "1 OP", text: "At the end of each round, have the same amount of Acclaim as your opponent." }
+  ]}
+  deployment={standardOpposedDeployment("Gladiatoria Deployment")}
+  twistTitle="Gladiatoria Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Safety Malfunction", effect: "All units regain their original ammunition type on all Non-Lethal weapons." },
+    { roll: "11-15", name: "Bloodbath", effect: "The evening takes a darker turn. Immediately replace the normal Acclaim rewards with the Bloodbath rewards listed in the scenario rules." },
+    { roll: "16-20", name: "Overdrive", effect: "All Recovery Rolls are made immediately when a unit becomes Unconscious and with a +6 modifier. Units without Regeneration roll equal to PH; units with Regeneration roll equal to PH+6." }
+  ]}
+  deploymentType="opposed"
+>
+  <div slot="specialRules">
+    <h3>Welcome to the Arena</h3>
+    <p>All weapons without the Non-Lethal trait use the arena ammunition type below for this mission.</p>
+
+    <RuleCard eyebrow="Ammunition" title="Arena Stun Rounds">
+      <ul>
+        <li>All weapons without the Non-Lethal trait replace their ammunition with Stun ammunition.</li>
+        <li>All other weapon properties, such as Burst and Damage, remain the same.</li>
+        <li>When a trooper declares an attack using this ammunition, they may choose whether the damage type is ARM or BTS.</li>
+      </ul>
+    </RuleCard>
+
+    <ContractSkillCard title="Smelling Salts" type="SHORT SKILL">
+      <span slot="mode">Support</span>
+      <ul slot="requirements">
+        <li>The user must be in Silhouette contact with an allied trooper in the Stunned state.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By spending one Short Skill, any trooper may attempt to remove Stunned from that target with a successful unmodified WIP Roll.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Acclaim</h3>
+    <p>Acclaim is earned during each round and resets to 0 at the start of the next round.</p>
+
+    <RulesTable
+      eyebrow="Arena Scoring"
+      title="Acclaim Awards"
+      columns={["Action", "Requirement", "Acclaim", "Bloodbath"]}
+      rows={[
+        { label: "Knockout", cells: ["Put the enemy Gladiator into Unconscious state without killing them.", "+15", "+0"] },
+        { label: "Brutalize", cells: ["Put the enemy Gladiator into Dead state from a non-Null state.", "+10", "+5"] },
+        { label: "Merciless", cells: ["Put the enemy Gladiator into Unconscious state without killing them while they are Immobilized or Stunned.", "+5", "+0"] },
+        { label: "Foul Play", cells: ["Put the enemy Gladiator into Dead state from a non-Null state while they are Immobilized or Stunned.", "+0", "+10"] },
+        { label: "Break the Weak", cells: ["Put a non-Gladiator unit into Unconscious state without killing them.", "+5", "+0"] },
+        { label: "Bully", cells: ["Put a non-Gladiator unit into Dead state from a non-Null state.", "+0", "+5"] },
+        { label: "Coup de Grace", cells: ["Put the enemy Gladiator into Dead state from Unconscious state.", "-10", "+15"] },
+        { label: "Illegal Maneuver", cells: ["Put a non-Gladiator unit into Dead state from Unconscious state.", "-20", "+5"] }
+      ]}
+      variant="text"
+    />
+    <p>If the Bloodbath twist is active, replace the Acclaim column with the Bloodbath column for the remainder of the game.</p>
+
+    <h3>Gladiators</h3>
+    <p>Before the Lieutenant Roll, each player secretly notes which trooper will be their Gladiator. The Gladiator must be deployed on the table as a Model or Marker during Deployment. After Deployment, both players reveal their Gladiator.</p>
+    <p>At the start of each player turn, if that player's Gladiator is in a Null state, they must select and declare a new Gladiator after Recovery Rolls. The Gladiator's weapons keep their normal ammunition type instead of changing to Stun.</p>
+
+  </div>
+</ContractMission>
+

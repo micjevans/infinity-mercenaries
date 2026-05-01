@@ -2,14 +2,26 @@
 type Objective = {
   points: string;
   text: string;
+  maxPoints?: string;
+};
+
+type ObjectiveGroup = {
+  title: string;
+  objectives: Objective[];
 };
 
 interface Props {
   title?: string;
   objectives: Objective[];
+  objectiveGroups?: ObjectiveGroup[];
 }
 
-const { title = "Mission Objectives", objectives } = Astro.props;
+const {
+  title = "Mission Objectives",
+  objectives,
+  objectiveGroups = [],
+} = Astro.props;
+const hasGroups = objectiveGroups.length > 0;
 ---
 
 <aside class="objective-card">
@@ -19,12 +31,46 @@ const { title = "Mission Objectives", objectives } = Astro.props;
       <strong>{title}</strong>
     </div>
   </header>
-  <div class="objective-list">
-    {objectives.map((objective) => (
-      <article>
-        <div class="objective-points">{objective.points}</div>
-        <p>{objective.text}</p>
-      </article>
-    ))}
-  </div>
+  {
+    hasGroups ? (
+      <div class="objective-group-list">
+        {objectiveGroups.map((group) => (
+          <section class="objective-group">
+            <h4>{group.title}</h4>
+            <div class="objective-list">
+              {group.objectives.map((objective) => (
+                <article>
+                  <div class="objective-points">
+                    <span class="objective-points-value">
+                      {objective.points}
+                    </span>
+                    {objective.maxPoints && (
+                      <span class="objective-cap">
+                        MAX {objective.maxPoints}
+                      </span>
+                    )}
+                  </div>
+                  <p>{objective.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    ) : (
+      <div class="objective-list">
+        {objectives.map((objective) => (
+          <article>
+            <div class="objective-points">
+              <span class="objective-points-value">{objective.points}</span>
+              {objective.maxPoints && (
+                <span class="objective-cap">MAX {objective.maxPoints}</span>
+              )}
+            </div>
+            <p>{objective.text}</p>
+          </article>
+        ))}
+      </div>
+    )
+  }
 </aside>
