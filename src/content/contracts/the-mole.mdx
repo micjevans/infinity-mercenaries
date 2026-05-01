@@ -73,22 +73,9 @@ import NpcReference from "../../components/NpcReference.astro";
       effect: "Two Brawler NPCs using the Rifle/Light Shotgun profile are placed inside the mole's ZoC. Each player places one Brawler. The Brawlers are hostile to both players. If the mole is discovered and/or in CivEvac, deploy them immediately. If the mole is not yet discovered, deploy them at the end of the action that reveals it."
     }
   ]}
-  endConditions={[
-    {
-      title: "Round Limit",
-      text: "This scenario automatically ends at the end of the fourth Game Round."
-    },
-    {
-      title: "No Troopers Remaining",
-      text: "If one player starts their Active Turn with no troopers on the board, including Null troopers, the game ends immediately."
-    }
-  ]}
+  deploymentType="opposed"
+  exclusionZone={true}
 >
-  <div slot="forces">
-    <p><strong>Side A and Side B:</strong> both players deploy on opposite sides of the game table, in the Deployment Zones.</p>
-    <p><strong>Exclusion Zone:</strong> the Exclusion Zone covers the area 8 inches on either side of the central line of the game table. Special Skills with the Airborne Deployment (AD) or Superior Deployment Labels cannot be used to deploy inside this area.</p>
-  </div>
-
   <div slot="specialRules">
     <h3>Moles</h3>
     <p>After the Deployment Rolls, place <strong>4 HVTs</strong> within 4 inches of the centerline of the table.</p>
@@ -110,8 +97,6 @@ import NpcReference from "../../components/NpcReference.astro";
       </ul>
     </ContractSkillCard>
 
-    <h3>No Quarter</h3>
-    <p>The Retreat! rules are not applied in this scenario.</p>
   </div>
 
   <div slot="npcs">

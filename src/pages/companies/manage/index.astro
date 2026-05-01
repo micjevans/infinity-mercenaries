@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CompanyManager from "../../../components/CompanyManager";
+---
+
+<BaseLayout
+  title="Manage Company"
+  description="Manage a local Infinity: Mercenaries company."
+>
+  <CompanyManager client:load />
+</BaseLayout>

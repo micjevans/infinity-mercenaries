@@ -1,0 +1,146 @@
+---
+title: "Battle Royale"
+description: "Two companies drop into the same kill zone while a closing threat forces everyone toward the center. Grab supplies, hold the antenna, and get out alive."
+contractType: "Survival"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1jFWpvMjOXiJNKn3W7L_k4SWNSgwJ7bkQJ2S5u9WdNKA/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", text: "Have at least half of your deployed allied troopers not in a Null state or dead at the end of the game." },
+    { points: "2 OP", text: "Have all deployed allied troopers not in a Null state or dead at the end of the game." },
+    { points: "1 OP", maxPoints: "4", text: "Roll Booty or Metachemistry from a supply Panoply." },
+    { points: "2 OP", text: "Control the Communications Antenna at the end of the game." }
+  ]}
+  deployment={{
+    title: "Battle Royale Deployment",
+    width: 36,
+    height: 48,
+    zones: [
+      { label: "Side A", x: 0, y: 0, width: 36, height: 4, className: "battle-royale-side-label battle-royale-side-a" },
+      { label: "Side B", x: 0, y: 44, width: 36, height: 4, className: "battle-royale-side-label battle-royale-side-b" }
+    ],
+    markers: [
+      { x: 18, y: 24, className: "console-marker" },
+      { x: 4, y: 24, className: "panoply-marker" },
+      { x: 32, y: 24, className: "panoply-marker" },
+      { x: 8, y: 12, className: "panoply-marker" },
+      { x: 28, y: 12, className: "panoply-marker" },
+      { x: 8, y: 36, className: "panoply-marker" },
+      { x: 28, y: 36, className: "panoply-marker" },
+      { x: 18, y: 4, className: "panoply-marker" },
+      { x: 18, y: 44, className: "panoply-marker" }
+    ],
+    features: [
+      { x: 0, y: 0, width: 36, height: 6, className: "battle-royale-phase battle-royale-phase-r1" },
+      { x: 0, y: 42, width: 36, height: 6, className: "battle-royale-phase battle-royale-phase-r1" },
+      { x: 0, y: 6, width: 4, height: 36, className: "battle-royale-phase battle-royale-phase-r1" },
+      { x: 32, y: 6, width: 4, height: 36, className: "battle-royale-phase battle-royale-phase-r1" },
+      { x: 4, y: 6, width: 28, height: 6, className: "battle-royale-phase battle-royale-phase-r2" },
+      { x: 4, y: 36, width: 28, height: 6, className: "battle-royale-phase battle-royale-phase-r2" },
+      { x: 4, y: 12, width: 4, height: 24, className: "battle-royale-phase battle-royale-phase-r2" },
+      { x: 28, y: 12, width: 4, height: 24, className: "battle-royale-phase battle-royale-phase-r2" },
+      { x: 8, y: 12, width: 20, height: 6, className: "battle-royale-phase battle-royale-phase-r3" },
+      { x: 8, y: 30, width: 20, height: 6, className: "battle-royale-phase battle-royale-phase-r3" },
+      { x: 8, y: 18, width: 4, height: 12, className: "battle-royale-phase battle-royale-phase-r3" },
+      { x: 24, y: 18, width: 4, height: 12, className: "battle-royale-phase battle-royale-phase-r3" }
+    ],
+    dimensions: [
+      { label: '6"', className: "battle-royale-mob-r1 battle-royale-mob-vertical", x: -2.2, y: 0, height: 6 },
+      { label: '6"', className: "battle-royale-mob-r2 battle-royale-mob-vertical", x: -2.2, y: 6, height: 6 },
+      { label: '6"', className: "battle-royale-mob-r3 battle-royale-mob-vertical", x: -2.2, y: 12, height: 6 },
+      { label: '4"', className: "battle-royale-mob-r1 battle-royale-mob-horizontal", x: 0, y: 48.7, width: 4 },
+      { label: '4"', className: "battle-royale-mob-r2 battle-royale-mob-horizontal", x: 4, y: 48.7, width: 4 },
+      { label: '4"', className: "battle-royale-mob-r3 battle-royale-mob-horizontal", x: 8, y: 48.7, width: 4 }
+    ],
+    legend: [
+      { label: "Communications Antenna", className: "console-marker" },
+      { label: "Panoply", className: "panoply-marker" },
+      { label: "Mob Area R1", className: "battle-royale-phase-r1-swatch" },
+      { label: "Mob Area R2", className: "battle-royale-phase-r2-swatch" },
+      { label: "Mob Area R3", className: "battle-royale-phase-r3-swatch" }
+    ]
+  }}
+  twistTitle="Battle Royale Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Resupply", effect: "All supply Panoplies that have already been activated may be activated one more time." },
+    { roll: "11-15", name: "Frantic!", effect: "All troopers gain +2/+2 MOV for the remainder of the contract." },
+    { roll: "16-20", name: "Revenant Surge", effect: "All troopers in a Null state or dead return to life. If a trooper is dead off the table, redeploy it at the start of that player's turn on any board edge." }
+  ]}
+>
+  <div slot="forces">
+    <p><strong>Side A and Side B:</strong> players do not have Deployment Zones. Each player instead has a designated board side.</p>
+    <p><strong>Special Deployment:</strong> all troopers gain Combat Jump. Troopers without Combat Jump or Parachutist must deploy by Combat Jump during the Deployment Phase.</p>
+    <p>Troopers with Forward Deployment (+4) gain +1 to the roll, Forward Deployment (+8) gains +2, and Infiltration gains +3. Troopers that already had Combat Jump or Parachutist may deploy normally or hold deployment as normal; if deployed at the start, they gain +3 and +1 SD. Parachutists may deploy from any table edge.</p>
+    <p>If a trooper fails its Combat Jump roll, deploy it within 4 inches of its side instead of touching the board edge.</p>
+  </div>
+
+  <div slot="specialRules">
+    <h3>Panoplies</h3>
+    <p>There are <strong>8 Panoplies</strong>. Two are on the central line 4 inches from the sides. Four are 8 inches from the sides and 12 inches from the table edges. The remaining two are centered from both sides and 4 inches from either table edge.</p>
+
+    <ContractSkillCard title="Use Panoplies" type="Short Skill">
+      <p slot="mode"><strong>Attack</strong></p>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Panoply.</li>
+        <li>This Panoply has not already been used.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll that trooper may regain 1 Wound or Structure. If none have been lost, you may "overheal" following the rules of Protheion.</li>
+        <li>Alternatively after a successful WIP Roll a Trooper can make a Roll on the Panoply Chart to obtain one weapon or piece of equipment. Once a success has been rolled, that Panoply cannot be used again.</li>
+        <li>Troopers possessing the Booty Special Skill, or any other Skill which specifies so, do not need to make the WIP Roll.</li>
+        <li>A Trooper in Silhouette contact with this piece of scenery may spend one Short Skill or an Order to cancel their Unloaded State.</li>
+        <li>If a Trooper rolls a weapon or piece of equipment they already have, they can repeat the roll on the Panoply Chart.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Communications Antenna</h3>
+    <p>There is a single Communications Antenna in the center of the table. A player controls it while they are the only player with at least one non-Null Trooper, as a Model and not a Marker, in Silhouette contact with it.</p>
+
+    <ContractSkillCard title="Activate Communication Antenna" type="Short Skill">
+      <p slot="mode"><strong>Attack</strong></p>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Communication Antenna.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll that trooper may leave the table. If the trooper is in a Null state at the end of the Order resolution they do not leave the table.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Mob Area</h3>
+    <p>The Mob Area starts absent, then closes toward the center at the end of each round. At the end of each turn, all non-Unconscious Troopers belonging to the Active Player inside the Mob Area make an ARM Saving Roll against PS 6. A failed roll causes the loss of one point of Wounds or Structure. The mob does not attack Unconscious troopers.</p>
+    <p>At the end of each round, the Mob Area grows 6 inches from the table edges and 4 inches from the table sides toward the center, leaving only a 12 inch square safe area in the center at the start of Round 4.</p>
+
+    <RulesTable
+      eyebrow="Mob Area"
+      title="Mob Area Procedure"
+      columns={["Timing", "Instructions"]}
+      rows={[
+        {
+          label: "Start of Game",
+          cells: ["At the start of the game the Mob Area is not present."]
+        },
+        {
+          label: "End of Each Turn",
+          cells: ["All non-Unconscious Troopers belonging to the Active Player that are inside a Mob Area must make a Saving Roll against ARM, with PS 6. Failing the Saving Roll results in the loss of one point of the Wounds or Structure Attribute. The mob will not attack Unconscious troopers."]
+        },
+        {
+          label: "End of Each Round",
+          cells: ["At the end of each round it grows 6 inches from the edge of the table and 4 inches from the sides of the table towards the center, so that at the start of turn 4 the only non-biotechvore area will be a 12 inch square in the center."]
+        }
+      ]}
+      variant="text"
+    />
+
+  </div>
+</ContractMission>
+

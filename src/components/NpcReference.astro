@@ -11,65 +11,215 @@ const { groupIds, compact = false } = Astro.props;
 const visibleGroups = groupIds?.length
   ? npcGroups.filter((group) => groupIds.includes(group.id))
   : npcGroups;
+const hasMonsterGroup = visibleGroups.some((group) => group.id === "monsters");
 
 const initialRenown = {
   playerOne: 75,
-  playerTwo: 72
+  playerTwo: 72,
 };
 ---
 
-<section class:list={["npc-reference", compact && "compact"]} data-npc-reference>
+<section
+  class:list={["npc-reference", compact && "compact"]}
+  data-npc-reference
+>
   <div class="npc-reference-panel">
-    {!compact && (
-      <div>
-        <span>Scaling Calculator</span>
-        <strong>NPC Level</strong>
-        <p>
-          Profiles scale from both players' deployed Renown. The current sheet formula is
-          <code>round((P1 + P2) / 100)</code>, clamped from 1 to 20.
-        </p>
-      </div>
-    )}
+    {
+      !compact && (
+        <div>
+          <span>Scaling Calculator</span>
+          <strong>NPC Level</strong>
+          <p>
+            Profiles scale from both players' deployed Renown. The current sheet
+            formula is
+            <code>round((P1 + P2) / 100)</code>, clamped from 1 to 20.
+          </p>
+        </div>
+      )
+    }
     <form class="npc-renown-form" aria-label="NPC scaling controls">
       <label>
         <span>Player 1</span>
-        <input data-npc-renown="playerOne" type="number" min="0" step="1" value={initialRenown.playerOne} />
+        <input
+          data-npc-renown="playerOne"
+          type="number"
+          min="0"
+          step="1"
+          value={initialRenown.playerOne}
+        />
       </label>
       <label>
         <span>Player 2</span>
-        <input data-npc-renown="playerTwo" type="number" min="0" step="1" value={initialRenown.playerTwo} />
+        <input
+          data-npc-renown="playerTwo"
+          type="number"
+          min="0"
+          step="1"
+          value={initialRenown.playerTwo}
+        />
       </label>
       <output class="npc-level-output" data-npc-level>Level 1</output>
     </form>
+    {
+      hasMonsterGroup && (
+        <form class="npc-tracker-form" aria-label="Monster tracker filter">
+          <strong>Monster Trait Tracker</strong>
+          <p>
+            Enter discovered track hits to filter monster profiles. Leave a
+            field blank until it is known.
+          </p>
+          <div class="npc-tracker-grid">
+            <label>
+              <span>BS Hits</span>
+              <div class="npc-tracker-stepper">
+                <button
+                  type="button"
+                  data-monster-track-adjust="-1"
+                  data-monster-track-key="bs"
+                  aria-label="Decrease BS hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10" />
+                  </svg>
+                </button>
+                <output data-monster-track-display="bs">?</output>
+                <button
+                  type="button"
+                  data-monster-track-adjust="1"
+                  data-monster-track-key="bs"
+                  aria-label="Increase BS hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10M8 3v10" />
+                  </svg>
+                </button>
+                <input
+                  data-monster-track="bs"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="0"
+                  readonly
+                  tabindex="-1"
+                  aria-hidden="true"
+                />
+              </div>
+            </label>
+            <label>
+              <span>PH Hits</span>
+              <div class="npc-tracker-stepper">
+                <button
+                  type="button"
+                  data-monster-track-adjust="-1"
+                  data-monster-track-key="ph"
+                  aria-label="Decrease PH hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10" />
+                  </svg>
+                </button>
+                <output data-monster-track-display="ph">?</output>
+                <button
+                  type="button"
+                  data-monster-track-adjust="1"
+                  data-monster-track-key="ph"
+                  aria-label="Increase PH hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10M8 3v10" />
+                  </svg>
+                </button>
+                <input
+                  data-monster-track="ph"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="0"
+                  readonly
+                  tabindex="-1"
+                  aria-hidden="true"
+                />
+              </div>
+            </label>
+            <label>
+              <span>WIP Hits</span>
+              <div class="npc-tracker-stepper">
+                <button
+                  type="button"
+                  data-monster-track-adjust="-1"
+                  data-monster-track-key="wip"
+                  aria-label="Decrease WIP hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10" />
+                  </svg>
+                </button>
+                <output data-monster-track-display="wip">?</output>
+                <button
+                  type="button"
+                  data-monster-track-adjust="1"
+                  data-monster-track-key="wip"
+                  aria-label="Increase WIP hits"
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3 8h10M8 3v10" />
+                  </svg>
+                </button>
+                <input
+                  data-monster-track="wip"
+                  type="number"
+                  min="0"
+                  max="3"
+                  step="1"
+                  value="0"
+                  readonly
+                  tabindex="-1"
+                  aria-hidden="true"
+                />
+              </div>
+            </label>
+          </div>
+          <output class="npc-tracker-status" data-monster-filter-status>
+            Showing all monster profiles.
+          </output>
+        </form>
+      )
+    }
   </div>
 
-  {!compact && (
-    <div class="npc-view-note">
-      <strong>Reference structure</strong>
-      <p>
-        This page is grouped by source scenario for now. The data model also stores category
-        and contract tags, so the same NPC cards can later power faction views, global filters,
-        and contract-specific embeds.
-      </p>
-    </div>
-  )}
-
-  {visibleGroups.map((group) => (
-    <section class="npc-group" aria-labelledby={`${group.id}-title`}>
-      {!compact && (
-        <header>
-          <span>NPC Group</span>
-          <h2 id={`${group.id}-title`}>{group.title}</h2>
-          <p>{group.description}</p>
-        </header>
-      )}
-      <div class="npc-profile-grid">
-        {group.profiles.map((profile) => (
-          <ProfileCard profile={profile} interactive showTts />
-        ))}
+  {
+    !compact && (
+      <div class="npc-view-note">
+        <strong>Reference structure</strong>
+        <p>
+          This page is grouped by source scenario for now. The data model also
+          stores category and contract tags, so the same NPC cards can later
+          power faction views, global filters, and contract-specific embeds.
+        </p>
       </div>
-    </section>
-  ))}
+    )
+  }
+
+  {
+    visibleGroups.map((group) => (
+      <section class="npc-group" aria-labelledby={`${group.id}-title`}>
+        {!compact && (
+          <header>
+            <span>NPC Group</span>
+            <h2 id={`${group.id}-title`}>{group.title}</h2>
+            <p>{group.description}</p>
+          </header>
+        )}
+        <div class="npc-profile-grid">
+          {group.profiles.map((profile) => (
+            <ProfileCard profile={profile} interactive showTts />
+          ))}
+        </div>
+      </section>
+    ))
+  }
 </section>
 
 <script define:vars={{ npcScaling }}>
@@ -87,9 +237,12 @@ const initialRenown = {
 
   function scaleAttribute(profile, key, level) {
     const base = profile.attributes[key];
-    const max = profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
+    const max =
+      profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
     const usesMinimumLevel = profile.scaling?.useMinimumLevel ?? true;
-    const floor = usesMinimumLevel ? Math.max(Math.round(profile.minimumLevel), 1) : 0;
+    const floor = usesMinimumLevel
+      ? Math.max(Math.round(profile.minimumLevel), 1)
+      : 0;
 
     if ((usesMinimumLevel && level <= floor) || max === base) {
       return base;
@@ -109,9 +262,139 @@ const initialRenown = {
     return key === "bts" ? roundToNearest(value, 3) : Math.round(value);
   }
 
+  function inferTrackCount(value) {
+    const count = (Number(value) - 8) / 2;
+    if (
+      !Number.isFinite(count) ||
+      !Number.isInteger(count) ||
+      count < 0 ||
+      count > 3
+    ) {
+      return null;
+    }
+
+    return count;
+  }
+
+  function parseTrackerValue(value) {
+    const parsed = Number(value ?? 0);
+    if (!Number.isFinite(parsed)) {
+      return null;
+    }
+
+    const clamped = Math.max(0, Math.min(3, Math.round(parsed)));
+    return clamped === 0 ? null : clamped;
+  }
+
+  function syncTrackerDisplay(root, key) {
+    const input = root.querySelector(`[data-monster-track='${key}']`);
+    const display = root.querySelector(`[data-monster-track-display='${key}']`);
+    if (!input || !display) {
+      return;
+    }
+
+    const rawValue = Number(input.value);
+    const value = Number.isFinite(rawValue)
+      ? Math.max(0, Math.min(3, Math.round(rawValue)))
+      : 0;
+    input.value = String(value);
+    display.textContent = value === 0 ? "?" : String(value);
+  }
+
+  function adjustTrackerValue(root, key, delta) {
+    const input = root.querySelector(`[data-monster-track='${key}']`);
+    if (!input) {
+      return;
+    }
+
+    const rawValue = Number(input.value);
+    const current = Number.isFinite(rawValue)
+      ? Math.max(0, Math.min(3, Math.round(rawValue)))
+      : 0;
+    const next = Math.max(0, Math.min(3, current + delta));
+    input.value = String(next);
+    syncTrackerDisplay(root, key);
+  }
+
+  function applyMonsterFilter(root) {
+    const bs = parseTrackerValue(
+      root.querySelector("[data-monster-track='bs']")?.value,
+    );
+    const ph = parseTrackerValue(
+      root.querySelector("[data-monster-track='ph']")?.value,
+    );
+    const wip = parseTrackerValue(
+      root.querySelector("[data-monster-track='wip']")?.value,
+    );
+    const filters = { bs, ph, wip };
+
+    const cards = Array.from(root.querySelectorAll("[data-npc-profile]"));
+    const filteredCards = cards.filter((card) => {
+      const profile = JSON.parse(card.getAttribute("data-npc-profile-json"));
+      if (
+        !Array.isArray(profile?.contracts) ||
+        !profile.contracts.includes("Monster Hunt")
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+    if (!filteredCards.length) {
+      return;
+    }
+
+    let shown = 0;
+    filteredCards.forEach((card) => {
+      const profile = JSON.parse(card.getAttribute("data-npc-profile-json"));
+      const inferred = {
+        bs: inferTrackCount(profile?.attributes?.bs),
+        ph: inferTrackCount(profile?.attributes?.ph),
+        wip: inferTrackCount(profile?.attributes?.wip),
+      };
+
+      const isMatch =
+        (filters.bs == null || inferred.bs === filters.bs) &&
+        (filters.ph == null || inferred.ph === filters.ph) &&
+        (filters.wip == null || inferred.wip === filters.wip);
+
+      card.style.display = isMatch ? "" : "none";
+      if (isMatch) {
+        shown += 1;
+      }
+    });
+
+    const status = root.querySelector("[data-monster-filter-status]");
+    if (!status) {
+      return;
+    }
+
+    const activeFilterCount = [filters.bs, filters.ph, filters.wip].filter(
+      (value) => value != null,
+    ).length;
+    const enteredTotal = [filters.bs, filters.ph, filters.wip]
+      .filter((value) => value != null)
+      .reduce((sum, value) => sum + value, 0);
+    const filterLabel = `BS ${filters.bs ?? "?"} / PH ${filters.ph ?? "?"} / WIP ${filters.wip ?? "?"}`;
+
+    if (!activeFilterCount) {
+      status.textContent = "Showing all monster profiles.";
+      return;
+    }
+
+    if (enteredTotal > 3) {
+      status.textContent = `${filterLabel} is impossible (total hits > 3).`;
+      return;
+    }
+
+    status.textContent = `Showing ${shown} monster profile${shown === 1 ? "" : "s"} for ${filterLabel}.`;
+  }
+
   function specialDiceBonus(profile, key, scaled) {
     const base = profile.attributes[key];
-    const max = profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
+    const max =
+      profile.scaling?.maxAttributes?.[key] ?? npcScaling.maxAttributes[key];
     if (max === base) {
       return 0;
     }
@@ -129,7 +412,8 @@ const initialRenown = {
     if (ccBonus) bonuses.push(`CC Attack (+${ccBonus}SD)`);
     if (bsBonus) bonuses.push(`BS Attack (+${bsBonus}SD)`);
     if (phBonus) bonuses.push(`Dodge (+${phBonus}SD)`);
-    if (wipBonus) bonuses.push(`Comms Attack (+${wipBonus}SD)`, `Reset (+${wipBonus}SD)`);
+    if (wipBonus)
+      bonuses.push(`Comms Attack (+${wipBonus}SD)`, `Reset (+${wipBonus}SD)`);
 
     return [...bonuses, ...profile.baseSkills].join(bullet);
   }
@@ -142,7 +426,9 @@ const initialRenown = {
   function ttsProfile(profile, scaled) {
     const equipment = profile.equipment.join(", ");
     const skills = formatSkills(profile, scaled);
-    const silhouette = profile.ttsUsesSilhouette ? profile.silhouette : profile.troopClass;
+    const silhouette = profile.ttsUsesSilhouette
+      ? profile.silhouette
+      : profile.troopClass;
     const spawn = profile.spawn
       ? `
 [ddddff][sub]----------Spawn---------
@@ -153,6 +439,25 @@ ${profile.spawn}
       ? `
 [ddddff][sub]----------Description---------
 ${profile.description}
+[/sub]`
+      : "";
+
+    const priority = profile.priority?.length
+      ? `
+[ddddff][sub]----------Priority---------
+${profile.priority.join(" > ")}
+[/sub]`
+      : "";
+    const traits = profile.traits?.length
+      ? `
+[ddddff][sub]----------Traits---------
+${profile.traits.join(", ")}
+[/sub]`
+      : "";
+    const notes = profile.notes
+      ? `
+[ddddff][sub]----------Notes---------
+${profile.notes}
 [/sub]`
       : "";
 
@@ -175,13 +480,7 @@ ${skills}
 [/sub]
 [ddddff][sub]----------Weapons---------
 ${profile.weapons.join(", ")}
-[/sub]
-[ddddff][sub]----------Priority---------
-${profile.priority.join(" > ")}
-[/sub]
-[ddddff][sub]----------Traits---------
-${profile.traits.join(", ")}
-[/sub]${spawn}${description}`;
+[/sub]${priority}${traits}${spawn}${description}${notes}`;
   }
 
   async function copyText(text, statusNode, label) {
@@ -215,20 +514,27 @@ ${profile.traits.join(", ")}
           statusNode.textContent = `${label} copied.`;
         }
       } else if (statusNode) {
-        statusNode.textContent = "Copy failed. Open the text preview and select it manually.";
+        statusNode.textContent =
+          "Copy failed. Open the text preview and select it manually.";
       }
     }
   }
 
   function updateProfiles(root) {
-    const playerOne = Number(root.querySelector("[data-npc-renown='playerOne']")?.value || 0);
-    const playerTwo = Number(root.querySelector("[data-npc-renown='playerTwo']")?.value || 0);
+    const playerOne = Number(
+      root.querySelector("[data-npc-renown='playerOne']")?.value || 0,
+    );
+    const playerTwo = Number(
+      root.querySelector("[data-npc-renown='playerTwo']")?.value || 0,
+    );
     const level = clampLevel(playerOne, playerTwo);
     const levelOutput = root.querySelector("[data-npc-level]");
 
     if (levelOutput) {
       levelOutput.textContent = `Level ${level}`;
     }
+
+    ["bs", "ph", "wip"].forEach((key) => syncTrackerDisplay(root, key));
 
     root.querySelectorAll("[data-npc-profile]").forEach((card) => {
       const profile = JSON.parse(card.getAttribute("data-npc-profile-json"));
@@ -264,6 +570,8 @@ ${profile.traits.join(", ")}
         status.textContent = "";
       }
     });
+
+    applyMonsterFilter(root);
   }
 
   document.querySelectorAll("[data-npc-reference]").forEach((root) => {
@@ -271,12 +579,28 @@ ${profile.traits.join(", ")}
       input.addEventListener("input", () => updateProfiles(root));
     });
 
+    root.querySelectorAll("[data-monster-track-adjust]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const key = button.getAttribute("data-monster-track-key");
+        const delta = Number(
+          button.getAttribute("data-monster-track-adjust") || 0,
+        );
+        if (!key || !Number.isFinite(delta)) {
+          return;
+        }
+
+        adjustTrackerValue(root, key, delta);
+        updateProfiles(root);
+      });
+    });
+
     root.querySelectorAll("[data-copy-tts]").forEach((button) => {
       button.addEventListener("click", () => {
         const card = button.closest("[data-npc-profile]");
         const status = card?.querySelector("[data-copy-status]");
         const mode = button.getAttribute("data-copy-tts");
-        const text = mode === "name" ? card?.dataset.ttsName : card?.dataset.ttsProfile;
+        const text =
+          mode === "name" ? card?.dataset.ttsName : card?.dataset.ttsProfile;
         const label = mode === "name" ? "Name" : "Profile";
         copyText(text || "", status, label);
       });

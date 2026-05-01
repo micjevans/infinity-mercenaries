@@ -1,0 +1,73 @@
+---
+type LootWeapon = {
+  roll: string;
+  name: string;
+  ranges: string[];
+  traits: string;
+  burst: string;
+  ps: string;
+  slot: string;
+  swc: string;
+};
+
+interface Props {
+  weapons: LootWeapon[];
+}
+
+const { weapons } = Astro.props;
+const rangeLabels = ['8"', '16"', '24"', '32"', '40"', '48"', '96"'];
+
+const bandTone = (value: string) => {
+  if (value === "6") return "excellent";
+  if (value === "3") return "positive";
+  if (value === "0") return "neutral";
+  if (value === "-3") return "negative";
+  if (value === "-6") return "severe";
+  return "blank";
+};
+
+const displayModifier = (value: string) => {
+  if (value === "-" || value === "") return "";
+  if (/^\d/.test(value)) return `+${value}`;
+  return value;
+};
+---
+
+<section class="loot-weapon-card">
+  <header>
+    <span>Loot</span>
+    <strong>Weapon Roll Table</strong>
+  </header>
+  <div class="loot-weapon-table-wrap">
+    <table class="loot-weapon-table">
+      <thead>
+        <tr>
+          <th scope="col">Roll</th>
+          <th scope="col">Name</th>
+          {rangeLabels.map((label) => <th scope="col" class="range-head">{label}</th>)}
+          <th scope="col">PS</th>
+          <th scope="col">B</th>
+          <th scope="col">Slot</th>
+          <th scope="col">SWC</th>
+          <th scope="col">Traits</th>
+        </tr>
+      </thead>
+      <tbody>
+        {weapons.map((weapon) => (
+          <tr>
+            <th scope="row" class="loot-roll">{weapon.roll}</th>
+            <td class="loot-name">{weapon.name}</td>
+            {weapon.ranges.map((range) => (
+              <td class:list={["range-cell", `tone-${bandTone(range)}`]}>{displayModifier(range)}</td>
+            ))}
+            <td class="compact">{weapon.ps}</td>
+            <td class="compact">{weapon.burst}</td>
+            <td class="compact slot">{weapon.slot}</td>
+            <td class="compact">{weapon.swc}</td>
+            <td class="loot-traits">{weapon.traits === "-" ? "" : weapon.traits}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>

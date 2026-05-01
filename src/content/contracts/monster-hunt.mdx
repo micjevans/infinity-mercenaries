@@ -1,0 +1,216 @@
+---
+title: "Monster Hunt"
+description: "Something is stalking the region. Two companies must track the creature, survive its ambushes, and either kill it or drag it back tagged and bagged."
+contractType: "Cooperative Boss Hunt"
+status: "draft"
+updated: "2025-11-17"
+sourceUrl: "https://docs.google.com/document/d/1xbuoX1FMC_S0JzgvMPbC0DwIgDXr1yuebXGecS8cs00/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import ProfileCard from "../../components/ProfileCard.astro";
+import RuleCard from "../../components/RuleCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { sameSideDeployment, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "2 OP", text: "Discover what type of monster is present." },
+    { points: "3 OP", text: "Have the monster in a Null state at the end of the game." },
+    { points: "1 OP", text: "Have the monster dead at the end of the game, in addition to the 3 OP for being Null." },
+    { points: "1 OP", text: "Tag and Bag the monster." },
+    { points: "2 OP", text: "Bring the monster to the Deployment Zone." },
+    { points: "Victory", text: "The contract is only considered won if the monster is dead or Tag and Bagged through the Deployment Zone." }
+  ]}
+  deployment={sameSideDeployment("Monster Hunt Deployment", {
+    zones: [
+      { label: "Quadrant 1", x: 0, y: 0, width: 18, height: 20, className: "neutral-zone" },
+      { label: "Quadrant 2", x: 18, y: 0, width: 18, height: 20, className: "neutral-zone" },
+      { label: "Quadrant 3", x: 0, y: 20, width: 18, height: 20, className: "neutral-zone" },
+      { label: "Quadrant 4", x: 18, y: 20, width: 18, height: 20, className: "neutral-zone" },
+      { label: "Player Deployment Zone", x: 0, y: 40, width: 36, height: 8, className: "zone-b" }
+    ],
+    markers: [
+      { x: 18, y: 20, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: '20"', className: "deployment-distance", x: -2, y: 0, height: 20 },
+      { label: '20"', className: "deployment-distance", x: -2, y: 20, height: 20 },
+      { label: '8"', className: "deployment-distance", x: -2, y: 40, height: 8 },
+    ],
+    legend: [
+      { label: "Panoply", className: "console-marker" }
+    ],
+    showMidline: false
+  })}
+  twistTitle="Monster Hunt Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "5-8", name: "Hide and Go Seek", effect: "The monster immediately re-enters Hidden Deployment and removes any states affecting it. If it was Unconscious, it regains a single wound." },
+    { roll: "9-12", name: "Adrenaline", effect: "The monster regenerates 1 quarter of its total wounds and removes any states affecting it." },
+    { roll: "13-16", name: "A Mimic!", effect: "Roll 3 attribute dice. Replace the current monster with a new one specified by the 3 new dice rolls." },
+    { roll: "17-20", name: "The Forest Moves", effect: "Roll 1 attribute die for each quadrant. Perform the appropriate Tracking Table action as if a track was just succeeded, treating the trooper nearest the center of each quadrant as the tracking trooper." }
+  ]}
+  deploymentType="cooperative"
+  direCircumstances={true}
+  endConditions={[
+    { title: "Monster Secured", text: "If the monster is ever killed or brought into the Deployment Zone in the Tag and Bag state, the game ends immediately." }
+  ]}
+>
+  <div slot="specialRules">
+    <h3>Monster</h3>
+    <p>Players work together to destroy a single monster. The fight alternates between Hunting and Capturing phases. Monsters use profiles from the NPC table, and their wounds vary by the players' combined deployed Renown.</p>
+
+    <h3>Tracking</h3>
+    <p>When the monster is not on the board, it is in Hidden Deployment, does not act, and is not visible. While this is the case, any trooper in one of the 4 quadrants may declare the Track Skill.</p>
+    <p>When 3 successful tracks have been attempted, the monster is found, spawns according to its reference sheet, and immediately performs one action. The first time the monster is tracked down, determine the monster by combining the three tracking attempts, such as 2 BS attributes and 1 PH attribute.</p>
+
+    <RulesTable
+      eyebrow="Tracking"
+      title="Tracking Table"
+      columns={["Attribute", "Roll", "Action"]}
+      rows={[
+        { label: "BS", cells: ["1-6", "Spawn a living Defensive Turret F-13 within ZoC and LoF of the tracking trooper. Prioritize Cover to the tracking trooper and spawn as far from all troops as possible while staying in ZoC."] },
+        { label: "PH", cells: ["7-13", "Spawn a QAZ Creature within ZoC of the tracking trooper, outside LoF from all troopers or as few as possible."] },
+        { label: "WIP", cells: ["14-20", "Place a living Repeater within ZoC of the tracking trooper, outside LoF from all troopers or as few as possible."] }
+      ]}
+      variant="text"
+    />
+
+    <ContractSkillCard title="Track" type="Short Skill">
+      <p slot="mode">Attack</p>
+      <ul slot="requirements">
+        <li>The Trooper must be in a quadrant that has not been tracked in since the last reset.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll, roll an additional d20 to discover one of the monster's attributes and perform the corresponding action from the Tracking Table. If this is not the first time, simply repeat the actions from the first tracking attempt in the same order. Note down the attributes of the monster as it will be needed to determine which one is found.</li>
+        <li>Troopers possessing the Sensor Special Skill which specifies so don't need to make the WIP Roll.</li>
+        <li>Once a quadrant has been tracked it cannot be tracked again until the monster has been discovered/found.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Monster Deployables</h3>
+    <p>Deployables spawned while tracking only perform AROs and do so using their Special Skills.</p>
+
+    <ProfileCard
+      name="Living Defensive Turret F-13"
+      category="Deployable"
+      stats={[
+        { label: "CC", value: 5 },
+        { label: "BS", value: 10 },
+        { label: "ARM", value: 2 },
+        { label: "BTS", value: 3 },
+        { label: "W", value: 1 },
+        { label: "S", value: 2 }
+      ]}
+      details={[
+        { title: "Equipment", value: ["360 Visor"] },
+        { title: "Weapons", value: ["Combi Rifle (B3, ARO only)", "PARA (-3) CCW (PS 7, B1, ARO only)"] },
+        { title: "Skills", value: ["Exrah"] }
+      ]}
+    />
+
+    <ProfileCard
+      name="QAZ Creature"
+      category="Deployable"
+      stats={[
+        { label: "CC", value: 11 },
+        { label: "PH", value: 13 },
+        { label: "ARM", value: 1 },
+        { label: "BTS", value: 3 },
+        { label: "W", value: 1 },
+        { label: "S", value: 1 }
+      ]}
+      details={[
+        { title: "Equipment", value: ["360 Visor"] },
+        { title: "Weapons", value: ["AP CCW (PS 7, B3, ARO only)"] },
+        { title: "Skills", value: ["Guard (No LoF)", "Exrah"] }
+      ]}
+    />
+
+    <ProfileCard
+      name="Living Repeater"
+      category="Deployable"
+      stats={[
+        { label: "WIP", value: 13 },
+        { label: "ARM", value: 0 },
+        { label: "BTS", value: 0 },
+        { label: "W", value: 1 },
+        { label: "S", value: 1 }
+      ]}
+      details={[
+        { title: "Equipment", value: ["360 Visor", "Repeater"] },
+        { title: "Weapons", value: ["Jammer (Comms Attack, B1, ARO only)"] },
+        { title: "Skills", value: ["Hacker", "Exrah"] }
+      ]}
+    />
+
+    <h3>Capturing</h3>
+    <p>While the monster is present, players attempt to capture it while it hunts them and tries to hide.</p>
+    <ul>
+      <li>When the monster spawns, activate the monster.</li>
+      <li>Every 4 Orders spent by players, activate the monster. The count does not restart between player turns.</li>
+      <li>Once per quarter health lost, after Order resolution, the monster immediately re-enters Hidden Deployment and players must track again. It retains any states it had.</li>
+      <li>When the monster goes Unconscious, the shooting player may choose whether additional wounds kill it. It does not re-enter Hidden Deployment.</li>
+    </ul>
+
+    <ContractSkillCard title="Tag and Bag" type="Short Skill">
+      <p slot="mode">Attack</p>
+      <ul slot="requirements">
+        <li>Only Models and not Markers can perform this skill. Any Marker which declares Tag and Bag is automatically revealed.</li>
+        <li>The Trooper must be in Silhouette contact with the Monster in an Immobilized (IMM-A or IMM-B), or Unconscious State.</li>
+        <li>The Trooper must have a PH value equal to or greater than 12. Troopers with the Baggage piece of Equipment can ignore this requirement.</li>
+        <li>It is permissible to Tag and Bag a monster carried by another trooper so long as the roll is performed.</li>
+      </ul>
+      <ul slot="effects">
+        <li>This allows a Trooper to activate Tag and Bag State.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <RuleCard eyebrow="State" title="Tag and Bag State">
+      <h4>Activation</h4>
+      <ul>
+        <li>A Trooper has declared Tag and Bag on a Monster.</li>
+      </ul>
+      <h4>Effects</h4>
+      <ul>
+        <li>While in Tag and Bag State, the player will move both trooper and Monster simultaneously in Silhouette contact, using the MOV values of the carrying Trooper.</li>
+        <li>In this State, the carried Monster <strong>CAN</strong> declare and perform Orders or AROs.</li>
+        <li>In Tag and Bag State, the carried Monster does not block LoF.</li>
+      </ul>
+      <h4>Cancellation</h4>
+      <ul>
+        <li>Tag and Bag State is automatically cancelled if the Trooper that declared Tag and Bag declares a Skill other than Cautious Movement, Climb, Dodge, Jump, Reset, or a Short Movement Skill against a target that is not the Monster.</li>
+        <li>This State is also cancelled when the Trooper that declared Tag and Bag enters any Immobilized or Null State, or any other State that indicates so.</li>
+        <li>Tag and Bag State is cancelled when the Trooper that declared Tag and Bag enters a State which replaces the Model with a Marker (Camouflaged, Impersonation, Holoecho...).</li>
+        <li>This State is also automatically cancelled if the carried Monster recovers from the Immobilized (IMM-A or IMM-B), or Unconscious State.</li>
+        <li>The Trooper that declared Tag and Bag can cancel it voluntarily by spending a Short Skill of an Order, with no Roll required.</li>
+      </ul>
+    </RuleCard>
+
+    <h3>Panoply</h3>
+    <p>One special Panoply is placed in the center of the 4 quadrants.</p>
+
+    <ContractSkillCard title="Use Panoplies" type="Short Skill">
+      <p slot="mode">Attack</p>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Panoply.</li>
+        <li>This Panoply has not already been activated by this trooper this contract.</li>
+      </ul>
+      <ul slot="effects">
+        <li>By succeeding at a WIP Roll the Trooper may reference the inducements table and select one Rented Equipment worth up to 10 inducements and add it to their profile for the contract.</li>
+        <li>Troopers possessing the Booty Special Skill, or any other Skill which specifies so, don't need to make the WIP Roll.</li>
+        <li>A Trooper in Silhouette contact with this piece of scenery may spend one Short Skill of an Order to cancel their unloaded State.</li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+
+  <div slot="npcs">
+    <NpcReference groupIds={["monsters"]} compact />
+  </div>
+</ContractMission>
+

@@ -1,0 +1,328 @@
+---
+import type { ClassifiedCard } from "../data/classifieds";
+
+type Props = {
+  cards: ClassifiedCard[];
+};
+
+const { cards } = Astro.props;
+
+const cardsPerSheet = 9;
+const sheets: ClassifiedCard[][] = [];
+
+for (let i = 0; i < cards.length; i += cardsPerSheet) {
+  sheets.push(cards.slice(i, i + cardsPerSheet));
+}
+
+const categoryLabel: Record<ClassifiedCard["category"], string> = {
+  intel: "Intel",
+  support: "Support",
+  offense: "Offense",
+  sponsor: "Sponsor",
+};
+---
+
+<section
+  class="classified-reference"
+  aria-labelledby="classified-reference-heading"
+>
+  <header class="classified-reference-header screen-only">
+    <p class="eyebrow">Reference</p>
+    <h2 id="classified-reference-heading">Classified Deck</h2>
+    <p>
+      This page keeps the deck in one place for event prep and table use. The
+      print section below is laid out for cardstock cutouts and can be sent
+      directly to a printer.
+    </p>
+  </header>
+
+  <section class="screen-only" aria-label="Classified objectives list">
+    <div class="classified-list">
+      {
+        cards.map((card) => (
+          <article class="classified-entry" id={card.id}>
+            <header>
+              <p>Card {card.slot}</p>
+              <h3>{card.title}</h3>
+              <div class="classified-tags">
+                <span>{categoryLabel[card.category]}</span>
+                {card.sponsorOnly && <span>Sponsor Only</span>}
+              </div>
+            </header>
+            <p class="classified-summary">{card.summary}</p>
+            <p>{card.details}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="print-guide screen-only" aria-label="Printing guidance">
+    <h3>Print and Cut Guide</h3>
+    <ol>
+      <li>Use 100 to 120 lb cardstock (or 250 to 300 gsm).</li>
+      <li>Set printer scale to 100% (no fit-to-page scaling).</li>
+      <li>
+        Use portrait orientation and enable background graphics if your browser
+        disables them by default.
+      </li>
+      <li>
+        Cut along the card borders. Sleeve with a backing card if you want
+        stiffer shuffling.
+      </li>
+    </ol>
+  </section>
+
+  <section aria-label="Printable cards">
+    {
+      sheets.map((sheet, sheetIndex) => (
+        <article class="print-sheet">
+          <header class="print-sheet-header screen-only">
+            <h3>Printable Sheet {sheetIndex + 1}</h3>
+            <p>{sheet.length} cards on this sheet.</p>
+          </header>
+
+          <div class="print-grid">
+            {sheet.map((card) => (
+              <section class="print-card" aria-label={card.title}>
+                <p class="print-card-slot">Card {card.slot}</p>
+                <h4>{card.title}</h4>
+                <p class="print-card-category">
+                  {categoryLabel[card.category]}
+                </p>
+                <p class="print-card-details">{card.details}</p>
+                {card.sponsorOnly && (
+                  <p class="print-card-sponsor">Sponsor event card</p>
+                )}
+              </section>
+            ))}
+            {Array.from({ length: cardsPerSheet - sheet.length }).map(() => (
+              <section class="print-card empty" aria-hidden="true" />
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </section>
+</section>
+
+<style>
+  .classified-reference {
+    display: grid;
+    gap: 1.2rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .classified-reference-header {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .classified-reference-header h2 {
+    margin: 0;
+  }
+
+  .classified-reference-header p {
+    margin: 0;
+  }
+
+  .classified-list {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .classified-entry {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.8rem;
+    border: 1px solid var(--line);
+    background: rgba(20, 22, 18, 0.72);
+  }
+
+  .classified-entry header {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .classified-entry header p {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .classified-entry h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .classified-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .classified-tags span {
+    padding: 0.15rem 0.4rem;
+    border: 1px solid rgba(56, 183, 164, 0.35);
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .classified-summary {
+    margin: 0;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .classified-entry > p {
+    margin: 0;
+  }
+
+  .print-guide {
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(56, 183, 164, 0.35);
+    background:
+      linear-gradient(90deg, rgba(56, 183, 164, 0.08), transparent 55%), #141612;
+  }
+
+  .print-guide h3 {
+    margin: 0 0 0.5rem;
+  }
+
+  .print-guide ol {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  .print-sheet {
+    display: grid;
+    gap: 0.7rem;
+    padding: 0.8rem;
+    border: 1px solid var(--line);
+    background: rgba(20, 22, 18, 0.55);
+  }
+
+  .print-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .print-sheet-header h3,
+  .print-sheet-header p {
+    margin: 0;
+  }
+
+  .print-grid {
+    display: grid;
+    gap: 0.12in;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .print-card {
+    min-height: 3.15in;
+    border: 1px dashed rgba(243, 240, 232, 0.35);
+    padding: 0.34in 0.2in 0.2in;
+    background: rgba(14, 15, 13, 0.65);
+    display: grid;
+    align-content: start;
+    gap: 0.2rem;
+    position: relative;
+  }
+
+  .print-card-slot {
+    position: absolute;
+    top: 0.12in;
+    right: 0.2in;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .print-card h4 {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  .print-card-category,
+  .print-card-sponsor {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .print-card-details {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .print-card.empty {
+    opacity: 0;
+  }
+
+  @media (max-width: 980px) {
+    .print-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media print {
+    .screen-only {
+      display: none !important;
+    }
+
+    .classified-reference {
+      margin: 0;
+      gap: 0;
+    }
+
+    .print-sheet {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .print-sheet:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .print-grid {
+      gap: 0.08in;
+      grid-template-columns: repeat(3, 2.4in);
+      justify-content: center;
+    }
+
+    .print-card {
+      min-height: 3.4in;
+      border: 1pt solid #000;
+      background: #fff;
+      color: #000;
+    }
+
+    .print-card-slot,
+    .print-card h4,
+    .print-card-category,
+    .print-card-sponsor,
+    .print-card-details {
+      color: #000;
+    }
+  }
+</style>

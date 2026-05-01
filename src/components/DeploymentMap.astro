@@ -57,7 +57,7 @@ const {
   features = [],
   dimensions = [],
   legend = [],
-  showMidline = true
+  showMidline = true,
 } = Astro.props;
 
 const left = (x: number) => `${(x / width) * 100}%`;
@@ -72,57 +72,87 @@ const sizeY = (value: number) => `${(value / height) * 100}%`;
     <strong>{title}</strong>
   </figcaption>
   <div class="deployment-board-wrap">
-  <div class="deployment-board" aria-label={title} style={`--table-ratio:${width} / ${height};`}>
-    {zones.map((zone) => (
-      <div
-        class:list={["deployment-zone", zone.className]}
-        style={`left:${left(zone.x)};top:${top(zone.y)};width:${sizeX(zone.width)};height:${sizeY(zone.height)};`}
-      >
-        {zone.label && <strong>{zone.label}</strong>}
-        {zone.note && <span>{zone.note}</span>}
-      </div>
-    ))}
-    {showMidline && <div class="deployment-midline"><span>Midline</span></div>}
-    {features.map((feature) => (
-      <div
-        class:list={["deployment-feature", feature.className]}
-        style={`left:${left(feature.x)};top:${top(feature.y)};width:${sizeX(feature.width)};height:${sizeY(feature.height)};`}
-      >
-        {feature.label && <span>{feature.label}</span>}
-        {feature.note && <em>{feature.note}</em>}
-      </div>
-    ))}
-    {markers.map((marker) => (
-      <div
-        class:list={["deployment-marker", marker.className]}
-        style={`left:${left(marker.x)};top:${top(marker.y)};`}
-      >
-        {marker.label && <span>{marker.label}</span>}
-        {marker.note && <em>{marker.note}</em>}
-      </div>
-    ))}
-    {dimensions.map((dimension) => (
-      <div
-        class:list={[
-          "deployment-measure",
-          dimension.width ? "horizontal" : "vertical",
-          dimension.className
-        ]}
-        style={`left:${left(dimension.x)};top:${top(dimension.y)};width:${sizeX(dimension.width ?? 0)};height:${sizeY(dimension.height ?? 0)};`}
-      >
-        <span>{dimension.label}</span>
-      </div>
-    ))}
-  </div>
-  </div>
-  {legend.length > 0 && (
-    <div class="deployment-legend">
-      {legend.map((item) => (
-        <span>
-          <i class={item.className} aria-hidden="true"></i>
-          {item.label}
-        </span>
-      ))}
+    <div
+      class="deployment-board"
+      aria-label={title}
+      style={`--table-ratio:${width} / ${height};`}
+    >
+      {
+        zones.map((zone) => (
+          <div
+            class:list={["deployment-zone", zone.className]}
+            style={`left:${left(zone.x)};top:${top(zone.y)};width:${sizeX(zone.width)};height:${sizeY(zone.height)};`}
+          >
+            {zone.label && (
+              <strong class="deployment-zone-label">{zone.label}</strong>
+            )}
+            {zone.note && <span class="deployment-zone-note">{zone.note}</span>}
+          </div>
+        ))
+      }
+      {
+        showMidline && (
+          <div class="deployment-midline">
+            <span>Midline</span>
+          </div>
+        )
+      }
+      {
+        features.map((feature) => (
+          <div
+            class:list={["deployment-feature", feature.className]}
+            style={`left:${left(feature.x)};top:${top(feature.y)};width:${sizeX(feature.width)};height:${sizeY(feature.height)};`}
+          >
+            {feature.label && (
+              <span class="deployment-feature-label">{feature.label}</span>
+            )}
+            {feature.note && (
+              <em class="deployment-feature-note">{feature.note}</em>
+            )}
+          </div>
+        ))
+      }
+      {
+        markers.map((marker) => (
+          <div
+            class:list={["deployment-marker", marker.className]}
+            style={`left:${left(marker.x)};top:${top(marker.y)};`}
+          >
+            {marker.label && (
+              <span class="deployment-marker-label">{marker.label}</span>
+            )}
+            {marker.note && (
+              <em class="deployment-marker-note">{marker.note}</em>
+            )}
+          </div>
+        ))
+      }
+      {
+        dimensions.map((dimension) => (
+          <div
+            class:list={[
+              "deployment-measure",
+              dimension.width ? "horizontal" : "vertical",
+              dimension.className,
+            ]}
+            style={`left:${left(dimension.x)};top:${top(dimension.y)};width:${sizeX(dimension.width ?? 0)};height:${sizeY(dimension.height ?? 0)};`}
+          >
+            <span class="deployment-measure-label">{dimension.label}</span>
+          </div>
+        ))
+      }
     </div>
-  )}
+  </div>
+  {
+    legend.length > 0 && (
+      <div class="deployment-legend">
+        {legend.map((item) => (
+          <span>
+            <i class={item.className} aria-hidden="true" />
+            {item.label}
+          </span>
+        ))}
+      </div>
+    )
+  }
 </figure>

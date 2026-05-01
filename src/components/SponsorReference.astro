@@ -1,0 +1,545 @@
+---
+import RulesTable from "./RulesTable.astro";
+import ContractSkillCard from "./ContractSkillCard.astro";
+import ScenarioObjectCard from "./ScenarioObjectCard.astro";
+import type { SponsorPair } from "../data/sponsors";
+
+interface Props {
+  pairs: SponsorPair[];
+}
+
+const { pairs } = Astro.props;
+const totalSponsors = pairs.reduce(
+  (count, pair) => count + pair.sponsors.length,
+  0,
+);
+const pairAccents = [
+  "rgba(56, 183, 164, 0.95)",
+  "rgba(242, 169, 59, 0.95)",
+  "rgba(216, 76, 62, 0.95)",
+];
+const pairProgramTags: Record<string, string> = {
+  "cosmica-pharmacomp": "Recovery Program",
+  "heartmark-spirit-holomasks": "Delivery Program",
+  "bantai-yamaco-minescorp": "Survey Program",
+};
+const factionOptions = Array.from(
+  new Set(
+    pairs.flatMap((pair) => pair.sponsors.map((sponsor) => sponsor.faction)),
+  ),
+).sort();
+const programOptions = Array.from(
+  new Set(pairs.map((pair) => pairProgramTags[pair.id] ?? "Sponsor Program")),
+).sort();
+
+const trackingSkillCards: Record<
+  string,
+  {
+    title: string;
+    type: string;
+    mode: string;
+    requirements: string[];
+    effects: string[];
+  }
+> = {
+  heartmark: {
+    title: "Deliver Sponsor Package",
+    type: "Short Skill",
+    mode: "Attack",
+    requirements: [
+      "The trooper has an undelivered package assigned at contract start.",
+      "The trooper is in Silhouette contact with a door outside your Deployment Zone.",
+      "That door has not already been used for package delivery by either player.",
+    ],
+    effects: [
+      "Spend one Short Skill with the Attack trait to deliver one package.",
+      "Add 1 progress toward this sponsor's milestones.",
+      "Packages cannot be traded or dropped.",
+    ],
+  },
+  "spirit-holomasks": {
+    title: "Deliver Sponsor Package",
+    type: "Short Skill",
+    mode: "Attack",
+    requirements: [
+      "The trooper has an undelivered package assigned at contract start.",
+      "The trooper is in Silhouette contact with a door outside your Deployment Zone.",
+      "That door has not already been used for package delivery by either player.",
+    ],
+    effects: [
+      "Spend one Short Skill with the Attack trait to deliver one package.",
+      "Add 1 progress toward this sponsor's milestones.",
+      "Packages cannot be traded or dropped.",
+    ],
+  },
+  "bantai-yamaco": {
+    title: "Survey Mineral Deposit",
+    type: "Short Skill",
+    mode: "Attack",
+    requirements: [
+      "This sponsor grants a free Sponsor Classified Objective.",
+      "Your opponent places one Mineral Deposit marker in their half of the table at least 4 inches outside their Deployment Zone.",
+      "The Deposit must be reduced to 0 Structure using Anti-Material attacks before you can survey it.",
+    ],
+    effects: [
+      "Successfully surveying the Deposit adds 1 progress.",
+      "As long as the Deposit is surveyed at least once, gain 1 OP for that contract (up to a maximum of 8).",
+      "You may not attack or survey a Deposit that was placed by you.",
+    ],
+  },
+  minescorp: {
+    title: "Survey Mineral Deposit",
+    type: "Short Skill",
+    mode: "Attack",
+    requirements: [
+      "This sponsor grants a free Sponsor Classified Objective.",
+      "Your opponent places one Mineral Deposit marker in their half of the table at least 4 inches outside their Deployment Zone.",
+      "The Deposit must be reduced to 0 Structure using Anti-Material attacks before you can survey it.",
+    ],
+    effects: [
+      "Successfully surveying the Deposit adds 1 progress.",
+      "As long as the Deposit is surveyed at least once, gain 1 OP for that contract (up to a maximum of 8).",
+      "You may not attack or survey a Deposit that was placed by you.",
+    ],
+  },
+};
+---
+
+<section class="sponsor-reference" data-sponsor-reference>
+  <div class="sponsor-search-panel">
+    <label class="sponsor-search-label" for="sponsor-search-input">
+      <span>Search Sponsors</span>
+      <input
+        id="sponsor-search-input"
+        data-sponsor-search-input
+        type="search"
+        placeholder="Search by sponsor, objective, faction, or gear"
+        autocomplete="off"
+      />
+    </label>
+    <div class="sponsor-filter-wrap" aria-label="Tag filters">
+      <p class="sponsor-filter-intro">Filter by sponsor tags</p>
+      <div class="sponsor-filter-grid">
+        <div class="sponsor-filter-field">
+          <span>Faction</span>
+          <div
+            class="custom-select"
+            data-custom-select
+            data-sponsor-filter="faction"
+            data-value=""
+          >
+            <button
+              class="custom-select-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-label="Filter by faction"
+            >
+              <span data-custom-select-label>All factions</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                ><polyline points="6 9 12 15 18 9"></polyline></svg
+              >
+            </button>
+            <ul
+              class="custom-select-menu"
+              role="listbox"
+              aria-label="Faction options"
+            >
+              <li
+                class="custom-select-option is-selected"
+                role="option"
+                aria-selected="true"
+                data-value=""
+              >
+                All factions
+              </li>
+              {
+                factionOptions.map((option) => (
+                  <li
+                    class="custom-select-option"
+                    role="option"
+                    aria-selected="false"
+                    data-value={option}
+                  >
+                    {option}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="sponsor-filter-field">
+          <span>Program</span>
+          <div
+            class="custom-select"
+            data-custom-select
+            data-sponsor-filter="program"
+            data-value=""
+          >
+            <button
+              class="custom-select-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-label="Filter by program"
+            >
+              <span data-custom-select-label>All programs</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                ><polyline points="6 9 12 15 18 9"></polyline></svg
+              >
+            </button>
+            <ul
+              class="custom-select-menu"
+              role="listbox"
+              aria-label="Program options"
+            >
+              <li
+                class="custom-select-option is-selected"
+                role="option"
+                aria-selected="true"
+                data-value=""
+              >
+                All programs
+              </li>
+              {
+                programOptions.map((option) => (
+                  <li
+                    class="custom-select-option"
+                    role="option"
+                    aria-selected="false"
+                    data-value={option}
+                  >
+                    {option}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <output class="sponsor-search-status" data-sponsor-search-status>
+      Showing all {totalSponsors} sponsors.
+    </output>
+  </div>
+
+  {
+    pairs.map((pair, pairIndex) => (
+      <section class="sponsor-pair" data-sponsor-pair>
+        <div class="sponsor-pair-cards">
+          {pair.sponsors.map((sponsor) => {
+            const pairTag = pair.title;
+            const programTag = pairProgramTags[pair.id] ?? "Sponsor Program";
+            const gearTerms = (sponsor.gearItems || [])
+              .map(
+                (item) => `${item.category} ${item.name} ${item.notes || ""}`,
+              )
+              .join(" ");
+            const milestoneTerms = sponsor.milestones
+              .map((milestone) => `${milestone.milestone} ${milestone.benefit}`)
+              .join(" ");
+            const trackingSkillCard = trackingSkillCards[sponsor.id];
+            const searchText =
+              `${sponsor.name} ${sponsor.faction} ${pairTag} ${programTag} ${sponsor.summary} ${sponsor.objective} ${sponsor.tracking} ${sponsor.startingBenefit} ${milestoneTerms} ${gearTerms}`
+                .toLowerCase()
+                .replace(/\s+/g, " ")
+                .trim();
+
+            return (
+              <article
+                class="sponsor-card"
+                data-sponsor-card
+                data-search={searchText}
+                data-faction={sponsor.faction}
+                data-program={programTag}
+                style={`--sponsor-pair-accent: ${pairAccents[pairIndex % pairAccents.length]};`}
+              >
+                <header class="sponsor-card-header">
+                  <span>{sponsor.faction}</span>
+                  <h3>{sponsor.name}</h3>
+                  <div
+                    class="sponsor-card-tags"
+                    aria-label="Sponsor grouping tags"
+                  >
+                    <span class="sponsor-card-tag tone-faction">
+                      {sponsor.faction}
+                    </span>
+                    <span class="sponsor-card-tag tone-program">
+                      {programTag}
+                    </span>
+                  </div>
+                  <p>{sponsor.summary}</p>
+                </header>
+
+                <section>
+                  <h4>Objective</h4>
+                  <p>{sponsor.objective}</p>
+                </section>
+
+                <section>
+                  <h4>Progress Tracking</h4>
+                  <p>{sponsor.tracking}</p>
+                  {trackingSkillCard && (
+                    <ContractSkillCard
+                      title={trackingSkillCard.title}
+                      type={trackingSkillCard.type}
+                    >
+                      <p slot="mode">
+                        <strong>{trackingSkillCard.mode}</strong>
+                      </p>
+                      <ul slot="requirements">
+                        {trackingSkillCard.requirements.map((entry) => (
+                          <li>{entry}</li>
+                        ))}
+                      </ul>
+                      <ul slot="effects">
+                        {trackingSkillCard.effects.map((entry) => (
+                          <li>{entry}</li>
+                        ))}
+                      </ul>
+                    </ContractSkillCard>
+                  )}
+                </section>
+
+                <section>
+                  <h4>Starting Alignment Benefit</h4>
+                  <p>{sponsor.startingBenefit}</p>
+                </section>
+
+                <RulesTable
+                  eyebrow="Milestones"
+                  title={`${sponsor.name} Progress Rewards`}
+                  variant="text"
+                  columns={["Milestone", "Benefit"]}
+                  rows={sponsor.milestones.map((entry) => ({
+                    label: entry.milestone,
+                    cells: [entry.benefit],
+                  }))}
+                />
+
+                {sponsor.depositStats && (
+                  <ScenarioObjectCard
+                    eyebrow="Scenery Profile"
+                    title="Mineral Deposit"
+                    stats={[
+                      { label: "ARM", value: `${sponsor.depositStats.arm}` },
+                      { label: "BTS", value: `${sponsor.depositStats.bts}` },
+                      { label: "STR", value: `${sponsor.depositStats.w}` },
+                      { label: "Size", value: `${sponsor.depositStats.s}` },
+                    ]}
+                  >
+                    <p>
+                      Use this profile for Mineral Deposit objective markers in
+                      survey contracts.
+                    </p>
+                  </ScenarioObjectCard>
+                )}
+
+                {sponsor.gearItems && sponsor.gearItems.length > 0 && (
+                  <RulesTable
+                    eyebrow="Special Warmarket"
+                    title={`${sponsor.name} Item List`}
+                    variant="text"
+                    columns={[
+                      "Category",
+                      "Name",
+                      "Cost (CR)",
+                      "Cost (SWC)",
+                      "Tier",
+                      "Notes",
+                    ]}
+                    rows={sponsor.gearItems.map((item) => ({
+                      label: item.category,
+                      cells: [
+                        item.name,
+                        item.costCR,
+                        item.costSWC ?? "-",
+                        item.tier,
+                        item.notes ?? "-",
+                      ],
+                    }))}
+                  />
+                )}
+
+                {sponsor.benefitRules && sponsor.benefitRules.length > 0 && (
+                  <section>
+                    <h4>Additional Notes</h4>
+                    <ul>
+                      {sponsor.benefitRules.map((rule) => (
+                        <li>{rule}</li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    ))
+  }
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-sponsor-reference]");
+    if (!(root instanceof HTMLElement)) return;
+
+    const input = root.querySelector("[data-sponsor-search-input]");
+    const status = root.querySelector("[data-sponsor-search-status]");
+    const factionFilter = root.querySelector('[data-sponsor-filter="faction"]');
+    const programFilter = root.querySelector('[data-sponsor-filter="program"]');
+    const cards = Array.from(root.querySelectorAll("[data-sponsor-card]"));
+    const pairs = Array.from(root.querySelectorAll("[data-sponsor-pair]"));
+
+    if (
+      !(input instanceof HTMLInputElement) ||
+      !(status instanceof HTMLOutputElement)
+    )
+      return;
+    if (!(factionFilter instanceof HTMLElement)) return;
+    if (!(programFilter instanceof HTMLElement)) return;
+
+    const update = () => {
+      const query = input.value.trim().toLowerCase();
+      const factionValue = (factionFilter.dataset.value || "")
+        .trim()
+        .toLowerCase();
+      const programValue = (programFilter.dataset.value || "")
+        .trim()
+        .toLowerCase();
+      let visibleCards = 0;
+
+      cards.forEach((card) => {
+        if (!(card instanceof HTMLElement)) return;
+        const haystack = (card.dataset.search || "").toLowerCase();
+        const factionMatch =
+          !factionValue ||
+          (card.dataset.faction || "").toLowerCase() === factionValue;
+        const programMatch =
+          !programValue ||
+          (card.dataset.program || "").toLowerCase() === programValue;
+        const searchMatch = query.length === 0 || haystack.includes(query);
+        const visible = factionMatch && programMatch && searchMatch;
+        card.hidden = !visible;
+        if (visible) visibleCards += 1;
+      });
+
+      pairs.forEach((pair) => {
+        if (!(pair instanceof HTMLElement)) return;
+        const hasVisibleCard = Array.from(
+          pair.querySelectorAll("[data-sponsor-card]"),
+        ).some((card) => card instanceof HTMLElement && !card.hidden);
+        pair.hidden = !hasVisibleCard;
+      });
+
+      const hasAnyFilter =
+        query.length > 0 ||
+        !!factionFilter.dataset.value ||
+        !!programFilter.dataset.value;
+
+      if (!hasAnyFilter) {
+        status.textContent = `Showing all ${cards.length} sponsors.`;
+      } else {
+        status.textContent = `Showing ${visibleCards} sponsor${visibleCards === 1 ? "" : "s"} after filters.`;
+      }
+    };
+
+    // Custom select logic
+    const customSelects = Array.from(
+      root.querySelectorAll("[data-custom-select]"),
+    );
+
+    const closeSelect = (el) => {
+      if (!(el instanceof HTMLElement)) return;
+      if (!el.classList.contains("is-open")) return;
+      el.classList.remove("is-open");
+      el.classList.add("is-closing");
+      const t = el.querySelector(".custom-select-trigger");
+      if (t) t.setAttribute("aria-expanded", "false");
+      const menu = el.querySelector(".custom-select-menu");
+      if (menu instanceof HTMLElement) {
+        menu.addEventListener(
+          "animationend",
+          () => {
+            el.classList.remove("is-closing");
+          },
+          { once: true },
+        );
+      }
+    };
+
+    customSelects.forEach((selectEl) => {
+      if (!(selectEl instanceof HTMLElement)) return;
+      const trigger = selectEl.querySelector(".custom-select-trigger");
+      const options = Array.from(
+        selectEl.querySelectorAll(".custom-select-option"),
+      );
+      if (!(trigger instanceof HTMLButtonElement)) return;
+
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = selectEl.classList.contains("is-open");
+        customSelects.forEach((el) => closeSelect(el));
+        if (!isOpen) {
+          selectEl.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      });
+
+      options.forEach((option) => {
+        if (!(option instanceof HTMLElement)) return;
+        option.addEventListener("click", () => {
+          const value = option.dataset.value || "";
+          const label = option.textContent || "";
+          selectEl.dataset.value = value;
+          const labelEl = trigger.querySelector("[data-custom-select-label]");
+          if (labelEl) labelEl.textContent = label;
+          options.forEach((o) => {
+            o.classList.remove("is-selected");
+            o.setAttribute("aria-selected", "false");
+          });
+          option.classList.add("is-selected");
+          option.setAttribute("aria-selected", "true");
+          closeSelect(selectEl);
+          update();
+        });
+      });
+    });
+
+    document.addEventListener("click", () => {
+      customSelects.forEach((el) => closeSelect(el));
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        customSelects.forEach((el) => closeSelect(el));
+      },
+      { passive: true },
+    );
+
+    input.addEventListener("input", update);
+    update();
+  })();
+</script>

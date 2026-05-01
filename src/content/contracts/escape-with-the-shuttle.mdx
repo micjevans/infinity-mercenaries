@@ -1,0 +1,138 @@
+---
+title: "Escape with the Shuttle"
+description: "Corporate partners have become enemies, and both sides want the same evac assets. Launch the shuttles, extract your team, or deny the prize to your rivals."
+contractType: "Extraction"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1nsO-wFYW-BzvHJaeg-8lQnzlt--z0PPfs_-B0EsbEqs/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import ScenarioObjectCard from "../../components/ScenarioObjectCard.astro";
+import { standardOpposedDeploymentWithExclusion, standardTwistIntro } from "../../data/contractMaps";
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", maxPoints: "4", text: "For each friendly unit that escaped in a shuttle, including Unconscious, IMM-A, IMM-B, and Spawn-Embryo state units." },
+    { points: "2 OP", text: "If the friendly Captain escaped in a shuttle." },
+    { points: "2 OP", text: "Have more or equal Renown escaped in the shuttles than your opponent." },
+    { points: "1 OP", text: "Have all friendly units escape in shuttles." },
+    { points: "1 OP", text: "Do not attack any shuttles with attacks that are not Non-Lethal." }
+  ]}
+  deployment={standardOpposedDeploymentWithExclusion("Escape with the Shuttle Deployment", {
+    markers: [
+      { label: "Shuttle", x: 18, y: 24, className: "shuttle-marker" },
+      { label: "Shuttle", x: 4, y: 24, className: "shuttle-marker" },
+      { label: "Shuttle", x: 32, y: 24, className: "shuttle-marker" }
+    ],
+    dimensions: [
+      { label: '12"', className: "deployment-distance", x: -2, y: 0, height: 12 },
+      { label: '8"', className: "exclusion-distance", x: -2, y: 16, height: 8 },
+      { label: '4"', className: "shuttle-edge-distance", x: 0, y: 50, width: 4 }
+    ],
+    legend: [
+      { label: "Shuttle", className: "shuttle-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ]
+  })}
+  twistTitle="Escape with the Shuttle Twist"
+  twistIntro={standardTwistIntro}
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Hijacking Prevention Protocols", effect: "Every time a WIP check for launching a shuttle fails, that shuttle enters IMM-A State at the end of the Order." },
+    { roll: "11-15", name: "A Storm Is Brewing", effect: "The entire table becomes a Low Visibility Zone. Attempts to launch a shuttle are made with a further -3 MOD." },
+    { roll: "16-20", name: "More Shuttles!", effect: "For every launched or destroyed shuttle, a new shuttle respawns at its original location." }
+  ]}
+  deploymentType="opposed"
+  endConditions={[
+    { title: "Stranded", text: "If all shuttles have been launched and the twist has already happened, either player may choose to end the game immediately." }
+  ]}
+>
+  <div slot="specialRules">
+    <h3>Shuttles</h3>
+    <p>There are <strong>3 Shuttles</strong>: one as close to the center point as possible and two placed 4 inches from either side of the table. Each shuttle should have a Wide Gate entrance on both sides facing the Deployment Zones.</p>
+    <p>No Shuttle may be attacked until the first launching attempt has been declared.</p>
+
+    <ScenarioObjectCard
+      eyebrow="Scenery Profile"
+      title="Shuttle"
+      stats={[
+        { label: "PH", value: "15" },
+        { label: "WIP", value: "15" },
+        { label: "ARM", value: "8" },
+        { label: "BTS", value: "9" },
+        { label: "STR", value: "3" },
+        { label: "S", value: "8" }
+      ]}
+    >
+      <ul>
+        <li>Equipment: 360 Visor.</li>
+        <li>Special Skills: Remote Presence.</li>
+        <li>The Shuttle is considered to have the REM Troop Type.</li>
+        <li>Troopers inside the Shuttle have Total Cover against attacks from outside.</li>
+        <li>At the start of every player turn, an Unconscious Shuttle attempts a PH-6 check to recover 1 STR, and attempts to Reset and Dodge to remove states.</li>
+        <li>Any model inside may spend an Entire Order to have the Shuttle perform a recovery roll or remove IMM-A or IMM-B. These Orders provoke AROs against the Shuttle.</li>
+        <li>The Shuttle AROs to attacks with Dodge or Reset, chosen by the non-attacking player.</li>
+      </ul>
+    </ScenarioObjectCard>
+
+    <ContractSkillCard title="Open Door" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Shuttle Door.</li>
+      </ul>
+      <ul slot="effects">
+        <li>
+        <p>By succeeding at a WIP -3 Roll, open the Shuttle Door the Trooper is in contact with.</p>
+          <ul>
+            <li>Specialist Operatives, Engineers, and Hackers perform a WIP +3 Roll.</li>
+          </ul>
+        </li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Launch Shuttle" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be inside of a Shuttle.</li>
+        <li>There must be 3 (2 with elite deployment) or fewer Troopers inside of the Shuttle.</li>
+        <li>The Shuttle must not be IMM-A, IMM-B, or in a NULL state.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Trooper to perform a Normal WIP Roll.</li>
+        <li>
+        <p>This Skill triggers AROs at the Shuttle of all enemy Troopers with LoF to the Shuttle.</p>
+          <ul>
+            <li>Engineers and Hackers perform a WIP +3 Roll.</li>
+            <li>All AROs will be contested by the WIP Roll performed by the activating Trooper.</li>
+          </ul>
+        </li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll.</li>
+        <li>If the roll is passed, so long as the requirements are met by the resolution of the order, the Shuttle is launched removing itself and all of its passengers from the table.</li>
+        <li>If the Shuttle enters the Dead state or an IMM state at the completion of the order, the Shuttle gains the state and is not launched.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <ContractSkillCard title="Reset Shuttle" type="SHORT SKILL">
+      <span slot="mode">Attack</span>
+      <ul slot="requirements">
+        <li>The Trooper must be inside of a Shuttle.</li>
+        <li>The Shuttle must be IMM-A, IMM-B, or in a NULL state.</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Trooper to perform a Reset Roll on behalf of the Shuttle using their own WIP attribute.</li>
+        <li>This Skill does not trigger AROs for the Shuttle.</li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll.</li>
+        <li>
+        <p>If the reset roll is passed, applying all negative mods, remove all states from the Shuttle with the exception of the Unconscious state.</p>
+          <ul>
+            <li>If the Shuttle has no states other than the Unconscious state, AND the roll was passed as if it were a WIP -3 roll, the Shuttle regains one structure.</li>
+          </ul>
+        </li>
+      </ul>
+    </ContractSkillCard>
+
+  </div>
+</ContractMission>
+

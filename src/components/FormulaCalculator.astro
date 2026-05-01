@@ -1,0 +1,106 @@
+---
+interface Props {
+  title?: string;
+  formula: string;
+  mode?: "subtract" | "inducements";
+  inputLabel: string;
+  inputDefault?: number;
+  secondaryInputLabel?: string;
+  secondaryInputDefault?: number;
+  baseValue?: number;
+  outputLabel?: string;
+  clampMin?: number;
+  clampMax?: number;
+}
+
+const {
+  title = "Calculator",
+  formula,
+  mode = "subtract",
+  inputLabel,
+  inputDefault = 0,
+  secondaryInputLabel,
+  secondaryInputDefault = 0,
+  baseValue = 0,
+  outputLabel = "Result",
+  clampMin,
+  clampMax,
+} = Astro.props;
+
+const initialResult =
+  mode === "inducements"
+    ? Math.floor(Math.max(0, inputDefault - secondaryInputDefault) / 2 / 5) * 5
+    : Math.min(
+        clampMax ?? Number.POSITIVE_INFINITY,
+        Math.max(
+          clampMin ?? Number.NEGATIVE_INFINITY,
+          baseValue - inputDefault,
+        ),
+      );
+
+const calculationSteps =
+  mode === "inducements"
+    ? [
+        "const higher = Number(this.elements.formulaInput.value || 0);",
+        "const lower = Number(this.elements.formulaInputSecondary.value || 0);",
+        "const difference = Math.max(0, higher - lower);",
+        "const half = difference / 2;",
+        "const result = Math.floor(half / 5) * 5;",
+        "this.elements.formulaResult.value = String(result);",
+      ]
+    : [
+        `let result = ${baseValue} - Number(this.elements.formulaInput.value || 0);`,
+      ];
+if (mode === "subtract") {
+  if (typeof clampMin === "number") {
+    calculationSteps.push(`result = Math.max(${clampMin}, result);`);
+  }
+  if (typeof clampMax === "number") {
+    calculationSteps.push(`result = Math.min(${clampMax}, result);`);
+  }
+  calculationSteps.push("this.elements.formulaResult.value = String(result);");
+}
+const onInputScript = calculationSteps.join(" ");
+---
+
+<section class="formula-calculator">
+  <header>
+    <span>{title}</span>
+    <code>{formula}</code>
+  </header>
+  <form
+    class="formula-calculator-grid"
+    oninput={onInputScript}
+    onsubmit="return false;"
+    aria-label={title}
+  >
+    <label>
+      <span>{inputLabel}</span>
+      <input
+        type="number"
+        step="1"
+        min="0"
+        value={inputDefault}
+        name="formulaInput"
+      />
+    </label>
+    {
+      secondaryInputLabel && (
+        <label>
+          <span>{secondaryInputLabel}</span>
+          <input
+            type="number"
+            step="1"
+            min="0"
+            value={secondaryInputDefault}
+            name="formulaInputSecondary"
+          />
+        </label>
+      )
+    }
+    <div class="formula-output" role="status" aria-live="polite">
+      <span>{outputLabel}</span>
+      <output name="formulaResult">{initialResult}</output>
+    </div>
+  </form>
+</section>

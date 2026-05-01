@@ -9,10 +9,11 @@ updated: "2026-04-28"
 
 import RuleCard from "../../components/RuleCard.astro";
 import RulesTable from "../../components/RulesTable.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
 
 ## Injury Rolls
 
-The mercenary life is dangerous, and injuries are common. At the end of a Contract, every unit that entered the **Dead** state must make a **PH -3 Roll**.
+The mercenary life is dangerous, and injuries are common. At the end of a Contract, every unit that entered the **Dead** state must make a save roll against **PH − 3** (roll equal to or under the unit's PH − 3 on a d20).
 
 If the roll succeeds, the unit is back on its feet, wheels, or other applicable locomotion with no further consequences. If the roll fails, the unit rolls on the Injury table.
 
@@ -28,25 +29,44 @@ If a unit already has every Injury in the table, no additional Injury roll is ne
 
 ## Recovery
 
-Only time and rest can heal a unit. If a unit is not deployed during a Contract, remove one of that unit's Injuries at the end of the match.
+<RuleCard eyebrow="Recovery Rule" title="Rest and Recuperation">
 
-Captains do not have the luxury of sitting idle. A Captain may remove a single Injury at the end of the following Contract, even if the Captain was deployed.
+Only time and rest can heal a unit. If a unit is **not deployed** during a Contract, remove one of that unit's Injuries at the end of that match.
+
+Bye rounds count as not being deployed. All units on the roster receive the normal recovery benefit when their player receives a bye.
+
+</RuleCard>
+
+<RuleCard eyebrow="Recovery Rule" title="Captain's Resilience">
+
+Captains do not have the luxury of sitting idle. A Captain may remove a single Injury at the end of each Contract, even if the Captain was deployed.
+
+</RuleCard>
 
 ## Injury Table
 
 <RulesTable
   eyebrow="Injuries"
   title="Permanent Injury Results"
+  die="d20"
   variant="text"
   columns={["Roll", "Injury", "Effect"]}
   rows={[
     { label: "1-6", cells: ["Battle Fury", "The near-death experience drastically modifies the unit's behavior. The unit is considered to have Frenzy."] },
     { label: "7-8", cells: ["Punctured Lung", "The unit suffers -1 PH and -1 to the second MOV value."] },
-    { label: "9-10", cells: ["Arms", "The unit suffers -1 BS."] },
-    { label: "11-12", cells: ["Brain Injury", "The unit suffers -1 WIP and -3 CC."] },
-    { label: "13-14", cells: ["Legs Injury", "The unit suffers -2 to the first MOV value."] },
-    { label: "15-16", cells: ["Body Injury", "The unit suffers -2 PH."] },
-    { label: "17-18", cells: ["Eyes Injury", "The unit suffers -1 BS and -2 on Discover Rolls."] },
+    { label: "9-10", cells: ["Shattered Arm", "The unit suffers -1 BS."] },
+    { label: "11-12", cells: ["Cracked Skull", "The unit suffers -1 WIP and -3 CC."] },
+    { label: "13-14", cells: ["Blown Leg", "The unit suffers -2 to the first MOV value."] },
+    { label: "15-16", cells: ["Deep Wound", "The unit suffers -2 PH."] },
+    { label: "17-18", cells: ["Ruined Optics", "The unit suffers -1 BS and -2 on Discover Rolls."] },
     { label: "19-20", cells: ["Shell Shocked", "The unit suffers -2 WIP."] },
   ]}
 />
+
+<ReferenceLinkCallout
+  title="Downtime"
+  href="/rules/downtime/"
+  linkLabel="Open Downtime"
+>
+  <p>After resolving injuries, proceed to Downtime for events, ranking up, and purchases before the next round.</p>
+</ReferenceLinkCallout>

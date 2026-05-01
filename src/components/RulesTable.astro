@@ -1,7 +1,14 @@
 ---
+type BulletCell = {
+  intro?: string;
+  bullets: string[];
+};
+
+type TableCell = string | number | BulletCell;
+
 type TableRow = {
   label: string;
-  cells: Array<string | number>;
+  cells: TableCell[];
 };
 
 interface Props {
@@ -11,15 +18,28 @@ interface Props {
   rows: TableRow[];
   note?: string;
   variant?: "matrix" | "text";
+  die?: string;
 }
 
-const { eyebrow = "Reference", title, columns, rows, note, variant = "matrix" } = Astro.props;
+const {
+  eyebrow = "Reference",
+  title,
+  columns,
+  rows,
+  note,
+  variant = "matrix",
+  die,
+} = Astro.props;
+
+const isBulletCell = (cell: TableCell): cell is BulletCell =>
+  typeof cell === "object" && cell !== null && "bullets" in cell;
 ---
 
 <section class:list={["rules-table-card", `variant-${variant}`]}>
   <header>
     <span>{eyebrow}</span>
     <strong>{title}</strong>
+    {die && <span class="rules-table-die">{die}</span>}
   </header>
   <div class="rules-table-wrap">
     <table>
@@ -30,12 +50,31 @@ const { eyebrow = "Reference", title, columns, rows, note, variant = "matrix" } 
         </tr>
       </thead>
       <tbody>
-        {rows.map((row) => (
-          <tr>
-            <th scope="row">{row.label}</th>
-            {row.cells.map((cell) => <td>{cell}</td>)}
-          </tr>
-        ))}
+        {
+          rows.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              {row.cells.map((cell) => (
+                <td>
+                  {isBulletCell(cell) ? (
+                    <>
+                      {cell.intro && (
+                        <p class="rules-table-cell-intro">{cell.intro}</p>
+                      )}
+                      <ul class="rules-table-bullets">
+                        {cell.bullets.map((bullet) => (
+                          <li>{bullet}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    cell
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>

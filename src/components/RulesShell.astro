@@ -23,67 +23,107 @@ const {
   section = "Rules",
   currentPath,
   headings = [],
-  contentClass = ""
+  contentClass = "",
 } = Astro.props;
 
 const rules = (await getCollection("rules")).sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
 
 const ruleLinks = [
   ...rules.map((rule) => ({
     href: `/rules/${rule.id.replace(/\.mdx?$/, "")}/`,
     title: rule.data.title,
-    section: rule.data.section ?? "Rules"
+    section: rule.data.section ?? "Rules",
   })),
   {
     href: "/rules/npcs/",
     title: "NPC Profiles",
-    section: "Reference"
-  }
+    section: "Reference",
+  },
 ];
 
-const navGroups = ruleLinks.reduce<Record<string, typeof ruleLinks>>((groups, link) => {
-  groups[link.section] ??= [];
-  groups[link.section].push(link);
-  return groups;
-}, {});
+const navGroups = ruleLinks.reduce<Record<string, typeof ruleLinks>>(
+  (groups, link) => {
+    groups[link.section] ??= [];
+    groups[link.section].push(link);
+    return groups;
+  },
+  {},
+);
 
-const visibleHeadings = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+const visibleHeadings = headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= 3,
+);
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="rules-shell">
-    <aside class="rules-sidebar" aria-label="Rules navigation">
+    <aside
+      class="rules-sidebar"
+      aria-label="Rules navigation"
+      data-rules-sidebar
+    >
       <div class="rules-sidebar-inner">
         <a class="rules-sidebar-home" href="/rules/">Field Manual</a>
         <nav class="rules-page-nav" aria-label="Rules pages">
-          {Object.entries(navGroups).map(([group, links]) => (
-            <details class="rules-nav-group" open={links.some((link) => link.href === currentPath)}>
-              <summary>{group}</summary>
-              <div>
-                {links.map((link) => (
-                  <a class:list={[link.href === currentPath && "active"]} href={link.href}>
-                    {link.title}
-                  </a>
-                ))}
-              </div>
-            </details>
-          ))}
+          {
+            Object.entries(navGroups).map(([group, links]) => (
+              <details
+                class="rules-nav-group"
+                open={links.some((link) => link.href === currentPath)}
+              >
+                <summary>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    class="summary-icon"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                  {group}
+                </summary>
+                <div>
+                  {links.map((link) => (
+                    <a
+                      class:list={[link.href === currentPath && "active"]}
+                      href={link.href}
+                    >
+                      {link.title}
+                    </a>
+                  ))}
+                </div>
+              </details>
+            ))
+          }
         </nav>
 
-        {visibleHeadings.length > 0 && (
-          <details class="rules-toc" open>
-            <summary>On This Page</summary>
-            <nav aria-label="Current page sections">
-              {visibleHeadings.map((heading) => (
-                <a class:list={[`depth-${heading.depth}`]} href={`#${heading.slug}`}>
-                  {heading.text}
-                </a>
-              ))}
-            </nav>
-          </details>
-        )}
+        {
+          visibleHeadings.length > 0 && (
+            <details class="rules-toc" open>
+              <summary>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  class="summary-icon"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+                On This Page
+              </summary>
+              <nav aria-label="Current page sections">
+                {visibleHeadings.map((heading) => (
+                  <a
+                    class:list={[`depth-${heading.depth}`]}
+                    href={`#${heading.slug}`}
+                  >
+                    {heading.text}
+                  </a>
+                ))}
+              </nav>
+            </details>
+          )
+        }
       </div>
     </aside>
 
@@ -97,6 +137,87 @@ const visibleHeadings = headings.filter((heading) => heading.depth >= 2 && headi
       <article class:list={["rules-content", contentClass]}>
         <slot />
       </article>
+
+      {
+        visibleHeadings.length > 0 && (
+          <details class="rules-mobile-toc" data-rules-mobile-toc>
+            <summary>
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="summary-icon">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+              On This Page
+            </summary>
+            <nav aria-label="Current page sections (mobile)">
+              {visibleHeadings.map((heading) => (
+                <a
+                  class:list={[`depth-${heading.depth}`]}
+                  href={`#${heading.slug}`}
+                >
+                  {heading.text}
+                </a>
+              ))}
+            </nav>
+          </details>
+        )
+      }
     </div>
   </div>
+
+  <script>
+    const sidebar = document.querySelector("[data-rules-sidebar]");
+    const mobileToc = document.querySelector(
+      "[data-rules-mobile-toc]",
+    ) as HTMLElement | null;
+    const siteHeader = document.querySelector(
+      ".site-header",
+    ) as HTMLElement | null;
+    const mobileQuery = window.matchMedia("(max-width: 860px)");
+
+    if (sidebar && mobileToc) {
+      const updateMobileTocTop = () => {
+        if (!mobileQuery.matches || !siteHeader) {
+          mobileToc.style.removeProperty("--rules-mobile-toc-top");
+          return;
+        }
+
+        const headerRect = siteHeader.getBoundingClientRect();
+        const topOffset = Math.max(headerRect.bottom, 0);
+        mobileToc.style.setProperty("--rules-mobile-toc-top", `${topOffset}px`);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries: IntersectionObserverEntry[]) => {
+          for (const entry of entries) {
+            if (entry.target === sidebar) {
+              updateMobileTocTop();
+
+              if (!mobileQuery.matches) {
+                mobileToc.classList.remove("is-visible");
+                continue;
+              }
+
+              const sidebarFullyOutOfView = entry.intersectionRatio === 0;
+              mobileToc.classList.toggle("is-visible", sidebarFullyOutOfView);
+            }
+          }
+        },
+        {
+          threshold: [0, 1],
+        },
+      );
+
+      observer.observe(sidebar);
+
+      updateMobileTocTop();
+      window.addEventListener("resize", updateMobileTocTop, { passive: true });
+
+      mobileQuery.addEventListener("change", () => {
+        updateMobileTocTop();
+
+        if (!mobileQuery.matches) {
+          mobileToc.classList.remove("is-visible");
+        }
+      });
+    }
+  </script>
 </BaseLayout>

@@ -1,0 +1,154 @@
+---
+title: "Titanomachy"
+description: "A semi-tested boss contract with known balance risks. Break the Titan's armor, survive its deck-driven activations, and bring the machine down."
+contractType: "Cooperative Boss Fight"
+status: "draft"
+updated: "2025-08-21"
+sourceUrl: "https://docs.google.com/document/d/1oa8nNV8dTXX4Q0AQ6O1VVK28JX1Cbf2aDDXwNUPVlmA/edit?usp=drivesdk"
+---
+
+import ContractMission from "../../components/ContractMission.astro";
+import ContractSkillCard from "../../components/ContractSkillCard.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import NpcReference from "../../components/NpcReference.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+import { sameSideDeployment } from "../../data/contractMaps";
+
+<WarningCallout title="Poorly Balanced Contract">
+  <p>Titanomachy has been played many times and works in concept, but it has significant known balance issues. This mission is not recommended to be utilized but kept here for tracking and development purposes.Treat it as an experimental boss contract and consider making adjustments before using it in a formal event.</p>
+</WarningCallout>
+
+<ContractMission
+  objectives={[
+    { points: "1 OP", text: "Bring the Titan to Phase 2." },
+    { points: "2 OP", text: "Bring the Titan to Phase 3." },
+    { points: "4 OP", text: "Bring the Titan to Phase 4." },
+    { points: "8 OP", text: "Kill the Titan." },
+    { points: "Victory", text: "The mission is considered won only if the Titan is killed." }
+  ]}
+  deployment={sameSideDeployment("Titanomachy Deployment", {
+    zones: [
+      { label: "Exclusion Zone", x: 0, y: 0, width: 36, height: 28, className: "exclusion-zone" },
+      { label: "", x: 0, y: 28, width: 36, height: 12, className: "neutral-zone" },
+      { label: "Player Deployment Zone", x: 0, y: 40, width: 36, height: 8, className: "zone-b" }
+    ],
+    markers: [
+      { x: 18, y: 20, className: "titan-marker" },
+      { x: 8, y: 24, className: "demititan-marker" },
+      { x: 28, y: 24, className: "demititan-marker" },
+      { x: 8, y: 20, className: "console-marker" },
+      { x: 28, y: 20, className: "console-marker" },
+      { x: 8, y: 4, className: "console-marker" },
+      { x: 28, y: 4, className: "console-marker" }
+    ],
+    dimensions: [
+      { label: '4"', className: "exclusion-distance", x: -2, y: 0, height: 4 },
+      { label: '4"', className: "exclusion-distance", x: -2, y: 20, height: 4 },
+      { label: '4"', className: "exclusion-distance", x: -2, y: 24, height: 4 },
+      { label: '12"', className: "deployment-distance", x: -2, y: 28, height: 12 },
+      { label: '8"', className: "deployment-distance label-below", x: 0, y: 50, width: 8 }
+    ],
+    legend: [
+      { label: "Titan", className: "titan-marker" },
+      { label: "Demititan", className: "demititan-marker" },
+      { label: "Console", className: "console-marker" },
+      { label: "Exclusion Zone", className: "exclusion-swatch" }
+    ],
+    showMidline: false
+  })}
+  twistTitle="Titanomachy Twist"
+  twistIntro="After the end of Round 2, but before the beginning of Round 3, roll a single d20 and apply the result below."
+  twistRows={[
+    { roll: "1-5", name: "No Twist", effect: "Nothing happens." },
+    { roll: "6-10", name: "Reinforce", effect: "The Titan immediately performs the Reinforce action." },
+    { roll: "11-15", name: "Ensnare", effect: "The Titan immediately performs the Ensnare action." },
+    { roll: "16-20", name: "Cull the Weak", effect: "The Titan immediately performs the Cull the Weak action." }
+  ]}
+  deploymentType="cooperative"
+  direCircumstances={true}
+  exclusionZone="the Exclusion Zone covers 28 inches from the back edge of the game table. Airborne Deployment and Superior Deployment skills cannot be used to deploy inside it."
+  noTroopsRemaining={false}
+  endConditions={[
+    { title: "No Troopers Remaining", text: "If one player starts their Active Turn with no troopers on the board, Null troopers are still considered on the board for this condition." }
+  ]}
+>
+  <div slot="specialRules">
+    <h3>Titan</h3>
+    <p>Shuffle the Titan card deck. The Titan starts with wounds equal to <strong>4 + 4 per every 300 deployed Renown</strong>, rounded to the nearest 300.</p>
+
+    <h3>Adaptive Ammo</h3>
+    <p>If a trooper would not be affected by IMM-B, the Titan's E/M Ammo inflicts IMM-A instead.</p>
+
+    <h3>Adaptive Armor</h3>
+    <p>The Titan is immune to all states and ammo types, but still rolls saves that would normally occur from those ammo types. If it fails, it takes 1 wound. It is entirely immune to Spotlight and Targeted. E/M CC weapons are treated as DA.</p>
+
+    <h3>Behemoth</h3>
+    <p>Troopers targeted by a Titan activation may only contest with Dodge or Reset. Other AROs affect the Titan but do not contest its rolls.</p>
+
+    <RulesTable
+      eyebrow="Titan"
+      title="ARO Priority"
+      columns={["Condition", "Reaction"]}
+      rows={[
+        { label: "In Silhouette Contact", cells: ["CC Attack using PARA CC (-6)."] },
+        { label: "In LoF", cells: ["BS Attack using Adaptive E/M Spitfire."] },
+        { label: "In Hacking Range", cells: ["Comms Attack using Spotlight (+1B)."] }
+      ]}
+      variant="text"
+    />
+
+    <h3>Phase Number</h3>
+    <p>The Titan has 4 phases. Its phase number is equal to the quarter of health it is currently on. For example, a 12-wound Titan enters Phase 2 at 9 Wounds, Phase 3 at 6 Wounds, and Phase 4 at 3 Wounds.</p>
+
+    <h3>Activating the Titan</h3>
+    <p>After every Order, add a Patience Marker to the Titan. When it has 5 Patience Markers, before the next Order is played, roll a d20. If <strong>5 x (Titan Phase - 1) + Patience Markers + roll</strong> is greater than 19, the Titan activates. This continues every 5 Patience Markers until it activates.</p>
+    <p>When the Titan activates, draw one card and play the action. Each action counts as a full Order for AROs. The Titan draws and resolves a number of cards equal to its phase, then removes all Patience Markers.</p>
+
+    <h3>Titan Actions</h3>
+    <ul>
+      <li><strong>Exploit Vulnerabilities (2):</strong> Guided missile every Targeted trooper using the Titan's Adaptive E/M Spitfire.</li>
+      <li><strong>Crush the Strong (2):</strong> move in a straight line over any terrain to the nearest trooper and perform a CC Attack with Burst equal to phase number.</li>
+      <li><strong>Target Vulnerabilities (2):</strong> perform Spotlight (+1B) against targets equal to phase number, prioritizing nearest targets in ZoC or repeater ZoC.</li>
+      <li><strong>Cull the Weak (1):</strong> all troopers with IMM-A or IMM-B make WIP-3. On failure they gain the IMM state they do not have; if they already have both, they are executed and removed.</li>
+      <li><strong>Reinforce (1):</strong> deploy Demititans equal to the Titan's phase in a cross formation around the Titan.</li>
+      <li><strong>Ensnare (1):</strong> deploy SymbioBugs equal to the Titan's phase on Consoles, nearest first. A triggered SymbioBug gives Targeted without a save if not Dodged.</li>
+    </ul>
+
+    <h3>Consoles</h3>
+    <p>There are 4 Consoles. At the start of the game, randomly choose 2. Connecting both breaks the Titan's Adaptive Armor until it either takes a wound or 5 more Orders pass. While broken, the Titan's ARM and BTS are reduced to 3 and it becomes vulnerable to AP, DA, EXP, and Continuous.</p>
+
+    <RulesTable
+      eyebrow="Consoles"
+      title="Console Pair"
+      columns={["Roll", "Chosen Consoles"]}
+      rows={[
+        { label: "1-3", cells: ["1 and 2"] },
+        { label: "4-6", cells: ["1 and 3"] },
+        { label: "7-10", cells: ["1 and 4"] },
+        { label: "11-14", cells: ["2 and 3"] },
+        { label: "15-18", cells: ["2 and 4"] },
+        { label: "19-20", cells: ["3 and 4"] }
+      ]}
+      variant="text"
+    />
+
+    <ContractSkillCard title="Connect a Console" type="Short Skill">
+      <p slot="mode">Attack</p>
+      <ul slot="requirements">
+        <li>The Trooper must be in Silhouette contact with a Panoply</li>
+      </ul>
+      <ul slot="effects">
+        <li>Allows the Specialist Troop to make a Normal WIP Roll to Connect a Console.</li>
+        <li>If the roll is failed, this can be repeated as many times as necessary, each time spending the corresponding Short Skill and making the roll.</li>
+        <li>If the roll is passed, this console is considered to be Activated.</li>
+      </ul>
+    </ContractSkillCard>
+
+    <h3>Demititans</h3>
+    <p>The Titan may deploy more Demititans through the Reinforce action.</p>
+
+    <NpcReference groupIds={["titanomachy"]} compact />
+
+  </div>
+</ContractMission>
+

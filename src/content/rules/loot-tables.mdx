@@ -1,0 +1,42 @@
+---
+title: "Loot Tables"
+description: "Reference tables for rolling Loot Box weapon bases and weapon buffs."
+section: "Reference"
+order: 68
+status: "review"
+updated: "2026-04-29"
+---
+
+import RuleCard from "../../components/RuleCard.astro";
+import LootWeaponTable from "../../components/LootWeaponTable.astro";
+import RulesTable from "../../components/RulesTable.astro";
+import { lootBuffs, lootWeapons } from "../../data/loot";
+
+Loot Tables are used when rolling generated weapons from Loot Boxes. First roll the weapon base, then spend any remaining dice on weapon buffs.
+
+For the full procedure, see the [Loot Boxes section](/rules/rule-adjustments/#loot-boxes) in Rule Adjustments.
+
+<RuleCard eyebrow="Roll Procedure" title="Weapon First, Buffs After">
+
+When rolling a Loot Box, choose how many dice to spend on the weapon base. Only the last die is rolled; the rest are treated as 6s.
+
+After the weapon is generated, remaining dice may be spent on buffs using the same process until the Loot Box has no dice left.
+
+</RuleCard>
+
+## Weapon Bases
+
+<LootWeaponTable weapons={lootWeapons} />
+
+## Weapon Buffs
+
+<RulesTable
+  eyebrow="Loot"
+  title="Buff Roll Table"
+  variant="text"
+  columns={["Roll", "Buff", "Restrictions", "Traits", "Clarifications"]}
+  rows={lootBuffs.map((buff) => ({
+    label: buff.roll,
+    cells: [buff.buff, buff.restrictions, buff.traits, buff.clarification],
+  }))}
+/>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import EventManager from "../../../components/EventManager";
+---
+
+<BaseLayout
+  title="Manage Event"
+  description="Register companies, create rounds, and pair players for an Infinity: Mercenaries event."
+>
+  <EventManager mode="detail" client:load />
+</BaseLayout>

@@ -1,0 +1,51 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  href?: string;
+  linkLabel?: string;
+  links?: Array<{
+    href: string;
+    label: string;
+  }>;
+}
+
+const {
+  eyebrow = "Reference",
+  title,
+  href,
+  linkLabel = "Open reference",
+  links = [],
+} = Astro.props;
+
+const resolvedLinks = links.length
+  ? links
+  : href
+    ? [{ href, label: linkLabel }]
+    : [];
+---
+
+<section class="reference-link-callout" aria-label={title}>
+  <header>
+    <span>{eyebrow}</span>
+    <strong>{title}</strong>
+  </header>
+  <div>
+    <slot />
+    {
+      resolvedLinks.length > 0 && (
+        <div class="reference-link-callout__actions">
+          {resolvedLinks.map((link) => (
+            <a href={link.href}>
+              <span>{link.label}</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M5 12h14" />
+                <path d="m13 6 6 6-6 6" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
