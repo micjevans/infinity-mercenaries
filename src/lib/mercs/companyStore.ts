@@ -1,4 +1,9 @@
-import type { Company, CompanyTrooper, FactionMetadata, Trooper } from "./types";
+import type {
+  Company,
+  CompanyTrooper,
+  FactionMetadata,
+  Trooper,
+} from "./types";
 
 const STORAGE_KEY = "mercenaries.localCompanies.v1";
 
@@ -10,6 +15,9 @@ export type LocalCompany = Company & {
 
 export type NewCompanyInput = {
   name: string;
+  companyTypeId?: string;
+  sectorial1?: FactionMetadata | null;
+  sectorial2?: FactionMetadata | null;
 };
 
 function nowIso(): string {
@@ -25,7 +33,9 @@ function makeId(): string {
 }
 
 function canUseStorage(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 export function createLocalCompany(input: NewCompanyInput): LocalCompany {
@@ -34,8 +44,9 @@ export function createLocalCompany(input: NewCompanyInput): LocalCompany {
   return {
     id: makeId(),
     name: input.name.trim(),
-    sectorial1: null,
-    sectorial2: null,
+    companyTypeId: input.companyTypeId ?? "",
+    sectorial1: input.sectorial1 ?? null,
+    sectorial2: input.sectorial2 ?? null,
     credits: 0,
     swc: 0,
     notoriety: 0,
@@ -44,7 +55,7 @@ export function createLocalCompany(input: NewCompanyInput): LocalCompany {
     inventory: [],
     description: "",
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
   };
 }
 
@@ -82,7 +93,9 @@ export function upsertLocalCompany(company: LocalCompany): LocalCompany[] {
 }
 
 export function deleteLocalCompany(companyId: string): LocalCompany[] {
-  const companies = loadLocalCompanies().filter((company) => company.id !== companyId);
+  const companies = loadLocalCompanies().filter(
+    (company) => company.id !== companyId,
+  );
   saveLocalCompanies(companies);
   return companies;
 }
@@ -90,18 +103,21 @@ export function deleteLocalCompany(companyId: string): LocalCompany[] {
 export function updateCompanySectorials(
   company: LocalCompany,
   sectorial1: FactionMetadata | null,
-  sectorial2: FactionMetadata | null
+  sectorial2: FactionMetadata | null,
 ): LocalCompany {
   return {
     ...company,
     sectorial1,
-    sectorial2
+    sectorial2,
   };
 }
 
 type StoredTrooper = CompanyTrooper | Trooper | Record<string, any>;
 
-export function addCompanyTrooper(company: LocalCompany, trooper: StoredTrooper): LocalCompany {
+export function addCompanyTrooper(
+  company: LocalCompany,
+  trooper: StoredTrooper,
+): LocalCompany {
   const existingTroopers = (company.troopers || []) as StoredTrooper[];
   const nextTroopers = trooper.captain
     ? existingTroopers.map((existing) => ({ ...existing, captain: false }))
@@ -109,23 +125,31 @@ export function addCompanyTrooper(company: LocalCompany, trooper: StoredTrooper)
 
   return {
     ...company,
-    troopers: [...nextTroopers, trooper]
+    troopers: [...nextTroopers, trooper],
   };
 }
 
-export function removeCompanyTrooper(company: LocalCompany, trooperId: string): LocalCompany {
+export function removeCompanyTrooper(
+  company: LocalCompany,
+  trooperId: string,
+): LocalCompany {
   return {
     ...company,
-    troopers: ((company.troopers || []) as StoredTrooper[]).filter((trooper) => trooper.id !== trooperId)
+    troopers: ((company.troopers || []) as StoredTrooper[]).filter(
+      (trooper) => trooper.id !== trooperId,
+    ),
   };
 }
 
-export function setCompanyCaptain(company: LocalCompany, trooperId: string): LocalCompany {
+export function setCompanyCaptain(
+  company: LocalCompany,
+  trooperId: string,
+): LocalCompany {
   return {
     ...company,
     troopers: ((company.troopers || []) as StoredTrooper[]).map((trooper) => ({
       ...trooper,
-      captain: trooper.id === trooperId
-    }))
+      captain: trooper.id === trooperId,
+    })),
   };
 }

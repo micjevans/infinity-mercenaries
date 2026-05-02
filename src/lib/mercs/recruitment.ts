@@ -1,14 +1,38 @@
-import { findFactionBySlug, loadFactionData, loadFactionDataSet, mapType } from "./metadata";
-import type { CompanyTrooper, FactionData, MetadataItem, Profile, ProfileOption, Unit } from "./types";
+import {
+  findFactionBySlug,
+  loadFactionData,
+  loadFactionDataSet,
+  mapType,
+} from "./metadata";
+import {
+  INFINITY_SPEC_OPS_SKILL_ID,
+  isInfinitySpecOpsProfile,
+} from "./specops";
+import type {
+  CompanyTrooper,
+  FactionData,
+  MetadataItem,
+  Profile,
+  ProfileOption,
+  Unit,
+} from "./types";
 
 const LIEUTENANT_SKILL_ID = 119;
 const PERIPHERAL_CHARACTER_ID = 27;
 const CHARACTER_CATEGORY_ID = 10;
+const TAG_COMPANY_TYPE_ID = "tag";
+const TAG_COMPANY_SPECIAL_PROFILE_ID = "tag-company-special-profile";
+const TRIPHAMMER_ICON_URL =
+  "https://assets.corvusbelli.net/army/img/logo/units/triphammers-repurposed-industrial-tags-1-1.svg";
 
 function appendUnique<T>(existing: T[], incoming: T[] = []): T[] {
   const result = [...existing];
   incoming.forEach((item) => {
-    if (!result.some((existingItem) => JSON.stringify(existingItem) === JSON.stringify(item))) {
+    if (
+      !result.some(
+        (existingItem) => JSON.stringify(existingItem) === JSON.stringify(item),
+      )
+    ) {
       result.push(item);
     }
   });
@@ -16,7 +40,30 @@ function appendUnique<T>(existing: T[], incoming: T[] = []): T[] {
 }
 
 function optionHasLieutenant(option: any): boolean {
-  return (option.skills || []).some((skill: MetadataItem) => skill.id === LIEUTENANT_SKILL_ID);
+  return (option.skills || []).some(
+    (skill: MetadataItem) => Number(skill.id) === LIEUTENANT_SKILL_ID,
+  );
+}
+
+function optionHasInfinitySpecOps(option: any): boolean {
+  return (option.skills || []).some(
+    (skill: MetadataItem) =>
+      Number(skill.id) === INFINITY_SPEC_OPS_SKILL_ID ||
+      skill.name === "Infinity Spec-Ops",
+  );
+}
+
+function optionIsCaptainEligible(
+  unit: Unit,
+  profile: Profile,
+  option: ProfileOption,
+): boolean {
+  if (unit.tagCompanySpecialTag) return true;
+  return (
+    optionHasLieutenant(option) ||
+    isInfinitySpecOpsProfile(profile) ||
+    optionHasInfinitySpecOps(option)
+  );
 }
 
 function optionHasAllowedSwc(option: any): boolean {
@@ -40,61 +87,192 @@ function attachResume(data: FactionData): Unit[] {
   const resumeList = data.resume || [];
   return (data.units || []).map((unit) => ({
     ...unit,
-    resume: resumeList.find((resume) => resume.id === unit.id) || unit.resume || null
+    resume:
+      resumeList.find((resume) => resume.id === unit.id) || unit.resume || null,
   }));
+}
+
+function makeTagCompanySpecialProfileUnit(): Unit {
+  return {
+    id: TAG_COMPANY_SPECIAL_PROFILE_ID,
+    slug: TAG_COMPANY_SPECIAL_PROFILE_ID,
+    isc: "Repurposed Mining Equipment",
+    name: "Repurposed Mining Equipment",
+    tagCompanySpecialTag: true,
+    resume: {
+      id: TAG_COMPANY_SPECIAL_PROFILE_ID,
+      type: "TAG",
+      logo: TRIPHAMMER_ICON_URL,
+    },
+    profileGroups: [
+      {
+        isc: "Repurposed Mining Equipment",
+        profiles: [
+          {
+            name: "Repurposed Mining Equipment",
+            move: [6, 2],
+            cc: 15,
+            bs: 12,
+            ph: 14,
+            wip: 12,
+            arm: 5,
+            bts: 3,
+            w: 2,
+            s: 5,
+            skills: [
+              { id: "nwi", name: "NWI" },
+              { id: "dodge", name: "Dodge (+3)" },
+              { id: "gizmokit", name: "Gizmokit" },
+              { id: "immunity-shock", name: "Immunity (Shock)" },
+              { id: "ecm-guided", name: "ECM (Guided -6)" },
+            ],
+            weapons: [
+              { id: "combi-rifle", name: "Combi Rifle" },
+              { id: "pistol", name: "Pistol" },
+              { id: "ccw", name: "CCW" },
+              { id: "ccw-antimaterial", name: "CC Weapon (Antimaterial)" },
+            ],
+            peripheral: [{ id: "turtlemek", name: "Turtlemek" }],
+          },
+        ],
+        options: [
+          {
+            id: TAG_COMPANY_SPECIAL_PROFILE_ID,
+            name: "Repurposed Mining Equipment",
+            points: 40,
+            swc: "0",
+            orders: [{ type: "REGULAR", list: 1, total: 1 }],
+          },
+        ],
+      },
+    ],
+  };
 }
 
 export async function loadRecruitmentPool(slugs: string[]): Promise<{
   units: Unit[];
-  specops: { equip: MetadataItem[]; skills: MetadataItem[]; weapons: MetadataItem[] };
+  specops: {
+    equip: MetadataItem[];
+    skills: MetadataItem[];
+    weapons: MetadataItem[];
+  };
 }> {
   const factionData = await loadFactionDataSet(slugs);
-  const specops = { equip: [] as MetadataItem[], skills: [] as MetadataItem[], weapons: [] as MetadataItem[] };
+  const specops = {
+    equip: [] as MetadataItem[],
+    skills: [] as MetadataItem[],
+    weapons: [] as MetadataItem[],
+  };
 
   const units = factionData.flatMap((data) => {
-    if (data.specops) {
-      specops.equip = appendUnique(specops.equip, data.specops.equip || data.specops.equips || []);
-      specops.skills = appendUnique(specops.skills, data.specops.skills || []);
-      specops.weapons = appendUnique(specops.weapons, data.specops.weapons || []);
-    }
+    const specopsData = (data.specops || {}) as {
+      equip?: MetadataItem[];
+      equips?: MetadataItem[];
+      skills?: MetadataItem[];
+      weapons?: MetadataItem[];
+      units?: Unit[];
+    };
 
-    return attachResume(data);
+    specops.equip = appendUnique(
+      specops.equip,
+      specopsData.equip || specopsData.equips || [],
+    );
+    specops.skills = appendUnique(specops.skills, specopsData.skills || []);
+    specops.weapons = appendUnique(specops.weapons, specopsData.weapons || []);
+
+    const baseUnits = attachResume(data);
+    const specopsUnits = (specopsData.units || []).length
+      ? attachResume({
+          units: specopsData.units,
+          resume: data.resume,
+        } as FactionData)
+      : [];
+
+    return [...baseUnits, ...specopsUnits];
   });
 
   return { units, specops };
 }
 
-export function getRecruitableUnits(units: Unit[], isCreatingCaptain: boolean): Unit[] {
-  return units
+export function getRecruitableUnits(
+  units: Unit[],
+  isCreatingCaptain: boolean,
+  context?: {
+    companyTypeId?: string;
+    existingTroopers?: any[];
+  },
+): Unit[] {
+  const tagProfileAlreadyUsed = (context?.existingTroopers || []).some(
+    (trooper) =>
+      Boolean(trooper?.tagCompanySpecialTag) ||
+      trooper?.id === TAG_COMPANY_SPECIAL_PROFILE_ID ||
+      trooper?.slug === TAG_COMPANY_SPECIAL_PROFILE_ID,
+  );
+
+  const withTagSpecialProfile =
+    context?.companyTypeId === TAG_COMPANY_TYPE_ID && !tagProfileAlreadyUsed
+      ? [...units, makeTagCompanySpecialProfileUnit()]
+      : units;
+
+  return withTagSpecialProfile
     .map((unit) => ({
       ...unit,
       profileGroups: unit.profileGroups
         .map((group) => ({
           ...group,
-          options: group.options.filter((option) => optionHasAllowedSwc(option) && optionHasLieutenant(option) === isCreatingCaptain)
+          options: group.options.filter((option) => {
+            const profile = (group.profiles || [])[0] as Profile | undefined;
+            const captainEligible = profile
+              ? optionIsCaptainEligible(unit, profile, option)
+              : false;
+            return (
+              optionHasAllowedSwc(option) &&
+              captainEligible === isCreatingCaptain
+            );
+          }),
         }))
-        .filter((group) => (group.profiles || []).length > 0 && (group.options || []).length > 0)
+        .filter(
+          (group) =>
+            (group.profiles || []).length > 0 &&
+            (group.options || []).length > 0,
+        ),
     }))
     .map((unit) => ({
       ...unit,
       profileGroups: unit.profileGroups
         .map((group) => {
-          const hasPeripheralProfile = group.profiles.some((profile) => (profile.chars || []).some((char) => char === PERIPHERAL_CHARACTER_ID));
+          const hasPeripheralProfile = group.profiles.some((profile) =>
+            (profile.chars || []).some(
+              (char) => char === PERIPHERAL_CHARACTER_ID,
+            ),
+          );
           if (!hasPeripheralProfile) return group;
 
           return {
             ...group,
             options: group.options.filter((option) =>
               unit.profileGroups.some((parentGroup) =>
-                parentGroup.options.some((parentOption) => (parentOption.includes || []).some((include) => include.option === option.id))
-              )
-            )
+                parentGroup.options.some((parentOption) =>
+                  (parentOption.includes || []).some(
+                    (include) => include.option === option.id,
+                  ),
+                ),
+              ),
+            ),
           };
         })
-        .filter((group) => (group.profiles || []).length > 0 && (group.options || []).length > 0)
+        .filter(
+          (group) =>
+            (group.profiles || []).length > 0 &&
+            (group.options || []).length > 0,
+        ),
     }))
     .filter((unit) => {
-      const hasValidOptions = unit.profileGroups.length > 0 && unit.profileGroups.every((group) => group.options && group.options.length > 0);
+      const hasValidOptions =
+        unit.profileGroups.length > 0 &&
+        unit.profileGroups.every(
+          (group) => group.options && group.options.length > 0,
+        );
       const isCharacter = unit.resume?.category === CHARACTER_CATEGORY_ID;
       const isMercenaryPlaceholder = unit.slug?.startsWith("merc-");
       return hasValidOptions && !isCharacter && !isMercenaryPlaceholder;
@@ -102,7 +280,10 @@ export function getRecruitableUnits(units: Unit[], isCreatingCaptain: boolean): 
     .sort((a, b) => Number(a.resume?.type || 0) - Number(b.resume?.type || 0));
 }
 
-export function searchRecruitableUnits(units: Unit[], searchTerm: string): Unit[] {
+export function searchRecruitableUnits(
+  units: Unit[],
+  searchTerm: string,
+): Unit[] {
   const normalized = searchTerm.trim().toLowerCase();
   if (!normalized) return units;
   return units.filter((unit) => unit.isc.toLowerCase().includes(normalized));
@@ -127,14 +308,17 @@ export type RecruitmentEntry = {
   captainEligible: boolean;
 };
 
-export async function loadRecruitmentEntries(slugs: string[], isCreatingCaptain: boolean): Promise<RecruitmentEntry[]> {
+export async function loadRecruitmentEntries(
+  slugs: string[],
+  isCreatingCaptain: boolean,
+): Promise<RecruitmentEntry[]> {
   const uniqueSlugs = [...new Set(slugs.filter(Boolean))];
   const dataSets = await Promise.all(
     uniqueSlugs.map(async (slug) => ({
       slug,
       faction: findFactionBySlug(slug),
-      data: await loadFactionData(slug)
-    }))
+      data: await loadFactionData(slug),
+    })),
   );
 
   return dataSets
@@ -150,7 +334,17 @@ export async function loadRecruitmentEntries(slugs: string[], isCreatingCaptain:
           if (!profile) return [];
 
           return (group.options || [])
-            .filter((option) => optionHasAllowedSwc(option) && optionHasLieutenant(option) === isCreatingCaptain)
+            .filter((option) => {
+              const captainEligible = optionIsCaptainEligible(
+                unit,
+                profile,
+                option,
+              );
+              return (
+                optionHasAllowedSwc(option) &&
+                captainEligible === isCreatingCaptain
+              );
+            })
             .map((option, optionIndex) => ({
               id: `${slug}:${unit.id}:${groupIndex}:${option.id ?? optionIndex}`,
               unit,
@@ -167,7 +361,7 @@ export async function loadRecruitmentEntries(slugs: string[], isCreatingCaptain:
               profile,
               group,
               option,
-              captainEligible: isCreatingCaptain
+              captainEligible: isCreatingCaptain,
             }));
         });
       });
@@ -175,7 +369,10 @@ export async function loadRecruitmentEntries(slugs: string[], isCreatingCaptain:
     .sort((a, b) => a.isc.localeCompare(b.isc) || a.points - b.points);
 }
 
-export function createCompanyTrooper(entry: RecruitmentEntry, captain = false): CompanyTrooper {
+export function createCompanyTrooper(
+  entry: RecruitmentEntry,
+  captain = false,
+): CompanyTrooper {
   return {
     id: makeId(),
     recruitmentId: entry.id,
@@ -191,11 +388,14 @@ export function createCompanyTrooper(entry: RecruitmentEntry, captain = false): 
     type: entry.type,
     captain,
     xp: 0,
-    injuries: []
+    injuries: [],
   };
 }
 
-export function createLegacyTrooper(entry: RecruitmentEntry, captain = false): any {
+export function createLegacyTrooper(
+  entry: RecruitmentEntry,
+  captain = false,
+): any {
   const option = entry.option;
   const group = entry.group;
 
@@ -209,12 +409,24 @@ export function createLegacyTrooper(entry: RecruitmentEntry, captain = false): a
         category: 10,
         profiles: (group.profiles || []).map((profile: Profile) => ({
           ...profile,
-          skills: option.skills ? [...(profile.skills || []), ...option.skills] : profile.skills || [],
-          equip: option.equip ? [...(profile.equip || []), ...option.equip] : profile.equip || [],
-          equips: option.equips ? [...(profile.equips || []), ...option.equips] : profile.equips || [],
-          peripheral: option.peripheral ? [...(profile.peripheral || []), ...option.peripheral] : profile.peripheral || [],
-          peripherals: option.peripherals ? [...(profile.peripherals || []), ...option.peripherals] : profile.peripherals || [],
-          weapons: option.weapons ? [...(profile.weapons || []), ...option.weapons] : profile.weapons || []
+          skills: option.skills
+            ? [...(profile.skills || []), ...option.skills]
+            : profile.skills || [],
+          equip: option.equip
+            ? [...(profile.equip || []), ...option.equip]
+            : profile.equip || [],
+          equips: option.equips
+            ? [...(profile.equips || []), ...option.equips]
+            : profile.equips || [],
+          peripheral: option.peripheral
+            ? [...(profile.peripheral || []), ...option.peripheral]
+            : profile.peripheral || [],
+          peripherals: option.peripherals
+            ? [...(profile.peripherals || []), ...option.peripherals]
+            : profile.peripherals || [],
+          weapons: option.weapons
+            ? [...(profile.weapons || []), ...option.weapons]
+            : profile.weapons || [],
         })),
         options: [
           {
@@ -232,16 +444,16 @@ export function createLegacyTrooper(entry: RecruitmentEntry, captain = false): a
                     {
                       type: "REGULAR",
                       list: 1,
-                      total: 1
-                    }
-                  ]
-          }
-        ]
-      }
+                      total: 1,
+                    },
+                  ],
+          },
+        ],
+      },
     ],
     local: true,
     captain,
-    xp: 0
+    xp: 0,
   });
 
   return cleanedUnit;

@@ -1,0 +1,78 @@
+---
+interface Props {
+  title?: string;
+  baseCostDefault?: number;
+  notorietyDefault?: number;
+}
+
+const {
+  title = "Market Price Calculator",
+  baseCostDefault = 18,
+  notorietyDefault = 3,
+} = Astro.props;
+
+const lawfulInitial = baseCostDefault + notorietyDefault;
+const chaoticInitial = Math.max(
+  Math.ceil(baseCostDefault / 2),
+  baseCostDefault - notorietyDefault,
+);
+
+const onInputScript = [
+  "const base = Number(this.elements.baseCost.value || 0);",
+  "const notoriety = Number(this.elements.notoriety.value || 0);",
+  "const lawful = base + notoriety;",
+  "const chaotic = Math.max(Math.ceil(base / 2), base - notoriety);",
+  "this.elements.lawfulOutput.value = String(lawful);",
+  "this.elements.chaoticOutput.value = String(chaotic);",
+].join(" ");
+---
+
+<section class="formula-calculator formula-calculator-market">
+  <header>
+    <span>{title}</span>
+    <code
+      >Lawful: base CR + Notoriety | Chaotic: max(ceil(base CR / 2), base CR -
+      Notoriety)</code
+    >
+  </header>
+  <form
+    class="formula-calculator-grid formula-calculator-grid-market"
+    oninput={onInputScript}
+    onsubmit="return false;"
+    aria-label={title}
+  >
+    <label>
+      <span>Base CR</span>
+      <input
+        type="number"
+        step="1"
+        min="0"
+        value={baseCostDefault}
+        name="baseCost"
+      />
+    </label>
+    <label>
+      <span>Company Notoriety</span>
+      <input
+        type="number"
+        step="1"
+        min="0"
+        value={notorietyDefault}
+        name="notoriety"
+      />
+    </label>
+
+    <div class="formula-market-results" role="status" aria-live="polite">
+      <div class="formula-market-result">
+        <span>Lawful Formula</span>
+        <code>base CR + Notoriety</code>
+        <output name="lawfulOutput">{lawfulInitial}</output>
+      </div>
+      <div class="formula-market-result">
+        <span>Chaotic Formula</span>
+        <code>max(ceil(base CR / 2), base CR - Notoriety)</code>
+        <output name="chaoticOutput">{chaoticInitial}</output>
+      </div>
+    </div>
+  </form>
+</section>

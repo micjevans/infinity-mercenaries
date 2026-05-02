@@ -20,6 +20,18 @@ import {
   makeDefaultSpecOpsAttributeRules,
   shouldUseDefaultSpecOpsAttributeChart,
 } from "../lib/mercs/specops";
+import {
+  EQUIPMENT_SLOTS,
+  applyItemToTrooper,
+  cleanUnitForRoster,
+  flattenTrooperForRoster,
+  getCaptainSpecOpsXpBudget,
+  getTrooperPoints,
+  getTrooperSwc,
+  makeId,
+  numberValue,
+  renderCombinedDetails,
+} from "../lib/mercs/trooperUtils";
 import type {
   FactionMetadata,
   MetadataItem,
@@ -29,37 +41,16 @@ import type {
   Unit,
 } from "../lib/mercs/types";
 import { AppIcon } from "./AppIcon";
+import {
+  RecruitableUnit,
+  SpecOpsConfigurator,
+  SpecOpsItemSection,
+  type CaptainDraft,
+  type SpecopsPool,
+} from "./CaptainCreatorStep";
 import { UnitProfileDisplay } from "./UnifiedProfileCard";
 
 type SectionKey = "info" | "dashboard" | "troopers";
-type SpecopsPool = {
-  equip: MetadataItem[];
-  skills: MetadataItem[];
-  weapons: MetadataItem[];
-};
-type CaptainDraft = {
-  unit: Unit;
-  group: ProfileGroup;
-  option: ProfileOption;
-  trooper: any;
-  xp: number;
-  baseProfile: Profile;
-};
-
-const EQUIPMENT_SLOTS = [
-  "primary",
-  "secondary",
-  "sidearm",
-  "accessory",
-  "augment",
-  "armor",
-] as const;
-
-function makeId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto)
-    return crypto.randomUUID();
-  return `trooper-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
 
 function formatDate(value?: string): string {
   if (!value) return "Unknown";
@@ -82,23 +73,6 @@ function getSectorial2Options(
   return factionList.filter((faction) => faction.id !== faction.parent);
 }
 
-function numberValue(value: unknown): number {
-  const parsed = Number(String(value ?? "0").replace("+", ""));
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function getPrimaryOption(trooper: any): any {
-  return trooper?.profileGroups?.[0]?.options?.[0] || {};
-}
-
-function getTrooperPoints(trooper: any): number {
-  return Number(getPrimaryOption(trooper).points ?? trooper.points ?? 0);
-}
-
-function getTrooperSwc(trooper: any): string {
-  return String(getPrimaryOption(trooper).swc ?? trooper.swc ?? "0");
-}
-
 function calculateLevel(xp?: number): number {
   const safeXp = Number(xp || 0);
   if (safeXp < 5) return 1;
@@ -109,177 +83,6 @@ function calculateLevel(xp?: number): number {
   if (safeXp < 105) return 6;
   if (safeXp < 140) return 7;
   return 8;
-}
-
-function applyItemToTrooper(trooperDraft: any, item: any, type?: string): any {
-  if (!trooperDraft || !item) return trooperDraft;
-  const profile = trooperDraft.profileGroups?.[0]?.profiles?.[0];
-  if (!profile) return trooperDraft;
-
-  if (type) {
-    if (
-      ["move", "cc", "bs", "wip", "ph", "arm", "bts", "w", "s"].includes(type)
-    ) {
-      if (type === "move") {
-        profile.move = (profile.move || [0, 0]).map(
-          (movVal: number, movIndex: number) =>
-            (movVal < 0 ? 0 : movVal) + item.extra[movIndex],
-        );
-      } else {
-        profile[type] = Number(profile[type] || 0) + Number(item.extra || 0);
-      }
-    } else if (type === "type") {
-      trooperDraft.resume.type = item.id;
-    } else {
-      const normalizedType =
-        type === "equips"
-          ? "equip"
-          : type === "peripherals"
-            ? "peripheral"
-            : type;
-      profile[normalizedType] = profile[normalizedType] || [];
-      const foundIndex = profile[normalizedType].findIndex(
-        (profileItem: MetadataItem) => profileItem.id === item.id,
-      );
-      if (foundIndex >= 0) {
-        profile[normalizedType][foundIndex].extra = [
-          ...(profile[normalizedType][foundIndex].extra || []),
-          ...(item.extra || []),
-        ];
-      } else {
-        profile[normalizedType].push({ id: item.id, extra: item.extra });
-      }
-    }
-  }
-
-  [
-    "equips",
-    "weapons",
-    "skills",
-    "peripherals",
-    "move",
-    "cc",
-    "bs",
-    "wip",
-    "ph",
-    "arm",
-    "bts",
-    "w",
-    "s",
-  ].forEach((key) => {
-    const nested = item[key];
-    if (!nested) return;
-    (Array.isArray(nested) ? nested : [nested]).forEach((subItem) =>
-      applyItemToTrooper(trooperDraft, subItem, key),
-    );
-  });
-
-  return trooperDraft;
-}
-
-function renderCombinedDetails(trooper: any): any {
-  let renderedTrooper = structuredClone(trooper);
-  EQUIPMENT_SLOTS.forEach((slot) => {
-    if (trooper[slot])
-      renderedTrooper = applyItemToTrooper(
-        renderedTrooper,
-        trooper[slot],
-        trooper[slot].key,
-      );
-  });
-  (trooper.perks || []).forEach((perk: MetadataItem) => {
-    renderedTrooper = applyItemToTrooper(
-      renderedTrooper,
-      perk,
-      String(perk.key || ""),
-    );
-  });
-  return renderedTrooper;
-}
-
-function cleanUnitForRoster(
-  unit: Unit,
-  group: ProfileGroup,
-  option: ProfileOption,
-  captain: boolean,
-): any {
-  const cleanedUnit = structuredClone({
-    ...unit,
-    id: makeId(),
-    perks: [],
-    profileGroups: [
-      {
-        ...group,
-        category: 10,
-        profiles: (group.profiles || []).map((profile: Profile) => ({
-          ...profile,
-          skills: option.skills
-            ? [...(profile.skills || []), ...option.skills]
-            : profile.skills || [],
-          equip: option.equip
-            ? [...(profile.equip || []), ...option.equip]
-            : profile.equip || [],
-          peripheral: option.peripheral
-            ? [...(profile.peripheral || []), ...option.peripheral]
-            : profile.peripheral || [],
-          weapons: option.weapons
-            ? [...(profile.weapons || []), ...option.weapons]
-            : profile.weapons || [],
-        })),
-        options: [
-          {
-            ...option,
-            skills: [],
-            equip: [],
-            peripheral: [],
-            weapons: [],
-            orders: option.orders?.length
-              ? option.orders
-              : [{ type: "REGULAR", list: 1, total: 1 }],
-          },
-        ],
-      },
-    ],
-    local: true,
-    captain,
-    xp: 0,
-  });
-
-  (unit.perks || []).forEach((perk) =>
-    applyItemToTrooper(cleanedUnit, perk, String(perk.key || "")),
-  );
-  return cleanedUnit;
-}
-
-function cleanSpecOpsItem(item: MetadataItem, itemType: string): MetadataItem {
-  const subItems: Record<string, MetadataItem[]> = {};
-  ["weapons", "skills", "equip", "equips", "peripheral", "peripherals"].forEach(
-    (key) => {
-      const nested = item[key] as MetadataItem[] | undefined;
-      if (Array.isArray(nested)) {
-        const normalizedKey = key.endsWith("s") ? key : `${key}s`;
-        subItems[normalizedKey] = nested.map((subItem) =>
-          cleanSpecOpsItem(subItem, normalizedKey),
-        );
-      }
-    },
-  );
-
-  return {
-    ...subItems,
-    id: item.id,
-    name: item.name,
-    extra: item.extras || item.extra,
-    key: itemType,
-  };
-}
-
-function getSpecOpsItemName(item: MetadataItem, metaKey: string): string {
-  return (
-    mapItemData({ ...item, key: metaKey })[0]?.name ||
-    item.name ||
-    String(item.id)
-  );
 }
 
 function LegacyAccordion({
@@ -386,50 +189,36 @@ function TrooperCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const renderedTrooper = renderCombinedDetails(trooper);
-  const type = mapType(renderedTrooper.resume?.type || "");
+
+  const trooperActions = (
+    <>
+      <button className="command-button" type="button" onClick={onEdit}>
+        Edit Trooper
+      </button>
+      <button
+        className="command-button command-button--danger"
+        type="button"
+        onClick={onDelete}
+      >
+        <AppIcon name="trash" size={16} />
+        Delete
+      </button>
+    </>
+  );
 
   return (
     <article
       className={`legacy-trooper-card${trooper.captain ? " is-captain" : ""}`}
     >
-      <button
-        className="legacy-trooper-summary"
-        type="button"
-        onClick={() => setExpanded((value) => !value)}
-      >
-        <span className="legacy-level-badge">
-          Lvl {calculateLevel(trooper.xp)}
-        </span>
-        {trooper.resume?.logo && (
-          <img src={trooper.resume.logo} alt="" aria-hidden="true" />
-        )}
-        <span>
-          <strong>{trooper.isc}</strong>
-          <small>{trooper.captain ? "Captain" : "Trooper"}</small>
-        </span>
-        <span className="legacy-trooper-type">{type}</span>
-      </button>
-      {expanded && (
-        <div className="legacy-trooper-details">
-          <UnitProfileDisplay
-            unit={renderedTrooper}
-            profileGroups={renderedTrooper.profileGroups || []}
-          />
-          <div className="legacy-trooper-actions">
-            <button className="command-button" type="button" onClick={onEdit}>
-              Edit Trooper
-            </button>
-            <button
-              className="command-button command-button--danger"
-              type="button"
-              onClick={onDelete}
-            >
-              <AppIcon name="trash" size={16} />
-              Delete
-            </button>
-          </div>
-        </div>
-      )}
+      <UnitProfileDisplay
+        unit={renderedTrooper}
+        profileGroups={renderedTrooper.profileGroups || []}
+        collapsible
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+        showTts={expanded}
+        ttsActions={trooperActions}
+      />
     </article>
   );
 }
@@ -574,6 +363,7 @@ function EditTrooperDialog({
   const level = calculateLevel(trooper.xp);
   const nextLevel = xpForLevel(level + 1);
   const currentLevel = xpForLevel(level);
+  const xpToNextLevel = Math.max(0, nextLevel - Number(trooper.xp || 0));
   const progress = Math.min(
     100,
     Math.max(
@@ -615,13 +405,10 @@ function EditTrooperDialog({
     >
       <div className="legacy-modal__panel legacy-modal__panel--edit">
         <header className="legacy-modal__header">
-          <div>
+          <div className="legacy-editor-intro">
             <span className="panel-kicker">Trooper File</span>
             <h2>{trooper.name || trooper.isc || "Trooper"}</h2>
-            <p>
-              This keeps the old editor model: XP, perk points, equipment slots,
-              and inventory all save back into the company file.
-            </p>
+            <p>Adjust XP, perk points, and loadout.</p>
           </div>
           <button
             className="icon-button"
@@ -661,11 +448,20 @@ function EditTrooperDialog({
               }
             />
           </Field>
-          <div
-            className="legacy-xp-bar"
-            title={`${Math.max(0, nextLevel - Number(trooper.xp || 0))} XP needed for next level`}
-          >
-            <span style={{ width: `${progress}%` }} />
+          <div className="legacy-xp-progress" aria-live="polite">
+            <div className="legacy-xp-progress__meta">
+              <span className="panel-kicker">Level Progress</span>
+              <strong>{Math.round(progress)}%</strong>
+              <small>
+                {xpToNextLevel} XP to Level {level + 1}
+              </small>
+            </div>
+            <div
+              className="legacy-xp-bar"
+              title={`${xpToNextLevel} XP needed for next level`}
+            >
+              <span style={{ width: `${progress}%` }} />
+            </div>
           </div>
         </div>
 
@@ -1191,248 +987,7 @@ function rollSortValue(roll: string): number {
   return match ? Number(match[0]) : 999;
 }
 
-function SpecOpsConfigurator({
-  draft,
-  specops,
-  onBack,
-  onConfirm,
-}: {
-  draft: CaptainDraft;
-  specops: SpecopsPool;
-  onBack: () => void;
-  onConfirm: (trooper: any) => void;
-}) {
-  const [configuredTrooper, setConfiguredTrooper] = useState(() =>
-    structuredClone(draft.trooper),
-  );
-  const [xpRemaining, setXpRemaining] = useState(draft.xp);
-  const [selectedAttributes, setSelectedAttributes] = useState<
-    Record<string, { val: number; xp: number }>
-  >({});
-  const [selectedItems, setSelectedItems] = useState<
-    Record<string, MetadataItem[]>
-  >({ weapons: [], skills: [], equips: [] });
-  const baseProfile = draft.baseProfile;
-  const useDefaultAttributeChart = useMemo(
-    () => shouldUseDefaultSpecOpsAttributeChart(baseProfile, specops),
-    [baseProfile, specops],
-  );
-  const attributeRules = useMemo(
-    () => makeDefaultSpecOpsAttributeRules(baseProfile),
-    [baseProfile],
-  );
-
-  function setProfileValue(key: string, value: unknown) {
-    setConfiguredTrooper((current: any) => {
-      const next = structuredClone(current);
-      next.profileGroups[0].profiles[0][key] = value;
-      return next;
-    });
-  }
-
-  function handleAttribute(attr: string, option: { val: number; xp: number }) {
-    const currentXp = selectedAttributes[attr]?.xp || 0;
-    const xpChange = currentXp - option.xp;
-    if (xpRemaining + xpChange < 0) return;
-    setXpRemaining((current) => current + xpChange);
-    setSelectedAttributes((current) => ({ ...current, [attr]: option }));
-    setProfileValue(attr, option.val);
-  }
-
-  function handleItemToggle(
-    item: MetadataItem,
-    type: "weapons" | "skills" | "equips",
-  ) {
-    const itemXp = Number(item.exp || 0);
-    const currentSelection = selectedItems[type] || [];
-    const isSelected = currentSelection.some(
-      (selected) => JSON.stringify(selected) === JSON.stringify(item),
-    );
-    const xpChange = isSelected ? itemXp : -itemXp;
-    if (xpRemaining + xpChange < 0) return;
-
-    const nextSelection = isSelected
-      ? currentSelection.filter(
-          (selected) => JSON.stringify(selected) !== JSON.stringify(item),
-        )
-      : [...currentSelection, item];
-    const nextSelectedItems = { ...selectedItems, [type]: nextSelection };
-    const perks = [
-      ...nextSelectedItems.weapons.map((selected) =>
-        cleanSpecOpsItem(selected, "weapons"),
-      ),
-      ...nextSelectedItems.skills.map((selected) =>
-        cleanSpecOpsItem(selected, "skills"),
-      ),
-      ...nextSelectedItems.equips.map((selected) =>
-        cleanSpecOpsItem(selected, "equips"),
-      ),
-    ];
-
-    setXpRemaining((current) => current + xpChange);
-    setSelectedItems(nextSelectedItems);
-    setConfiguredTrooper((current: any) => ({ ...current, perks }));
-  }
-
-  return (
-    <div className="legacy-specops-configurator">
-      <div className="legacy-specops-configurator__header">
-        <div>
-          <span className="panel-kicker">Spec-Ops Configuration</span>
-          <h3>{configuredTrooper.isc}</h3>
-          <p>
-            Spend the Captain's remaining Spec-Ops XP before adding them to the
-            company.
-          </p>
-        </div>
-        <strong>{xpRemaining} XP</strong>
-      </div>
-
-      <UnitProfileDisplay
-        unit={renderCombinedDetails(configuredTrooper)}
-        profileGroups={
-          renderCombinedDetails(configuredTrooper).profileGroups || []
-        }
-        showAva
-      />
-
-      {useDefaultAttributeChart ? (
-        <section className="legacy-specops-card">
-          <h4>Default Attribute Chart</h4>
-          <p className="legacy-specops-note">
-            Use this fallback chart when the Captain is not already an Infinity
-            Spec-Ops profile, or when the chosen sectorials do not provide a
-            Spec-Ops chart.
-          </p>
-          <div className="legacy-specops-attributes">
-            {Object.entries(attributeRules).map(([attr, rule]) => (
-              <div key={attr}>
-                <span>{attr === "w" ? "VITA" : attr.toUpperCase()}</span>
-                <div>
-                  {rule.options.map((option) =>
-                    option.val <= rule.max ? (
-                      <button
-                        className={
-                          selectedAttributes[attr]?.val === option.val
-                            ? "is-selected"
-                            : ""
-                        }
-                        key={`${attr}-${option.val}`}
-                        type="button"
-                        onClick={() => handleAttribute(attr, option)}
-                      >
-                        <strong>{option.val}</strong>
-                        <small>{option.xp ? `${option.xp} XP` : "Base"}</small>
-                      </button>
-                    ) : null,
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="legacy-specops-card">
-          <h4>Spec-Ops Chart</h4>
-          <p className="legacy-specops-note">
-            This Captain is already an Infinity Spec-Ops profile, so the default
-            fallback attribute chart does not apply here.
-          </p>
-        </section>
-      )}
-
-      <SpecOpsItemSection
-        title="Weapons"
-        items={specops.weapons || []}
-        metaKey="weapons"
-        selectedItems={selectedItems.weapons}
-        onToggle={(item) => handleItemToggle(item, "weapons")}
-      />
-      <SpecOpsItemSection
-        title="Skills"
-        items={specops.skills || []}
-        metaKey="skills"
-        selectedItems={selectedItems.skills}
-        onToggle={(item) => handleItemToggle(item, "skills")}
-      />
-      <SpecOpsItemSection
-        title="Equipment"
-        items={specops.equip || []}
-        metaKey="equips"
-        selectedItems={selectedItems.equips}
-        onToggle={(item) => handleItemToggle(item, "equips")}
-      />
-
-      <footer className="legacy-specops-actions">
-        <button className="command-button" type="button" onClick={onBack}>
-          Back to Profiles
-        </button>
-        <button
-          className="command-button command-button--primary"
-          type="button"
-          onClick={() => onConfirm(configuredTrooper)}
-        >
-          Add Captain
-        </button>
-      </footer>
-    </div>
-  );
-}
-
-function SpecOpsItemSection({
-  title,
-  items,
-  metaKey,
-  selectedItems,
-  onToggle,
-}: {
-  title: string;
-  items: MetadataItem[];
-  metaKey: string;
-  selectedItems: MetadataItem[];
-  onToggle: (item: MetadataItem) => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  return (
-    <section className="legacy-specops-card">
-      <button
-        className="legacy-specops-card__summary"
-        type="button"
-        onClick={() => setExpanded((value) => !value)}
-      >
-        <span>{title}</span>
-        <AppIcon name={expanded ? "up" : "down"} size={17} />
-      </button>
-      {expanded && (
-        <div className="legacy-specops-items">
-          {items.map((item, index) => {
-            const selected = selectedItems.some(
-              (selectedItem) =>
-                JSON.stringify(selectedItem) === JSON.stringify(item),
-            );
-            return (
-              <label
-                className={selected ? "is-selected" : ""}
-                key={`${title}-${index}-${item.id}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selected}
-                  onChange={() => onToggle(item)}
-                />
-                <span>{getSpecOpsItemName(item, metaKey)}</span>
-                <strong>{Number(item.exp || 0)} XP</strong>
-              </label>
-            );
-          })}
-          {items.length === 0 && (
-            <p className="empty-note">No {title.toLowerCase()} available.</p>
-          )}
-        </div>
-      )}
-    </section>
-  );
-}
+const TAG_COMPANY_SPECIAL_PROFILE_ID = "tag-company-special-profile";
 
 function AddTrooperDialog({
   open,
@@ -1479,9 +1034,18 @@ function AddTrooperDialog({
   }, [company.sectorial1?.slug, company.sectorial2?.slug, open]);
 
   const filteredUnits = useMemo(() => {
-    const recruitable = getRecruitableUnits(units, isCreatingCaptain);
+    const recruitable = getRecruitableUnits(units, isCreatingCaptain, {
+      companyTypeId: String(company.companyTypeId || ""),
+      existingTroopers: (company.troopers || []) as any[],
+    });
     return searchRecruitableUnits(recruitable, searchTerm);
-  }, [isCreatingCaptain, searchTerm, units]);
+  }, [
+    company.companyTypeId,
+    company.troopers,
+    isCreatingCaptain,
+    searchTerm,
+    units,
+  ]);
 
   if (!open) return null;
 
@@ -1501,7 +1065,8 @@ function AddTrooperDialog({
             <h2>{isCreatingCaptain ? "Create Captain" : "Add Trooper"}</h2>
             <p>
               This follows the original recruitment filter: allowed SWC only,
-              Lieutenant profiles for Captains, and no named characters.
+              Lieutenant or Infinity Spec-Ops profiles for Captains, and no
+              named characters.
             </p>
           </div>
           <button
@@ -1545,7 +1110,7 @@ function AddTrooperDialog({
               specops={specops}
               onBack={() => setCaptainDraft(null)}
               onConfirm={(trooper) => {
-                onAddTrooper(trooper);
+                onAddTrooper(flattenTrooperForRoster(trooper));
                 onClose();
               }}
             />
@@ -1568,23 +1133,26 @@ function AddTrooperDialog({
                         option,
                         isCreatingCaptain,
                       );
-                      if (
-                        isCreatingCaptain &&
-                        getTrooperPoints(cleanedUnit) < 28
-                      ) {
-                        setCaptainDraft({
+                      if (isCreatingCaptain) {
+                        const xpBudget = getCaptainSpecOpsXpBudget(
+                          cleanedUnit,
                           unit,
-                          group,
-                          option,
-                          trooper: cleanedUnit,
-                          xp: 28 - getTrooperPoints(cleanedUnit),
-                          baseProfile: structuredClone(
-                            cleanedUnit.profileGroups[0].profiles[0],
-                          ),
-                        });
-                        return;
+                        );
+                        if (xpBudget > 0) {
+                          setCaptainDraft({
+                            unit,
+                            group,
+                            option,
+                            trooper: cleanedUnit,
+                            xp: xpBudget,
+                            baseProfile: structuredClone(
+                              cleanedUnit.profileGroups[0].profiles[0],
+                            ),
+                          });
+                          return;
+                        }
                       }
-                      onAddTrooper(cleanedUnit);
+                      onAddTrooper(flattenTrooperForRoster(cleanedUnit));
                       onClose();
                     }}
                   />
@@ -1602,65 +1170,6 @@ function AddTrooperDialog({
   );
 }
 
-function RecruitableUnit({
-  unit,
-  isCreatingCaptain,
-  specops,
-  onAdd,
-}: {
-  unit: Unit;
-  isCreatingCaptain: boolean;
-  specops: SpecopsPool;
-  onAdd: (group: ProfileGroup, option: ProfileOption) => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const renderableGroups = unit.profileGroups.filter(
-    (group) =>
-      (group.profiles || []).length > 0 && (group.options || []).length > 0,
-  );
-
-  return (
-    <article className="legacy-recruit-card">
-      <button
-        className="legacy-recruit-summary"
-        type="button"
-        onClick={() => setExpanded((value) => !value)}
-      >
-        {unit.resume?.logo && (
-          <img src={unit.resume.logo} alt="" aria-hidden="true" />
-        )}
-        <span>
-          <strong>{unit.isc}</strong>
-          <small>{mapType(unit.resume?.type || "")}</small>
-        </span>
-        <AppIcon name={expanded ? "up" : "down"} size={17} />
-      </button>
-      {expanded && (
-        <div className="legacy-recruit-details">
-          <UnitProfileDisplay
-            unit={unit}
-            profileGroups={renderableGroups}
-            showAva
-            optionClick={onAdd}
-          />
-          {renderableGroups.length === 0 && (
-            <p className="legacy-empty-note">
-              No valid profiles are available for this recruitment filter.
-            </p>
-          )}
-          {isCreatingCaptain && specops && (
-            <p className="legacy-specops-note">
-              Spec-Ops pools loaded: {specops.weapons.length} weapons,{" "}
-              {specops.skills.length} skills, {specops.equip.length} equipment
-              items.
-            </p>
-          )}
-        </div>
-      )}
-    </article>
-  );
-}
-
 export default function CompanyManager() {
   const [companies, setCompanies] = useState<LocalCompany[]>([]);
   const [company, setCompany] = useState<LocalCompany | null>(null);
@@ -1674,7 +1183,8 @@ export default function CompanyManager() {
 
   useEffect(() => {
     const loadedCompanies = loadLocalCompanies();
-    const requestedId = new URLSearchParams(window.location.search).get("id");
+    const params = new URLSearchParams(window.location.search);
+    const requestedId = params.get("id");
     const selectedCompany =
       loadedCompanies.find((item) => item.id === requestedId) ||
       loadedCompanies[0] ||
@@ -1749,6 +1259,20 @@ export default function CompanyManager() {
   function addTrooper(trooper: any) {
     if (!company) return;
     const existingTroopers = (company.troopers || []) as any[];
+    const addingTagSpecialProfile =
+      Boolean(trooper?.tagCompanySpecialTag) ||
+      trooper?.id === TAG_COMPANY_SPECIAL_PROFILE_ID ||
+      trooper?.slug === TAG_COMPANY_SPECIAL_PROFILE_ID;
+    const hasTagSpecialProfile = existingTroopers.some(
+      (item) =>
+        Boolean(item?.tagCompanySpecialTag) ||
+        item?.id === TAG_COMPANY_SPECIAL_PROFILE_ID ||
+        item?.slug === TAG_COMPANY_SPECIAL_PROFILE_ID,
+    );
+    if (addingTagSpecialProfile && hasTagSpecialProfile) {
+      return;
+    }
+
     const nextTroopers = trooper.captain
       ? existingTroopers.map((item) => ({ ...item, captain: false }))
       : existingTroopers;

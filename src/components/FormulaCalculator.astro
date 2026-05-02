@@ -2,7 +2,7 @@
 interface Props {
   title?: string;
   formula: string;
-  mode?: "subtract" | "inducements";
+  mode?: "subtract" | "inducements" | "add" | "chaoticMarket" | "halfRoundedUp";
   inputLabel: string;
   inputDefault?: number;
   secondaryInputLabel?: string;
@@ -30,13 +30,22 @@ const {
 const initialResult =
   mode === "inducements"
     ? Math.floor(Math.max(0, inputDefault - secondaryInputDefault) / 2 / 5) * 5
-    : Math.min(
-        clampMax ?? Number.POSITIVE_INFINITY,
-        Math.max(
-          clampMin ?? Number.NEGATIVE_INFINITY,
-          baseValue - inputDefault,
-        ),
-      );
+    : mode === "add"
+      ? inputDefault + secondaryInputDefault
+      : mode === "chaoticMarket"
+        ? Math.max(
+            Math.ceil(inputDefault / 2),
+            inputDefault - secondaryInputDefault,
+          )
+        : mode === "halfRoundedUp"
+          ? Math.ceil(inputDefault / 2)
+          : Math.min(
+              clampMax ?? Number.POSITIVE_INFINITY,
+              Math.max(
+                clampMin ?? Number.NEGATIVE_INFINITY,
+                baseValue - inputDefault,
+              ),
+            );
 
 const calculationSteps =
   mode === "inducements"
@@ -48,9 +57,31 @@ const calculationSteps =
         "const result = Math.floor(half / 5) * 5;",
         "this.elements.formulaResult.value = String(result);",
       ]
-    : [
-        `let result = ${baseValue} - Number(this.elements.formulaInput.value || 0);`,
-      ];
+    : mode === "add"
+      ? [
+          "const base = Number(this.elements.formulaInput.value || 0);",
+          "const modifier = Number(this.elements.formulaInputSecondary.value || 0);",
+          "const result = base + modifier;",
+          "this.elements.formulaResult.value = String(result);",
+        ]
+      : mode === "chaoticMarket"
+        ? [
+            "const base = Number(this.elements.formulaInput.value || 0);",
+            "const notoriety = Number(this.elements.formulaInputSecondary.value || 0);",
+            "const discounted = base - notoriety;",
+            "const minimum = Math.ceil(base / 2);",
+            "const result = Math.max(minimum, discounted);",
+            "this.elements.formulaResult.value = String(result);",
+          ]
+        : mode === "halfRoundedUp"
+          ? [
+              "const base = Number(this.elements.formulaInput.value || 0);",
+              "const result = Math.ceil(base / 2);",
+              "this.elements.formulaResult.value = String(result);",
+            ]
+          : [
+              `let result = ${baseValue} - Number(this.elements.formulaInput.value || 0);`,
+            ];
 if (mode === "subtract") {
   if (typeof clampMin === "number") {
     calculationSteps.push(`result = Math.max(${clampMin}, result);`);

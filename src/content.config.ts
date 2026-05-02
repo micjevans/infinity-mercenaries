@@ -8,8 +8,9 @@ const rules = defineCollection({
     section: z.string().optional(),
     order: z.number().optional(),
     status: z.enum(["draft", "review", "published"]).default("draft"),
-    updated: z.string().optional()
-  })
+    updated: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  }),
 });
 
 const contracts = defineCollection({
@@ -21,11 +22,11 @@ const contracts = defineCollection({
     contractType: z.string().optional(),
     status: z.enum(["draft", "review", "published"]).default("draft"),
     updated: z.string().optional(),
-    sourceUrl: z.string().url().optional()
-  })
+    sourceUrl: z.string().url().optional(),
+  }),
 });
 
 export const collections = {
   rules,
-  contracts
+  contracts,
 };

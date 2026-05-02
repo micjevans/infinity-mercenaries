@@ -19,6 +19,8 @@ export type NpcProfile = {
   troopClass: string;
   silhouette: string;
   minimumLevel: number;
+  logo?: string;
+  orders?: Array<{ type: string; list: number; total: number }>;
   scaling?: {
     maxAttributes?: Record<NumericAttribute, number>;
     useMinimumLevel?: boolean;
@@ -78,6 +80,7 @@ const heistBrawlerCore = {
   category: "Mercenary",
   contracts: ["The Heist"],
   ttsColor: "E38B08",
+  logo: "https://assets.corvusbelli.net/army/img/logo/units/brawlers-mercenary-enforcers-1-1.svg",
   troopClass: "MI",
   silhouette: "2",
   minimumLevel: 2,
@@ -108,6 +111,7 @@ const monsterCore = {
   ttsColor: "00549E",
   troopClass: "SK",
   minimumLevel: 1,
+  logo: "https://assets.corvusbelli.net/army/img/logo/units/taigha-creatures-1-1.svg",
   scaling: monsterScaling,
   ttsUsesSilhouette: true,
   ttsSubtitleSeparator: ": ",
@@ -150,6 +154,7 @@ export const npcGroups = [
         troopClass: "LI",
         silhouette: "2",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/brawlers-mercenary-enforcers-1-1.svg",
         attributes: brawlerBase,
         equipment: [],
         baseSkills: ["Sixth Sense"],
@@ -217,6 +222,7 @@ export const npcGroups = [
         troopClass: "SK",
         silhouette: "2",
         minimumLevel: 2,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/kunai-solutions-ninjas-null-1.svg",
         attributes: {
           mov: "4-4",
           cc: 23,
@@ -258,6 +264,11 @@ export const npcGroups = [
         troopClass: "TAG",
         silhouette: "5",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/extreme-zellenkrieger-1-1.svg",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "IMPETUOUS", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "8-4",
           cc: 23,
@@ -304,6 +315,11 @@ export const npcGroups = [
         troopClass: "HI",
         silhouette: "2",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/diggers-armed-prospectors-1-1.svg",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "IMPETUOUS", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "4-4",
           cc: 21,
@@ -339,6 +355,11 @@ export const npcGroups = [
         troopClass: "LI",
         silhouette: "4",
         minimumLevel: 2,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/motorized-bounty-hunters-1-1.svg",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "IMPETUOUS", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "8-6",
           cc: 17,
@@ -372,6 +393,11 @@ export const npcGroups = [
         troopClass: "TAG",
         silhouette: "7",
         minimumLevel: 5,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/triphammers-repurposed-industrial-tags-1-1.svg",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "TACTICAL", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "6-4",
           cc: 17,
@@ -414,6 +440,7 @@ export const npcGroups = [
         troopClass: "LI",
         silhouette: "2",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/speculo-killers-1-1.svg",
         attributes: {
           mov: "4-4",
           cc: 14,
@@ -618,6 +645,10 @@ export const npcGroups = [
         name: "Illusorix",
         subtitle: "1BS, 0PH, 2WIP",
         silhouette: "1",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "TACTICAL", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "6-2",
           cc: 17,
@@ -718,6 +749,10 @@ export const npcGroups = [
         name: "Psyshredor",
         subtitle: "0BS, 1PH, 2WIP",
         silhouette: "3",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "TACTICAL", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "8-4",
           cc: 20,
@@ -752,6 +787,10 @@ export const npcGroups = [
         name: "Shadighor",
         subtitle: "0BS, 0PH, 3WIP",
         silhouette: "5",
+        orders: [
+          { type: "REGULAR", list: 1, total: 1 },
+          { type: "TACTICAL", list: 2, total: 1 },
+        ],
         attributes: {
           mov: "8-4",
           cc: 19,
@@ -797,6 +836,7 @@ export const npcGroups = [
         troopClass: "TAG",
         silhouette: "8",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/avatar-1-1.svg",
         attributes: {
           mov: "--",
           cc: 25,
@@ -837,6 +877,7 @@ export const npcGroups = [
         troopClass: "MI",
         silhouette: "2",
         minimumLevel: 1,
+        logo: "https://assets.corvusbelli.net/army/img/logo/units/the-anathematics-1-1.svg",
         scaling: {
           maxAttributes: {
             cc: 25,

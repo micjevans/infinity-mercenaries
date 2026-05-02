@@ -8,6 +8,10 @@ updated: "2026-04-28"
 ---
 
 import LoadoutSlotGrid from "../../components/LoadoutSlotGrid.astro";
+import ExampleCallout from "../../components/ExampleCallout.astro";
+import FormulaCalculator from "../../components/FormulaCalculator.astro";
+import MarketPriceCalculator from "../../components/MarketPriceCalculator.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
 import RuleCard from "../../components/RuleCard.astro";
 import RulesTable from "../../components/RulesTable.astro";
 
@@ -22,14 +26,6 @@ This page covers the rules for owning, assigning, equipping, and selling equipme
 Each Company has an inventory of unlimited size where purchased equipment is stored.
 
 Whenever equipment is purchased, add it to the Company inventory. Each piece of equipment may only be assigned to a single trooper's loadout, but players may purchase multiple copies of the same equipment to assign it to multiple troopers.
-
-<RuleCard eyebrow="Inventory" title="Selling Equipment">
-
-Equipment may be sold during Downtime for half of its full cost, rounded up.
-
-Notoriety is not considered when selling equipment. When equipment is sold, remove it from the inventory and add the appropriate CR to the Company's treasury.
-
-</RuleCard>
 
 ## Loadouts
 
@@ -53,7 +49,11 @@ Weapons and equipment that are part of a unit's original profile do not count to
 
 SWC is not spent permanently when equipment is purchased. Instead, a Company can only equip gear across its troopers up to the Company's current SWC value.
 
-For example, if a Company has **2.5 SWC**, the total SWC value of all equipment assigned to all active loadouts may never exceed **2.5 SWC**.
+<ExampleCallout title="SWC Limit Example">
+
+If a Company has **2.5 SWC**, the total SWC value of all equipment assigned to all active loadouts may never exceed **2.5 SWC**.
+
+</ExampleCallout>
 
 ## Armor Rules
 
@@ -76,23 +76,30 @@ Armor can increase a trooper's ARM, BTS, Wounds, or other abilities. Armor has s
 
 ## Purchasing Equipment
 
-To purchase equipment, choose the market the item is being purchased from, note the item's CR cost, then modify that cost using the Company's Notoriety if the market has a Lawful or Chaotic alignment.
+To purchase equipment, choose the market the item is being purchased from, note the item's CR cost, then modify that cost using the Company's Notoriety if the market has a Lawful or Chaotic alignment. Neutral markets are unaffected.
 
 After paying the final CR cost, subtract it from the Company's treasury and add one instance of the equipment to the Company inventory.
 
-<RuleCard eyebrow="Notoriety" title="Market Price Reminder">
-
-Lawful markets add the Company's Notoriety to item costs. Chaotic markets subtract the Company's Notoriety instead. Neutral markets are unaffected.
-
-An item may only be discounted to a minimum of half its original price, rounded up.
-
-</RuleCard>
+<MarketPriceCalculator
+  title="Purchase Price Calculator"
+  baseCostDefault={18}
+  notorietyDefault={3}
+/>
 
 ## Selling Equipment
 
 Equipment can be sold at any point during Downtime for half of its full cost, rounded up.
 
 Notoriety is not considered when selling equipment. Remove the item from the Company inventory, then add the sale value to the Company's treasury.
+
+<FormulaCalculator
+  title="Sell Value"
+  formula="sale value = ceil(full CR cost / 2)"
+  mode="halfRoundedUp"
+  inputLabel="Full CR cost"
+  inputDefault={17}
+  outputLabel="Sale value (CR)"
+/>
 
 ## Market Access
 
@@ -102,3 +109,21 @@ Before the first Contract and during Downtime, Companies have access to **2 mark
 - One available **War Market**.
 
 Players may either select a War Market associated with one of their chosen factions or sectorials, or, after the first Contract, randomly roll for one. War Markets contain most of the stranger and more specialized gear, while the Base Market should contain core essentials.
+
+<ReferenceLinkCallout
+  title="War Markets"
+  href="/rules/war-markets/"
+  linkLabel="Open War Markets"
+>
+  <p>Use the War Markets reference to review available faction and sectorial market catalogs.</p>
+</ReferenceLinkCallout>
+
+<hr class="rules-callout-break" />
+
+<ReferenceLinkCallout
+  title="Services and Personnel"
+  href="/rules/services/"
+  linkLabel="Open Services and Personnel"
+>
+  <p>After adjusting equipment and loadouts, use Services and Personnel for between-Contract support options.</p>
+</ReferenceLinkCallout>

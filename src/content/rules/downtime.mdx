@@ -10,28 +10,39 @@ updated: "2026-04-28"
 import DowntimeEventList from "../../components/DowntimeEventList.astro";
 import RuleCard from "../../components/RuleCard.astro";
 import RulesTable from "../../components/RulesTable.astro";
+import RollTable from "../../components/RollTable.astro";
+import ProcedureCard from "../../components/ProcedureCard.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
+import ExampleCallout from "../../components/ExampleCallout.astro";
 
 ## Downtime Events
 
-Between Contracts, each Company resolves a single random event. Roll a **d20**, find the listed event, note any event Traits, then choose one of the available responses.
+Between Contracts, each Company resolves a single random event from the list below.
 
-Each response lists a skill check in parentheses. After choosing a response and identifying the participating trooper, make the listed roll:
+<ProcedureCard
+  eyebrow="Downtime"
+  title="Resolving a Downtime Event"
+  steps={[
+    "Roll a d20 and find the matching event in the list below.",
+    "Note any Traits on the event — these define who participates, the stakes, and any special rules.",
+    "Choose one of the available responses.",
+    "Select the participating unit considering any Participant Traits on the response.",
+    "Make the skill check listed in parentheses next to your chosen response.",
+    "Compare the result using the roll outcome table below.",
+  ]}
+/>
 
-- A **pass** is equal to or lower than the target number.
-- A **failure** is higher than the target number.
-- A **critical pass** is rolling the exact number required.
-
-Some Traits define who must participate, some define rewards or consequences, and some add special rules. It can look like a lot at first, but most Traits become easy to remember after a few events.
-
-Services can also be purchased during Downtime. See [Services and Personnel](/rules/services/) for the full list of paid one-time effects.
-
-<RuleCard eyebrow="Example" title="Resolving a Downtime Event">
-
-First, a 20 is rolled. The player chooses to reroll and gets a 5. That event has **MVP** and **Opponent (Mutual)** traits.
-
-The player chooses the response "...do nothing and see what happens" and rolls against **PS=10**. They roll exactly 10, scoring a critical pass. The MVP of their last Contract gains **3 XP**, and because the event is mutual, the opponent's MVP also gains **3 XP**.
-
-</RuleCard>
+<RulesTable
+  eyebrow="Skill Check"
+  title="Roll Outcomes"
+  variant="text"
+  columns={["Result", "Condition"]}
+  rows={[
+    { label: "Pass",          cells: ["Roll equal to or lower than the target number."] },
+    { label: "Failure",       cells: ["Roll higher than the target number."] },
+    { label: "Critical Pass", cells: ["Roll the exact target number."] },
+  ]}
+/>
 
 <DowntimeEventList
   events={[
@@ -50,7 +61,7 @@ The player chooses the response "...do nothing and see what happens" and rolls a
       traits: ["SWC"],
       choices: [
         { check: "BS", text: "...you attack the dealer's crew", traits: ["Attack", "Chaotic", "XP"] },
-        { check: "PS=10+ARM", text: "...you let him shoot you to prove your point", traits: ["Attack"] },
+        { check: "PS=10+ARM", text: "...you let him shoot you to prove your point", traits: ["Attack", "XP"] },
         { check: "WIP", text: "...you intimidate the dealer into giving you an honest refund", traits: ["CR"] },
       ],
     },
@@ -76,7 +87,7 @@ The player chooses the response "...do nothing and see what happens" and rolls a
     },
     {
       roll: "9-10",
-      event: "Select a Merc that went Unconscious this Contract. A rival Merc team has taken them hostage after the most recent Contract...",
+      event: "Select a Merc that was Dead or Unconscious at the end of this Contract. A rival Merc team has taken them hostage...",
       traits: ["Opponent"],
       choices: [
         { check: "WIP", text: "...you negotiate a ransom", traits: ["P2P", "Lawful", "XP"] },
@@ -90,7 +101,7 @@ The player chooses the response "...do nothing and see what happens" and rolls a
       choices: [
         { check: "PS=10", text: "...allow the change of leadership", traits: ["CR (Neg)", "LT"] },
         { check: "WIP", text: "...negotiate a new salary", traits: ["Captain", "XP", "P2P"] },
-        { check: "CC -10", text: "...agni kai", traits: ["Captain", "Attack", "Chaotic"] },
+        { check: "CC -10", text: "...challenge them to a duel — winner takes command", traits: ["Captain", "Attack", "Chaotic"] },
       ],
     },
     {
@@ -123,12 +134,16 @@ The player chooses the response "...do nothing and see what happens" and rolls a
     },
     {
       roll: "19-20",
-      event: "No incident occurs.",
+      event: "Nothing to report. The period between Contracts passes without incident.",
+      choices: [
+        { check: "—", text: "...reroll and face a new event this Downtime.", traits: [] },
+        { check: "—", text: "...take the quiet. Remove an additional Injury from any unit in your roster.", traits: [] },
+      ],
     },
   ]}
 />
 
-## Event Trait Reference
+## Traits
 
 <RulesTable
   eyebrow="Downtime"
@@ -142,28 +157,24 @@ The player chooses the response "...do nothing and see what happens" and rolls a
     { label: "CR", cells: ["-", "Lose 5 CR", "Gain 5 CR", "Gain 6 CR"] },
     { label: "XP", cells: ["-", "-", "Gain 2 XP", "Gain 3 XP"] },
     { label: "SWC", cells: ["-", "-", "Gain 0.5 SWC", "Gain 0.5 SWC"] },
-    { label: "P2P", cells: ["You may spend CR to increase your Success Rating by 1 for each CR spent.", "Spent CR are lost", "Spent CR are lost", "Spent CR are not lost"] },
+    { label: "P2P", cells: ["Spend CR before rolling. +1 to your roll per CR spent.", "Spent CR are lost", "Spent CR are lost", "Spent CR are not lost"] },
+    { label: "Weapon", cells: ["Roll d20 on the Pistol table below", "-", "Gain a random pistol", "Gain a random pistol with +1 SD"] },
     { label: "Skill (*)", cells: ["The trait will name a specific skill.", "-", "Gain the named skill", "Gain the named skill"] },
-    { label: "LT", cells: ["-", "-", "You may select any member of your team to be the new Captain", "You may select any member of your team to be the new Captain"] },
+    { label: "LT", cells: ["-", "-", "Choose any team member to become the new Captain", "Choose any team member to become the new Captain"] },
   ]}
 />
 
-<RulesTable
-  eyebrow="Downtime"
-  title="Weapon Trait Pistol Roll"
-  variant="text"
-  columns={["Roll", "Pistol Type"]}
+<RollTable
+  eyebrow="Weapon Reward"
+  title="Random Pistol"
   rows={[
-    { label: "1-4", cells: ["MULTI"] },
-    { label: "5-8", cells: ["AP Heavy"] },
-    { label: "9-12", cells: ["Breaker"] },
-    { label: "13-16", cells: ["Silenced"] },
-    { label: "17-20", cells: ["Viral"] },
+    { roll: "1–4",   name: "MULTI Pistol" },
+    { roll: "5–8",   name: "AP Heavy Pistol" },
+    { roll: "9–12",  name: "Breaker Pistol" },
+    { roll: "13–16", name: "Silenced Pistol" },
+    { roll: "17–20", name: "Viral Pistol" },
   ]}
-  note="On a pass, roll a random pistol using this chart. On a critical pass, roll a random pistol with +1 SD using this chart."
 />
-
-## Participant and Special Traits
 
 <RulesTable
   eyebrow="Downtime"
@@ -176,8 +187,27 @@ The player chooses the response "...do nothing and see what happens" and rolls a
     { label: "Renowned", cells: ["The highest Renown member of the Company must perform the event."] },
     { label: "Merc", cells: ["The event description specifies which Merc participates."] },
     { label: "Requirement (*)", cells: ["The response has a requirement that must be met, such as Hacker or Trinity Program."] },
-    { label: "Opponent", cells: ["The opponent from the last Contract gains any CR spent for P2P choices. If this is not Opponent (Mutual), the opponent also gets the pass benefit, except Notoriety."] },
-    { label: "Opponent (Mutual)", cells: ["The opponent from the last Contract receives the pass or critical pass benefits, except Notoriety. The opponent may choose the benefiting trooper if another trait does not specify one."] },
-    { label: "(Neg)", cells: ["Only the fail portion of that trait matters. No benefit is gained on a pass or critical pass."] },
   ]}
 />
+
+<RulesTable
+  eyebrow="Downtime"
+  title="Special Traits"
+  variant="text"
+  columns={["Trait", "Meaning"]}
+  rows={[
+    { label: "Opponent", cells: ["On a fail, your opponent receives the pass benefit from this event (except any Notoriety change). Any CR you spend for P2P also goes to your opponent. The opponent may choose the benefiting trooper if another trait does not specify one."] },
+    { label: "Opponent (Mutual)", cells: ["On a pass or critical pass, your opponent receives the same benefit you do (except Notoriety). The opponent may choose the benefiting trooper if another trait does not specify one."] },
+    { label: "(Neg)", cells: ["Only the fail portion of the paired trait applies. No benefit is gained on a pass or critical pass."] },
+  ]}
+/>
+
+<hr class="rules-callout-break" />
+
+<ReferenceLinkCallout
+  title="Progression"
+  href="/rules/progression/"
+  linkLabel="Open Progression"
+>
+  <p>After Downtime is resolved, apply XP gains, update Renown/Notoriety, and complete level-ups in Progression.</p>
+</ReferenceLinkCallout>

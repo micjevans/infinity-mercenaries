@@ -1,7 +1,7 @@
 ---
 import DeploymentMap from "./DeploymentMap.astro";
 import ObjectiveList from "./ObjectiveList.astro";
-import TwistTable from "./TwistTable.astro";
+import RollTable from "./RollTable.astro";
 import type { ContractDeployment } from "../data/contractMaps";
 
 type Objective = {
@@ -88,12 +88,12 @@ const builtEndConditions: EndCondition[] = [
 ---
 
 <section class="contract-section">
-  <h2>Mission Objectives</h2>
+  <h2 id="mission-objectives">Mission Objectives</h2>
   <ObjectiveList objectives={objectives} objectiveGroups={objectiveGroups} />
 </section>
 
 <section class="contract-section">
-  <h2>Forces and Deployment</h2>
+  <h2 id="forces-and-deployment">Forces and Deployment</h2>
   {
     deploymentType === "opposed" && (
       <p>
@@ -123,7 +123,7 @@ const builtEndConditions: EndCondition[] = [
 </section>
 
 <section class="contract-section">
-  <h2>Scenario Special Rules</h2>
+  <h2 id="scenario-special-rules">Scenario Special Rules</h2>
   {
     direCircumstances && (
       <Fragment>
@@ -150,20 +150,20 @@ const builtEndConditions: EndCondition[] = [
 {
   hasNpcs && (
     <section class="contract-section">
-      <h2>NPC Profiles</h2>
+      <h2 id="npc-profiles">NPC Profiles</h2>
       <slot name="npcs" />
     </section>
   )
 }
 
 <section class="contract-section">
-  <h2>Twist</h2>
+  <h2 id="twist">Twist</h2>
   <p>{twistIntro}</p>
-  <TwistTable title={twistTitle} rows={twistRows} />
+  <RollTable title={twistTitle} rows={twistRows} />
 </section>
 
 <section class="contract-section">
-  <h2>End of Mission</h2>
+  <h2 id="end-of-mission">End of Mission</h2>
   <aside class="end-mission-card">
     <header>
       <span>End State</span>

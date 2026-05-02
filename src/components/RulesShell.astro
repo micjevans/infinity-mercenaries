@@ -8,6 +8,8 @@ type TocHeading = {
   text: string;
 };
 
+type NavLink = { href: string; title: string; section: string };
+
 interface Props {
   title: string;
   description?: string;
@@ -15,6 +17,7 @@ interface Props {
   currentPath: string;
   headings?: TocHeading[];
   contentClass?: string;
+  mode?: "rules" | "contracts";
 }
 
 const {
@@ -24,33 +27,88 @@ const {
   currentPath,
   headings = [],
   contentClass = "",
+  mode = "rules",
 } = Astro.props;
 
-const rules = (await getCollection("rules")).sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
-);
+let navGroups: Record<string, NavLink[]> = {};
+let homeHref: string;
+let homeLabel: string;
 
-const ruleLinks = [
-  ...rules.map((rule) => ({
-    href: `/rules/${rule.id.replace(/\.mdx?$/, "")}/`,
-    title: rule.data.title,
-    section: rule.data.section ?? "Rules",
-  })),
-  {
-    href: "/rules/npcs/",
-    title: "NPC Profiles",
-    section: "Reference",
-  },
-];
+if (mode === "rules") {
+  const rules = (await getCollection("rules")).sort(
+    (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
+  );
 
-const navGroups = ruleLinks.reduce<Record<string, typeof ruleLinks>>(
-  (groups, link) => {
+  const ruleLinks: NavLink[] = [
+    ...rules.map((rule) => ({
+      href: `/rules/${rule.id.replace(/\.mdx?$/, "")}/`,
+      title: rule.data.title,
+      section: rule.data.section ?? "Rules",
+    })),
+    { href: "/rules/npcs/", title: "NPC Profiles", section: "Reference" },
+  ];
+
+  navGroups = ruleLinks.reduce<Record<string, NavLink[]>>((groups, link) => {
     groups[link.section] ??= [];
     groups[link.section].push(link);
     return groups;
-  },
-  {},
-);
+  }, {});
+
+  homeHref = "/rules/";
+  homeLabel = "Field Manual";
+} else {
+  const [contracts, rules] = await Promise.all([
+    getCollection("contracts"),
+    getCollection("rules"),
+  ]);
+
+  const sortedContracts = contracts.sort((a, b) =>
+    a.data.title.localeCompare(b.data.title),
+  );
+
+  const contractLinks: NavLink[] = sortedContracts.map((c) => ({
+    href: `/contracts/${c.id.replace(/\.mdx?$/, "")}/`,
+    title: c.data.title,
+    section: "Contracts",
+  }));
+
+  const taggedRuleLinks: NavLink[] = rules
+    .filter((r) => (r.data.tags ?? []).includes("contracts"))
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+    .map((r) => ({
+      href: `/rules/${r.id.replace(/\.mdx?$/, "")}/`,
+      title: r.data.title,
+      section: "References",
+    }));
+
+  navGroups = {
+    "Start Here": [
+      {
+        href: "/contracts/",
+        title: "Contracts Overview",
+        section: "Start Here",
+      },
+    ],
+    Contracts: contractLinks,
+    References: [
+      {
+        href: "/rules/classified-deck/",
+        title: "Classified Deck",
+        section: "References",
+      },
+      {
+        href: "/rules/inducements/",
+        title: "Inducements",
+        section: "References",
+      },
+      ...taggedRuleLinks,
+      { href: "/rules/npcs/", title: "NPC Profiles", section: "References" },
+    ],
+  };
+
+  homeHref = "/contracts/";
+  homeLabel = "Contracts";
+}
 
 const visibleHeadings = headings.filter(
   (heading) => heading.depth >= 2 && heading.depth <= 3,
@@ -65,7 +123,7 @@ const visibleHeadings = headings.filter(
       data-rules-sidebar
     >
       <div class="rules-sidebar-inner">
-        <a class="rules-sidebar-home" href="/rules/">Field Manual</a>
+        <a class="rules-sidebar-home" href={homeHref}>{homeLabel}</a>
         <nav class="rules-page-nav" aria-label="Rules pages">
           {
             Object.entries(navGroups).map(([group, links]) => (
@@ -168,21 +226,76 @@ const visibleHeadings = headings.filter(
     const mobileToc = document.querySelector(
       "[data-rules-mobile-toc]",
     ) as HTMLElement | null;
+    const tocLinks = document.querySelectorAll(
+      ".rules-toc a[href^='#'], .rules-mobile-toc a[href^='#']",
+    ) as NodeListOf<HTMLAnchorElement>;
     const siteHeader = document.querySelector(
       ".site-header",
     ) as HTMLElement | null;
     const mobileQuery = window.matchMedia("(max-width: 860px)");
 
+    const getAnchorOffset = () => {
+      // Extra clearance keeps heading text comfortably below sticky chrome.
+      let offset = 32;
+
+      if (siteHeader) {
+        const headerRect = siteHeader.getBoundingClientRect();
+        offset += Math.max(headerRect.height, 0);
+      }
+
+      if (mobileQuery.matches && mobileToc?.classList.contains("is-visible")) {
+        const mobileSummary = mobileToc.querySelector("summary");
+
+        if (mobileSummary) {
+          const summaryRect = mobileSummary.getBoundingClientRect();
+          offset += Math.max(summaryRect.height, 0) + 8;
+        }
+      }
+
+      return offset;
+    };
+
+    const updateAnchorOffset = () => {
+      document.documentElement.style.setProperty(
+        "--rules-anchor-offset",
+        `${Math.round(getAnchorOffset())}px`,
+      );
+    };
+
+    const scrollToAnchor = (
+      hash: string,
+      behavior: ScrollBehavior = "smooth",
+    ) => {
+      const targetId = decodeURIComponent(hash.replace(/^#/, ""));
+
+      if (!targetId) {
+        return;
+      }
+
+      const target = document.getElementById(targetId);
+
+      if (!target) {
+        return;
+      }
+
+      const top =
+        window.scrollY + target.getBoundingClientRect().top - getAnchorOffset();
+
+      window.scrollTo({ top: Math.max(top, 0), behavior });
+    };
+
     if (sidebar && mobileToc) {
       const updateMobileTocTop = () => {
         if (!mobileQuery.matches || !siteHeader) {
           mobileToc.style.removeProperty("--rules-mobile-toc-top");
+          updateAnchorOffset();
           return;
         }
 
         const headerRect = siteHeader.getBoundingClientRect();
         const topOffset = Math.max(headerRect.bottom, 0);
         mobileToc.style.setProperty("--rules-mobile-toc-top", `${topOffset}px`);
+        updateAnchorOffset();
       };
 
       const observer = new IntersectionObserver(
@@ -198,6 +311,7 @@ const visibleHeadings = headings.filter(
 
               const sidebarFullyOutOfView = entry.intersectionRatio === 0;
               mobileToc.classList.toggle("is-visible", sidebarFullyOutOfView);
+              updateAnchorOffset();
             }
           }
         },
@@ -217,6 +331,36 @@ const visibleHeadings = headings.filter(
         if (!mobileQuery.matches) {
           mobileToc.classList.remove("is-visible");
         }
+
+        updateAnchorOffset();
+      });
+    }
+
+    updateAnchorOffset();
+
+    if (window.location.hash) {
+      requestAnimationFrame(() => {
+        scrollToAnchor(window.location.hash, "auto");
+      });
+    }
+
+    for (const link of tocLinks) {
+      link.addEventListener("click", (event) => {
+        const href = link.getAttribute("href");
+
+        if (!href || !href.startsWith("#")) {
+          return;
+        }
+
+        event.preventDefault();
+        window.history.pushState(null, "", href);
+        scrollToAnchor(href);
+
+        if (mobileQuery.matches && mobileToc) {
+          mobileToc.removeAttribute("open");
+        }
+
+        updateAnchorOffset();
       });
     }
   </script>
