@@ -1,6 +1,6 @@
 ---
 import { npcGroups, npcScaling } from "../data/npcs";
-import ProfileCard from "./ProfileCard.astro";
+import { NpcInfinityProfileCard } from "./UnifiedProfileCard";
 
 interface Props {
   groupIds?: string[];
@@ -214,7 +214,7 @@ const initialRenown = {
         )}
         <div class="npc-profile-grid">
           {group.profiles.map((profile) => (
-            <ProfileCard profile={profile} interactive showTts />
+            <NpcInfinityProfileCard profile={profile} interactive showTts />
           ))}
         </div>
       </section>
@@ -549,7 +549,7 @@ ${profile.weapons.join(", ")}
       });
 
       const formattedSkills = formatSkills(profile, scaled);
-      const skills = card.querySelector("[data-npc-skills]");
+      const skills = card.querySelector("[data-npc-skills-plain]");
       if (skills) {
         skills.textContent = formattedSkills;
       }

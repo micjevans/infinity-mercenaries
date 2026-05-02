@@ -116,7 +116,7 @@ export function makeDefaultSpecOpsAttributeRules(
 export function isInfinitySpecOpsProfile(profile: Profile): boolean {
   return (profile.skills || []).some(
     (skill) =>
-      skill.id === INFINITY_SPEC_OPS_SKILL_ID ||
+      Number(skill.id) === INFINITY_SPEC_OPS_SKILL_ID ||
       skill.name === "Infinity Spec-Ops",
   );
 }

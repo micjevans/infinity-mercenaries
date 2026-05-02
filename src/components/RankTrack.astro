@@ -4,6 +4,7 @@ type Rank = {
   xp: string;
   name: string;
   freeSkill?: string;
+  freeSkillNote?: string;
 };
 
 interface Props {
@@ -14,14 +15,25 @@ const { ranks } = Astro.props;
 ---
 
 <ol class="rank-track">
-  {ranks.map((rank) => (
-    <li>
-      <span>{rank.rank}</span>
-      <div>
-        <strong>{rank.name}</strong>
-        <p>{rank.xp}</p>
-        {rank.freeSkill && <em>{rank.freeSkill}</em>}
-      </div>
-    </li>
-  ))}
+  {
+    ranks.map((rank) => (
+      <li class:list={[rank.freeSkill && "has-reward"]}>
+        <span>{rank.rank}</span>
+        <div>
+          <strong>{rank.name}</strong>
+          <p>{rank.xp}</p>
+          {rank.freeSkill && (
+            <em
+              class:list={[rank.freeSkillNote && "has-tooltip"]}
+              data-tip={rank.freeSkillNote}
+              title={rank.freeSkillNote}
+              tabindex={rank.freeSkillNote ? "0" : undefined}
+            >
+              {rank.freeSkill}
+            </em>
+          )}
+        </div>
+      </li>
+    ))
+  }
 </ol>

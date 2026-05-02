@@ -16,38 +16,225 @@ interface Props {
   events: DowntimeEvent[];
 }
 
+type TraitTooltip =
+  | {
+      type: "cols";
+      special?: string;
+      fail?: string;
+      pass?: string;
+      crit?: string;
+    }
+  | { type: "text"; desc: string };
+
 const { events } = Astro.props;
+
+const traitTooltips: Record<string, TraitTooltip> = {
+  Attack: { type: "cols", fail: "Gain an Injury" },
+  Chaotic: {
+    type: "cols",
+    fail: "−1 Notoriety",
+    pass: "+1 Notoriety",
+    crit: "+2 Notoriety",
+  },
+  Lawful: {
+    type: "cols",
+    fail: "+1 Notoriety",
+    pass: "−1 Notoriety",
+    crit: "−2 Notoriety",
+  },
+  CR: { type: "cols", fail: "−5 CR", pass: "+5 CR", crit: "+6 CR" },
+  "CR (Neg)": {
+    type: "cols",
+    special: "Fail only — pass and crit have no effect",
+    fail: "−5 CR",
+  },
+  XP: { type: "cols", pass: "+2 XP", crit: "+3 XP" },
+  SWC: { type: "cols", pass: "+0.5 SWC", crit: "+0.5 SWC" },
+  Weapon: { type: "cols", pass: "Random pistol", crit: "Random pistol +1 SD" },
+  P2P: {
+    type: "cols",
+    special: "Spend CR before rolling — +1 to your roll per CR spent",
+    fail: "CR lost",
+    pass: "CR lost",
+    crit: "CR returned",
+  },
+  LT: { type: "cols", pass: "Choose new Captain", crit: "Choose new Captain" },
+  "Skill (*)": { type: "cols", pass: "Gain the skill", crit: "Gain the skill" },
+  MVP: {
+    type: "text",
+    desc: "The MVP of your last Contract must perform this event",
+  },
+  Captain: { type: "text", desc: "Your Captain must perform this event" },
+  Renowned: {
+    type: "text",
+    desc: "The highest Renown member must perform this event",
+  },
+  Merc: {
+    type: "text",
+    desc: "The event description specifies which Merc participates",
+  },
+  Opponent: {
+    type: "text",
+    desc: "On a fail, your opponent receives the pass benefit (except Notoriety). Any P2P CR you spend also goes to them.",
+  },
+  "Opponent (Mutual)": {
+    type: "text",
+    desc: "On a pass or crit, your opponent receives the same benefit you do (except Notoriety).",
+  },
+  "(Neg)": {
+    type: "text",
+    desc: "Only the fail effect of the paired trait applies.",
+  },
+};
+
+function getTooltip(trait: string): TraitTooltip | undefined {
+  if (traitTooltips[trait]) return traitTooltips[trait];
+  if (trait.startsWith("Skill ("))
+    return { type: "cols", pass: "Gain the skill", crit: "Gain the skill" };
+  if (trait.startsWith("Requirement ("))
+    return {
+      type: "text",
+      desc: "This option requires the named skill or equipment",
+    };
+  return undefined;
+}
 ---
 
 <div class="downtime-event-list">
-  {events.map((event) => (
-    <article class="downtime-event-card">
-      <header>
-        <span>{event.roll}</span>
-        <h3>{event.event}</h3>
-      </header>
+  {
+    events.map((event) => (
+      <article class="downtime-event-card">
+        <header>
+          <span>{event.roll}</span>
+          <h3>{event.event}</h3>
+        </header>
 
-      {event.traits && event.traits.length > 0 && (
-        <div class="downtime-event-traits" aria-label="Event traits">
-          {event.traits.map((trait) => <span>{trait}</span>)}
-        </div>
-      )}
+        {event.traits && event.traits.length > 0 && (
+          <div class="downtime-event-traits" aria-label="Event traits">
+            {event.traits.map((trait) => {
+              const tip = getTooltip(trait);
+              return (
+                <span
+                  class:list={["downtime-trait", tip && "downtime-trait--tip"]}
+                  tabindex={tip ? 0 : undefined}
+                >
+                  {trait}
+                  {tip && (
+                    <span class="trait-tooltip">
+                      <strong class="trait-tooltip-title">{trait}</strong>
+                      {tip.type === "text" ? (
+                        <span class="trait-tooltip-body">{tip.desc}</span>
+                      ) : (
+                        <>
+                          {tip.special && (
+                            <span class="trait-tooltip-special">
+                              {tip.special}
+                            </span>
+                          )}
+                          <span class="trait-tooltip-cols">
+                            <span class="trait-tooltip-col">
+                              <span class="trait-tooltip-col-head">Fail</span>
+                              <span class="trait-tooltip-col-val">
+                                {tip.fail ?? "—"}
+                              </span>
+                            </span>
+                            <span class="trait-tooltip-col">
+                              <span class="trait-tooltip-col-head">Pass</span>
+                              <span class="trait-tooltip-col-val">
+                                {tip.pass ?? "—"}
+                              </span>
+                            </span>
+                            <span class="trait-tooltip-col">
+                              <span class="trait-tooltip-col-head">Crit</span>
+                              <span class="trait-tooltip-col-val">
+                                {tip.crit ?? "—"}
+                              </span>
+                            </span>
+                          </span>
+                        </>
+                      )}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
+          </div>
+        )}
 
-      {event.choices && event.choices.length > 0 ? (
-        <div class="downtime-choice-grid">
-          {event.choices.map((choice) => (
-            <section class="downtime-choice-card">
-              <strong>{choice.check}</strong>
-              <p>{choice.text}</p>
-              <div>
-                {choice.traits.map((trait) => <span>{trait}</span>)}
-              </div>
-            </section>
-          ))}
-        </div>
-      ) : (
-        <p class="downtime-no-event">You may reroll until you get an incident, or choose to have no event.</p>
-      )}
-    </article>
-  ))}
+        {event.choices && event.choices.length > 0 ? (
+          <div class="downtime-choice-grid">
+            {event.choices.map((choice) => (
+              <section class="downtime-choice-card">
+                <strong>{choice.check}</strong>
+                <p>{choice.text}</p>
+                <div>
+                  {choice.traits.map((trait) => {
+                    const tip = getTooltip(trait);
+                    return (
+                      <span
+                        class:list={[
+                          "downtime-trait",
+                          tip && "downtime-trait--tip",
+                        ]}
+                        tabindex={tip ? 0 : undefined}
+                      >
+                        {trait}
+                        {tip && (
+                          <span class="trait-tooltip">
+                            <strong class="trait-tooltip-title">{trait}</strong>
+                            {tip.type === "text" ? (
+                              <span class="trait-tooltip-body">{tip.desc}</span>
+                            ) : (
+                              <>
+                                {tip.special && (
+                                  <span class="trait-tooltip-special">
+                                    {tip.special}
+                                  </span>
+                                )}
+                                <span class="trait-tooltip-cols">
+                                  <span class="trait-tooltip-col">
+                                    <span class="trait-tooltip-col-head">
+                                      Fail
+                                    </span>
+                                    <span class="trait-tooltip-col-val">
+                                      {tip.fail ?? "—"}
+                                    </span>
+                                  </span>
+                                  <span class="trait-tooltip-col">
+                                    <span class="trait-tooltip-col-head">
+                                      Pass
+                                    </span>
+                                    <span class="trait-tooltip-col-val">
+                                      {tip.pass ?? "—"}
+                                    </span>
+                                  </span>
+                                  <span class="trait-tooltip-col">
+                                    <span class="trait-tooltip-col-head">
+                                      Crit
+                                    </span>
+                                    <span class="trait-tooltip-col-val">
+                                      {tip.crit ?? "—"}
+                                    </span>
+                                  </span>
+                                </span>
+                              </>
+                            )}
+                          </span>
+                        )}
+                      </span>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <p class="downtime-no-event">
+            You may reroll until you get an incident, or choose to have no
+            event.
+          </p>
+        )}
+      </article>
+    ))
+  }
 </div>

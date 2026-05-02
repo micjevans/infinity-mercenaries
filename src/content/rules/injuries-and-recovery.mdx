@@ -8,7 +8,7 @@ updated: "2026-04-28"
 ---
 
 import RuleCard from "../../components/RuleCard.astro";
-import RulesTable from "../../components/RulesTable.astro";
+import RollTable from "../../components/RollTable.astro";
 import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
 
 ## Injury Rolls
@@ -43,25 +43,31 @@ Captains do not have the luxury of sitting idle. A Captain may remove a single I
 
 </RuleCard>
 
+<ReferenceLinkCallout
+  title="Services and Personnel"
+  href="/rules/services/"
+  linkLabel="Open Services and Personnel"
+>
+  <p>For additional healing options between Contracts, review Services and Personnel during Downtime.</p>
+</ReferenceLinkCallout>
+
 ## Injury Table
 
-<RulesTable
-  eyebrow="Injuries"
+<RollTable
   title="Permanent Injury Results"
-  die="d20"
-  variant="text"
-  columns={["Roll", "Injury", "Effect"]}
   rows={[
-    { label: "1-6", cells: ["Battle Fury", "The near-death experience drastically modifies the unit's behavior. The unit is considered to have Frenzy."] },
-    { label: "7-8", cells: ["Punctured Lung", "The unit suffers -1 PH and -1 to the second MOV value."] },
-    { label: "9-10", cells: ["Shattered Arm", "The unit suffers -1 BS."] },
-    { label: "11-12", cells: ["Cracked Skull", "The unit suffers -1 WIP and -3 CC."] },
-    { label: "13-14", cells: ["Blown Leg", "The unit suffers -2 to the first MOV value."] },
-    { label: "15-16", cells: ["Deep Wound", "The unit suffers -2 PH."] },
-    { label: "17-18", cells: ["Ruined Optics", "The unit suffers -1 BS and -2 on Discover Rolls."] },
-    { label: "19-20", cells: ["Shell Shocked", "The unit suffers -2 WIP."] },
+    { roll: "1–6",   name: "Battle Fury",    effect: "The near-death experience drastically modifies the unit's behavior. The unit is considered to have Frenzy." },
+    { roll: "7–8",   name: "Punctured Lung", effect: "The unit suffers −1 PH and −1 to the second MOV value." },
+    { roll: "9–10",  name: "Shattered Arm",  effect: "The unit suffers −1 BS." },
+    { roll: "11–12", name: "Cracked Skull",  effect: "The unit suffers −1 WIP and −3 CC." },
+    { roll: "13–14", name: "Blown Leg",      effect: "The unit suffers −2 to the first MOV value." },
+    { roll: "15–16", name: "Deep Wound",     effect: "The unit suffers −2 PH." },
+    { roll: "17–18", name: "Ruined Optics",  effect: "The unit suffers −1 BS and −2 on Discover Rolls." },
+    { roll: "19–20", name: "Shell Shocked",  effect: "The unit suffers −2 WIP." },
   ]}
 />
+
+<hr class="rules-callout-break" />
 
 <ReferenceLinkCallout
   title="Downtime"

@@ -7,8 +7,12 @@ status: "review"
 updated: "2026-04-28"
 ---
 
-import RankTrack from "../../components/RankTrack.astro";
 import RuleCard from "../../components/RuleCard.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
+import ProcedureCard from "../../components/ProcedureCard.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+import ExampleCallout from "../../components/ExampleCallout.astro";
+import { AppIcon } from "../../components/AppIcon";
 
 ## Ranking Up
 
@@ -16,22 +20,118 @@ When a unit gains enough XP during a round to advance to the next rank, it gains
 
 Perk Points must be spent immediately. They cannot be saved for later ranks.
 
-<RankTrack
-  ranks={[
-    { rank: "0", xp: "-", name: "Green" },
-    { rank: "1", xp: "5 XP", name: "Newbie" },
-    { rank: "2", xp: "15 XP", name: "Hired Gun", freeSkill: "Courage" },
-    { rank: "3", xp: "30 XP", name: "Hitman", freeSkill: "Fireteam: Mercs*" },
-    { rank: "4", xp: "50 XP", name: "Operative" },
-    { rank: "5", xp: "75 XP", name: "Veteran", freeSkill: "Counts as Merc**" },
-    { rank: "6", xp: "105 XP", name: "Officer" },
-    { rank: "7", xp: "140 XP", name: "Legend" },
-  ]}
-/>
-
-\* **Fireteam: Mercs** allows the unit to form Fireteams with other units that have this skill.
-
-\** **Counts as Merc** means the unit counts as Merc when forming a Mercs Fireteam for pure bonuses.
+<section class="rules-table-card progression-rank-table">
+  <header>
+    <span>Progression</span>
+    <strong>Rank Ladder</strong>
+  </header>
+  <div class="rules-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Rank</th>
+          <th scope="col">XP Threshold</th>
+          <th scope="col">Title</th>
+          <th scope="col">Free Skill / Benefit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-0" aria-hidden="true"><AppIcon name="rank0" size={12} strokeWidth={2.5} /></span>
+              <span class="rank-code">Rank 0</span>
+            </span>
+          </th>
+          <td>-</td>
+          <td>Green</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-1" aria-hidden="true"><AppIcon name="rank1" size={12} strokeWidth={2.4} /></span>
+              <span class="rank-code">Rank 1</span>
+            </span>
+          </th>
+          <td>5 XP</td>
+          <td>Newbie</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-2" aria-hidden="true"><AppIcon name="rank2" size={12} strokeWidth={2.5} /></span>
+              <span class="rank-code">Rank 2</span>
+            </span>
+          </th>
+          <td>15 XP</td>
+          <td>Hired Gun</td>
+          <td>Courage</td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-3" aria-hidden="true"><AppIcon name="rank3" size={12} strokeWidth={2.5} /></span>
+              <span class="rank-code">Rank 3</span>
+            </span>
+          </th>
+          <td>30 XP</td>
+          <td>Hitman</td>
+          <td>Fireteam: Mercs<sup>1</sup></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-4" aria-hidden="true"><AppIcon name="rank4" size={12} strokeWidth={2.4} /></span>
+              <span class="rank-code">Rank 4</span>
+            </span>
+          </th>
+          <td>50 XP</td>
+          <td>Operative</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-5" aria-hidden="true"><AppIcon name="rank5" size={12} strokeWidth={2.35} /></span>
+              <span class="rank-code">Rank 5</span>
+            </span>
+          </th>
+          <td>75 XP</td>
+          <td>Veteran</td>
+          <td>Counts as Merc<sup>2</sup></td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-6" aria-hidden="true"><AppIcon name="rank6" size={12} strokeWidth={2.25} /></span>
+              <span class="rank-code">Rank 6</span>
+            </span>
+          </th>
+          <td>105 XP</td>
+          <td>Officer</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <span class="rank-emblem">
+              <span class="rank-insignia rank-insignia-7" aria-hidden="true"><AppIcon name="rank7" size={12} strokeWidth={2.2} /></span>
+              <span class="rank-code">Rank 7</span>
+            </span>
+          </th>
+          <td>140 XP</td>
+          <td>Legend</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer class="rank-footnotes" aria-label="Rank table footnotes">
+    <p><sup>1</sup> Allows the unit to form Fireteams with other units that have this skill.</p>
+    <p><sup>2</sup> Counts as Merc when forming a Mercs Fireteam for pure bonuses.</p>
+  </footer>
+</section>
 
 ## Perks
 
@@ -46,21 +146,41 @@ To select a Perk directly, all of the following must be true:
 1. The unit's rank is equal to or greater than the Perk's tier.
 2. The unit has every directly connected lower-tier Perk leading to the chosen Perk.
 3. The Perk has not already been selected.
-4. The unit has the needed equipment slot, if the Perk grants gear or a slotted skill.
 
 </RuleCard>
 
-Connected lower-tier Perks may come from the original unit profile, equipment, previous Perk choices, or other rules. Some Perks grant gear or skills that fill slots, such as **360 Visor** as an Accessory or **Hacker** and **Doctor** as Roles.
+Connected lower-tier Perks may come from the original unit profile, equipment, previous Perk choices, or other rules.
 
-If a unit does not have the needed slot, it may override an existing slot as normal. The unit receives no compensation for lost CR.
+<RuleCard eyebrow="Perk Clarification" title="Perks Do Not Use Equipment Slots">
+
+Perk benefits are applied directly to the unit and do not consume equipment slots or roles.
+
+</RuleCard>
+
+<ReferenceLinkCallout
+  title="Perks Reference"
+  href="/rules/perks/"
+  linkLabel="Open Perks Reference"
+>
+  <p>Use the Perks reference page when selecting or rolling for a Perk.</p>
+</ReferenceLinkCallout>
+
 
 ## Random Perks
 
 Instead of selecting a Perk directly, a player may roll for a random Perk.
 
-When rolling randomly, first roll to determine the Perk tree, then roll again on that tree. The player may select a legal Perk from the matching row.
-
-Random Perks are slightly more flexible: a randomly rolled Perk may be **one tier higher** than the unit's current rank. If no Perk can be selected from the result, reroll on the table until a legal Perk can be selected.
+<ProcedureCard
+  eyebrow="Random Perks"
+  title="Random Perk Procedure"
+  steps={[
+    "Roll once to determine the Perk tree.",
+    "Roll again on that tree to determine the row result.",
+    "Select any legal Perk from that matching row.",
+    "A randomly rolled Perk may be up to one tier higher than the unit's current rank.",
+    "If no legal Perk can be selected from that result, reroll until a legal Perk can be selected.",
+  ]}
+/>
 
 <RuleCard eyebrow="Example" title="Rolling for a Perk">
 
@@ -72,12 +192,24 @@ The second roll is a 19, which would allow **MOV** or **Covering Fire**, but the
 
 ## Skill Stacking
 
+<WarningCallout title="No Skill Stacking by Default">
+
 Skills do not stack unless a rule specifically says otherwise.
+
+</WarningCallout>
+
+<ExampleCallout title="Skill Stacking Example">
 
 For example, if a trooper already has **Dodge (+3)**, selecting a Perk that grants **Dodge (+3)** does not increase that skill to **Dodge (+6)**.
 
-<RuleCard eyebrow="Reference" title="Perk Trees">
+</ExampleCallout>
 
-Perk trees now live in the Reference section as a structured page instead of being embedded as large images. Use the **Perks** reference page when selecting or rolling for a Perk.
+<hr class="rules-callout-break" />
 
-</RuleCard>
+<ReferenceLinkCallout
+  title="Next: Equipment and Loadouts"
+  href="/rules/equipment-and-loadouts/"
+  linkLabel="Open Equipment and Loadouts"
+>
+  <p>Continue to Equipment and Loadouts to apply gear choices after rank and perk updates.</p>
+</ReferenceLinkCallout>

@@ -4,7 +4,13 @@ type BulletCell = {
   bullets: string[];
 };
 
-type TableCell = string | number | BulletCell;
+type MiniTableCell = {
+  miniRows: { label: string; value: string }[];
+  header?: string;
+  die?: string;
+};
+
+type TableCell = string | number | BulletCell | MiniTableCell;
 
 type TableRow = {
   label: string;
@@ -33,6 +39,9 @@ const {
 
 const isBulletCell = (cell: TableCell): cell is BulletCell =>
   typeof cell === "object" && cell !== null && "bullets" in cell;
+
+const isMiniTableCell = (cell: TableCell): cell is MiniTableCell =>
+  typeof cell === "object" && cell !== null && "miniRows" in cell;
 ---
 
 <section class:list={["rules-table-card", `variant-${variant}`]}>
@@ -67,6 +76,31 @@ const isBulletCell = (cell: TableCell): cell is BulletCell =>
                         ))}
                       </ul>
                     </>
+                  ) : isMiniTableCell(cell) ? (
+                    <table class="rules-mini-table">
+                      {cell.header && (
+                        <thead>
+                          <tr>
+                            <th colspan="2">
+                              {cell.header}
+                              {cell.die && (
+                                <span class="rules-mini-table-die">
+                                  {cell.die}
+                                </span>
+                              )}
+                            </th>
+                          </tr>
+                        </thead>
+                      )}
+                      <tbody>
+                        {cell.miniRows.map((row) => (
+                          <tr>
+                            <td>{row.label}</td>
+                            <td>{row.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   ) : (
                     cell
                   )}

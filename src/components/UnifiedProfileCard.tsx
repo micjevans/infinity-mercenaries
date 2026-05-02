@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type React from "react";
 import {
   infinityMetadata,
@@ -12,6 +13,7 @@ import type {
   ProfileGroup,
   ProfileOption,
 } from "../lib/mercs/types";
+import type { NpcProfile } from "../data/npcs";
 
 const STAT_KEYS = [
   "move",
@@ -24,6 +26,14 @@ const STAT_KEYS = [
   "w",
   "s",
 ] as const;
+
+const ORDER_ICON_BY_TYPE: Record<string, string> = {
+  REGULAR: "https://assets.corvusbelli.net/army/img/icon/regular.svg",
+  IRREGULAR: "https://assets.corvusbelli.net/army/img/icon/irregular.svg",
+  IMPETUOUS: "https://assets.corvusbelli.net/army/img/icon/impetuous.svg",
+  LIEUTENANT: "https://assets.corvusbelli.net/army/img/icon/lieutenant.svg",
+  TACTICAL: "https://assets.corvusbelli.net/army/img/icon/tactical.svg",
+};
 
 type ProfileStat = {
   label: string;
@@ -150,15 +160,17 @@ export function MetadataItemList({
 export function ProfileDetailLine({
   label,
   children,
+  valueProps,
 }: {
   label: string;
   children: React.ReactNode;
+  valueProps?: React.HTMLAttributes<HTMLSpanElement>;
 }) {
   if (!children) return null;
   return (
     <p className="legacy-detail-line">
       <strong>{label}</strong>
-      <span>{children}</span>
+      <span {...valueProps}>{children}</span>
     </p>
   );
 }
@@ -167,14 +179,16 @@ function ProfileItemLine({
   label,
   list,
   metaKey,
+  valueProps,
 }: {
   label: string;
   list?: MetadataItem[];
   metaKey: string;
+  valueProps?: React.HTMLAttributes<HTMLSpanElement>;
 }) {
   if (!list?.length) return null;
   return (
-    <ProfileDetailLine label={label}>
+    <ProfileDetailLine label={label} valueProps={valueProps}>
       <MetadataItemList list={list} metaKey={metaKey} />
     </ProfileDetailLine>
   );
@@ -183,9 +197,11 @@ function ProfileItemLine({
 export function ProfileStats({
   profile,
   showAva,
+  npcDataAttrs = false,
 }: {
   profile: Profile;
   showAva?: boolean;
+  npcDataAttrs?: boolean;
 }) {
   const stats = showAva ? [...STAT_KEYS, "ava" as const] : STAT_KEYS;
   return (
@@ -193,7 +209,13 @@ export function ProfileStats({
       {stats.map((stat) => (
         <div key={stat}>
           <span>{stat === "move" ? "MOV" : stat.toUpperCase()}</span>
-          <strong>{renderStat(profile[stat])}</strong>
+          <strong
+            {...(npcDataAttrs && stat !== "move" && stat !== "s"
+              ? { "data-npc-stat": stat === "w" ? "vita" : stat }
+              : {})}
+          >
+            {renderStat(profile[stat])}
+          </strong>
         </div>
       ))}
     </div>
@@ -208,9 +230,15 @@ export function ProfileOptionRow({
   onClick?: () => void;
 }) {
   const disabled = Boolean(option.disabled);
+  const hasDetails = Boolean(
+    (option.skills || []).length ||
+    (option.weapons || []).length ||
+    (option.equip || option.equips || []).length ||
+    (option.peripheral || option.peripherals || []).length,
+  );
   return (
     <button
-      className="legacy-option-row"
+      className={`legacy-option-row${hasDetails ? "" : " legacy-option-row--name-only"}`}
       type="button"
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
@@ -219,108 +247,480 @@ export function ProfileOptionRow({
         {renderOrderIcons(option.orders)}
       </span>
       <span className="legacy-option-body">
-        <strong>{String(option.name || "Profile")}</strong>
-        <ProfileItemLine label="Skills" list={option.skills} metaKey="skills" />
-        <ProfileItemLine
-          label="Weapons"
-          list={option.weapons}
-          metaKey="weapons"
-        />
-        <ProfileItemLine
-          label="Equipment"
-          list={option.equip || option.equips}
-          metaKey="equips"
-        />
-        <ProfileItemLine
-          label="Peripherals"
-          list={option.peripheral || option.peripherals}
-          metaKey="peripheral"
-        />
+        <strong>
+          {String(option.name || "Profile")}
+          {(option.skills || []).length > 0 && (
+            <span className="legacy-option-skills">
+              {" "}
+              (
+              <MetadataItemList
+                list={option.skills}
+                metaKey="skills"
+                separator=", "
+              />
+              )
+            </span>
+          )}
+        </strong>
+        {(option.weapons || []).length > 0 && (
+          <span className="legacy-option-detail-line">
+            <em>Weapons: </em>
+            <MetadataItemList
+              list={option.weapons}
+              metaKey="weapons"
+              separator=", "
+            />
+          </span>
+        )}
+        {(option.equip || option.equips || []).length > 0 && (
+          <span className="legacy-option-detail-line">
+            <em>Equipment: </em>
+            <MetadataItemList
+              list={option.equip || option.equips}
+              metaKey="equips"
+              separator=", "
+            />
+          </span>
+        )}
+        {(option.peripheral || option.peripherals || []).length > 0 && (
+          <span className="legacy-option-detail-line">
+            <em>Peripherals: </em>
+            <MetadataItemList
+              list={option.peripheral || option.peripherals}
+              metaKey="peripheral"
+              separator=", "
+            />
+          </span>
+        )}
       </span>
-      <span className="legacy-option-costs">
-        <b>{String(option.swc ?? "-")}</b>
-        <b>{String(option.points ?? "-")}</b>
+      <span className="legacy-option-swc">{String(option.swc ?? "-")}</span>
+      <span className="legacy-option-points">
+        {String(option.points ?? "-")}
       </span>
     </button>
   );
 }
 
+function buildParentProfileGroup(unit: any): ProfileGroup[] {
+  const hasStatData = [
+    "move",
+    "cc",
+    "bs",
+    "ph",
+    "wip",
+    "arm",
+    "bts",
+    "w",
+    "s",
+  ].some((key) => unit?.[key] !== undefined);
+  const hasDetailData = [
+    "skills",
+    "weapons",
+    "equip",
+    "equips",
+    "peripheral",
+    "peripherals",
+  ].some((key) => (unit?.[key] || []).length > 0);
+
+  if (!hasStatData && !hasDetailData) return [];
+
+  const summary = {
+    orders: unit?.orders || [],
+    swc: String(unit?.swc ?? "-"),
+    points: String(unit?.points ?? "-"),
+    level:
+      unit?.level ??
+      (typeof unit?.xp === "number"
+        ? unit.xp < 5
+          ? 1
+          : unit.xp < 15
+            ? 2
+            : unit.xp < 30
+              ? 3
+              : unit.xp < 50
+                ? 4
+                : 5
+        : undefined),
+  };
+
+  return [
+    {
+      category: unit?.category ?? 10,
+      profiles: [
+        {
+          name: String(
+            unit?.profileName || unit?.name || unit?.isc || "Profile",
+          ),
+          move: unit?.move,
+          cc: unit?.cc,
+          bs: unit?.bs,
+          ph: unit?.ph,
+          wip: unit?.wip,
+          arm: unit?.arm,
+          bts: unit?.bts,
+          w: unit?.w,
+          s: unit?.s,
+          type: unit?.resume?.type || unit?.type,
+          skills: unit?.skills || [],
+          weapons: unit?.weapons || [],
+          equip: unit?.equip || unit?.equips || [],
+          peripheral: unit?.peripheral || unit?.peripherals || [],
+        },
+      ],
+      options: [],
+      summary,
+    } as ProfileGroup,
+  ];
+}
+
+function generateTrooperTtsText(unit: any, groups: ProfileGroup[]): string {
+  const group = groups[0];
+  const profile = group?.profiles?.[0];
+  if (!profile) return "";
+
+  const summary = (group as any).summary as
+    | {
+        orders?: ProfileOption["orders"];
+        swc?: string;
+        points?: string;
+        level?: number;
+      }
+    | undefined;
+
+  const category = String(mapCategory(group?.category || 10) || "Trooper");
+  const type = String(mapType(unit?.resume?.type || profile.type || ""));
+  const level = summary?.level;
+  const swc = summary?.swc ?? "-";
+  const pts = summary?.points ?? "-";
+
+  const toNames = (list: MetadataItem[] | undefined, key: string) =>
+    (list || [])
+      .map((item) => getItemDisplay(item, key).label)
+      .filter(Boolean)
+      .join(", ");
+
+  const skillsText = toNames(profile.skills, "skills");
+  const weaponsText = toNames(profile.weapons, "weapons");
+  const equipText = toNames(profile.equip || (profile as any).equips, "equips");
+  const periText = toNames(
+    profile.peripheral || (profile as any).peripherals,
+    "peripheral",
+  );
+
+  const mov = Array.isArray(profile.move)
+    ? profile.move.join("-")
+    : String(profile.move ?? "-");
+
+  const nameLine =
+    level !== undefined
+      ? `[${String(profile.name || unit?.isc || "")}] LVL ${level}`
+      : String(profile.name || unit?.isc || "");
+
+  return `${nameLine}
+${type}
+[sub]---------Attributes-------
+[/sub]
+[b]MOV[/b]: ${mov}
+[b]CC[/b]: ${String(profile.cc ?? "-")}
+[b]BS[/b]: ${String(profile.bs ?? "-")}
+[b]PH[/b]: ${String(profile.ph ?? "-")}
+[b]WIP[/b]: ${String(profile.wip ?? "-")}
+[b]ARM[/b]: ${String(profile.arm ?? "-")}
+[b]BTS[/b]: ${String(profile.bts ?? "-")}
+[-][B]W[/B]: ${String(profile.w ?? "-")}
+[B]S[/B]: ${String(profile.s ?? "-")}${
+    equipText
+      ? `
+[ffdddd][sub]----------Equipment---------
+${equipText}
+[/sub]`
+      : ""
+  }${
+    skillsText
+      ? `
+[ffdddd][sub]----------Skills---------
+${skillsText}
+[/sub]`
+      : ""
+  }${
+    weaponsText
+      ? `
+[ddddff][sub]----------Weapons---------
+${weaponsText}
+[/sub]`
+      : ""
+  }${
+    periText
+      ? `
+[ddddff][sub]----------Peripherals---------
+${periText}
+[/sub]`
+      : ""
+  }`;
+}
+
+function TtsCopyPanel({
+  ttsText,
+  isc,
+  actions,
+}: {
+  ttsText: string;
+  isc?: string;
+  actions?: React.ReactNode;
+}) {
+  const [status, setStatus] = useState("");
+
+  function copyText(text: string) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setStatus("Copied!");
+        setTimeout(() => setStatus(""), 2000);
+      },
+      () => setStatus("Copy failed"),
+    );
+  }
+
+  return (
+    <section className="npc-tts-panel">
+      <div className="npc-tts-bar">
+        <div className="npc-tts-actions">
+          {actions}
+          {isc && (
+            <button type="button" onClick={() => copyText(isc)}>
+              Copy Name
+            </button>
+          )}
+          <button type="button" onClick={() => copyText(ttsText)}>
+            Copy Profile
+          </button>
+        </div>
+        <p aria-live="polite">{status}</p>
+      </div>
+      <details className="npc-tts-details">
+        <summary>Show formatted text</summary>
+        <pre>{ttsText}</pre>
+      </details>
+    </section>
+  );
+}
+
 export function UnitProfileDisplay({
   unit,
-  profileGroups,
+  profileGroups = [],
   showAva = false,
+  npcDataAttrs = false,
   optionClick,
+  collapsible = false,
+  expanded = true,
+  onToggle,
+  showTts = false,
+  ttsActions,
   children,
 }: {
   unit: { isc?: string; resume?: { type?: string | number } | null };
-  profileGroups: ProfileGroup[];
+  profileGroups?: ProfileGroup[];
   showAva?: boolean;
+  npcDataAttrs?: boolean;
   optionClick?: (group: ProfileGroup, option: ProfileOption) => void;
+  collapsible?: boolean;
+  expanded?: boolean;
+  onToggle?: () => void;
+  showTts?: boolean;
+  ttsActions?: React.ReactNode;
   children?: React.ReactNode;
 }) {
-  if (!profileGroups?.length) return null;
+  const groupsToRender = profileGroups?.length
+    ? profileGroups
+    : buildParentProfileGroup(unit);
+
+  if (!groupsToRender.length) return null;
 
   return (
     <div className="legacy-profile-stack">
-      {profileGroups.map((group, groupIndex) => (
+      {groupsToRender.map((group, groupIndex) => (
         <section
           className="legacy-profile-group"
           key={`${unit.isc || "unit"}-${groupIndex}`}
         >
-          <div className="legacy-profile-category">
-            {mapCategory(group.category || 10) || "Trooper"}
-          </div>
-          {(group.profiles || []).map((profile, profileIndex) => (
-            <div
-              className="legacy-profile-sheet"
-              key={`${unit.isc || "unit"}-${groupIndex}-${profileIndex}`}
-            >
-              <div className="legacy-profile-sheet__header">
-                <h4>{String(profile.name || unit.isc || "Profile")}</h4>
-                <span>{mapType(unit.resume?.type || profile.type || "")}</span>
+          {(() => {
+            const headerSummary = (group as any).summary as
+              | {
+                  orders?: ProfileOption["orders"];
+                  swc?: string;
+                  points?: string;
+                  level?: number;
+                }
+              | undefined;
+            return (group.profiles || []).map((profile, profileIndex) => (
+              <div
+                className="legacy-profile-sheet"
+                key={`${unit.isc || "unit"}-${groupIndex}-${profileIndex}`}
+              >
+                {(() => {
+                  const baseCategory =
+                    mapCategory(group.category || 10) ||
+                    (typeof group.category === "string"
+                      ? group.category
+                      : "Trooper");
+                  const categoryText =
+                    String(baseCategory).toLowerCase() === "character" &&
+                    Boolean((unit as any)?.captain)
+                      ? `${baseCategory} (Captain)`
+                      : String(baseCategory);
+                  const troopType = String(
+                    mapType(unit.resume?.type || profile.type || ""),
+                  );
+
+                  const headerClasses = [
+                    "legacy-profile-sheet__header",
+                    headerSummary || (unit as any).resume?.logo
+                      ? "has-summary"
+                      : "",
+                    collapsible ? "is-collapsible" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+
+                  const HeaderEl = collapsible ? "button" : "div";
+                  const headerProps = collapsible
+                    ? {
+                        type: "button" as const,
+                        onClick: onToggle,
+                        "aria-expanded": expanded,
+                      }
+                    : {};
+
+                  return (
+                    <HeaderEl
+                      className={headerClasses}
+                      {...(headerProps as any)}
+                    >
+                      {((unit as any).resume?.logo || headerSummary) && (
+                        <div className="legacy-profile-head-leading">
+                          {(unit as any).resume?.logo && (
+                            <img
+                              className="legacy-profile-head-logo"
+                              src={(unit as any).resume.logo}
+                              alt=""
+                              aria-hidden="true"
+                            />
+                          )}
+                          {headerSummary && (
+                            <div
+                              className="legacy-profile-head-orders"
+                              aria-label="Orders"
+                            >
+                              {renderOrderIcons(headerSummary.orders)}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <div>
+                        <span className="legacy-profile-category">
+                          {categoryText}
+                        </span>
+                        <h4>{String(profile.name || unit.isc || "Profile")}</h4>
+                      </div>
+                      <div className="legacy-profile-head-meta">
+                        <div className="legacy-profile-head-chips">
+                          {headerSummary?.level !== undefined && (
+                            <span className="legacy-profile-chip legacy-profile-chip--level">
+                              <small>LVL</small>
+                              <b>{headerSummary.level}</b>
+                            </span>
+                          )}
+                          {headerSummary && (
+                            <>
+                              <span className="legacy-profile-chip legacy-profile-chip--swc">
+                                <small>SWC</small>
+                                <b>{headerSummary.swc ?? "-"}</b>
+                              </span>
+                              <span className="legacy-profile-chip">
+                                <small>PTS</small>
+                                <b>{headerSummary.points ?? "-"}</b>
+                              </span>
+                            </>
+                          )}
+                          <span className="legacy-profile-chip legacy-profile-chip--type">
+                            <small>Type</small>
+                            <b>{troopType}</b>
+                          </span>
+                        </div>
+                        {collapsible && (
+                          <span
+                            className="legacy-profile-chevron"
+                            aria-hidden="true"
+                          >
+                            {expanded ? "▲" : "▼"}
+                          </span>
+                        )}
+                      </div>
+                    </HeaderEl>
+                  );
+                })()}
+                {(!collapsible || expanded) && (
+                  <>
+                    <ProfileStats
+                      profile={profile}
+                      showAva={showAva}
+                      npcDataAttrs={npcDataAttrs}
+                    />
+                    <div className="legacy-profile-details">
+                      <ProfileItemLine
+                        label="Skills"
+                        list={profile.skills}
+                        metaKey="skills"
+                      />
+                      <ProfileItemLine
+                        label="Weapons"
+                        list={profile.weapons}
+                        metaKey="weapons"
+                      />
+                      <ProfileItemLine
+                        label="Equipment"
+                        list={profile.equip || profile.equips}
+                        metaKey="equips"
+                      />
+                      <ProfileItemLine
+                        label="Peripherals"
+                        list={profile.peripheral || profile.peripherals}
+                        metaKey="peripheral"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
-              <ProfileStats profile={profile} showAva={showAva} />
-              <div className="legacy-profile-details">
-                <ProfileItemLine
-                  label="Skills"
-                  list={profile.skills}
-                  metaKey="skills"
-                />
-                <ProfileItemLine
-                  label="Weapons"
-                  list={profile.weapons}
-                  metaKey="weapons"
-                />
-                <ProfileItemLine
-                  label="Equipment"
-                  list={profile.equip || profile.equips}
-                  metaKey="equips"
-                />
-                <ProfileItemLine
-                  label="Peripherals"
-                  list={profile.peripheral || profile.peripherals}
-                  metaKey="peripheral"
-                />
+            ));
+          })()}
+          {(!collapsible || expanded) && (group.options || []).length > 0 && (
+            <>
+              <div className="legacy-option-header">
+                <span aria-hidden="true" />
+                <span>Name</span>
+                <span>SWC</span>
+                <span>PTS</span>
               </div>
-            </div>
-          ))}
-          <div className="legacy-option-header">
-            <span>Name</span>
-            <span>SWC</span>
-            <span>PTS</span>
-          </div>
-          {(group.options || []).map((option, optionIndex) => (
-            <ProfileOptionRow
-              key={`${unit.isc || "unit"}-${groupIndex}-${optionIndex}`}
-              option={option}
-              onClick={
-                optionClick ? () => optionClick(group, option) : undefined
-              }
-            />
-          ))}
+              {(group.options || []).map((option, optionIndex) => (
+                <ProfileOptionRow
+                  key={`${unit.isc || "unit"}-${groupIndex}-${optionIndex}`}
+                  option={option}
+                  onClick={
+                    optionClick ? () => optionClick(group, option) : undefined
+                  }
+                />
+              ))}
+            </>
+          )}
         </section>
       ))}
-      {children}
+      {(!collapsible || expanded) && showTts && (
+        <TtsCopyPanel
+          ttsText={generateTrooperTtsText(unit, groupsToRender)}
+          isc={unit.isc}
+          actions={ttsActions}
+        />
+      )}
+      {(!collapsible || expanded) && children}
     </div>
   );
 }
@@ -328,25 +728,164 @@ export function UnitProfileDisplay({
 function renderOrderIcons(orders: ProfileOption["orders"]): React.ReactNode {
   if (!orders?.length) return "R";
   const sortedOrders = [...orders].sort((a, b) => a.list - b.list);
+  const metadataOrders = (infinityMetadata.orders || []) as Array<{
+    type?: string;
+    logo?: string;
+  }>;
   const icons = sortedOrders.flatMap((order) => {
-    const orderMeta = (
-      (infinityMetadata.orders || []) as Array<{ type: string; logo?: string }>
-    ).find((item) => item.type === order.type);
-    if (!orderMeta?.logo)
+    const normalizedType = String(order.type || "").toUpperCase();
+    const orderMeta = metadataOrders.find(
+      (item) => String(item.type || "").toUpperCase() === normalizedType,
+    );
+    const orderLogo = orderMeta?.logo || ORDER_ICON_BY_TYPE[normalizedType];
+    if (!orderLogo)
       return Array.from(
         { length: order.total || 1 },
-        () => order.type?.[0] || "R",
+        () => normalizedType[0] || "R",
       );
     return Array.from({ length: order.total || 1 }, (_, index) => (
       <img
-        key={`${order.type}-${index}`}
-        src={orderMeta.logo}
-        alt={order.type}
+        key={`${normalizedType}-${index}`}
+        src={orderLogo}
+        alt={normalizedType}
       />
     ));
   });
 
   return icons;
+}
+
+function normalizeByName(listKey: string, name: string): MetadataItem {
+  const normalized = String(name || "")
+    .trim()
+    .toLowerCase();
+  const entries = (infinityMetadata[listKey] || []) as MetadataItem[];
+  const found = entries.find(
+    (item) =>
+      String(item.name || "")
+        .trim()
+        .toLowerCase() === normalized,
+  );
+  if (found) return { id: found.id, name: found.name };
+  return { id: `npc-${listKey}-${normalized || "unknown"}`, name };
+}
+
+function mapNpcListToMetadata(
+  listKey: string,
+  list: string[] = [],
+): MetadataItem[] {
+  return list.filter(Boolean).map((name) => normalizeByName(listKey, name));
+}
+
+function mapNpcToUnit(profile: NpcProfile): {
+  isc: string;
+  resume: { type?: string | number; logo?: string };
+  profileGroups: ProfileGroup[];
+  category: string;
+  name: string;
+  profileName: string;
+  move: string | number[];
+  cc: number;
+  bs: number;
+  ph: number;
+  wip: number;
+  arm: number;
+  bts: number;
+  w: number;
+  s: string | number;
+  skills: MetadataItem[];
+  weapons: MetadataItem[];
+  equip: MetadataItem[];
+  orders: Array<{ type: string; list: number; total: number }>;
+  swc: string;
+  points: string;
+} {
+  const displayName = profile.subtitle
+    ? `${profile.name}, ${profile.subtitle}`
+    : profile.name;
+
+  const mappedSkills = mapNpcListToMetadata("skills", profile.baseSkills || []);
+  const mappedWeapons = mapNpcListToMetadata("weapons", profile.weapons || []);
+  const mappedEquipment = mapNpcListToMetadata(
+    "equips",
+    profile.equipment || [],
+  );
+
+  return {
+    isc: profile.name,
+    name: displayName,
+    profileName: displayName,
+    category: profile.category,
+    resume: { type: profile.troopClass, logo: profile.logo },
+    profileGroups: [],
+    move: profile.attributes.mov,
+    cc: profile.attributes.cc,
+    bs: profile.attributes.bs,
+    ph: profile.attributes.ph,
+    wip: profile.attributes.wip,
+    arm: profile.attributes.arm,
+    bts: profile.attributes.bts,
+    w: profile.attributes.vita,
+    s: profile.silhouette,
+    skills: mappedSkills,
+    weapons: mappedWeapons,
+    equip: mappedEquipment,
+    orders: profile.orders ?? [{ type: "REGULAR", list: 1, total: 1 }],
+    swc: "-",
+    points: "-",
+  };
+}
+
+export function NpcInfinityProfileCard({
+  profile,
+  interactive = false,
+  showTts = false,
+}: {
+  profile: NpcProfile;
+  interactive?: boolean;
+  showTts?: boolean;
+}) {
+  const unit = mapNpcToUnit(profile);
+  const profileAttrs =
+    interactive && profile
+      ? {
+          "data-npc-profile": profile.id,
+          "data-npc-profile-json": JSON.stringify(profile),
+        }
+      : {};
+
+  return (
+    <article
+      className="npc-profile-card npc-profile-card--infinity"
+      {...profileAttrs}
+    >
+      <UnitProfileDisplay
+        unit={unit}
+        profileGroups={unit.profileGroups}
+        npcDataAttrs
+      />
+      <span data-npc-skills-plain style={{ display: "none" }} />
+      {showTts && (
+        <section className="npc-tts-panel">
+          <div className="npc-tts-bar">
+            <div className="npc-tts-actions">
+              <button type="button" data-copy-tts="name">
+                Copy Name
+              </button>
+              <button type="button" data-copy-tts="profile">
+                Copy Profile
+              </button>
+            </div>
+            <p data-copy-status aria-live="polite"></p>
+          </div>
+          <details className="npc-tts-details">
+            <summary>Show formatted text</summary>
+            <pre data-npc-tts-preview></pre>
+          </details>
+        </section>
+      )}
+    </article>
+  );
 }
 
 const renderValue = (value: string | string[], separator = ", ") =>

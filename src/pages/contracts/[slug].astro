@@ -1,27 +1,35 @@
 ---
 import { getCollection, render } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import RulesShell from "../../components/RulesShell.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("contracts");
   return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.mdx?$/, "") },
-    props: { entry }
+    props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const slug = entry.id.replace(/\.mdx?$/, "");
+
+const contractHeadings = [
+  { depth: 2, slug: "mission-objectives", text: "Mission Objectives" },
+  { depth: 2, slug: "forces-and-deployment", text: "Forces and Deployment" },
+  { depth: 2, slug: "scenario-special-rules", text: "Scenario Special Rules" },
+  { depth: 2, slug: "twist", text: "Twist" },
+  { depth: 2, slug: "end-of-mission", text: "End of Mission" },
+];
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
-  <section class="page-hero compact markdown-hero">
-    <p class="eyebrow">{entry.data.contractType ?? "Contract"}</p>
-    <h1>{entry.data.title}</h1>
-    {entry.data.description && <p>{entry.data.description}</p>}
-    {entry.data.attribution && <p class="page-attribution">{entry.data.attribution}</p>}
-  </section>
-  <article class="rules-content">
-    <Content />
-  </article>
-</BaseLayout>
+<RulesShell
+  title={entry.data.title}
+  description={entry.data.description}
+  section={entry.data.contractType ?? "Contract"}
+  currentPath={`/contracts/${slug}/`}
+  headings={contractHeadings}
+  mode="contracts"
+>
+  <Content />
+</RulesShell>

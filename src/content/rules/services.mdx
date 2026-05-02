@@ -9,6 +9,8 @@ updated: "2026-04-29"
 
 import RuleCard from "../../components/RuleCard.astro";
 import RulesTable from "../../components/RulesTable.astro";
+import ProcedureCard from "../../components/ProcedureCard.astro";
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
 
 Sometimes, mercenaries need external help to keep a Company functional. Services can be purchased for a **one-time effect** during Downtime.
 
@@ -31,14 +33,14 @@ Any Service may be purchased any number of times, paying the listed cost each ti
       label: "Anger Management",
       cells: [
         "4/8 CR",
-        "Target unit no longer has Frenzy for 4 CR or Impetuous for 8 CR. Additionally, they lose No Cover or Partial Cover. No Cover on Aerial or Nanoscreen units cannot be removed.",
+        "Target unit no longer has Frenzy for 4 CR or Impetuous for 8 CR. If the unit has neither Frenzy nor Impetuous, this service may still be purchased for 4 CR to remove No Cover or Partial Cover. No Cover on Aerial or Nanoscreen units cannot be removed.",
       ],
     },
     {
       label: "Forced Retraining",
       cells: [
         "15 CR",
-        "Select a unit of Rank 1 or above. A single Perk may be replaced with another Perk of the same tier.",
+        "Select a unit of Rank 1 or above. A single Perk may be replaced with another Perk of the same tier. The replacement Perk must still meet all normal prerequisites. Retraining cannot be used if replacing that Perk would cause any other selected Perk on the unit to no longer meet its prerequisites.",
       ],
     },
     {
@@ -67,17 +69,29 @@ Recruiting during Downtime does not bypass normal Company construction restricti
 
 Occasionally, it is time for a unit to leave the Company. A unit can be retired, freeing its roster slot for a new recruit.
 
-The following rules apply during retirement:
-
-1. All equipment assigned to the retired unit is returned to the Company inventory.
-2. The unit is removed from the roster, freeing its roster slot.
-3. The unit cannot be used in any following Contracts.
-4. The Renown of the retired troop, minus the equipment returned to inventory, is counted toward final victory points.
-
-Write the retired Renown value on the Company Sheet and add it to the value of other retired troops.
+<ProcedureCard
+  eyebrow="Downtime"
+  title="Retirement Procedure"
+  steps={[
+    "Return all equipment assigned to the retired unit to the Company inventory.",
+    "Remove the unit from the roster, freeing its roster slot.",
+    "The retired unit cannot be used in any following Contracts.",
+    "Add the retired troop's Renown, minus the equipment returned to inventory, to Company Renown as a permanent bonus.",
+  ]}
+/>
 
 <RuleCard eyebrow="Restriction" title="Captains Cannot Retire">
 
 The Captain represents the focal point of the Company and cannot be retired in any way. They accompany the Company until the end of the campaign.
 
 </RuleCard>
+
+<hr class="rules-callout-break" />
+
+<ReferenceLinkCallout
+  title="Ending a Season"
+  href="/rules/ending-a-season/"
+  linkLabel="Open Ending a Season"
+>
+  <p>When all Contracts in a season are complete, follow the end-of-season procedures to settle scores, award bonuses, and prepare the Company for the next campaign.</p>
+</ReferenceLinkCallout>

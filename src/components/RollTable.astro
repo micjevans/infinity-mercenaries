@@ -1,0 +1,38 @@
+---
+type Row = {
+  roll: string;
+  name: string;
+  effect?: string;
+};
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  rows: Row[];
+}
+
+const { eyebrow = "Random Event", title = "Twist Table", rows } = Astro.props;
+---
+
+<aside class="roll-table">
+  <header>
+    <div>
+      <span>{eyebrow}</span>
+      <strong>{title}</strong>
+    </div>
+    <p>d20</p>
+  </header>
+  <div class="roll-table-rows">
+    {
+      rows.map((row) => (
+        <article>
+          <div class="roll-table-roll">{row.roll}</div>
+          <div class="roll-table-detail">
+            <h4>{row.name}</h4>
+            {row.effect && <p>{row.effect}</p>}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</aside>
