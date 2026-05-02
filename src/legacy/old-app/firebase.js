@@ -10,12 +10,12 @@ import { getStorage } from "firebase/storage";
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "INSERT_HERE",
-  authDomain: "infinity-mercenaries.firebaseapp.com",
-  projectId: "infinity-mercenaries",
-  storageBucket: "infinity-mercenaries.firebasestorage.app",
-  messagingSenderId: "663643569719",
-  appId: "1:663643569719:web:20028ef37005d20372c9b2",
-  measurementId: "G-BCZYR0J4JD",
+  authDomain: "INSERT_HERE",
+  projectId: "INSERT_HERE",
+  storageBucket: "INSERT_HERE",
+  messagingSenderId: "INSERT_HERE",
+  appId: "INSERT_HERE",
+  measurementId: "INSERT_HERE",
 };
 
 // Initialize Firebase
