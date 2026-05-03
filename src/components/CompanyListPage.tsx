@@ -29,11 +29,15 @@ function getCompanyHref(companyId: string): string {
 
 export default function CompanyListPage() {
   const [companies, setCompanies] = useState<LocalCompany[]>([]);
-  const [driveCompanies, setDriveCompanies] = useState<AppDataCompanyReference[]>([]);
+  const [driveCompanies, setDriveCompanies] = useState<
+    AppDataCompanyReference[]
+  >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [signedIn, setSignedIn] = useState(false);
   const [brokenFileIds, setBrokenFileIds] = useState<Set<string>>(new Set());
-  const [deletingFileIds, setDeletingFileIds] = useState<Set<string>>(new Set());
+  const [deletingFileIds, setDeletingFileIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     setCompanies(loadLocalCompanies());
@@ -94,13 +98,20 @@ export default function CompanyListPage() {
   }
 
   async function handleDeleteDriveCompany(fileId: string, companyName: string) {
-    if (!window.confirm(`Delete "${companyName}" from Drive and remove from your account?`)) return;
+    if (
+      !window.confirm(
+        `Delete "${companyName}" from Drive and remove from your account?`,
+      )
+    )
+      return;
 
     setDeletingFileIds((current) => new Set([...current, fileId]));
     try {
       await deleteSharedFile(fileId);
       await removeAppDataCompanyReference(fileId);
-      setDriveCompanies((current) => current.filter((company) => company.fileId !== fileId));
+      setDriveCompanies((current) =>
+        current.filter((company) => company.fileId !== fileId),
+      );
     } catch (error) {
       console.error("Failed to delete company:", error);
     } finally {
@@ -112,13 +123,23 @@ export default function CompanyListPage() {
     }
   }
 
-  async function handleCleanupBrokenCompanyReference(fileId: string, companyName: string) {
-    if (!window.confirm(`Remove broken reference to "${companyName}" from your account?`)) return;
+  async function handleCleanupBrokenCompanyReference(
+    fileId: string,
+    companyName: string,
+  ) {
+    if (
+      !window.confirm(
+        `Remove broken reference to "${companyName}" from your account?`,
+      )
+    )
+      return;
 
     setDeletingFileIds((current) => new Set([...current, fileId]));
     try {
       await removeAppDataCompanyReference(fileId);
-      setDriveCompanies((current) => current.filter((company) => company.fileId !== fileId));
+      setDriveCompanies((current) =>
+        current.filter((company) => company.fileId !== fileId),
+      );
       setBrokenFileIds((current) => {
         const next = new Set(current);
         next.delete(fileId);
@@ -136,7 +157,8 @@ export default function CompanyListPage() {
   }
 
   const localOnlyCompanies = useMemo(
-    () => companies.filter((company) => !company.shareFileId && !company.shareLink),
+    () =>
+      companies.filter((company) => !company.shareFileId && !company.shareLink),
     [companies],
   );
 
@@ -170,7 +192,10 @@ export default function CompanyListPage() {
       </div>
 
       <div className="event-list-toolbar">
-        <a className="command-button command-button--primary" href="/companies/create/">
+        <a
+          className="command-button command-button--primary"
+          href="/companies/create/"
+        >
           <AppIcon name="add" size={16} />
           New Company
         </a>
@@ -182,7 +207,9 @@ export default function CompanyListPage() {
             <span className="panel-kicker">Saved Companies</span>
             <h2>Company List</h2>
           </div>
-          <span className="company-count">{filteredCompanies.length + filteredDriveCompanies.length}</span>
+          <span className="company-count">
+            {filteredCompanies.length + filteredDriveCompanies.length}
+          </span>
         </div>
 
         <label className="field">
@@ -206,9 +233,7 @@ export default function CompanyListPage() {
                   {company.troopers?.length || 0} troopers. Updated{" "}
                   {formatDate(company.updatedAt)}.
                 </p>
-                {company.eventName && (
-                  <p>Linked event: {company.eventName}</p>
-                )}
+                {company.eventName && <p>Linked event: {company.eventName}</p>}
               </a>
               <button
                 className="command-button command-button--danger"
@@ -222,22 +247,39 @@ export default function CompanyListPage() {
           ))}
 
           {filteredDriveCompanies.map((company) => (
-            <article className="company-index-item" key={`drive-${company.fileId}`}>
+            <article
+              className="company-index-item"
+              key={`drive-${company.fileId}`}
+            >
               {brokenFileIds.has(company.fileId) ? (
                 <div>
-                  <span className="panel-kicker">Drive-backed (Broken Link)</span>
+                  <span className="panel-kicker">
+                    Drive-backed (Broken Link)
+                  </span>
                   <h3>{company.name}</h3>
-                  <p>File not found. Organizer or co-owner may have deleted it.</p>
-                  {company.eventName && <p>Was linked event: {company.eventName}</p>}
+                  <p>
+                    File not found. Organizer or co-owner may have deleted it.
+                  </p>
+                  {company.eventName && (
+                    <p>Was linked event: {company.eventName}</p>
+                  )}
                 </div>
               ) : (
-                <a href={company.shareLink || `/view?id=${encodeURIComponent(company.fileId)}`}>
+                <a
+                  href={
+                    company.shareLink ||
+                    `/view?id=${encodeURIComponent(company.fileId)}`
+                  }
+                >
                   <span className="panel-kicker">Drive-backed</span>
                   <h3>{company.name}</h3>
                   <p>
-                    Shared company file. Updated {formatDate(company.updatedAt)}.
+                    Shared company file. Updated {formatDate(company.updatedAt)}
+                    .
                   </p>
-                  {company.eventName && <p>Linked event: {company.eventName}</p>}
+                  {company.eventName && (
+                    <p>Linked event: {company.eventName}</p>
+                  )}
                 </a>
               )}
               {brokenFileIds.has(company.fileId) ? (
@@ -245,33 +287,51 @@ export default function CompanyListPage() {
                   className="command-button command-button--danger"
                   type="button"
                   disabled={deletingFileIds.has(company.fileId)}
-                  onClick={() => handleCleanupBrokenCompanyReference(company.fileId, company.name)}
+                  onClick={() =>
+                    handleCleanupBrokenCompanyReference(
+                      company.fileId,
+                      company.name,
+                    )
+                  }
                 >
                   <AppIcon name="trash" size={16} />
-                  {deletingFileIds.has(company.fileId) ? "Removing..." : "Remove Reference"}
+                  {deletingFileIds.has(company.fileId)
+                    ? "Removing..."
+                    : "Remove Reference"}
                 </button>
               ) : (
                 <>
-                  <a className="command-button" href={company.shareLink || `/view?id=${encodeURIComponent(company.fileId)}`}>
+                  <a
+                    className="command-button"
+                    href={
+                      company.shareLink ||
+                      `/view?id=${encodeURIComponent(company.fileId)}`
+                    }
+                  >
                     Open
                   </a>
                   <button
                     className="command-button command-button--danger"
                     type="button"
                     disabled={deletingFileIds.has(company.fileId)}
-                    onClick={() => handleDeleteDriveCompany(company.fileId, company.name)}
+                    onClick={() =>
+                      handleDeleteDriveCompany(company.fileId, company.name)
+                    }
                   >
                     <AppIcon name="trash" size={16} />
-                    {deletingFileIds.has(company.fileId) ? "Deleting..." : "Delete"}
+                    {deletingFileIds.has(company.fileId)
+                      ? "Deleting..."
+                      : "Delete"}
                   </button>
                 </>
               )}
             </article>
           ))}
 
-          {filteredCompanies.length === 0 && filteredDriveCompanies.length === 0 && (
-            <p className="empty-note">No companies found.</p>
-          )}
+          {filteredCompanies.length === 0 &&
+            filteredDriveCompanies.length === 0 && (
+              <p className="empty-note">No companies found.</p>
+            )}
         </div>
       </section>
     </section>

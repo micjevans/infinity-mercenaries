@@ -169,7 +169,9 @@ function authHeaders(contentType?: string): HeadersInit {
 }
 
 function canUseStorage(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 function persistAuthState(
@@ -178,7 +180,10 @@ function persistAuthState(
   expiresInSeconds?: number,
 ): void {
   if (!canUseStorage()) return;
-  const ttl = Number.isFinite(expiresInSeconds) && (expiresInSeconds as number) > 0 ? (expiresInSeconds as number) : 3600;
+  const ttl =
+    Number.isFinite(expiresInSeconds) && (expiresInSeconds as number) > 0
+      ? (expiresInSeconds as number)
+      : 3600;
   const payload: PersistedAuthState = {
     accessToken: token,
     userName: name,
@@ -216,9 +221,9 @@ export function restorePersistedAuthState(): boolean {
 
     const nextUserName = parsed.userName ?? null;
     const changed =
-      accessToken !== parsed.accessToken
-      || userName !== nextUserName
-      || accessTokenExpiresAt !== parsed.expiresAt;
+      accessToken !== parsed.accessToken ||
+      userName !== nextUserName ||
+      accessTokenExpiresAt !== parsed.expiresAt;
     accessToken = parsed.accessToken;
     userName = nextUserName;
     accessTokenExpiresAt = parsed.expiresAt;
@@ -328,7 +333,11 @@ export function revokeAccessToken(onRevoked: () => void): void {
 }
 
 export function isSignedIn(): boolean {
-  if (accessToken && accessTokenExpiresAt && accessTokenExpiresAt <= Date.now()) {
+  if (
+    accessToken &&
+    accessTokenExpiresAt &&
+    accessTokenExpiresAt <= Date.now()
+  ) {
     clearAuthSession();
     return false;
   }
@@ -337,7 +346,11 @@ export function isSignedIn(): boolean {
     restorePersistedAuthState();
   }
 
-  if (accessToken && accessTokenExpiresAt && accessTokenExpiresAt <= Date.now()) {
+  if (
+    accessToken &&
+    accessTokenExpiresAt &&
+    accessTokenExpiresAt <= Date.now()
+  ) {
     clearAuthSession();
     return false;
   }
@@ -587,7 +600,9 @@ export async function createEventRegistrationForm(
 
   if (!createResponse.ok) {
     const text = await createResponse.text();
-    throw new Error(`Failed to create Google Form: ${createResponse.status} ${text}`);
+    throw new Error(
+      `Failed to create Google Form: ${createResponse.status} ${text}`,
+    );
   }
 
   const createdForm = await createResponse.json();
@@ -663,11 +678,15 @@ export async function createEventRegistrationForm(
 
   if (!updateResponse.ok) {
     const text = await updateResponse.text();
-    throw new Error(`Failed to configure Google Form fields: ${updateResponse.status} ${text}`);
+    throw new Error(
+      `Failed to configure Google Form fields: ${updateResponse.status} ${text}`,
+    );
   }
 
   const updateResult = await updateResponse.json();
-  const replies = Array.isArray(updateResult?.replies) ? updateResult.replies : [];
+  const replies = Array.isArray(updateResult?.replies)
+    ? updateResult.replies
+    : [];
   const questionIds = replies
     .map((reply: any) => {
       const ids = reply?.createItem?.questionId;
@@ -676,7 +695,9 @@ export async function createEventRegistrationForm(
     .filter(Boolean);
 
   if (questionIds.length < 3) {
-    throw new Error("Google Form fields were created but question IDs were not returned.");
+    throw new Error(
+      "Google Form fields were created but question IDs were not returned.",
+    );
   }
 
   try {
@@ -718,7 +739,11 @@ export async function createEventRegistrationForm(
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ type: "anyone", role: "reader", view: "published" }),
+        body: JSON.stringify({
+          type: "anyone",
+          role: "reader",
+          view: "published",
+        }),
       },
     );
   } catch (error) {
@@ -750,12 +775,21 @@ export async function submitCompanyRegistrationToForm(
     eventFileId: string;
   },
 ): Promise<void> {
-  const baseResponderUri = form.responderUri.replace(/\/viewform(?:\?.*)?$/, "");
+  const baseResponderUri = form.responderUri.replace(
+    /\/viewform(?:\?.*)?$/,
+    "",
+  );
   const submitUrl = `${baseResponderUri}/formResponse`;
   const body = new URLSearchParams();
-  const companyNameEntryId = form.responseEntries?.companyNameEntryId || form.questions.companyNameQuestionId;
-  const companyLinkEntryId = form.responseEntries?.companyLinkEntryId || form.questions.companyLinkQuestionId;
-  const eventFileIdEntryId = form.responseEntries?.eventFileIdEntryId || form.questions.eventFileIdQuestionId;
+  const companyNameEntryId =
+    form.responseEntries?.companyNameEntryId ||
+    form.questions.companyNameQuestionId;
+  const companyLinkEntryId =
+    form.responseEntries?.companyLinkEntryId ||
+    form.questions.companyLinkQuestionId;
+  const eventFileIdEntryId =
+    form.responseEntries?.eventFileIdEntryId ||
+    form.questions.eventFileIdQuestionId;
 
   // The public form endpoint accepts entry.<questionId> fields.
   body.set(`entry.${companyNameEntryId}`, payload.companyName);
@@ -801,7 +835,9 @@ export async function listEventRegistrationFormResponses(
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(`Failed to read Google Form responses: ${response.status} ${text}`);
+      throw new Error(
+        `Failed to read Google Form responses: ${response.status} ${text}`,
+      );
     }
 
     const payload = await response.json();
@@ -812,16 +848,29 @@ export async function listEventRegistrationFormResponses(
         : [];
 
     for (const formResponse of formResponses) {
-      const companyName = getFormAnswerValue(formResponse, form.questions.companyNameQuestionId);
-      const companyShareLink = getFormAnswerValue(formResponse, form.questions.companyLinkQuestionId);
-      const eventFileId = getFormAnswerValue(formResponse, form.questions.eventFileIdQuestionId);
+      const companyName = getFormAnswerValue(
+        formResponse,
+        form.questions.companyNameQuestionId,
+      );
+      const companyShareLink = getFormAnswerValue(
+        formResponse,
+        form.questions.companyLinkQuestionId,
+      );
+      const eventFileId = getFormAnswerValue(
+        formResponse,
+        form.questions.eventFileIdQuestionId,
+      );
       if (!companyName || !companyShareLink || !eventFileId) continue;
 
       submissions.push({
         companyName,
         companyShareLink,
         eventFileId,
-        submittedAt: String(formResponse?.lastSubmittedTime || formResponse?.createTime || new Date().toISOString()),
+        submittedAt: String(
+          formResponse?.lastSubmittedTime ||
+            formResponse?.createTime ||
+            new Date().toISOString(),
+        ),
       });
     }
 
@@ -895,7 +944,8 @@ function normalizeAppDataDocument(raw: any): AppDataDocument {
   const companies = Array.isArray(raw?.data?.companies)
     ? raw.data.companies
     : [];
-  const organizerRegistrationTemplate = raw?.data?.organizerRegistrationTemplate;
+  const organizerRegistrationTemplate =
+    raw?.data?.organizerRegistrationTemplate;
   const driveFolders = raw?.data?.driveFolders;
 
   return {
@@ -968,13 +1018,19 @@ async function createFolder(name: string, parentId?: string): Promise<string> {
   return String(payload?.id || "");
 }
 
-async function getOrCreateFolder(name: string, parentId?: string): Promise<string> {
+async function getOrCreateFolder(
+  name: string,
+  parentId?: string,
+): Promise<string> {
   const existingId = await findFolderByName(name, parentId);
   if (existingId) return existingId;
   return createFolder(name, parentId);
 }
 
-async function ensureFileInFolder(fileId: string, folderId: string): Promise<void> {
+async function ensureFileInFolder(
+  fileId: string,
+  folderId: string,
+): Promise<void> {
   const metaResponse = await fetch(
     `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?fields=parents`,
     {
@@ -983,15 +1039,22 @@ async function ensureFileInFolder(fileId: string, folderId: string): Promise<voi
   );
   if (!metaResponse.ok) {
     const text = await metaResponse.text();
-    throw new Error(`Failed to inspect file parents: ${metaResponse.status} ${text}`);
+    throw new Error(
+      `Failed to inspect file parents: ${metaResponse.status} ${text}`,
+    );
   }
 
   const metadata = await metaResponse.json();
-  const parents: string[] = Array.isArray(metadata?.parents) ? metadata.parents : [];
+  const parents: string[] = Array.isArray(metadata?.parents)
+    ? metadata.parents
+    : [];
   if (parents.includes(folderId)) return;
 
   const removeParents = parents.join(",");
-  const query = new URLSearchParams({ addParents: folderId, fields: "id,parents" });
+  const query = new URLSearchParams({
+    addParents: folderId,
+    fields: "id,parents",
+  });
   if (removeParents) query.set("removeParents", removeParents);
 
   const moveResponse = await fetch(
@@ -1003,7 +1066,9 @@ async function ensureFileInFolder(fileId: string, folderId: string): Promise<voi
   );
   if (!moveResponse.ok) {
     const text = await moveResponse.text();
-    throw new Error(`Failed to move file into app folder: ${moveResponse.status} ${text}`);
+    throw new Error(
+      `Failed to move file into app folder: ${moveResponse.status} ${text}`,
+    );
   }
 }
 
@@ -1011,14 +1076,17 @@ export async function getOrCreateOrganizerFolders(): Promise<OrganizerFolders> {
   const { fileId, doc } = await readAppDataDocumentWithFileId();
   const cached = doc.data.driveFolders;
 
-  const rootFolderId = cached?.rootFolderId
-    || await getOrCreateFolder(ROOT_FOLDER_NAME);
-  const eventsFolderId = cached?.eventsFolderId
-    || await getOrCreateFolder(EVENTS_FOLDER_NAME, rootFolderId);
-  const companiesFolderId = cached?.companiesFolderId
-    || await getOrCreateFolder(COMPANIES_FOLDER_NAME, rootFolderId);
-  const formsFolderId = cached?.formsFolderId
-    || await getOrCreateFolder(FORMS_FOLDER_NAME, rootFolderId);
+  const rootFolderId =
+    cached?.rootFolderId || (await getOrCreateFolder(ROOT_FOLDER_NAME));
+  const eventsFolderId =
+    cached?.eventsFolderId ||
+    (await getOrCreateFolder(EVENTS_FOLDER_NAME, rootFolderId));
+  const companiesFolderId =
+    cached?.companiesFolderId ||
+    (await getOrCreateFolder(COMPANIES_FOLDER_NAME, rootFolderId));
+  const formsFolderId =
+    cached?.formsFolderId ||
+    (await getOrCreateFolder(FORMS_FOLDER_NAME, rootFolderId));
 
   const folders: OrganizerFolders = {
     rootFolderId,
@@ -1043,7 +1111,11 @@ export async function getOrganizerRegistrationTemplate(): Promise<OrganizerRegis
   const template = doc.data.organizerRegistrationTemplate;
   if (!template) return null;
   if (!template.formId || !template.responderUri) return null;
-  if (!template.questions?.companyNameQuestionId || !template.questions?.companyLinkQuestionId || !template.questions?.eventFileIdQuestionId) {
+  if (
+    !template.questions?.companyNameQuestionId ||
+    !template.questions?.companyLinkQuestionId ||
+    !template.questions?.eventFileIdQuestionId
+  ) {
     return null;
   }
   return template;
@@ -1071,20 +1143,27 @@ async function readAppDataDocumentWithFileId(): Promise<{
   return { fileId: file.id, doc: normalizeAppDataDocument(raw) };
 }
 
-async function writeAppDataDocument(fileId: string, doc: AppDataDocument): Promise<void> {
+async function writeAppDataDocument(
+  fileId: string,
+  doc: AppDataDocument,
+): Promise<void> {
   await writeDataToDrive(fileId, {
     ...doc,
     updatedAt: new Date().toISOString(),
   });
 }
 
-export async function listAppDataEventReferences(): Promise<AppDataEventReference[]> {
+export async function listAppDataEventReferences(): Promise<
+  AppDataEventReference[]
+> {
   if (!isSignedIn()) return [];
   const { doc } = await readAppDataDocumentWithFileId();
   return doc.data.events;
 }
 
-export async function listAppDataCompanyReferences(): Promise<AppDataCompanyReference[]> {
+export async function listAppDataCompanyReferences(): Promise<
+  AppDataCompanyReference[]
+> {
   if (!isSignedIn()) return [];
   const { doc } = await readAppDataDocumentWithFileId();
   return doc.data.companies;
@@ -1186,9 +1265,13 @@ export async function checkSharedFileAccess(fileId: string): Promise<boolean> {
 /**
  * Remove a company reference from appdata index.
  */
-export async function removeAppDataCompanyReference(fileId: string): Promise<void> {
+export async function removeAppDataCompanyReference(
+  fileId: string,
+): Promise<void> {
   const { fileId: appDataFileId, doc } = await readAppDataDocumentWithFileId();
-  const next = doc.data.companies.filter((company) => company.fileId !== fileId);
+  const next = doc.data.companies.filter(
+    (company) => company.fileId !== fileId,
+  );
 
   await writeAppDataDocument(appDataFileId, {
     ...doc,
@@ -1202,7 +1285,9 @@ export async function removeAppDataCompanyReference(fileId: string): Promise<voi
 /**
  * Remove an event reference from appdata index.
  */
-export async function removeAppDataEventReference(fileId: string): Promise<void> {
+export async function removeAppDataEventReference(
+  fileId: string,
+): Promise<void> {
   const { fileId: appDataFileId, doc } = await readAppDataDocumentWithFileId();
   const next = doc.data.events.filter((event) => event.fileId !== fileId);
 

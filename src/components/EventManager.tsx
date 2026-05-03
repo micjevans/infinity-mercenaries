@@ -26,9 +26,12 @@ import {
   upsertLocalEvent,
   type EventParticipant,
   type EventRound,
-  type LocalEvent
+  type LocalEvent,
 } from "../lib/mercs/eventStore";
-import { loadLocalCompanies, type LocalCompany } from "../lib/mercs/companyStore";
+import {
+  loadLocalCompanies,
+  type LocalCompany,
+} from "../lib/mercs/companyStore";
 import { AppIcon } from "./AppIcon";
 
 type EventManagerProps = {
@@ -95,7 +98,7 @@ function emptyRoundForm(roundCount: number): RoundFormState {
     mission: "",
     startDate: "",
     endDate: "",
-    description: ""
+    description: "",
   };
 }
 
@@ -105,7 +108,7 @@ function formatDate(value?: string): string {
   return new Intl.DateTimeFormat(undefined, {
     month: "short",
     day: "numeric",
-    year: "numeric"
+    year: "numeric",
   }).format(new Date(value));
 }
 
@@ -116,7 +119,7 @@ function formatDateTime(value?: string): string {
     month: "short",
     day: "numeric",
     hour: "numeric",
-    minute: "2-digit"
+    minute: "2-digit",
   }).format(new Date(value));
 }
 
@@ -165,7 +168,9 @@ function extractFileId(value: string): string | null {
   return /^[a-zA-Z0-9_-]{10,}$/.test(trimmed) ? trimmed : null;
 }
 
-function sortRegisteredCompanies(companies: RegisteredCompany[]): RegisteredCompany[] {
+function sortRegisteredCompanies(
+  companies: RegisteredCompany[],
+): RegisteredCompany[] {
   return [...companies].sort((a, b) => {
     const aTime = new Date(a.addedAt || 0).getTime();
     const bTime = new Date(b.addedAt || 0).getTime();
@@ -173,24 +178,29 @@ function sortRegisteredCompanies(companies: RegisteredCompany[]): RegisteredComp
   });
 }
 
-function getRegisteredCompaniesFromEventData(payload: SharedEventPayload): RegisteredCompany[] {
+function getRegisteredCompaniesFromEventData(
+  payload: SharedEventPayload,
+): RegisteredCompany[] {
   const raw = Array.isArray(payload.registeredCompanies)
     ? payload.registeredCompanies
     : [];
 
   const mapped = raw
     .map((entry) => {
-      const normalizedId = extractFileId(String(entry.fileId || ""))
-        || extractFileId(String(entry.shareLink || ""))
-        || String(entry.fileId || "").trim();
+      const normalizedId =
+        extractFileId(String(entry.fileId || "")) ||
+        extractFileId(String(entry.shareLink || "")) ||
+        String(entry.fileId || "").trim();
       if (!normalizedId) return null;
 
       return {
         fileId: normalizedId,
         shareLink:
-          String(entry.shareLink || "").trim()
-          || `${window.location.origin}/view?id=${encodeURIComponent(normalizedId)}`,
-        companyName: String(entry.companyName || "Unnamed Company").trim() || "Unnamed Company",
+          String(entry.shareLink || "").trim() ||
+          `${window.location.origin}/view?id=${encodeURIComponent(normalizedId)}`,
+        companyName:
+          String(entry.companyName || "Unnamed Company").trim() ||
+          "Unnamed Company",
         addedAt: String(entry.addedAt || new Date().toISOString()),
       } as RegisteredCompany;
     })
@@ -242,8 +252,12 @@ function parseResponseEntryIdsFromPrefilledLink(value: string): {
 }
 
 function getParticipantName(event: LocalEvent, participantId: string): string {
-  const participant = event.participants.find((entry) => entry.id === participantId);
-  return participant ? `${participant.companyName} (${participant.userName})` : "Unknown participant";
+  const participant = event.participants.find(
+    (entry) => entry.id === participantId,
+  );
+  return participant
+    ? `${participant.companyName} (${participant.userName})`
+    : "Unknown participant";
 }
 
 function getRoundStatus(round: EventRound): { label: string; tone: string } {
@@ -262,8 +276,12 @@ function EventListView() {
   const [driveEvents, setDriveEvents] = useState<AppDataEventReference[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [signedIn, setSignedIn] = useState(false);
-  const [brokenEventFileIds, setBrokenEventFileIds] = useState<Set<string>>(new Set());
-  const [deletingEventFileIds, setDeletingEventFileIds] = useState<Set<string>>(new Set());
+  const [brokenEventFileIds, setBrokenEventFileIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [deletingEventFileIds, setDeletingEventFileIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     setEvents(loadLocalEvents());
@@ -320,13 +338,20 @@ function EventListView() {
   }, [signedIn, driveEvents]);
 
   async function handleDeleteDriveEvent(fileId: string, eventName: string) {
-    if (!window.confirm(`Delete "${eventName}" from Drive and remove from your account?`)) return;
+    if (
+      !window.confirm(
+        `Delete "${eventName}" from Drive and remove from your account?`,
+      )
+    )
+      return;
 
     setDeletingEventFileIds((current) => new Set([...current, fileId]));
     try {
       await deleteSharedFile(fileId);
       await removeAppDataEventReference(fileId);
-      setDriveEvents((current) => current.filter((event) => event.fileId !== fileId));
+      setDriveEvents((current) =>
+        current.filter((event) => event.fileId !== fileId),
+      );
     } catch (error) {
       console.error("Failed to delete event:", error);
     } finally {
@@ -338,13 +363,23 @@ function EventListView() {
     }
   }
 
-  async function handleCleanupBrokenEventReference(fileId: string, eventName: string) {
-    if (!window.confirm(`Remove broken reference to "${eventName}" from your account?`)) return;
+  async function handleCleanupBrokenEventReference(
+    fileId: string,
+    eventName: string,
+  ) {
+    if (
+      !window.confirm(
+        `Remove broken reference to "${eventName}" from your account?`,
+      )
+    )
+      return;
 
     setDeletingEventFileIds((current) => new Set([...current, fileId]));
     try {
       await removeAppDataEventReference(fileId);
-      setDriveEvents((current) => current.filter((event) => event.fileId !== fileId));
+      setDriveEvents((current) =>
+        current.filter((event) => event.fileId !== fileId),
+      );
       setBrokenEventFileIds((current) => {
         const next = new Set(current);
         next.delete(fileId);
@@ -366,7 +401,9 @@ function EventListView() {
     if (!normalized) return events;
 
     return events.filter((event) => {
-      return [event.name, event.description, event.location].some((value) => value.toLowerCase().includes(normalized));
+      return [event.name, event.description, event.location].some((value) =>
+        value.toLowerCase().includes(normalized),
+      );
     });
   }, [events, searchTerm]);
 
@@ -375,8 +412,8 @@ function EventListView() {
     if (!normalized) return driveEvents;
 
     return driveEvents.filter((event) => {
-      return [event.name, event.description || "", event.location || ""].some((value) =>
-        value.toLowerCase().includes(normalized),
+      return [event.name, event.description || "", event.location || ""].some(
+        (value) => value.toLowerCase().includes(normalized),
       );
     });
   }, [driveEvents, searchTerm]);
@@ -390,7 +427,10 @@ function EventListView() {
       <div className="company-manager__masthead">
         <p className="eyebrow">Organizer Tools</p>
         <h1>Events</h1>
-        <p>Manage your event list, open an event workspace, and run rounds and pairings.</p>
+        <p>
+          Manage your event list, open an event workspace, and run rounds and
+          pairings.
+        </p>
       </div>
 
       <div className="event-list-toolbar">
@@ -408,7 +448,8 @@ function EventListView() {
 
       {!signedIn && (
         <p className="legacy-empty-note">
-          Sign in with Google to create events. Event creation needs Drive permissions to create and share event files.
+          Sign in with Google to create events. Event creation needs Drive
+          permissions to create and share event files.
         </p>
       )}
 
@@ -423,14 +464,20 @@ function EventListView() {
 
         <label className="field">
           <span>Search</span>
-          <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Find by name, location, or description" />
+          <input
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Find by name, location, or description"
+          />
         </label>
 
         <div className="event-card-list">
           {filteredEvents.map((event) => (
             <article className="event-index-item" key={event.id}>
               <a href={eventHref(event.id)}>
-                <span className="panel-kicker">{event.location || "Location TBD"}</span>
+                <span className="panel-kicker">
+                  {event.location || "Location TBD"}
+                </span>
                 <h3>{event.name}</h3>
                 <p>{event.description || "No description yet."}</p>
                 <div className="event-mini-stats">
@@ -439,7 +486,11 @@ function EventListView() {
                   <span>{event.rounds.length} rounds</span>
                 </div>
               </a>
-              <button className="command-button command-button--danger" type="button" onClick={() => handleDelete(event.id)}>
+              <button
+                className="command-button command-button--danger"
+                type="button"
+                onClick={() => handleDelete(event.id)}
+              >
                 <AppIcon name="trash" size={16} />
                 Delete
               </button>
@@ -449,7 +500,9 @@ function EventListView() {
             <article className="event-index-item" key={`drive-${event.fileId}`}>
               {brokenEventFileIds.has(event.fileId) ? (
                 <div>
-                  <span className="panel-kicker">Drive-backed (Broken Link)</span>
+                  <span className="panel-kicker">
+                    Drive-backed (Broken Link)
+                  </span>
                   <h3>{event.name}</h3>
                   <p>File not found. Event organizer may have deleted it.</p>
                   <div className="event-mini-stats">
@@ -458,9 +511,14 @@ function EventListView() {
                 </div>
               ) : (
                 <a href={driveEventHref(event.fileId)}>
-                  <span className="panel-kicker">{event.location || "Shared event"}</span>
+                  <span className="panel-kicker">
+                    {event.location || "Shared event"}
+                  </span>
                   <h3>{event.name}</h3>
-                  <p>{event.description || "Loaded from your Google Drive app data."}</p>
+                  <p>
+                    {event.description ||
+                      "Loaded from your Google Drive app data."}
+                  </p>
                   <div className="event-mini-stats">
                     <span>{formatDate(event.startDate)}</span>
                     <span>Drive-backed</span>
@@ -472,10 +530,14 @@ function EventListView() {
                   className="command-button command-button--danger"
                   type="button"
                   disabled={deletingEventFileIds.has(event.fileId)}
-                  onClick={() => handleCleanupBrokenEventReference(event.fileId, event.name)}
+                  onClick={() =>
+                    handleCleanupBrokenEventReference(event.fileId, event.name)
+                  }
                 >
                   <AppIcon name="trash" size={16} />
-                  {deletingEventFileIds.has(event.fileId) ? "Removing..." : "Remove Reference"}
+                  {deletingEventFileIds.has(event.fileId)
+                    ? "Removing..."
+                    : "Remove Reference"}
                 </button>
               ) : (
                 <>
@@ -489,17 +551,23 @@ function EventListView() {
                     className="command-button command-button--danger"
                     type="button"
                     disabled={deletingEventFileIds.has(event.fileId)}
-                    onClick={() => handleDeleteDriveEvent(event.fileId, event.name)}
+                    onClick={() =>
+                      handleDeleteDriveEvent(event.fileId, event.name)
+                    }
                   >
                     <AppIcon name="trash" size={16} />
-                    {deletingEventFileIds.has(event.fileId) ? "Deleting..." : "Delete"}
+                    {deletingEventFileIds.has(event.fileId)
+                      ? "Deleting..."
+                      : "Delete"}
                   </button>
                 </>
               )}
             </article>
           ))}
           {filteredEvents.length === 0 && filteredDriveEvents.length === 0 && (
-            <p className="empty-note">No events yet. Create one to get started.</p>
+            <p className="empty-note">
+              No events yet. Create one to get started.
+            </p>
           )}
         </div>
       </section>
@@ -517,11 +585,17 @@ function SharedEventWorkspace({
   onEventDataChange: (next: SharedEventPayload) => void;
 }) {
   const [signedIn, setSignedIn] = useState(false);
-  const [registeredCompanies, setRegisteredCompanies] = useState<RegisteredCompany[]>([]);
+  const [registeredCompanies, setRegisteredCompanies] = useState<
+    RegisteredCompany[]
+  >([]);
   const [loadingRegistrations, setLoadingRegistrations] = useState(false);
-  const [registrationError, setRegistrationError] = useState<string | null>(null);
+  const [registrationError, setRegistrationError] = useState<string | null>(
+    null,
+  );
   const [registrationRefreshNonce, setRegistrationRefreshNonce] = useState(0);
-  const [roundForm, setRoundForm] = useState<RoundFormState>(emptyRoundForm(eventData.rounds?.length || 0));
+  const [roundForm, setRoundForm] = useState<RoundFormState>(
+    emptyRoundForm(eventData.rounds?.length || 0),
+  );
   const [pairingRoundId, setPairingRoundId] = useState("");
   const [player1FileId, setPlayer1FileId] = useState("");
   const [player2FileId, setPlayer2FileId] = useState("");
@@ -530,18 +604,30 @@ function SharedEventWorkspace({
   const [roundError, setRoundError] = useState<string | null>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const [prefilledLink, setPrefilledLink] = useState("");
-  const [prefillConfigError, setPrefillConfigError] = useState<string | null>(null);
-  const [prefillConfigSuccess, setPrefillConfigSuccess] = useState<string | null>(null);
+  const [prefillConfigError, setPrefillConfigError] = useState<string | null>(
+    null,
+  );
+  const [prefillConfigSuccess, setPrefillConfigSuccess] = useState<
+    string | null
+  >(null);
   const [savingPrefillConfig, setSavingPrefillConfig] = useState(false);
-  const [ownedCompanyFileIds, setOwnedCompanyFileIds] = useState<Set<string>>(new Set());
+  const [ownedCompanyFileIds, setOwnedCompanyFileIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   const rounds = Array.isArray(eventData.rounds) ? eventData.rounds : [];
   const formId = String(eventData.registrationForm?.formId || "").trim();
-  const formResponderUri = String(eventData.registrationForm?.responderUri || "").trim();
+  const formResponderUri = String(
+    eventData.registrationForm?.responderUri || "",
+  ).trim();
   const eventWorkspaceLink = `${window.location.origin}/events/manage/?fileId=${encodeURIComponent(fileId)}`;
   const eventDriveLink = `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/view`;
-  const formEditLink = formId ? `https://docs.google.com/forms/d/${encodeURIComponent(formId)}/edit` : "";
-  const formResponsesLink = formId ? `https://docs.google.com/forms/d/${encodeURIComponent(formId)}/edit#responses` : "";
+  const formEditLink = formId
+    ? `https://docs.google.com/forms/d/${encodeURIComponent(formId)}/edit`
+    : "";
+  const formResponsesLink = formId
+    ? `https://docs.google.com/forms/d/${encodeURIComponent(formId)}/edit#responses`
+    : "";
 
   useEffect(() => {
     return subscribeAuthState((nextSignedIn) => {
@@ -571,7 +657,10 @@ function SharedEventWorkspace({
             if (idFromLink) owned.add(idFromLink);
           }
         } catch (error) {
-          console.warn("Could not load appdata company ownership references:", error);
+          console.warn(
+            "Could not load appdata company ownership references:",
+            error,
+          );
         }
       }
 
@@ -624,7 +713,8 @@ function SharedEventWorkspace({
         if (!alive) return;
 
         const filtered = submissions.filter((entry) => {
-          const normalizedEventId = extractFileId(entry.eventFileId) || entry.eventFileId.trim();
+          const normalizedEventId =
+            extractFileId(entry.eventFileId) || entry.eventFileId.trim();
           return normalizedEventId === fileId;
         });
         const deduped = new Map<string, RegisteredCompany>();
@@ -640,21 +730,27 @@ function SharedEventWorkspace({
         }
 
         for (const entry of storedRegistrations) {
-          const key = entry.fileId || extractFileId(entry.shareLink) || entry.shareLink;
+          const key =
+            entry.fileId || extractFileId(entry.shareLink) || entry.shareLink;
           if (!deduped.has(key)) deduped.set(key, entry);
         }
 
         const merged = sortRegisteredCompanies(Array.from(deduped.values()));
         setRegisteredCompanies(merged);
 
-        const currentStored = JSON.stringify(sortRegisteredCompanies(storedRegistrations));
+        const currentStored = JSON.stringify(
+          sortRegisteredCompanies(storedRegistrations),
+        );
         const nextStored = JSON.stringify(merged);
         if (currentStored !== nextStored) {
           void saveEvent({
             ...eventData,
             registeredCompanies: merged,
           }).catch((error) => {
-            console.error("Failed to persist merged registered companies to event file:", error);
+            console.error(
+              "Failed to persist merged registered companies to event file:",
+              error,
+            );
           });
         }
       })
@@ -673,7 +769,13 @@ function SharedEventWorkspace({
     return () => {
       alive = false;
     };
-  }, [signedIn, fileId, eventData, eventData.registrationForm, registrationRefreshNonce]);
+  }, [
+    signedIn,
+    fileId,
+    eventData,
+    eventData.registrationForm,
+    registrationRefreshNonce,
+  ]);
 
   async function saveEvent(next: SharedEventPayload): Promise<void> {
     const payload = {
@@ -751,18 +853,25 @@ function SharedEventWorkspace({
       setSavingRounds(true);
       setRoundError(null);
       const timestamp = new Date().toISOString();
-      const nextRounds: SharedEventRound[] = [...rounds, {
-        id: makeId("drive-round"),
-        name: roundForm.name.trim(),
-        number: rounds.length + 1,
-        mission: roundForm.mission.trim() || undefined,
-        description: roundForm.description.trim() || undefined,
-        startDate: roundForm.startDate ? new Date(roundForm.startDate).toISOString() : undefined,
-        endDate: roundForm.endDate ? new Date(roundForm.endDate).toISOString() : undefined,
-        pairings: [],
-        createdAt: timestamp,
-        updatedAt: timestamp,
-      }];
+      const nextRounds: SharedEventRound[] = [
+        ...rounds,
+        {
+          id: makeId("drive-round"),
+          name: roundForm.name.trim(),
+          number: rounds.length + 1,
+          mission: roundForm.mission.trim() || undefined,
+          description: roundForm.description.trim() || undefined,
+          startDate: roundForm.startDate
+            ? new Date(roundForm.startDate).toISOString()
+            : undefined,
+          endDate: roundForm.endDate
+            ? new Date(roundForm.endDate).toISOString()
+            : undefined,
+          pairings: [],
+          createdAt: timestamp,
+          updatedAt: timestamp,
+        },
+      ];
 
       await saveEvent({
         ...eventData,
@@ -770,7 +879,9 @@ function SharedEventWorkspace({
       });
     } catch (error) {
       console.error("Failed to create round:", error);
-      setRoundError(`Could not create round: ${error instanceof Error ? error.message : "Unknown error"}`);
+      setRoundError(
+        `Could not create round: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     } finally {
       setSavingRounds(false);
     }
@@ -778,10 +889,20 @@ function SharedEventWorkspace({
 
   async function handleCreatePairing(eventSubmit: React.FormEvent) {
     eventSubmit.preventDefault();
-    if (!pairingRoundId || !player1FileId || !player2FileId || player1FileId === player2FileId) return;
+    if (
+      !pairingRoundId ||
+      !player1FileId ||
+      !player2FileId ||
+      player1FileId === player2FileId
+    )
+      return;
 
-    const player1 = registeredCompanies.find((entry) => entry.fileId === player1FileId);
-    const player2 = registeredCompanies.find((entry) => entry.fileId === player2FileId);
+    const player1 = registeredCompanies.find(
+      (entry) => entry.fileId === player1FileId,
+    );
+    const player2 = registeredCompanies.find(
+      (entry) => entry.fileId === player2FileId,
+    );
     if (!player1 || !player2) return;
 
     try {
@@ -790,15 +911,18 @@ function SharedEventWorkspace({
       const timestamp = new Date().toISOString();
       const nextRounds = rounds.map((round) => {
         if (round.id !== pairingRoundId) return round;
-        const nextPairings = [...(Array.isArray(round.pairings) ? round.pairings : []), {
-          id: makeId("drive-pairing"),
-          player1FileId,
-          player1Name: player1.companyName,
-          player2FileId,
-          player2Name: player2.companyName,
-          mission: pairingMission.trim() || undefined,
-          createdAt: timestamp,
-        }];
+        const nextPairings = [
+          ...(Array.isArray(round.pairings) ? round.pairings : []),
+          {
+            id: makeId("drive-pairing"),
+            player1FileId,
+            player1Name: player1.companyName,
+            player2FileId,
+            player2Name: player2.companyName,
+            mission: pairingMission.trim() || undefined,
+            createdAt: timestamp,
+          },
+        ];
 
         return {
           ...round,
@@ -814,14 +938,19 @@ function SharedEventWorkspace({
       setPairingMission("");
     } catch (error) {
       console.error("Failed to create pairing:", error);
-      setRoundError(`Could not create pairing: ${error instanceof Error ? error.message : "Unknown error"}`);
+      setRoundError(
+        `Could not create pairing: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     } finally {
       setSavingRounds(false);
     }
   }
 
   return (
-    <section className="company-manager event-manager" aria-label="Shared event manager">
+    <section
+      className="company-manager event-manager"
+      aria-label="Shared event manager"
+    >
       <div className="event-detail-header">
         <a className="icon-button" href="/events/" aria-label="Back to events">
           <AppIcon name="back" />
@@ -829,13 +958,17 @@ function SharedEventWorkspace({
         <div>
           <p className="eyebrow">Shared Event File</p>
           <h1>{eventData?.event?.name || "Unnamed Event"}</h1>
-          <p>{eventData?.event?.description || "Register companies, create rounds, and pair players for contract play."}</p>
+          <p>
+            {eventData?.event?.description ||
+              "Register companies, create rounds, and pair players for contract play."}
+          </p>
         </div>
       </div>
 
       {!signedIn && (
         <p className="legacy-empty-note">
-          Sign in with Google to register companies, create rounds, and save pairings for this event.
+          Sign in with Google to register companies, create rounds, and save
+          pairings for this event.
         </p>
       )}
 
@@ -866,7 +999,8 @@ function SharedEventWorkspace({
           </div>
         </div>
         <p className="legacy-empty-note">
-          Send this link to players so they can attach their company to this event.
+          Send this link to players so they can attach their company to this
+          event.
         </p>
         <div className="event-register-grid">
           <label className="field">
@@ -895,7 +1029,8 @@ function SharedEventWorkspace({
           </div>
         </div>
         <p className="legacy-empty-note">
-          Quick links to inspect event and form wiring while we validate integration.
+          Quick links to inspect event and form wiring while we validate
+          integration.
         </p>
         <div className="event-participant-list">
           <article className="event-participant-row">
@@ -903,7 +1038,12 @@ function SharedEventWorkspace({
               <span className="panel-kicker">Event Workspace</span>
               <h3>Open this event route</h3>
             </div>
-            <a className="command-button command-button--small" href={eventWorkspaceLink} target="_blank" rel="noreferrer">
+            <a
+              className="command-button command-button--small"
+              href={eventWorkspaceLink}
+              target="_blank"
+              rel="noreferrer"
+            >
               Open
             </a>
           </article>
@@ -912,17 +1052,31 @@ function SharedEventWorkspace({
               <span className="panel-kicker">Drive Event File</span>
               <h3>Open event JSON in Drive</h3>
             </div>
-            <a className="command-button command-button--small" href={eventDriveLink} target="_blank" rel="noreferrer">
+            <a
+              className="command-button command-button--small"
+              href={eventDriveLink}
+              target="_blank"
+              rel="noreferrer"
+            >
               Open
             </a>
           </article>
           <article className="event-participant-row">
             <div>
               <span className="panel-kicker">Registration Form</span>
-              <h3>{formResponderUri ? "Open responder form" : "No responder link found"}</h3>
+              <h3>
+                {formResponderUri
+                  ? "Open responder form"
+                  : "No responder link found"}
+              </h3>
             </div>
             {formResponderUri ? (
-              <a className="command-button command-button--small" href={formResponderUri} target="_blank" rel="noreferrer">
+              <a
+                className="command-button command-button--small"
+                href={formResponderUri}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Open
               </a>
             ) : (
@@ -932,10 +1086,17 @@ function SharedEventWorkspace({
           <article className="event-participant-row">
             <div>
               <span className="panel-kicker">Form Responses</span>
-              <h3>{formResponsesLink ? "Open responses tab" : "No form ID found"}</h3>
+              <h3>
+                {formResponsesLink ? "Open responses tab" : "No form ID found"}
+              </h3>
             </div>
             {formResponsesLink ? (
-              <a className="command-button command-button--small" href={formResponsesLink} target="_blank" rel="noreferrer">
+              <a
+                className="command-button command-button--small"
+                href={formResponsesLink}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Open
               </a>
             ) : (
@@ -948,7 +1109,12 @@ function SharedEventWorkspace({
               <h3>{formEditLink ? "Open form editor" : "No form ID found"}</h3>
             </div>
             {formEditLink ? (
-              <a className="command-button command-button--small" href={formEditLink} target="_blank" rel="noreferrer">
+              <a
+                className="command-button command-button--small"
+                href={formEditLink}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Open
               </a>
             ) : (
@@ -977,13 +1143,21 @@ function SharedEventWorkspace({
           </button>
         </div>
         <p className="legacy-empty-note">
-          In the Google Form editor, create a prefilled link using these exact values: COMPANY_NAME, COMPANY_LINK, and EVENT_FILE_ID. Paste that URL here so the app can learn the real responder entry IDs.
+          In the Google Form editor, create a prefilled link using these exact
+          values: COMPANY_NAME, COMPANY_LINK, and EVENT_FILE_ID. Paste that URL
+          here so the app can learn the real responder entry IDs.
         </p>
         {eventData.registrationForm?.responseEntries && (
-          <p className="info-message">Responder entry IDs are configured for this event.</p>
+          <p className="info-message">
+            Responder entry IDs are configured for this event.
+          </p>
         )}
-        {prefillConfigError && <p className="error-message">{prefillConfigError}</p>}
-        {prefillConfigSuccess && <p className="info-message">{prefillConfigSuccess}</p>}
+        {prefillConfigError && (
+          <p className="error-message">{prefillConfigError}</p>
+        )}
+        {prefillConfigSuccess && (
+          <p className="info-message">{prefillConfigSuccess}</p>
+        )}
       </section>
 
       <section className="company-section-card event-workspace-card">
@@ -1000,16 +1174,21 @@ function SharedEventWorkspace({
             className="command-button"
             type="button"
             disabled={loadingRegistrations || !signedIn}
-            onClick={() => setRegistrationRefreshNonce((current) => current + 1)}
+            onClick={() =>
+              setRegistrationRefreshNonce((current) => current + 1)
+            }
           >
             {loadingRegistrations ? "Refreshing..." : "Refresh Registrations"}
           </button>
         </div>
 
         <p className="legacy-empty-note">
-          Registrations are read from this event file. Refresh also merges linked Google Form submissions when available.
+          Registrations are read from this event file. Refresh also merges
+          linked Google Form submissions when available.
         </p>
-        {registrationError && <p className="error-message">{registrationError}</p>}
+        {registrationError && (
+          <p className="error-message">{registrationError}</p>
+        )}
 
         <div className="event-participant-list">
           {registeredCompanies.map((company) => (
@@ -1018,12 +1197,19 @@ function SharedEventWorkspace({
                 <span className="panel-kicker">Registered</span>
                 <h3>{company.companyName}</h3>
               </div>
-              <a className="command-button command-button--small" href={company.shareLink} target="_blank" rel="noreferrer">
+              <a
+                className="command-button command-button--small"
+                href={company.shareLink}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Open Company
               </a>
             </article>
           ))}
-          {registeredCompanies.length === 0 && <p className="empty-note">No companies registered yet.</p>}
+          {registeredCompanies.length === 0 && (
+            <p className="empty-note">No companies registered yet.</p>
+          )}
         </div>
       </section>
 
@@ -1041,27 +1227,75 @@ function SharedEventWorkspace({
             <span className="panel-kicker">Create Round</span>
             <label className="field">
               <span>Name</span>
-              <input value={roundForm.name} onChange={(event) => setRoundForm((current) => ({ ...current, name: event.target.value }))} />
+              <input
+                value={roundForm.name}
+                onChange={(event) =>
+                  setRoundForm((current) => ({
+                    ...current,
+                    name: event.target.value,
+                  }))
+                }
+              />
             </label>
             <label className="field">
               <span>Default Contract</span>
-              <input value={roundForm.mission} onChange={(event) => setRoundForm((current) => ({ ...current, mission: event.target.value }))} placeholder="Control Room, The Mole..." />
+              <input
+                value={roundForm.mission}
+                onChange={(event) =>
+                  setRoundForm((current) => ({
+                    ...current,
+                    mission: event.target.value,
+                  }))
+                }
+                placeholder="Control Room, The Mole..."
+              />
             </label>
             <div className="event-form-grid">
               <label className="field">
                 <span>Start</span>
-                <input type="datetime-local" value={roundForm.startDate} onChange={(event) => setRoundForm((current) => ({ ...current, startDate: event.target.value }))} />
+                <input
+                  type="datetime-local"
+                  value={roundForm.startDate}
+                  onChange={(event) =>
+                    setRoundForm((current) => ({
+                      ...current,
+                      startDate: event.target.value,
+                    }))
+                  }
+                />
               </label>
               <label className="field">
                 <span>End</span>
-                <input type="datetime-local" value={roundForm.endDate} onChange={(event) => setRoundForm((current) => ({ ...current, endDate: event.target.value }))} />
+                <input
+                  type="datetime-local"
+                  value={roundForm.endDate}
+                  onChange={(event) =>
+                    setRoundForm((current) => ({
+                      ...current,
+                      endDate: event.target.value,
+                    }))
+                  }
+                />
               </label>
             </div>
             <label className="field">
               <span>Description</span>
-              <textarea value={roundForm.description} onChange={(event) => setRoundForm((current) => ({ ...current, description: event.target.value }))} placeholder="Organizer notes for this round" />
+              <textarea
+                value={roundForm.description}
+                onChange={(event) =>
+                  setRoundForm((current) => ({
+                    ...current,
+                    description: event.target.value,
+                  }))
+                }
+                placeholder="Organizer notes for this round"
+              />
             </label>
-            <button className="command-button command-button--primary" type="submit" disabled={!signedIn || savingRounds}>
+            <button
+              className="command-button command-button--primary"
+              type="submit"
+              disabled={!signedIn || savingRounds}
+            >
               Create Round
             </button>
           </form>
@@ -1070,7 +1304,11 @@ function SharedEventWorkspace({
             <span className="panel-kicker">Create Pairing</span>
             <label className="field">
               <span>Round</span>
-              <select value={pairingRoundId} onChange={(event) => setPairingRoundId(event.target.value)} disabled={rounds.length === 0 || !signedIn}>
+              <select
+                value={pairingRoundId}
+                onChange={(event) => setPairingRoundId(event.target.value)}
+                disabled={rounds.length === 0 || !signedIn}
+              >
                 {rounds.map((round) => (
                   <option value={round.id} key={round.id}>
                     {round.name}
@@ -1081,7 +1319,11 @@ function SharedEventWorkspace({
             <div className="event-form-grid">
               <label className="field">
                 <span>Player A</span>
-                <select value={player1FileId} onChange={(event) => setPlayer1FileId(event.target.value)} disabled={registeredCompanies.length < 2 || !signedIn}>
+                <select
+                  value={player1FileId}
+                  onChange={(event) => setPlayer1FileId(event.target.value)}
+                  disabled={registeredCompanies.length < 2 || !signedIn}
+                >
                   {registeredCompanies.map((company) => (
                     <option value={company.fileId} key={company.fileId}>
                       {company.companyName}
@@ -1091,7 +1333,11 @@ function SharedEventWorkspace({
               </label>
               <label className="field">
                 <span>Player B</span>
-                <select value={player2FileId} onChange={(event) => setPlayer2FileId(event.target.value)} disabled={registeredCompanies.length < 2 || !signedIn}>
+                <select
+                  value={player2FileId}
+                  onChange={(event) => setPlayer2FileId(event.target.value)}
+                  disabled={registeredCompanies.length < 2 || !signedIn}
+                >
                   {registeredCompanies.map((company) => (
                     <option value={company.fileId} key={company.fileId}>
                       {company.companyName}
@@ -1102,9 +1348,24 @@ function SharedEventWorkspace({
             </div>
             <label className="field">
               <span>Contract</span>
-              <input value={pairingMission} onChange={(event) => setPairingMission(event.target.value)} placeholder="Optional contract override" />
+              <input
+                value={pairingMission}
+                onChange={(event) => setPairingMission(event.target.value)}
+                placeholder="Optional contract override"
+              />
             </label>
-            <button className="command-button command-button--primary" type="submit" disabled={!signedIn || !pairingRoundId || !player1FileId || !player2FileId || player1FileId === player2FileId || savingRounds}>
+            <button
+              className="command-button command-button--primary"
+              type="submit"
+              disabled={
+                !signedIn ||
+                !pairingRoundId ||
+                !player1FileId ||
+                !player2FileId ||
+                player1FileId === player2FileId ||
+                savingRounds
+              }
+            >
               Create Pairing
             </button>
           </form>
@@ -1124,52 +1385,83 @@ function SharedEventWorkspace({
                   <div>
                     <span className="panel-kicker">Round {round.number}</span>
                     <h3>{round.name}</h3>
-                    <p>{round.description || round.mission || "No round notes yet."}</p>
+                    <p>
+                      {round.description ||
+                        round.mission ||
+                        "No round notes yet."}
+                    </p>
                   </div>
-                  <span className={`event-status event-status--${status.tone}`}>{status.label}</span>
+                  <span className={`event-status event-status--${status.tone}`}>
+                    {status.label}
+                  </span>
                 </header>
                 <div className="event-mini-stats">
                   <span>Starts {formatDateTime(round.startDate)}</span>
                   <span>Ends {formatDateTime(round.endDate)}</span>
-                  <span>{Array.isArray(round.pairings) ? round.pairings.length : 0} pairings</span>
+                  <span>
+                    {Array.isArray(round.pairings) ? round.pairings.length : 0}{" "}
+                    pairings
+                  </span>
                 </div>
 
                 <div className="event-pairing-list">
-                  {(Array.isArray(round.pairings) ? round.pairings : []).map((pairing) => (
-                    <article className="event-pairing-row" key={pairing.id}>
-                      <div>
-                        <strong>{pairing.player1Name}</strong>
-                        <span>vs</span>
-                        <strong>{pairing.player2Name}</strong>
-                      </div>
-                      <small>{pairing.mission || round.mission || "Contract TBD"}</small>
-                      {ownedCompanyFileIds.has(pairing.player1FileId) || ownedCompanyFileIds.has(pairing.player2FileId) ? (
-                        <a
-                          className="command-button command-button--small"
-                          href={`/events/pairing/?fileId=${encodeURIComponent(fileId)}&roundId=${encodeURIComponent(round.id)}&pairingId=${encodeURIComponent(pairing.id)}`}
-                        >
-                          Play
-                        </a>
-                      ) : (
-                        <button className="command-button command-button--small" type="button" disabled>
-                          Locked
-                        </button>
-                      )}
-                    </article>
-                  ))}
-                  {(Array.isArray(round.pairings) ? round.pairings : []).length === 0 && <p className="empty-note">No pairings for this round yet.</p>}
+                  {(Array.isArray(round.pairings) ? round.pairings : []).map(
+                    (pairing) => (
+                      <article className="event-pairing-row" key={pairing.id}>
+                        <div>
+                          <strong>{pairing.player1Name}</strong>
+                          <span>vs</span>
+                          <strong>{pairing.player2Name}</strong>
+                        </div>
+                        <small>
+                          {pairing.mission || round.mission || "Contract TBD"}
+                        </small>
+                        {ownedCompanyFileIds.has(pairing.player1FileId) ||
+                        ownedCompanyFileIds.has(pairing.player2FileId) ? (
+                          <a
+                            className="command-button command-button--small"
+                            href={`/events/pairing/?fileId=${encodeURIComponent(fileId)}&roundId=${encodeURIComponent(round.id)}&pairingId=${encodeURIComponent(pairing.id)}`}
+                          >
+                            Play
+                          </a>
+                        ) : (
+                          <button
+                            className="command-button command-button--small"
+                            type="button"
+                            disabled
+                          >
+                            Locked
+                          </button>
+                        )}
+                      </article>
+                    ),
+                  )}
+                  {(Array.isArray(round.pairings) ? round.pairings : [])
+                    .length === 0 && (
+                    <p className="empty-note">
+                      No pairings for this round yet.
+                    </p>
+                  )}
                 </div>
               </article>
             );
           })}
-          {rounds.length === 0 && <p className="empty-note">No rounds created yet.</p>}
+          {rounds.length === 0 && (
+            <p className="empty-note">No rounds created yet.</p>
+          )}
         </div>
       </section>
     </section>
   );
 }
 
-function ParticipantPanel({ event, onEventChange }: { event: LocalEvent; onEventChange: (event: LocalEvent) => void }) {
+function ParticipantPanel({
+  event,
+  onEventChange,
+}: {
+  event: LocalEvent;
+  onEventChange: (event: LocalEvent) => void;
+}) {
   const [companies, setCompanies] = useState<LocalCompany[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [playerName, setPlayerName] = useState("");
@@ -1180,17 +1472,29 @@ function ParticipantPanel({ event, onEventChange }: { event: LocalEvent; onEvent
     setSelectedCompanyId(loadedCompanies[0]?.id || "");
   }, []);
 
-  const availableCompanies = companies.filter((company) => !event.participants.some((participant) => participant.companyId === company.id));
-  const isAtCapacity = Boolean(event.maxParticipants && event.participants.length >= event.maxParticipants);
+  const availableCompanies = companies.filter(
+    (company) =>
+      !event.participants.some(
+        (participant) => participant.companyId === company.id,
+      ),
+  );
+  const isAtCapacity = Boolean(
+    event.maxParticipants && event.participants.length >= event.maxParticipants,
+  );
 
   function handleAddParticipant() {
     const company = companies.find((entry) => entry.id === selectedCompanyId);
     if (!company) return;
-    const updatedEvent = addEventParticipant(event.id, { userName: playerName || company.name, company });
+    const updatedEvent = addEventParticipant(event.id, {
+      userName: playerName || company.name,
+      company,
+    });
     if (updatedEvent) {
       onEventChange(updatedEvent);
       setPlayerName("");
-      const nextAvailable = availableCompanies.find((entry) => entry.id !== company.id);
+      const nextAvailable = availableCompanies.find(
+        (entry) => entry.id !== company.id,
+      );
       setSelectedCompanyId(nextAvailable?.id || "");
     }
   }
@@ -1213,11 +1517,19 @@ function ParticipantPanel({ event, onEventChange }: { event: LocalEvent; onEvent
       <div className="event-register-grid">
         <label className="field">
           <span>Player Name</span>
-          <input value={playerName} onChange={(event) => setPlayerName(event.target.value)} placeholder="Optional display name" />
+          <input
+            value={playerName}
+            onChange={(event) => setPlayerName(event.target.value)}
+            placeholder="Optional display name"
+          />
         </label>
         <label className="field">
           <span>Company</span>
-          <select value={selectedCompanyId} onChange={(event) => setSelectedCompanyId(event.target.value)} disabled={availableCompanies.length === 0 || isAtCapacity}>
+          <select
+            value={selectedCompanyId}
+            onChange={(event) => setSelectedCompanyId(event.target.value)}
+            disabled={availableCompanies.length === 0 || isAtCapacity}
+          >
             {availableCompanies.map((company) => (
               <option value={company.id} key={company.id}>
                 {company.name}
@@ -1225,13 +1537,30 @@ function ParticipantPanel({ event, onEventChange }: { event: LocalEvent; onEvent
             ))}
           </select>
         </label>
-        <button className="command-button command-button--primary" type="button" onClick={handleAddParticipant} disabled={!selectedCompanyId || availableCompanies.length === 0 || isAtCapacity}>
+        <button
+          className="command-button command-button--primary"
+          type="button"
+          onClick={handleAddParticipant}
+          disabled={
+            !selectedCompanyId ||
+            availableCompanies.length === 0 ||
+            isAtCapacity
+          }
+        >
           Add Participant
         </button>
       </div>
 
-      {isAtCapacity && <p className="legacy-empty-note">This event is at its participant cap.</p>}
-      {companies.length === 0 && <p className="legacy-empty-note">Create a company before registering players.</p>}
+      {isAtCapacity && (
+        <p className="legacy-empty-note">
+          This event is at its participant cap.
+        </p>
+      )}
+      {companies.length === 0 && (
+        <p className="legacy-empty-note">
+          Create a company before registering players.
+        </p>
+      )}
 
       <div className="event-participant-list">
         {event.participants.map((participant) => (
@@ -1240,33 +1569,55 @@ function ParticipantPanel({ event, onEventChange }: { event: LocalEvent; onEvent
               <span className="panel-kicker">{participant.userName}</span>
               <h3>{participant.companyName}</h3>
             </div>
-            <a className="command-button command-button--small" href={`/companies/manage/?id=${encodeURIComponent(participant.companyId)}`}>
+            <a
+              className="command-button command-button--small"
+              href={`/companies/manage/?id=${encodeURIComponent(participant.companyId)}`}
+            >
               Open Company
             </a>
-            <button className="command-button command-button--danger command-button--small" type="button" onClick={() => handleRemove(participant)}>
+            <button
+              className="command-button command-button--danger command-button--small"
+              type="button"
+              onClick={() => handleRemove(participant)}
+            >
               <AppIcon name="trash" size={15} />
               Remove
             </button>
           </article>
         ))}
-        {event.participants.length === 0 && <p className="empty-note">No participants registered yet.</p>}
+        {event.participants.length === 0 && (
+          <p className="empty-note">No participants registered yet.</p>
+        )}
       </div>
     </section>
   );
 }
 
-function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChange: (event: LocalEvent) => void }) {
-  const [roundForm, setRoundForm] = useState<RoundFormState>(emptyRoundForm(event.rounds.length));
+function RoundsPanel({
+  event,
+  onEventChange,
+}: {
+  event: LocalEvent;
+  onEventChange: (event: LocalEvent) => void;
+}) {
+  const [roundForm, setRoundForm] = useState<RoundFormState>(
+    emptyRoundForm(event.rounds.length),
+  );
   const [pairingRoundId, setPairingRoundId] = useState("");
   const [player1Id, setPlayer1Id] = useState("");
   const [player2Id, setPlayer2Id] = useState("");
   const [pairingMission, setPairingMission] = useState("");
-  const [ownedCompanyIds, setOwnedCompanyIds] = useState<Set<string>>(new Set());
+  const [ownedCompanyIds, setOwnedCompanyIds] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
-    if (!pairingRoundId && event.rounds[0]) setPairingRoundId(event.rounds[0].id);
-    if (!player1Id && event.participants[0]) setPlayer1Id(event.participants[0].id);
-    if (!player2Id && event.participants[1]) setPlayer2Id(event.participants[1].id);
+    if (!pairingRoundId && event.rounds[0])
+      setPairingRoundId(event.rounds[0].id);
+    if (!player1Id && event.participants[0])
+      setPlayer1Id(event.participants[0].id);
+    if (!player2Id && event.participants[1])
+      setPlayer2Id(event.participants[1].id);
   }, [event, pairingRoundId, player1Id, player2Id]);
 
   useEffect(() => {
@@ -1283,9 +1634,13 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
     const updatedEvent = createEventRound(event.id, {
       name: roundForm.name,
       mission: roundForm.mission,
-      startDate: roundForm.startDate ? new Date(roundForm.startDate).toISOString() : undefined,
-      endDate: roundForm.endDate ? new Date(roundForm.endDate).toISOString() : undefined,
-      description: roundForm.description
+      startDate: roundForm.startDate
+        ? new Date(roundForm.startDate).toISOString()
+        : undefined,
+      endDate: roundForm.endDate
+        ? new Date(roundForm.endDate).toISOString()
+        : undefined,
+      description: roundForm.description,
     });
 
     if (updatedEvent) {
@@ -1300,7 +1655,7 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
     const updatedEvent = createEventPairing(event.id, pairingRoundId, {
       player1Id,
       player2Id,
-      mission: pairingMission
+      mission: pairingMission,
     });
 
     if (updatedEvent) {
@@ -1324,27 +1679,57 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
           <span className="panel-kicker">Create Round</span>
           <label className="field">
             <span>Name</span>
-            <input value={roundForm.name} onChange={(event) => updateRoundField("name", event.target.value)} />
+            <input
+              value={roundForm.name}
+              onChange={(event) => updateRoundField("name", event.target.value)}
+            />
           </label>
           <label className="field">
             <span>Default Contract</span>
-            <input value={roundForm.mission} onChange={(event) => updateRoundField("mission", event.target.value)} placeholder="Control Room, The Mole..." />
+            <input
+              value={roundForm.mission}
+              onChange={(event) =>
+                updateRoundField("mission", event.target.value)
+              }
+              placeholder="Control Room, The Mole..."
+            />
           </label>
           <div className="event-form-grid">
             <label className="field">
               <span>Start</span>
-              <input type="datetime-local" value={roundForm.startDate} onChange={(event) => updateRoundField("startDate", event.target.value)} />
+              <input
+                type="datetime-local"
+                value={roundForm.startDate}
+                onChange={(event) =>
+                  updateRoundField("startDate", event.target.value)
+                }
+              />
             </label>
             <label className="field">
               <span>End</span>
-              <input type="datetime-local" value={roundForm.endDate} onChange={(event) => updateRoundField("endDate", event.target.value)} />
+              <input
+                type="datetime-local"
+                value={roundForm.endDate}
+                onChange={(event) =>
+                  updateRoundField("endDate", event.target.value)
+                }
+              />
             </label>
           </div>
           <label className="field">
             <span>Description</span>
-            <textarea value={roundForm.description} onChange={(event) => updateRoundField("description", event.target.value)} placeholder="Organizer notes for this round" />
+            <textarea
+              value={roundForm.description}
+              onChange={(event) =>
+                updateRoundField("description", event.target.value)
+              }
+              placeholder="Organizer notes for this round"
+            />
           </label>
-          <button className="command-button command-button--primary" type="submit">
+          <button
+            className="command-button command-button--primary"
+            type="submit"
+          >
             Create Round
           </button>
         </form>
@@ -1353,7 +1738,11 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
           <span className="panel-kicker">Create Pairing</span>
           <label className="field">
             <span>Round</span>
-            <select value={pairingRoundId} onChange={(event) => setPairingRoundId(event.target.value)} disabled={event.rounds.length === 0}>
+            <select
+              value={pairingRoundId}
+              onChange={(event) => setPairingRoundId(event.target.value)}
+              disabled={event.rounds.length === 0}
+            >
               {event.rounds.map((round) => (
                 <option value={round.id} key={round.id}>
                   {round.name}
@@ -1364,7 +1753,11 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
           <div className="event-form-grid">
             <label className="field">
               <span>Player A</span>
-              <select value={player1Id} onChange={(event) => setPlayer1Id(event.target.value)} disabled={event.participants.length < 2}>
+              <select
+                value={player1Id}
+                onChange={(event) => setPlayer1Id(event.target.value)}
+                disabled={event.participants.length < 2}
+              >
                 {event.participants.map((participant) => (
                   <option value={participant.id} key={participant.id}>
                     {participant.companyName}
@@ -1374,7 +1767,11 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
             </label>
             <label className="field">
               <span>Player B</span>
-              <select value={player2Id} onChange={(event) => setPlayer2Id(event.target.value)} disabled={event.participants.length < 2}>
+              <select
+                value={player2Id}
+                onChange={(event) => setPlayer2Id(event.target.value)}
+                disabled={event.participants.length < 2}
+              >
                 {event.participants.map((participant) => (
                   <option value={participant.id} key={participant.id}>
                     {participant.companyName}
@@ -1385,9 +1782,22 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
           </div>
           <label className="field">
             <span>Contract</span>
-            <input value={pairingMission} onChange={(event) => setPairingMission(event.target.value)} placeholder="Optional contract override" />
+            <input
+              value={pairingMission}
+              onChange={(event) => setPairingMission(event.target.value)}
+              placeholder="Optional contract override"
+            />
           </label>
-          <button className="command-button command-button--primary" type="submit" disabled={!pairingRoundId || !player1Id || !player2Id || player1Id === player2Id}>
+          <button
+            className="command-button command-button--primary"
+            type="submit"
+            disabled={
+              !pairingRoundId ||
+              !player1Id ||
+              !player2Id ||
+              player1Id === player2Id
+            }
+          >
             Create Pairing
           </button>
         </form>
@@ -1403,9 +1813,15 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
                 <div>
                   <span className="panel-kicker">Round {round.number}</span>
                   <h3>{round.name}</h3>
-                  <p>{round.description || round.mission || "No round notes yet."}</p>
+                  <p>
+                    {round.description ||
+                      round.mission ||
+                      "No round notes yet."}
+                  </p>
                 </div>
-                <span className={`event-status event-status--${status.tone}`}>{status.label}</span>
+                <span className={`event-status event-status--${status.tone}`}>
+                  {status.label}
+                </span>
               </header>
               <div className="event-mini-stats">
                 <span>Starts {formatDateTime(round.startDate)}</span>
@@ -1417,37 +1833,60 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
                 {round.pairings.map((pairing) => (
                   <article className="event-pairing-row" key={pairing.id}>
                     <div>
-                      <strong>{getParticipantName(event, pairing.player1Id)}</strong>
+                      <strong>
+                        {getParticipantName(event, pairing.player1Id)}
+                      </strong>
                       <span>vs</span>
-                      <strong>{getParticipantName(event, pairing.player2Id)}</strong>
+                      <strong>
+                        {getParticipantName(event, pairing.player2Id)}
+                      </strong>
                     </div>
-                    <small>{pairing.mission || round.mission || "Contract TBD"}</small>
+                    <small>
+                      {pairing.mission || round.mission || "Contract TBD"}
+                    </small>
                     {(() => {
-                      const participant1 = event.participants.find((entry) => entry.id === pairing.player1Id);
-                      const participant2 = event.participants.find((entry) => entry.id === pairing.player2Id);
+                      const participant1 = event.participants.find(
+                        (entry) => entry.id === pairing.player1Id,
+                      );
+                      const participant2 = event.participants.find(
+                        (entry) => entry.id === pairing.player2Id,
+                      );
                       const canOpen = Boolean(
-                        (participant1?.companyId && ownedCompanyIds.has(participant1.companyId))
-                        || (participant2?.companyId && ownedCompanyIds.has(participant2.companyId)),
+                        (participant1?.companyId &&
+                          ownedCompanyIds.has(participant1.companyId)) ||
+                        (participant2?.companyId &&
+                          ownedCompanyIds.has(participant2.companyId)),
                       );
 
                       return canOpen ? (
-                        <a className="command-button command-button--small" href={`/events/pairing/?eventId=${event.id}&roundId=${round.id}&pairingId=${pairing.id}`}>
+                        <a
+                          className="command-button command-button--small"
+                          href={`/events/pairing/?eventId=${event.id}&roundId=${round.id}&pairingId=${pairing.id}`}
+                        >
                           Play
                         </a>
                       ) : (
-                        <button className="command-button command-button--small" type="button" disabled>
+                        <button
+                          className="command-button command-button--small"
+                          type="button"
+                          disabled
+                        >
                           Locked
                         </button>
                       );
                     })()}
                   </article>
                 ))}
-                {round.pairings.length === 0 && <p className="empty-note">No pairings for this round yet.</p>}
+                {round.pairings.length === 0 && (
+                  <p className="empty-note">No pairings for this round yet.</p>
+                )}
               </div>
             </article>
           );
         })}
-        {event.rounds.length === 0 && <p className="empty-note">No rounds created yet.</p>}
+        {event.rounds.length === 0 && (
+          <p className="empty-note">No rounds created yet.</p>
+        )}
       </div>
     </section>
   );
@@ -1455,7 +1894,9 @@ function RoundsPanel({ event, onEventChange }: { event: LocalEvent; onEventChang
 
 function EventDetailView() {
   const [event, setEvent] = useState<LocalEvent | null>(null);
-  const [sharedEvent, setSharedEvent] = useState<SharedEventPayload | null>(null);
+  const [sharedEvent, setSharedEvent] = useState<SharedEventPayload | null>(
+    null,
+  );
   const [loadingShared, setLoadingShared] = useState(false);
   const [sharedError, setSharedError] = useState<string | null>(null);
   const [sharedFileId, setSharedFileId] = useState("");
@@ -1491,7 +1932,9 @@ function EventDetailView() {
       .catch((error) => {
         if (!alive) return;
         console.error("Failed to load shared event:", error);
-        setSharedError(error instanceof Error ? error.message : "Unknown error");
+        setSharedError(
+          error instanceof Error ? error.message : "Unknown error",
+        );
       })
       .finally(() => {
         if (alive) setLoadingShared(false);
@@ -1504,7 +1947,10 @@ function EventDetailView() {
 
   if (sharedFileId && !signedIn) {
     return (
-      <section className="company-manager event-manager" aria-label="Sign in required">
+      <section
+        className="company-manager event-manager"
+        aria-label="Sign in required"
+      >
         <div className="company-empty-state">
           <span className="panel-kicker">Google Sign-In Required</span>
           <h1>Sign In to Open Event</h1>
@@ -1519,7 +1965,10 @@ function EventDetailView() {
 
   if (sharedFileId && loadingShared) {
     return (
-      <section className="company-manager event-manager" aria-label="Loading event">
+      <section
+        className="company-manager event-manager"
+        aria-label="Loading event"
+      >
         <div className="company-empty-state">
           <span className="panel-kicker">Shared Event</span>
           <h1>Loading Event File</h1>
@@ -1531,7 +1980,10 @@ function EventDetailView() {
 
   if (sharedFileId && sharedError) {
     return (
-      <section className="company-manager event-manager" aria-label="Event load error">
+      <section
+        className="company-manager event-manager"
+        aria-label="Event load error"
+      >
         <div className="company-empty-state">
           <span className="panel-kicker">Shared Event</span>
           <h1>Could Not Load Event</h1>
@@ -1556,7 +2008,10 @@ function EventDetailView() {
 
   if (!event) {
     return (
-      <section className="company-manager event-manager" aria-label="Event not found">
+      <section
+        className="company-manager event-manager"
+        aria-label="Event not found"
+      >
         <div className="company-empty-state">
           <span className="panel-kicker">Missing Event</span>
           <h1>Event Not Found</h1>
@@ -1574,7 +2029,10 @@ function EventDetailView() {
   }
 
   return (
-    <section className="company-manager event-manager" aria-label="Event manager">
+    <section
+      className="company-manager event-manager"
+      aria-label="Event manager"
+    >
       <div className="event-detail-header">
         <a className="icon-button" href="/events/" aria-label="Back to events">
           <AppIcon name="back" />
@@ -1582,7 +2040,10 @@ function EventDetailView() {
         <div>
           <p className="eyebrow">Event File</p>
           <h1>{event.name}</h1>
-          <p>{event.description || "Register companies, create rounds, and build pairings for contract play."}</p>
+          <p>
+            {event.description ||
+              "Register companies, create rounds, and build pairings for contract play."}
+          </p>
         </div>
       </div>
 

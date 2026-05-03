@@ -17,9 +17,12 @@ import {
   type EventRound,
   type LocalEvent,
   type PairingResult,
-  type TrooperMissionResult
+  type TrooperMissionResult,
 } from "../lib/mercs/eventStore";
-import { loadLocalCompanies, type LocalCompany } from "../lib/mercs/companyStore";
+import {
+  loadLocalCompanies,
+  type LocalCompany,
+} from "../lib/mercs/companyStore";
 import { AppIcon } from "./AppIcon";
 
 const INJURY_OPTIONS = [
@@ -31,10 +34,17 @@ const INJURY_OPTIONS = [
   "Legs Injury",
   "Body Injury",
   "Eyes Injury",
-  "Shell Shocked"
+  "Shell Shocked",
 ];
 
-const DOWNTIME_EVENTS = ["", "Training", "Recovery", "Supply Run", "Intel Gathering", "Recruitment"];
+const DOWNTIME_EVENTS = [
+  "",
+  "Training",
+  "Recovery",
+  "Supply Run",
+  "Intel Gathering",
+  "Recruitment",
+];
 const DOWNTIME_RESULTS = ["", "Critical Success", "Success", "Failure"];
 
 type PairingInducementSelection = {
@@ -57,36 +67,175 @@ type InducementOption = {
 };
 
 const INDUCEMENT_OPTIONS: InducementOption[] = [
-  { id: "troop-abh-smg-bsg", label: "Authorized Bounty Hunter (SMG or BSG)", category: "troops", cost: 10 },
-  { id: "troop-monstruckers", label: "Monstruckers (Any)", category: "troops", cost: 15 },
-  { id: "troop-motorized-bh", label: "Motorized Bounty Hunters (Any)", category: "troops", cost: 15 },
-  { id: "troop-wardriver", label: "Wardriver (Any)", category: "troops", cost: 15 },
-  { id: "troop-bashi", label: "Bashi Bazouks (Any)", category: "troops", cost: 15 },
-  { id: "troop-abh-sniper-spitfire", label: "Authorized Bounty Hunter (Sniper or Spitfire)", category: "troops", cost: 20 },
+  {
+    id: "troop-abh-smg-bsg",
+    label: "Authorized Bounty Hunter (SMG or BSG)",
+    category: "troops",
+    cost: 10,
+  },
+  {
+    id: "troop-monstruckers",
+    label: "Monstruckers (Any)",
+    category: "troops",
+    cost: 15,
+  },
+  {
+    id: "troop-motorized-bh",
+    label: "Motorized Bounty Hunters (Any)",
+    category: "troops",
+    cost: 15,
+  },
+  {
+    id: "troop-wardriver",
+    label: "Wardriver (Any)",
+    category: "troops",
+    cost: 15,
+  },
+  {
+    id: "troop-bashi",
+    label: "Bashi Bazouks (Any)",
+    category: "troops",
+    cost: 15,
+  },
+  {
+    id: "troop-abh-sniper-spitfire",
+    label: "Authorized Bounty Hunter (Sniper or Spitfire)",
+    category: "troops",
+    cost: 20,
+  },
   { id: "troop-digger", label: "Digger (Any)", category: "troops", cost: 20 },
-  { id: "troop-brawler-sniper", label: "Brawler (Sniper)", category: "troops", cost: 25 },
-  { id: "troop-samsa", label: "Freelance Operator Samsa (Any)", category: "troops", cost: 30 },
-  { id: "troop-anaconda", label: "Anaconda, Mercenary TAG Squad (Any + Immunity POS)", category: "troops", cost: 50 },
-  { id: "cmd-token", label: "Command Token", category: "command", cost: 10, maxCount: 2 },
-  { id: "primary-ap-marksman", label: "AP Marksman Rifle", category: "primary", cost: 5 },
-  { id: "primary-breaker-combi", label: "Breaker Combi Rifle", category: "primary", cost: 5 },
-  { id: "primary-spitfire", label: "Spitfire", category: "primary", cost: 10, maxCount: 2 },
-  { id: "primary-multi-sniper", label: "MULTI Sniper", category: "primary", cost: 15, maxCount: 1 },
-  { id: "primary-hmg", label: "HMG", category: "primary", cost: 15, maxCount: 1 },
-  { id: "secondary-panzerfaust", label: "Panzerfaust", category: "secondary", cost: 5 },
-  { id: "secondary-flammenspeer", label: "Flammenspeer", category: "secondary", cost: 5 },
+  {
+    id: "troop-brawler-sniper",
+    label: "Brawler (Sniper)",
+    category: "troops",
+    cost: 25,
+  },
+  {
+    id: "troop-samsa",
+    label: "Freelance Operator Samsa (Any)",
+    category: "troops",
+    cost: 30,
+  },
+  {
+    id: "troop-anaconda",
+    label: "Anaconda, Mercenary TAG Squad (Any + Immunity POS)",
+    category: "troops",
+    cost: 50,
+  },
+  {
+    id: "cmd-token",
+    label: "Command Token",
+    category: "command",
+    cost: 10,
+    maxCount: 2,
+  },
+  {
+    id: "primary-ap-marksman",
+    label: "AP Marksman Rifle",
+    category: "primary",
+    cost: 5,
+  },
+  {
+    id: "primary-breaker-combi",
+    label: "Breaker Combi Rifle",
+    category: "primary",
+    cost: 5,
+  },
+  {
+    id: "primary-spitfire",
+    label: "Spitfire",
+    category: "primary",
+    cost: 10,
+    maxCount: 2,
+  },
+  {
+    id: "primary-multi-sniper",
+    label: "MULTI Sniper",
+    category: "primary",
+    cost: 15,
+    maxCount: 1,
+  },
+  {
+    id: "primary-hmg",
+    label: "HMG",
+    category: "primary",
+    cost: 15,
+    maxCount: 1,
+  },
+  {
+    id: "secondary-panzerfaust",
+    label: "Panzerfaust",
+    category: "secondary",
+    cost: 5,
+  },
+  {
+    id: "secondary-flammenspeer",
+    label: "Flammenspeer",
+    category: "secondary",
+    cost: 5,
+  },
   { id: "secondary-blitzen", label: "Blitzen", category: "secondary", cost: 5 },
-  { id: "secondary-symbiobomb", label: "Symbiobomb", category: "secondary", cost: 10, maxCount: 1 },
-  { id: "secondary-symbiomate", label: "Symbiomate", category: "secondary", cost: 10, maxCount: 1 },
-  { id: "equipment-tinbot-3", label: "Tinbot: Firewall (-3)", category: "equipment", cost: 5, maxCount: 2 },
-  { id: "equipment-msv1", label: "MSV1", category: "equipment", cost: 5, maxCount: 2 },
-  { id: "equipment-albedo-3", label: "Albedo (-3)", category: "equipment", cost: 5, maxCount: 2 },
-  { id: "equipment-tinbot-6", label: "Tinbot: Firewall (-6)", category: "equipment", cost: 10, maxCount: 1 },
-  { id: "equipment-msv2", label: "MSV2", category: "equipment", cost: 10, maxCount: 1 },
-  { id: "equipment-albedo-6", label: "Albedo (-6)", category: "equipment", cost: 10, maxCount: 1 },
+  {
+    id: "secondary-symbiobomb",
+    label: "Symbiobomb",
+    category: "secondary",
+    cost: 10,
+    maxCount: 1,
+  },
+  {
+    id: "secondary-symbiomate",
+    label: "Symbiomate",
+    category: "secondary",
+    cost: 10,
+    maxCount: 1,
+  },
+  {
+    id: "equipment-tinbot-3",
+    label: "Tinbot: Firewall (-3)",
+    category: "equipment",
+    cost: 5,
+    maxCount: 2,
+  },
+  {
+    id: "equipment-msv1",
+    label: "MSV1",
+    category: "equipment",
+    cost: 5,
+    maxCount: 2,
+  },
+  {
+    id: "equipment-albedo-3",
+    label: "Albedo (-3)",
+    category: "equipment",
+    cost: 5,
+    maxCount: 2,
+  },
+  {
+    id: "equipment-tinbot-6",
+    label: "Tinbot: Firewall (-6)",
+    category: "equipment",
+    cost: 10,
+    maxCount: 1,
+  },
+  {
+    id: "equipment-msv2",
+    label: "MSV2",
+    category: "equipment",
+    cost: 10,
+    maxCount: 1,
+  },
+  {
+    id: "equipment-albedo-6",
+    label: "Albedo (-6)",
+    category: "equipment",
+    cost: 10,
+    maxCount: 1,
+  },
 ];
 
-const INDUCEMENT_OPTION_BY_ID = new Map(INDUCEMENT_OPTIONS.map((option) => [option.id, option]));
+const INDUCEMENT_OPTION_BY_ID = new Map(
+  INDUCEMENT_OPTIONS.map((option) => [option.id, option]),
+);
 
 type PairingContext = {
   event: LocalEvent;
@@ -129,26 +278,28 @@ function getCompanyEventFileRef(payload: SharedCompanyFilePayload): {
   const eventAny = payload?.event as any;
   const companyEventAny = companyAny?.event as any;
 
-  const fileId = payload.companyEventFile?.fileId
-    || payload.companyEventFileId
-    || payload.event?.companyEventFileId
-    || payload.event?.companyEventFile?.fileId
-    || companyAny?.companyEventFileId
-    || companyAny?.companyEventFile?.fileId
-    || companyEventAny?.companyEventFileId
-    || companyEventAny?.companyEventFile?.fileId;
-  const shareLink = payload.companyEventFile?.shareLink
-    || payload.companyEventFile?.link
-    || payload.companyEventShareLink
-    || payload.event?.companyEventShareLink
-    || payload.event?.companyEventFile?.shareLink
-    || payload.event?.companyEventFile?.link
-    || companyAny?.companyEventShareLink
-    || companyAny?.companyEventFile?.shareLink
-    || companyAny?.companyEventFile?.link
-    || companyEventAny?.companyEventShareLink
-    || companyEventAny?.companyEventFile?.shareLink
-    || companyEventAny?.companyEventFile?.link;
+  const fileId =
+    payload.companyEventFile?.fileId ||
+    payload.companyEventFileId ||
+    payload.event?.companyEventFileId ||
+    payload.event?.companyEventFile?.fileId ||
+    companyAny?.companyEventFileId ||
+    companyAny?.companyEventFile?.fileId ||
+    companyEventAny?.companyEventFileId ||
+    companyEventAny?.companyEventFile?.fileId;
+  const shareLink =
+    payload.companyEventFile?.shareLink ||
+    payload.companyEventFile?.link ||
+    payload.companyEventShareLink ||
+    payload.event?.companyEventShareLink ||
+    payload.event?.companyEventFile?.shareLink ||
+    payload.event?.companyEventFile?.link ||
+    companyAny?.companyEventShareLink ||
+    companyAny?.companyEventFile?.shareLink ||
+    companyAny?.companyEventFile?.link ||
+    companyEventAny?.companyEventShareLink ||
+    companyEventAny?.companyEventFile?.shareLink ||
+    companyEventAny?.companyEventFile?.link;
   return {
     fileId: fileId ? String(fileId) : undefined,
     shareLink: shareLink ? String(shareLink) : undefined,
@@ -186,7 +337,11 @@ async function ensureCompanyEventFileForOwnedCompany(input: {
   };
 
   const fileName = `mercs-company-event-${input.companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.json`;
-  const companyEventFileId = await createSharedFile(fileName, eventPayload, folders.eventsFolderId);
+  const companyEventFileId = await createSharedFile(
+    fileName,
+    eventPayload,
+    folders.eventsFolderId,
+  );
   await makeFilePublic(companyEventFileId);
   const companyEventShareLink = `${window.location.origin}/view?id=${encodeURIComponent(companyEventFileId)}`;
 
@@ -240,21 +395,37 @@ function extractFileId(value: string): string | null {
   return /^[a-zA-Z0-9_-]{10,}$/.test(trimmed) ? trimmed : null;
 }
 
-function getParticipant(event: LocalEvent, participantId: string): EventParticipant | null {
-  return event.participants.find((participant) => participant.id === participantId) || null;
+function getParticipant(
+  event: LocalEvent,
+  participantId: string,
+): EventParticipant | null {
+  return (
+    event.participants.find(
+      (participant) => participant.id === participantId,
+    ) || null
+  );
 }
 
-function getCompany(companies: LocalCompany[], participant?: EventParticipant | null): LocalCompany | null {
+function getCompany(
+  companies: LocalCompany[],
+  participant?: EventParticipant | null,
+): LocalCompany | null {
   if (!participant) return null;
-  return companies.find((company) => company.id === participant.companyId) || null;
+  return (
+    companies.find((company) => company.id === participant.companyId) || null
+  );
 }
 
 function getTrooperName(trooper: any): string {
-  return String(trooper?.name || trooper?.isc || trooper?.optionName || "Unknown Trooper");
+  return String(
+    trooper?.name || trooper?.isc || trooper?.optionName || "Unknown Trooper",
+  );
 }
 
 function getTrooperSubtitle(trooper: any): string {
-  return String(trooper?.isc || trooper?.profileName || trooper?.optionName || "Mercenary");
+  return String(
+    trooper?.isc || trooper?.profileName || trooper?.optionName || "Mercenary",
+  );
 }
 
 function getTrooperLogo(trooper: any): string {
@@ -262,15 +433,28 @@ function getTrooperLogo(trooper: any): string {
 }
 
 function getTrooperPoints(trooper: any): number {
-  return Number(trooper?.profileGroups?.[0]?.options?.[0]?.points || trooper?.points || trooper?.renown || 0);
+  return Number(
+    trooper?.profileGroups?.[0]?.options?.[0]?.points ||
+      trooper?.points ||
+      trooper?.renown ||
+      0,
+  );
 }
 
 function findTrooper(company: LocalCompany | null, trooperId: string): any {
-  return ((company?.troopers || []) as any[]).find((trooper) => trooper.id === trooperId) || null;
+  return (
+    ((company?.troopers || []) as any[]).find(
+      (trooper) => trooper.id === trooperId,
+    ) || null
+  );
 }
 
 function findCaptain(company: LocalCompany | null): any {
-  return ((company?.troopers || []) as any[]).find((trooper) => trooper.captain || trooper.isCaptain) || null;
+  return (
+    ((company?.troopers || []) as any[]).find(
+      (trooper) => trooper.captain || trooper.isCaptain,
+    ) || null
+  );
 }
 
 function isEliteDeployed(result: PairingResult): boolean {
@@ -284,11 +468,11 @@ function defaultResult(participantId: string): PairingResult {
     won: false,
     downtime: {
       event: "",
-      result: ""
+      result: "",
     },
     troopers: [],
     submitted: false,
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   };
 }
 
@@ -299,11 +483,18 @@ function defaultInducements(): PairingInducements {
   };
 }
 
-function getResult(pairing: EventPairing, participantId: string): PairingResult {
+function getResult(
+  pairing: EventPairing,
+  participantId: string,
+): PairingResult {
   return pairing.results?.[participantId] || defaultResult(participantId);
 }
 
-function calculateTrooperXp(result: TrooperMissionResult, roundNumber: number, eliteDeployed: boolean): number {
+function calculateTrooperXp(
+  result: TrooperMissionResult,
+  roundNumber: number,
+  eliteDeployed: boolean,
+): number {
   let total = roundNumber;
   if (eliteDeployed) total += 3;
   total += Math.min(Number(result.aidCount ?? (result.aid ? 1 : 0)), 2);
@@ -321,20 +512,32 @@ function calculateTrooperXp(result: TrooperMissionResult, roundNumber: number, e
 
 function calculateTotalXp(result: PairingResult, roundNumber: number): number {
   const eliteDeployed = isEliteDeployed(result);
-  return result.troopers.reduce((total, trooper) => total + calculateTrooperXp(trooper, roundNumber, eliteDeployed), 0);
+  return result.troopers.reduce(
+    (total, trooper) =>
+      total + calculateTrooperXp(trooper, roundNumber, eliteDeployed),
+    0,
+  );
 }
 
-function calculateDeployedRenown(company: LocalCompany | null, result: PairingResult): number {
+function calculateDeployedRenown(
+  company: LocalCompany | null,
+  result: PairingResult,
+): number {
   return result.troopers.reduce((total, entry) => {
     const trooper = findTrooper(company, entry.trooper);
     if (trooper) return total + getTrooperPoints(trooper);
 
-    const snapshot = Number((entry as any)?.renownSnapshot ?? (entry as any)?.points ?? 0);
+    const snapshot = Number(
+      (entry as any)?.renownSnapshot ?? (entry as any)?.points ?? 0,
+    );
     return total + (Number.isFinite(snapshot) ? snapshot : 0);
   }, 0);
 }
 
-function calculateInducements(activeRenown: number, opposingRenown: number): number {
+function calculateInducements(
+  activeRenown: number,
+  opposingRenown: number,
+): number {
   const difference = opposingRenown - activeRenown;
   if (difference <= 0) return 0;
   return Math.floor(difference / 2 / 5) * 5;
@@ -353,9 +556,13 @@ function DeploymentStep({
   onNext: () => void;
   nextLabel?: string;
 }) {
-  const troopers = ((company?.troopers || []) as any[]);
-  const deployedIds = new Set(result.troopers.map((trooper) => trooper.trooper));
-  const availableTroopers = troopers.filter((trooper) => !deployedIds.has(trooper.id));
+  const troopers = (company?.troopers || []) as any[];
+  const deployedIds = new Set(
+    result.troopers.map((trooper) => trooper.trooper),
+  );
+  const availableTroopers = troopers.filter(
+    (trooper) => !deployedIds.has(trooper.id),
+  );
   const isElite = isEliteDeployed(result);
   const captain = findCaptain(company);
   const hasCaptain = captain ? deployedIds.has(captain.id) : true;
@@ -373,18 +580,20 @@ function DeploymentStep({
           objective: "",
           tag: "",
           alive: false,
-          injury: ""
-        }
+          injury: "",
+        },
       ],
-      submitted: false
+      submitted: false,
     });
   }
 
   function removeTrooper(trooperId: string) {
     onChange({
       ...result,
-      troopers: result.troopers.filter((trooper) => trooper.trooper !== trooperId),
-      submitted: false
+      troopers: result.troopers.filter(
+        (trooper) => trooper.trooper !== trooperId,
+      ),
+      submitted: false,
     });
   }
 
@@ -395,8 +604,16 @@ function DeploymentStep({
         <h2>Available Troopers</h2>
         <div className="pairing-trooper-list">
           {availableTroopers.map((trooper) => (
-            <button className="pairing-trooper-row" type="button" key={trooper.id} onClick={() => addTrooper(trooper)} disabled={result.troopers.length >= 6}>
-              {getTrooperLogo(trooper) && <img src={getTrooperLogo(trooper)} alt="" aria-hidden="true" />}
+            <button
+              className="pairing-trooper-row"
+              type="button"
+              key={trooper.id}
+              onClick={() => addTrooper(trooper)}
+              disabled={result.troopers.length >= 6}
+            >
+              {getTrooperLogo(trooper) && (
+                <img src={getTrooperLogo(trooper)} alt="" aria-hidden="true" />
+              )}
               <span>
                 <strong>{getTrooperName(trooper)}</strong>
                 <small>{getTrooperSubtitle(trooper)}</small>
@@ -404,18 +621,28 @@ function DeploymentStep({
               <AppIcon name="add" size={17} />
             </button>
           ))}
-          {availableTroopers.length === 0 && <p className="empty-note">No available troopers remain.</p>}
+          {availableTroopers.length === 0 && (
+            <p className="empty-note">No available troopers remain.</p>
+          )}
         </div>
       </article>
 
       <article className="pairing-panel">
         <span className="panel-kicker">Deployment</span>
         <h2>
-          Deployed Troopers <small>{isElite ? "Elite Deployed" : result.troopers.length === 6 ? "Max Deployment" : ""}</small>
+          Deployed Troopers{" "}
+          <small>
+            {isElite
+              ? "Elite Deployed"
+              : result.troopers.length === 6
+                ? "Max Deployment"
+                : ""}
+          </small>
         </h2>
         {!hasCaptain && (
           <p className="legacy-specops-note">
-            The Captain must be included in the deployed company for this Contract.
+            The Captain must be included in the deployed company for this
+            Contract.
           </p>
         )}
         <div className="pairing-trooper-list">
@@ -423,21 +650,39 @@ function DeploymentStep({
             const trooper = findTrooper(company, entry.trooper);
             return (
               <div className="pairing-trooper-row" key={entry.trooper}>
-                {getTrooperLogo(trooper) && <img src={getTrooperLogo(trooper)} alt="" aria-hidden="true" />}
+                {getTrooperLogo(trooper) && (
+                  <img
+                    src={getTrooperLogo(trooper)}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                )}
                 <span>
                   <strong>{getTrooperName(trooper)}</strong>
                   <small>{getTrooperSubtitle(trooper)}</small>
                 </span>
-                <button className="icon-button" type="button" onClick={() => removeTrooper(entry.trooper)} aria-label={`Remove ${getTrooperName(trooper)}`}>
+                <button
+                  className="icon-button"
+                  type="button"
+                  onClick={() => removeTrooper(entry.trooper)}
+                  aria-label={`Remove ${getTrooperName(trooper)}`}
+                >
                   <AppIcon name="remove" size={17} />
                 </button>
               </div>
             );
           })}
-          {result.troopers.length === 0 && <p className="empty-note">No troopers deployed yet.</p>}
+          {result.troopers.length === 0 && (
+            <p className="empty-note">No troopers deployed yet.</p>
+          )}
         </div>
         <div className="pairing-step-actions">
-          <button className="command-button command-button--primary" type="button" onClick={onNext} disabled={result.troopers.length === 0 || !hasCaptain}>
+          <button
+            className="command-button command-button--primary"
+            type="button"
+            onClick={onNext}
+            disabled={result.troopers.length === 0 || !hasCaptain}
+          >
             {nextLabel || "Continue to Mission"}
           </button>
         </div>
@@ -472,30 +717,50 @@ function InducementsStep({
   onNext: () => void;
 }) {
   const activeRenown = calculateDeployedRenown(company, result);
-  const opposingRenown = calculateDeployedRenown(opposingCompany, opposingResult);
+  const opposingRenown = calculateDeployedRenown(
+    opposingCompany,
+    opposingResult,
+  );
   const inducementBudget = calculateInducements(activeRenown, opposingRenown);
-  const deployedTroopers = result.troopers.map((entry) => findTrooper(company, entry.trooper)).filter(Boolean);
-  const opposingDeployed = opposingResult.troopers.map((entry) => findTrooper(opposingCompany, entry.trooper)).filter(Boolean);
-  const bothDeployed = result.troopers.length > 0 && opposingResult.troopers.length > 0;
-  const spent = selections.reduce((total, selection) => total + Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0), 0);
+  const deployedTroopers = result.troopers
+    .map((entry) => findTrooper(company, entry.trooper))
+    .filter(Boolean);
+  const opposingDeployed = opposingResult.troopers
+    .map((entry) => findTrooper(opposingCompany, entry.trooper))
+    .filter(Boolean);
+  const bothDeployed =
+    result.troopers.length > 0 && opposingResult.troopers.length > 0;
+  const spent = selections.reduce(
+    (total, selection) =>
+      total +
+      Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0),
+    0,
+  );
   const remaining = inducementBudget - spent;
-  const countByOption = selections.reduce<Record<string, number>>((acc, selection) => {
-    acc[selection.optionId] = (acc[selection.optionId] || 0) + 1;
-    return acc;
-  }, {});
+  const countByOption = selections.reduce<Record<string, number>>(
+    (acc, selection) => {
+      acc[selection.optionId] = (acc[selection.optionId] || 0) + 1;
+      return acc;
+    },
+    {},
+  );
 
   function canChooseOption(optionId: string, selectionId: string): boolean {
     const option = INDUCEMENT_OPTION_BY_ID.get(optionId);
     if (!option?.maxCount) return true;
     const currentCount = countByOption[optionId] || 0;
-    const currentSelection = selections.find((entry) => entry.id === selectionId);
+    const currentSelection = selections.find(
+      (entry) => entry.id === selectionId,
+    );
     if (currentSelection?.optionId === optionId) return true;
     return currentCount < option.maxCount;
   }
 
   function addSelection() {
     if (deployedTroopers.length === 0) return;
-    const defaultOption = INDUCEMENT_OPTIONS.find((option) => canChooseOption(option.id, ""));
+    const defaultOption = INDUCEMENT_OPTIONS.find((option) =>
+      canChooseOption(option.id, ""),
+    );
     if (!defaultOption) return;
 
     onChangeSelections([
@@ -508,18 +773,21 @@ function InducementsStep({
     ]);
   }
 
-  function updateSelection(selectionId: string, patch: Partial<PairingInducementSelection>) {
+  function updateSelection(
+    selectionId: string,
+    patch: Partial<PairingInducementSelection>,
+  ) {
     onChangeSelections(
       selections.map((selection) =>
-        selection.id === selectionId
-          ? { ...selection, ...patch }
-          : selection,
+        selection.id === selectionId ? { ...selection, ...patch } : selection,
       ),
     );
   }
 
   function removeSelection(selectionId: string) {
-    onChangeSelections(selections.filter((selection) => selection.id !== selectionId));
+    onChangeSelections(
+      selections.filter((selection) => selection.id !== selectionId),
+    );
   }
 
   return (
@@ -530,7 +798,12 @@ function InducementsStep({
           <h2>Contract Benefits Shop</h2>
         </div>
         <div className="pairing-step-actions pairing-step-actions--flush">
-          <button className="command-button" type="button" onClick={onRefresh} disabled={refreshing || saving}>
+          <button
+            className="command-button"
+            type="button"
+            onClick={onRefresh}
+            disabled={refreshing || saving}
+          >
             {refreshing ? "Refreshing..." : "Refresh Opponent Deployment"}
           </button>
         </div>
@@ -545,7 +818,10 @@ function InducementsStep({
         <article>
           <span>Opponent Deployed Renown</span>
           <strong>{opposingRenown}</strong>
-          <p>Refresh until your opponent deployment appears from their event file.</p>
+          <p>
+            Refresh until your opponent deployment appears from their event
+            file.
+          </p>
         </article>
         <article>
           <span>Inducements Available</span>
@@ -556,7 +832,9 @@ function InducementsStep({
 
       {!bothDeployed && (
         <div className="legacy-specops-note">
-          Waiting for both players to save deployment to their company event files. Once both deployments are present, inducement options will appear.
+          Waiting for both players to save deployment to their company event
+          files. Once both deployments are present, inducement options will
+          appear.
         </div>
       )}
 
@@ -566,9 +844,16 @@ function InducementsStep({
             <div className="event-mini-stats">
               <span>Budget: {inducementBudget}</span>
               <span>Spent: {spent}</span>
-              <span className={remaining < 0 ? "is-over-budget" : ""}>Remaining: {remaining}</span>
+              <span className={remaining < 0 ? "is-over-budget" : ""}>
+                Remaining: {remaining}
+              </span>
             </div>
-            <button className="command-button command-button--small" type="button" onClick={addSelection} disabled={deployedTroopers.length === 0}>
+            <button
+              className="command-button command-button--small"
+              type="button"
+              onClick={addSelection}
+              disabled={deployedTroopers.length === 0}
+            >
               Add Inducement
             </button>
           </div>
@@ -587,7 +872,11 @@ function InducementsStep({
                     }}
                   >
                     {INDUCEMENT_OPTIONS.map((option) => (
-                      <option value={option.id} key={option.id} disabled={!canChooseOption(option.id, selection.id)}>
+                      <option
+                        value={option.id}
+                        key={option.id}
+                        disabled={!canChooseOption(option.id, selection.id)}
+                      >
                         {option.label} ({option.cost} Ind)
                       </option>
                     ))}
@@ -595,18 +884,37 @@ function InducementsStep({
                 </label>
                 <label className="field">
                   <span>Assigned Trooper</span>
-                  <select value={selection.trooperId} onChange={(event) => updateSelection(selection.id, { trooperId: event.target.value })}>
+                  <select
+                    value={selection.trooperId}
+                    onChange={(event) =>
+                      updateSelection(selection.id, {
+                        trooperId: event.target.value,
+                      })
+                    }
+                  >
                     {deployedTroopers.map((trooper) => (
-                      <option value={String(trooper?.id || "")} key={String(trooper?.id || "")}>{getTrooperName(trooper)}</option>
+                      <option
+                        value={String(trooper?.id || "")}
+                        key={String(trooper?.id || "")}
+                      >
+                        {getTrooperName(trooper)}
+                      </option>
                     ))}
                   </select>
                 </label>
-                <button className="icon-button" type="button" onClick={() => removeSelection(selection.id)} aria-label="Remove inducement">
+                <button
+                  className="icon-button"
+                  type="button"
+                  onClick={() => removeSelection(selection.id)}
+                  aria-label="Remove inducement"
+                >
                   <AppIcon name="remove" size={17} />
                 </button>
               </div>
             ))}
-            {selections.length === 0 && <p className="empty-note">No inducements selected.</p>}
+            {selections.length === 0 && (
+              <p className="empty-note">No inducements selected.</p>
+            )}
           </div>
 
           <div className="pairing-force-grid">
@@ -616,12 +924,25 @@ function InducementsStep({
               <ul>
                 {result.troopers.map((entry) => {
                   const trooper = findTrooper(company, entry.trooper);
-                  const assigned = selections.filter((selection) => selection.trooperId === entry.trooper).map((selection) => INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label || "Unknown");
+                  const assigned = selections
+                    .filter(
+                      (selection) => selection.trooperId === entry.trooper,
+                    )
+                    .map(
+                      (selection) =>
+                        INDUCEMENT_OPTION_BY_ID.get(selection.optionId)
+                          ?.label || "Unknown",
+                    );
                   return (
-                    <li key={entry.trooper} className="pairing-force-item-with-note">
+                    <li
+                      key={entry.trooper}
+                      className="pairing-force-item-with-note"
+                    >
                       <div>
                         <strong>{getTrooperName(trooper)}</strong>
-                        {assigned.length > 0 && <small>{assigned.join(" | ")}</small>}
+                        {assigned.length > 0 && (
+                          <small>{assigned.join(" | ")}</small>
+                        )}
                       </div>
                       <span>{getTrooperPoints(trooper)} RN</span>
                     </li>
@@ -635,9 +956,16 @@ function InducementsStep({
               <ul>
                 {opposingResult.troopers.map((entry) => {
                   const trooper = findTrooper(opposingCompany, entry.trooper);
-                  return <li key={entry.trooper}>{getTrooperName(trooper)} <span>{getTrooperPoints(trooper)} RN</span></li>;
+                  return (
+                    <li key={entry.trooper}>
+                      {getTrooperName(trooper)}{" "}
+                      <span>{getTrooperPoints(trooper)} RN</span>
+                    </li>
+                  );
                 })}
-                {opposingDeployed.length === 0 && <li>No opposing deployment saved yet.</li>}
+                {opposingDeployed.length === 0 && (
+                  <li>No opposing deployment saved yet.</li>
+                )}
               </ul>
             </article>
           </div>
@@ -645,8 +973,15 @@ function InducementsStep({
       )}
 
       <div className="pairing-step-actions">
-        <button className="command-button" type="button" onClick={onBack}>Back</button>
-        <button className="command-button command-button--primary" type="button" onClick={onNext} disabled={!bothDeployed || remaining < 0}>
+        <button className="command-button" type="button" onClick={onBack}>
+          Back
+        </button>
+        <button
+          className="command-button command-button--primary"
+          type="button"
+          onClick={onNext}
+          disabled={!bothDeployed || remaining < 0}
+        >
           Continue to Mission
         </button>
       </div>
@@ -663,7 +998,7 @@ function MissionStep({
   roundNumber,
   onChange,
   onBack,
-  onNext
+  onNext,
 }: {
   company: LocalCompany | null;
   opposingCompany: LocalCompany | null;
@@ -677,23 +1012,33 @@ function MissionStep({
 }) {
   const eliteDeployed = isEliteDeployed(result);
   const deployedRenown = calculateDeployedRenown(company, result);
-  const opposingRenown = calculateDeployedRenown(opposingCompany, opposingResult);
+  const opposingRenown = calculateDeployedRenown(
+    opposingCompany,
+    opposingResult,
+  );
   const inducements = calculateInducements(deployedRenown, opposingRenown);
-  const selections = Array.isArray(inducementSelections) ? inducementSelections : [];
+  const selections = Array.isArray(inducementSelections)
+    ? inducementSelections
+    : [];
 
   function updateTrooper(index: number, patch: Partial<TrooperMissionResult>) {
     onChange({
       ...result,
-      troopers: result.troopers.map((trooper, currentIndex) => (currentIndex === index ? { ...trooper, ...patch } : trooper)),
-      submitted: false
+      troopers: result.troopers.map((trooper, currentIndex) =>
+        currentIndex === index ? { ...trooper, ...patch } : trooper,
+      ),
+      submitted: false,
     });
   }
 
   function setMvp(trooperId: string) {
     onChange({
       ...result,
-      troopers: result.troopers.map((trooper) => ({ ...trooper, mvp: trooper.trooper === trooperId })),
-      submitted: false
+      troopers: result.troopers.map((trooper) => ({
+        ...trooper,
+        mvp: trooper.trooper === trooperId,
+      })),
+      submitted: false,
     });
   }
 
@@ -707,10 +1052,31 @@ function MissionStep({
         <div className="pairing-score-controls">
           <label className="field">
             <span>Objective Points</span>
-            <input type="number" min="0" value={result.op} onChange={(event) => onChange({ ...result, op: Number(event.target.value) || 0, submitted: false })} />
+            <input
+              type="number"
+              min="0"
+              value={result.op}
+              onChange={(event) =>
+                onChange({
+                  ...result,
+                  op: Number(event.target.value) || 0,
+                  submitted: false,
+                })
+              }
+            />
           </label>
           <label className="pairing-check">
-            <input type="checkbox" checked={result.won} onChange={(event) => onChange({ ...result, won: event.target.checked, submitted: false })} />
+            <input
+              type="checkbox"
+              checked={result.won}
+              onChange={(event) =>
+                onChange({
+                  ...result,
+                  won: event.target.checked,
+                  submitted: false,
+                })
+              }
+            />
             <span>Victory</span>
           </label>
         </div>
@@ -720,17 +1086,25 @@ function MissionStep({
         <article>
           <span>Deployment XP</span>
           <strong>+{roundNumber}</strong>
-          <p>Every deployed trooper gains XP equal to the current round number.</p>
+          <p>
+            Every deployed trooper gains XP equal to the current round number.
+          </p>
         </article>
         <article>
           <span>Elite Deployment</span>
           <strong>{eliteDeployed ? "+3 XP" : "Inactive"}</strong>
-          <p>Deploying the Captain and no more than 3 additional troopers grants Elite Deployment XP.</p>
+          <p>
+            Deploying the Captain and no more than 3 additional troopers grants
+            Elite Deployment XP.
+          </p>
         </article>
         <article>
           <span>Inducements</span>
           <strong>{inducements}</strong>
-          <p>{deployedRenown} vs {opposingRenown} deployed Renown, using half the difference rounded down to 5.</p>
+          <p>
+            {deployedRenown} vs {opposingRenown} deployed Renown, using half the
+            difference rounded down to 5.
+          </p>
         </article>
       </div>
 
@@ -754,28 +1128,50 @@ function MissionStep({
               const trooper = findTrooper(company, entry.trooper);
               const assignedInducements = selections
                 .filter((selection) => selection.trooperId === entry.trooper)
-                .map((selection) => INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label || "Unknown Benefit");
+                .map(
+                  (selection) =>
+                    INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
+                    "Unknown Benefit",
+                );
               return (
                 <tr key={entry.trooper}>
                   <td>
                     <div className="pairing-table-trooper">
-                      {getTrooperLogo(trooper) && <img src={getTrooperLogo(trooper)} alt="" aria-hidden="true" />}
+                      {getTrooperLogo(trooper) && (
+                        <img
+                          src={getTrooperLogo(trooper)}
+                          alt=""
+                          aria-hidden="true"
+                        />
+                      )}
                       <span>
                         {getTrooperName(trooper)}
                         {assignedInducements.length > 0 && (
-                          <small className="pairing-inducement-inline">+ {assignedInducements.join(" | ")}</small>
+                          <small className="pairing-inducement-inline">
+                            + {assignedInducements.join(" | ")}
+                          </small>
                         )}
                       </span>
                     </div>
                   </td>
-                  <td className="numeric">{calculateTrooperXp(entry, roundNumber, eliteDeployed)}</td>
+                  <td className="numeric">
+                    {calculateTrooperXp(entry, roundNumber, eliteDeployed)}
+                  </td>
                   <td>
                     <input
                       type="number"
                       min="0"
                       max="2"
                       value={entry.aidCount ?? (entry.aid ? 1 : 0)}
-                      onChange={(event) => updateTrooper(index, { aidCount: Math.min(Number(event.target.value) || 0, 2), aid: Number(event.target.value) > 0 })}
+                      onChange={(event) =>
+                        updateTrooper(index, {
+                          aidCount: Math.min(
+                            Number(event.target.value) || 0,
+                            2,
+                          ),
+                          aid: Number(event.target.value) > 0,
+                        })
+                      }
                     />
                   </td>
                   <td>
@@ -784,31 +1180,79 @@ function MissionStep({
                       min="0"
                       max="3"
                       value={entry.stateCount ?? (entry.state ? 1 : 0)}
-                      onChange={(event) => updateTrooper(index, { stateCount: Math.min(Number(event.target.value) || 0, 3), state: Number(event.target.value) > 0 })}
+                      onChange={(event) =>
+                        updateTrooper(index, {
+                          stateCount: Math.min(
+                            Number(event.target.value) || 0,
+                            3,
+                          ),
+                          state: Number(event.target.value) > 0,
+                        })
+                      }
                     />
                   </td>
                   <td>
-                    <select value={entry.objective || ""} onChange={(event) => updateTrooper(index, { objective: event.target.value as TrooperMissionResult["objective"] })}>
+                    <select
+                      value={entry.objective || ""}
+                      onChange={(event) =>
+                        updateTrooper(index, {
+                          objective: event.target
+                            .value as TrooperMissionResult["objective"],
+                        })
+                      }
+                    >
                       <option value="">None</option>
                       <option value="attempt">Attempt</option>
                       <option value="success">Success</option>
                     </select>
                   </td>
                   <td>
-                    <select value={entry.tag || ""} onChange={(event) => updateTrooper(index, { tag: event.target.value as TrooperMissionResult["tag"] })}>
+                    <select
+                      value={entry.tag || ""}
+                      onChange={(event) =>
+                        updateTrooper(index, {
+                          tag: event.target
+                            .value as TrooperMissionResult["tag"],
+                        })
+                      }
+                    >
                       <option value="">None</option>
                       <option value="scan">Scan</option>
                       <option value="fo-scan">FO Scan</option>
                       <option value="tag">Tag and Bag</option>
                     </select>
                   </td>
-                  <td><input type="checkbox" checked={Boolean(entry.alive)} onChange={(event) => updateTrooper(index, { alive: event.target.checked })} /></td>
                   <td>
-                    <select value={entry.injury || ""} onChange={(event) => updateTrooper(index, { injury: event.target.value })}>
-                      {INJURY_OPTIONS.map((option) => <option value={option} key={option}>{option || "None"}</option>)}
+                    <input
+                      type="checkbox"
+                      checked={Boolean(entry.alive)}
+                      onChange={(event) =>
+                        updateTrooper(index, { alive: event.target.checked })
+                      }
+                    />
+                  </td>
+                  <td>
+                    <select
+                      value={entry.injury || ""}
+                      onChange={(event) =>
+                        updateTrooper(index, { injury: event.target.value })
+                      }
+                    >
+                      {INJURY_OPTIONS.map((option) => (
+                        <option value={option} key={option}>
+                          {option || "None"}
+                        </option>
+                      ))}
                     </select>
                   </td>
-                  <td><input type="radio" name="pairing-mvp" checked={Boolean(entry.mvp)} onChange={() => setMvp(entry.trooper)} /></td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="pairing-mvp"
+                      checked={Boolean(entry.mvp)}
+                      onChange={() => setMvp(entry.trooper)}
+                    />
+                  </td>
                 </tr>
               );
             })}
@@ -825,12 +1269,21 @@ function MissionStep({
               const trooper = findTrooper(company, entry.trooper);
               const assignedInducements = selections
                 .filter((selection) => selection.trooperId === entry.trooper)
-                .map((selection) => INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label || "Unknown Benefit");
+                .map(
+                  (selection) =>
+                    INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
+                    "Unknown Benefit",
+                );
               return (
-                <li key={entry.trooper} className="pairing-force-item-with-note">
+                <li
+                  key={entry.trooper}
+                  className="pairing-force-item-with-note"
+                >
                   <div>
                     <strong>{getTrooperName(trooper)}</strong>
-                    {assignedInducements.length > 0 && <small>{assignedInducements.join(" | ")}</small>}
+                    {assignedInducements.length > 0 && (
+                      <small>{assignedInducements.join(" | ")}</small>
+                    )}
                   </div>
                   <span>{getTrooperPoints(trooper)} RN</span>
                 </li>
@@ -844,9 +1297,16 @@ function MissionStep({
           <ul>
             {opposingResult.troopers.map((entry) => {
               const trooper = findTrooper(opposingCompany, entry.trooper);
-              return <li key={entry.trooper}>{getTrooperName(trooper)} <span>{getTrooperPoints(trooper)} RN</span></li>;
+              return (
+                <li key={entry.trooper}>
+                  {getTrooperName(trooper)}{" "}
+                  <span>{getTrooperPoints(trooper)} RN</span>
+                </li>
+              );
             })}
-            {opposingResult.troopers.length === 0 && <li>No opposing deployment saved yet.</li>}
+            {opposingResult.troopers.length === 0 && (
+              <li>No opposing deployment saved yet.</li>
+            )}
           </ul>
         </article>
       </div>
@@ -854,27 +1314,71 @@ function MissionStep({
       <div className="pairing-downtime-grid">
         <label className="field">
           <span>Downtime Event</span>
-          <select value={result.downtime.event} onChange={(event) => onChange({ ...result, downtime: { ...result.downtime, event: event.target.value }, submitted: false })}>
-            {DOWNTIME_EVENTS.map((option) => <option value={option} key={option}>{option || "None"}</option>)}
+          <select
+            value={result.downtime.event}
+            onChange={(event) =>
+              onChange({
+                ...result,
+                downtime: { ...result.downtime, event: event.target.value },
+                submitted: false,
+              })
+            }
+          >
+            {DOWNTIME_EVENTS.map((option) => (
+              <option value={option} key={option}>
+                {option || "None"}
+              </option>
+            ))}
           </select>
         </label>
         <label className="field">
           <span>Downtime Result</span>
-          <select value={result.downtime.result} onChange={(event) => onChange({ ...result, downtime: { ...result.downtime, result: event.target.value }, submitted: false })}>
-            {DOWNTIME_RESULTS.map((option) => <option value={option} key={option}>{option || "Not rolled"}</option>)}
+          <select
+            value={result.downtime.result}
+            onChange={(event) =>
+              onChange({
+                ...result,
+                downtime: { ...result.downtime, result: event.target.value },
+                submitted: false,
+              })
+            }
+          >
+            {DOWNTIME_RESULTS.map((option) => (
+              <option value={option} key={option}>
+                {option || "Not rolled"}
+              </option>
+            ))}
           </select>
         </label>
       </div>
 
       <div className="pairing-step-actions">
-        <button className="command-button" type="button" onClick={onBack}>Back</button>
-        <button className="command-button command-button--primary" type="button" onClick={onNext}>Review Results</button>
+        <button className="command-button" type="button" onClick={onBack}>
+          Back
+        </button>
+        <button
+          className="command-button command-button--primary"
+          type="button"
+          onClick={onNext}
+        >
+          Review Results
+        </button>
       </div>
     </section>
   );
 }
 
-function SummaryCard({ title, company, result, roundNumber }: { title: string; company: LocalCompany | null; result: PairingResult; roundNumber: number }) {
+function SummaryCard({
+  title,
+  company,
+  result,
+  roundNumber,
+}: {
+  title: string;
+  company: LocalCompany | null;
+  result: PairingResult;
+  roundNumber: number;
+}) {
   const eliteDeployed = isEliteDeployed(result);
 
   return (
@@ -893,12 +1397,17 @@ function SummaryCard({ title, company, result, roundNumber }: { title: string; c
           return (
             <div key={entry.trooper}>
               <strong>{getTrooperName(trooper)}</strong>
-              <span>{calculateTrooperXp(entry, roundNumber, eliteDeployed)} XP</span>
+              <span>
+                {calculateTrooperXp(entry, roundNumber, eliteDeployed)} XP
+              </span>
             </div>
           );
         })}
       </div>
-      <p>Downtime: {result.downtime.event || "None"} {result.downtime.result ? `(${result.downtime.result})` : ""}</p>
+      <p>
+        Downtime: {result.downtime.event || "None"}{" "}
+        {result.downtime.result ? `(${result.downtime.result})` : ""}
+      </p>
     </article>
   );
 }
@@ -939,27 +1448,37 @@ function SharedPairingWorkspace({
   const [activeSide, setActiveSide] = useState<"A" | "B">("A");
   const [step, setStep] = useState(0);
   const pairingKey = `${fileId}:${roundId}:${pairingId}`;
-  const [players, setPlayers] = useState<Array<{
-    side: "A" | "B";
-    companyFileId: string;
-    companyName: string;
-    companyShareLink: string;
-    companyEventFileId?: string;
-    companyEventShareLink?: string;
-    companyEventData?: any;
-    ownsThisCompany: boolean;
-    companyPayload?: SharedCompanyFilePayload;
-  }>>([]);
-  const [resultsBySide, setResultsBySide] = useState<Record<"A" | "B", PairingResult>>({
+  const [players, setPlayers] = useState<
+    Array<{
+      side: "A" | "B";
+      companyFileId: string;
+      companyName: string;
+      companyShareLink: string;
+      companyEventFileId?: string;
+      companyEventShareLink?: string;
+      companyEventData?: any;
+      ownsThisCompany: boolean;
+      companyPayload?: SharedCompanyFilePayload;
+    }>
+  >([]);
+  const [resultsBySide, setResultsBySide] = useState<
+    Record<"A" | "B", PairingResult>
+  >({
     A: defaultResult(pairing.player1FileId),
     B: defaultResult(pairing.player2FileId),
   });
-  const [inducementsBySide, setInducementsBySide] = useState<Record<"A" | "B", PairingInducements>>({
+  const [inducementsBySide, setInducementsBySide] = useState<
+    Record<"A" | "B", PairingInducements>
+  >({
     A: defaultInducements(),
     B: defaultInducements(),
   });
 
-  function payloadToLocalCompany(payload: SharedCompanyFilePayload, fallbackName: string, fallbackId: string): LocalCompany {
+  function payloadToLocalCompany(
+    payload: SharedCompanyFilePayload,
+    fallbackName: string,
+    fallbackId: string,
+  ): LocalCompany {
     const company = payload?.company || {};
     return {
       id: String(company?.id || fallbackId),
@@ -975,7 +1494,9 @@ function SharedPairingWorkspace({
       inventory: Array.isArray(company?.inventory) ? company.inventory : [],
       createdAt: String(company?.createdAt || new Date().toISOString()),
       updatedAt: String(company?.updatedAt || new Date().toISOString()),
-      description: company?.description ? String(company.description) : undefined,
+      description: company?.description
+        ? String(company.description)
+        : undefined,
       shareFileId: fallbackId,
       shareLink: `${window.location.origin}/view?id=${encodeURIComponent(fallbackId)}`,
     };
@@ -1014,7 +1535,9 @@ function SharedPairingWorkspace({
       return defaultInducements();
     }
 
-    const rawSelections = Array.isArray(stored.selections) ? stored.selections : [];
+    const rawSelections = Array.isArray(stored.selections)
+      ? stored.selections
+      : [];
     return {
       selections: rawSelections
         .map((entry: any, index: number) => ({
@@ -1027,109 +1550,154 @@ function SharedPairingWorkspace({
     };
   }
 
-  const refreshSharedData = useCallback(async (showLoading: boolean) => {
-    if (showLoading) {
-      setLoadingData(true);
-    } else {
-      setRefreshing(true);
-    }
-    setLoadError(null);
+  const refreshSharedData = useCallback(
+    async (showLoading: boolean) => {
+      if (showLoading) {
+        setLoadingData(true);
+      } else {
+        setRefreshing(true);
+      }
+      setLoadError(null);
 
-    try {
-      const [companyA, companyB] = await Promise.all([
-        readSharedFile(pairing.player1FileId),
-        readSharedFile(pairing.player2FileId),
-      ]);
+      try {
+        const [companyA, companyB] = await Promise.all([
+          readSharedFile(pairing.player1FileId),
+          readSharedFile(pairing.player2FileId),
+        ]);
 
-      const normalized = [
-        {
-          side: "A" as const,
-          companyFileId: pairing.player1FileId,
-          companyName: String((companyA as SharedCompanyFilePayload)?.company?.name || pairing.player1Name),
-          companyShareLink: `${window.location.origin}/view?id=${encodeURIComponent(pairing.player1FileId)}`,
-          ...((ref) => ({ companyEventFileId: ref.fileId, companyEventShareLink: ref.shareLink }))(getCompanyEventFileRef(companyA as SharedCompanyFilePayload)),
-          ownsThisCompany: ownedSharedCompanyFileIds.has(pairing.player1FileId),
-          companyPayload: companyA as SharedCompanyFilePayload,
-        },
-        {
-          side: "B" as const,
-          companyFileId: pairing.player2FileId,
-          companyName: String((companyB as SharedCompanyFilePayload)?.company?.name || pairing.player2Name),
-          companyShareLink: `${window.location.origin}/view?id=${encodeURIComponent(pairing.player2FileId)}`,
-          ...((ref) => ({ companyEventFileId: ref.fileId, companyEventShareLink: ref.shareLink }))(getCompanyEventFileRef(companyB as SharedCompanyFilePayload)),
-          ownsThisCompany: ownedSharedCompanyFileIds.has(pairing.player2FileId),
-          companyPayload: companyB as SharedCompanyFilePayload,
-        },
-      ].map((player) => {
-        if (player.companyEventFileId) return player;
-        const fallback = registeredCompanies?.[player.companyFileId];
-        if (!fallback?.companyEventFileId) return player;
-        return {
-          ...player,
-          companyEventFileId: fallback.companyEventFileId,
-          companyEventShareLink: fallback.companyEventShareLink
-            || `${window.location.origin}/view?id=${encodeURIComponent(fallback.companyEventFileId)}`,
-        };
-      });
+        const normalized = [
+          {
+            side: "A" as const,
+            companyFileId: pairing.player1FileId,
+            companyName: String(
+              (companyA as SharedCompanyFilePayload)?.company?.name ||
+                pairing.player1Name,
+            ),
+            companyShareLink: `${window.location.origin}/view?id=${encodeURIComponent(pairing.player1FileId)}`,
+            ...((ref) => ({
+              companyEventFileId: ref.fileId,
+              companyEventShareLink: ref.shareLink,
+            }))(getCompanyEventFileRef(companyA as SharedCompanyFilePayload)),
+            ownsThisCompany: ownedSharedCompanyFileIds.has(
+              pairing.player1FileId,
+            ),
+            companyPayload: companyA as SharedCompanyFilePayload,
+          },
+          {
+            side: "B" as const,
+            companyFileId: pairing.player2FileId,
+            companyName: String(
+              (companyB as SharedCompanyFilePayload)?.company?.name ||
+                pairing.player2Name,
+            ),
+            companyShareLink: `${window.location.origin}/view?id=${encodeURIComponent(pairing.player2FileId)}`,
+            ...((ref) => ({
+              companyEventFileId: ref.fileId,
+              companyEventShareLink: ref.shareLink,
+            }))(getCompanyEventFileRef(companyB as SharedCompanyFilePayload)),
+            ownsThisCompany: ownedSharedCompanyFileIds.has(
+              pairing.player2FileId,
+            ),
+            companyPayload: companyB as SharedCompanyFilePayload,
+          },
+        ].map((player) => {
+          if (player.companyEventFileId) return player;
+          const fallback = registeredCompanies?.[player.companyFileId];
+          if (!fallback?.companyEventFileId) return player;
+          return {
+            ...player,
+            companyEventFileId: fallback.companyEventFileId,
+            companyEventShareLink:
+              fallback.companyEventShareLink ||
+              `${window.location.origin}/view?id=${encodeURIComponent(fallback.companyEventFileId)}`,
+          };
+        });
 
-      const healed = await Promise.all(
-        normalized.map(async (player) => {
-          if (!player.ownsThisCompany || player.companyEventFileId) return player;
+        const healed = await Promise.all(
+          normalized.map(async (player) => {
+            if (!player.ownsThisCompany || player.companyEventFileId)
+              return player;
 
-          try {
-            const created = await ensureCompanyEventFileForOwnedCompany({
-              companyFileId: player.companyFileId,
-              companyPayload: player.companyPayload,
-              companyName: player.companyName,
-              eventFileId: fileId,
-              eventName,
-            });
-            return {
-              ...player,
-              companyEventFileId: created.fileId,
-              companyEventShareLink: created.shareLink,
-            };
-          } catch {
-            return player;
-          }
-        }),
-      );
+            try {
+              const created = await ensureCompanyEventFileForOwnedCompany({
+                companyFileId: player.companyFileId,
+                companyPayload: player.companyPayload,
+                companyName: player.companyName,
+                eventFileId: fileId,
+                eventName,
+              });
+              return {
+                ...player,
+                companyEventFileId: created.fileId,
+                companyEventShareLink: created.shareLink,
+              };
+            } catch {
+              return player;
+            }
+          }),
+        );
 
-      const withEventData = await Promise.all(
-        healed.map(async (player) => {
-          if (!player.companyEventFileId) return player;
-          try {
-            const companyEventData = await readSharedFile(player.companyEventFileId);
-            return { ...player, companyEventData };
-          } catch {
-            return player;
-          }
-        }),
-      );
+        const withEventData = await Promise.all(
+          healed.map(async (player) => {
+            if (!player.companyEventFileId) return player;
+            try {
+              const companyEventData = await readSharedFile(
+                player.companyEventFileId,
+              );
+              return { ...player, companyEventData };
+            } catch {
+              return player;
+            }
+          }),
+        );
 
-      setPlayers(withEventData);
-      const ownedDefault = withEventData.find((player) => player.ownsThisCompany);
-      setActiveSide((current) => {
-        if (withEventData.some((player) => player.side === current && player.ownsThisCompany)) return current;
-        return ownedDefault?.side || "A";
-      });
-      const sideA = withEventData.find((player) => player.side === "A");
-      const sideB = withEventData.find((player) => player.side === "B");
-      setResultsBySide({
-        A: sideA ? readSideResult(sideA) : defaultResult(pairing.player1FileId),
-        B: sideB ? readSideResult(sideB) : defaultResult(pairing.player2FileId),
-      });
-      setInducementsBySide({
-        A: sideA ? readSideInducements(sideA) : defaultInducements(),
-        B: sideB ? readSideInducements(sideB) : defaultInducements(),
-      });
-    } catch (error) {
-      setLoadError(error instanceof Error ? error.message : "Unknown error");
-    } finally {
-      if (showLoading) setLoadingData(false);
-      else setRefreshing(false);
-    }
-  }, [eventName, fileId, ownedSharedCompanyFileIds, pairing.player1FileId, pairing.player1Name, pairing.player2FileId, pairing.player2Name, pairingId, registeredCompanies, roundId]);
+        setPlayers(withEventData);
+        const ownedDefault = withEventData.find(
+          (player) => player.ownsThisCompany,
+        );
+        setActiveSide((current) => {
+          if (
+            withEventData.some(
+              (player) => player.side === current && player.ownsThisCompany,
+            )
+          )
+            return current;
+          return ownedDefault?.side || "A";
+        });
+        const sideA = withEventData.find((player) => player.side === "A");
+        const sideB = withEventData.find((player) => player.side === "B");
+        setResultsBySide({
+          A: sideA
+            ? readSideResult(sideA)
+            : defaultResult(pairing.player1FileId),
+          B: sideB
+            ? readSideResult(sideB)
+            : defaultResult(pairing.player2FileId),
+        });
+        setInducementsBySide({
+          A: sideA ? readSideInducements(sideA) : defaultInducements(),
+          B: sideB ? readSideInducements(sideB) : defaultInducements(),
+        });
+      } catch (error) {
+        setLoadError(error instanceof Error ? error.message : "Unknown error");
+      } finally {
+        if (showLoading) setLoadingData(false);
+        else setRefreshing(false);
+      }
+    },
+    [
+      eventName,
+      fileId,
+      ownedSharedCompanyFileIds,
+      pairing.player1FileId,
+      pairing.player1Name,
+      pairing.player2FileId,
+      pairing.player2Name,
+      pairingId,
+      registeredCompanies,
+      roundId,
+    ],
+  );
 
   useEffect(() => {
     let alive = true;
@@ -1147,14 +1715,32 @@ function SharedPairingWorkspace({
   const playerB = players.find((player) => player.side === "B");
   const activePlayer = players.find((player) => player.side === activeSide);
   const activeCompany = activePlayer?.companyPayload
-    ? payloadToLocalCompany(activePlayer.companyPayload, activePlayer.companyName, activePlayer.companyFileId)
+    ? payloadToLocalCompany(
+        activePlayer.companyPayload,
+        activePlayer.companyName,
+        activePlayer.companyFileId,
+      )
     : null;
-  const opposingCompany = activeSide === "A"
-    ? (playerB?.companyPayload ? payloadToLocalCompany(playerB.companyPayload, playerB.companyName, playerB.companyFileId) : null)
-    : (playerA?.companyPayload ? payloadToLocalCompany(playerA.companyPayload, playerA.companyName, playerA.companyFileId) : null);
+  const opposingCompany =
+    activeSide === "A"
+      ? playerB?.companyPayload
+        ? payloadToLocalCompany(
+            playerB.companyPayload,
+            playerB.companyName,
+            playerB.companyFileId,
+          )
+        : null
+      : playerA?.companyPayload
+        ? payloadToLocalCompany(
+            playerA.companyPayload,
+            playerA.companyName,
+            playerA.companyFileId,
+          )
+        : null;
   const activeResult = resultsBySide[activeSide];
   const opposingResult = activeSide === "A" ? resultsBySide.B : resultsBySide.A;
-  const activeInducements = inducementsBySide[activeSide] || defaultInducements();
+  const activeInducements =
+    inducementsBySide[activeSide] || defaultInducements();
 
   useEffect(() => {
     if (!activePlayer || !activeCompany) return;
@@ -1180,16 +1766,26 @@ function SharedPairingWorkspace({
         updatedAt: new Date().toISOString(),
       },
     }));
-  }, [activeCompany?.id, activePlayer?.companyFileId, activeResult.troopers.length, activeSide]);
+  }, [
+    activeCompany?.id,
+    activePlayer?.companyFileId,
+    activeResult.troopers.length,
+    activeSide,
+  ]);
 
-  async function persistSharedResult(nextResult: PairingResult, submitted: boolean): Promise<boolean> {
+  async function persistSharedResult(
+    nextResult: PairingResult,
+    submitted: boolean,
+  ): Promise<boolean> {
     const owner = activePlayer;
     if (!owner) {
       setSaveError("Select one of your companies first.");
       return false;
     }
     if (!owner.ownsThisCompany) {
-      setSaveError("You can only write results to your own company event file.");
+      setSaveError(
+        "You can only write results to your own company event file.",
+      );
       return false;
     }
     if (!owner.companyEventFileId) {
@@ -1203,17 +1799,24 @@ function SharedPairingWorkspace({
       setSaveSuccess(null);
 
       const existing = await readSharedFile(owner.companyEventFileId);
-      const pairings = typeof existing?.pairings === "object" && existing?.pairings
-        ? existing.pairings
-        : {};
+      const pairings =
+        typeof existing?.pairings === "object" && existing?.pairings
+          ? existing.pairings
+          : {};
       const pairingKey = `${fileId}:${roundId}:${pairingId}`;
       const now = new Date().toISOString();
       const ownerCompany = owner.companyPayload
-        ? payloadToLocalCompany(owner.companyPayload, owner.companyName, owner.companyFileId)
+        ? payloadToLocalCompany(
+            owner.companyPayload,
+            owner.companyName,
+            owner.companyFileId,
+          )
         : activeCompany;
       const troopersWithSnapshots = nextResult.troopers.map((entry) => ({
         ...entry,
-        renownSnapshot: getTrooperPoints(findTrooper(ownerCompany, entry.trooper)),
+        renownSnapshot: getTrooperPoints(
+          findTrooper(ownerCompany, entry.trooper),
+        ),
       }));
 
       const nextPayload = {
@@ -1250,7 +1853,11 @@ function SharedPairingWorkspace({
           updatedAt: now,
         },
       }));
-      setSaveSuccess(submitted ? "Final result submitted to company event file." : "Live result saved to company event file.");
+      setSaveSuccess(
+        submitted
+          ? "Final result submitted to company event file."
+          : "Live result saved to company event file.",
+      );
       return true;
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : "Unknown error");
@@ -1283,7 +1890,9 @@ function SharedPairingWorkspace({
     }));
   }
 
-  function updateActiveInducements(nextSelections: PairingInducementSelection[]) {
+  function updateActiveInducements(
+    nextSelections: PairingInducementSelection[],
+  ) {
     setInducementsBySide((current) => ({
       ...current,
       [activeSide]: {
@@ -1296,13 +1905,19 @@ function SharedPairingWorkspace({
   return (
     <section className="company-manager pairing-manager">
       <div className="event-detail-header">
-        <a className="icon-button" href={`/events/manage/?fileId=${encodeURIComponent(fileId)}`} aria-label="Back to event">
+        <a
+          className="icon-button"
+          href={`/events/manage/?fileId=${encodeURIComponent(fileId)}`}
+          aria-label="Back to event"
+        >
           <AppIcon name="back" />
         </a>
         <div>
           <p className="eyebrow">Shared Pairing</p>
           <h1>{pairing.mission || "Contract TBD"}</h1>
-          <p>{roundName}: {pairing.player1Name} vs {pairing.player2Name}</p>
+          <p>
+            {roundName}: {pairing.player1Name} vs {pairing.player2Name}
+          </p>
         </div>
       </div>
 
@@ -1313,35 +1928,59 @@ function SharedPairingWorkspace({
             <h2>{eventName}</h2>
           </div>
         </div>
-        <p className="legacy-empty-note">Both players can read each other's company and company-event files from here.</p>
+        <p className="legacy-empty-note">
+          Both players can read each other's company and company-event files
+          from here.
+        </p>
 
-        {loadingData && <p className="legacy-empty-note">Loading company and event files...</p>}
+        {loadingData && (
+          <p className="legacy-empty-note">
+            Loading company and event files...
+          </p>
+        )}
         {loadError && <p className="error-message">{loadError}</p>}
 
         {!loadingData && !loadError && (
           <>
             <div className="event-participant-list">
               {players.map((player) => (
-                <article className="event-participant-row" key={player.companyFileId}>
+                <article
+                  className="event-participant-row"
+                  key={player.companyFileId}
+                >
                   <div>
                     <span className="panel-kicker">Player {player.side}</span>
                     <h3>{player.companyName}</h3>
-                    <p>{player.ownsThisCompany ? "Owned by you" : "Opponent"}</p>
+                    <p>
+                      {player.ownsThisCompany ? "Owned by you" : "Opponent"}
+                    </p>
                   </div>
-                  <a className="command-button command-button--small" href={player.companyShareLink} target="_blank" rel="noreferrer">
+                  <a
+                    className="command-button command-button--small"
+                    href={player.companyShareLink}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Open Company File
                   </a>
                   {player.companyEventFileId ? (
                     <a
                       className="command-button command-button--small"
-                      href={player.companyEventShareLink || `${window.location.origin}/view?id=${encodeURIComponent(player.companyEventFileId)}`}
+                      href={
+                        player.companyEventShareLink ||
+                        `${window.location.origin}/view?id=${encodeURIComponent(player.companyEventFileId)}`
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >
                       Open Company Event File
                     </a>
                   ) : (
-                    <button className="command-button command-button--small" type="button" disabled>
+                    <button
+                      className="command-button command-button--small"
+                      type="button"
+                      disabled
+                    >
                       Missing Event File
                     </button>
                   )}
@@ -1361,15 +2000,27 @@ function SharedPairingWorkspace({
                   }}
                   disabled={!player?.ownsThisCompany || saving}
                 >
-                  <span>{player?.ownsThisCompany ? "Owned by you" : "Opponent"}</span>
+                  <span>
+                    {player?.ownsThisCompany ? "Owned by you" : "Opponent"}
+                  </span>
                   <strong>{player?.companyName}</strong>
                 </button>
               ))}
             </div>
 
             <div className="pairing-stepper" aria-label="Pairing steps">
-              {["Deploy Troopers", "Inducements", "Mission", "Post Mission"].map((label, index) => (
-                <button className={step === index ? "is-active" : ""} type="button" key={label} onClick={() => setStep(index)}>
+              {[
+                "Deploy Troopers",
+                "Inducements",
+                "Mission",
+                "Post Mission",
+              ].map((label, index) => (
+                <button
+                  className={step === index ? "is-active" : ""}
+                  type="button"
+                  key={label}
+                  onClick={() => setStep(index)}
+                >
                   {index + 1}. {label}
                 </button>
               ))}
@@ -1420,10 +2071,24 @@ function SharedPairingWorkspace({
                     <h2>Review Results</h2>
                   </div>
                   <div className="pairing-step-actions">
-                    <button className="command-button" type="button" onClick={() => void persistSharedResult(activeResult, false)} disabled={saving || !activePlayer?.ownsThisCompany}>
+                    <button
+                      className="command-button"
+                      type="button"
+                      onClick={() =>
+                        void persistSharedResult(activeResult, false)
+                      }
+                      disabled={saving || !activePlayer?.ownsThisCompany}
+                    >
                       Save Live Update
                     </button>
-                    <button className="command-button command-button--primary" type="button" onClick={() => void persistSharedResult(activeResult, true)} disabled={saving || !activePlayer?.ownsThisCompany}>
+                    <button
+                      className="command-button command-button--primary"
+                      type="button"
+                      onClick={() =>
+                        void persistSharedResult(activeResult, true)
+                      }
+                      disabled={saving || !activePlayer?.ownsThisCompany}
+                    >
                       Submit {activePlayer?.companyName || "Result"}
                     </button>
                   </div>
@@ -1431,13 +2096,29 @@ function SharedPairingWorkspace({
                 <div className="pairing-summary-grid">
                   <SummaryCard
                     title="Player A"
-                    company={playerA?.companyPayload ? payloadToLocalCompany(playerA.companyPayload, playerA.companyName, playerA.companyFileId) : null}
+                    company={
+                      playerA?.companyPayload
+                        ? payloadToLocalCompany(
+                            playerA.companyPayload,
+                            playerA.companyName,
+                            playerA.companyFileId,
+                          )
+                        : null
+                    }
                     result={resultsBySide.A}
                     roundNumber={roundNumber || 1}
                   />
                   <SummaryCard
                     title="Player B"
-                    company={playerB?.companyPayload ? payloadToLocalCompany(playerB.companyPayload, playerB.companyName, playerB.companyFileId) : null}
+                    company={
+                      playerB?.companyPayload
+                        ? payloadToLocalCompany(
+                            playerB.companyPayload,
+                            playerB.companyName,
+                            playerB.companyFileId,
+                          )
+                        : null
+                    }
                     result={resultsBySide.B}
                     roundNumber={roundNumber || 1}
                   />
@@ -1453,7 +2134,13 @@ function SharedPairingWorkspace({
   );
 }
 
-function PairingWorkspace({ context, companies }: { context: PairingContext; companies: LocalCompany[] }) {
+function PairingWorkspace({
+  context,
+  companies,
+}: {
+  context: PairingContext;
+  companies: LocalCompany[];
+}) {
   const allowedParticipantIds = [
     context.pairing.player1Id,
     context.pairing.player2Id,
@@ -1462,39 +2149,79 @@ function PairingWorkspace({ context, companies }: { context: PairingContext; com
     if (!participant) return false;
     return companies.some((company) => company.id === participant.companyId);
   });
-  const [activeParticipantId, setActiveParticipantId] = useState(allowedParticipantIds[0] || context.pairing.player1Id);
+  const [activeParticipantId, setActiveParticipantId] = useState(
+    allowedParticipantIds[0] || context.pairing.player1Id,
+  );
   const [step, setStep] = useState(0);
   const [contextState, setContextState] = useState(context);
-  const participantA = getParticipant(contextState.event, contextState.pairing.player1Id);
-  const participantB = getParticipant(contextState.event, contextState.pairing.player2Id);
-  const activeParticipant = getParticipant(contextState.event, activeParticipantId);
+  const participantA = getParticipant(
+    contextState.event,
+    contextState.pairing.player1Id,
+  );
+  const participantB = getParticipant(
+    contextState.event,
+    contextState.pairing.player2Id,
+  );
+  const activeParticipant = getParticipant(
+    contextState.event,
+    activeParticipantId,
+  );
   const activeCompany = getCompany(companies, activeParticipant);
   const companyA = getCompany(companies, participantA);
   const companyB = getCompany(companies, participantB);
   const activeResult = getResult(contextState.pairing, activeParticipantId);
-  const resultA = getResult(contextState.pairing, contextState.pairing.player1Id);
-  const resultB = getResult(contextState.pairing, contextState.pairing.player2Id);
-  const contractName = contextState.pairing.mission || contextState.round.mission || "Contract TBD";
+  const resultA = getResult(
+    contextState.pairing,
+    contextState.pairing.player1Id,
+  );
+  const resultB = getResult(
+    contextState.pairing,
+    contextState.pairing.player2Id,
+  );
+  const contractName =
+    contextState.pairing.mission ||
+    contextState.round.mission ||
+    "Contract TBD";
 
   useEffect(() => {
     if (!allowedParticipantIds.includes(activeParticipantId)) {
-      setActiveParticipantId(allowedParticipantIds[0] || contextState.pairing.player1Id);
+      setActiveParticipantId(
+        allowedParticipantIds[0] || contextState.pairing.player1Id,
+      );
     }
-  }, [activeParticipantId, allowedParticipantIds, contextState.pairing.player1Id]);
+  }, [
+    activeParticipantId,
+    allowedParticipantIds,
+    contextState.pairing.player1Id,
+  ]);
 
   function refreshFromEvent(updatedEvent: LocalEvent) {
-    const round = updatedEvent.rounds.find((entry) => entry.id === contextState.round.id);
-    const pairing = round?.pairings.find((entry) => entry.id === contextState.pairing.id);
-    if (round && pairing) setContextState({ event: updatedEvent, round, pairing });
+    const round = updatedEvent.rounds.find(
+      (entry) => entry.id === contextState.round.id,
+    );
+    const pairing = round?.pairings.find(
+      (entry) => entry.id === contextState.pairing.id,
+    );
+    if (round && pairing)
+      setContextState({ event: updatedEvent, round, pairing });
   }
 
   function saveResult(nextResult: PairingResult) {
-    const updatedEvent = upsertPairingResult(contextState.event.id, contextState.round.id, contextState.pairing.id, nextResult);
+    const updatedEvent = upsertPairingResult(
+      contextState.event.id,
+      contextState.round.id,
+      contextState.pairing.id,
+      nextResult,
+    );
     if (updatedEvent) refreshFromEvent(updatedEvent);
   }
 
   function updateDraft(nextResult: PairingResult) {
-    saveResult({ ...nextResult, submitted: false, updatedAt: new Date().toISOString() });
+    saveResult({
+      ...nextResult,
+      submitted: false,
+      updatedAt: new Date().toISOString(),
+    });
   }
 
   useEffect(() => {
@@ -1511,42 +2238,58 @@ function PairingWorkspace({ context, companies }: { context: PairingContext; com
           objective: "",
           tag: "",
           alive: false,
-          injury: ""
-        }
+          injury: "",
+        },
       ],
       submitted: false,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     });
   }, [activeCompany?.id, activeParticipantId]);
 
   function submitResult() {
-    saveResult({ ...activeResult, submitted: true, updatedAt: new Date().toISOString() });
+    saveResult({
+      ...activeResult,
+      submitted: true,
+      updatedAt: new Date().toISOString(),
+    });
   }
 
   return (
     <section className="company-manager pairing-manager">
       <div className="event-detail-header">
-        <a className="icon-button" href={`/events/manage/?id=${encodeURIComponent(contextState.event.id)}`} aria-label="Back to event">
+        <a
+          className="icon-button"
+          href={`/events/manage/?id=${encodeURIComponent(contextState.event.id)}`}
+          aria-label="Back to event"
+        >
           <AppIcon name="back" />
         </a>
         <div>
           <p className="eyebrow">Pairing</p>
           <h1>{contractName}</h1>
-          <p>{contextState.round.name}: {participantA?.companyName || "Player A"} vs {participantB?.companyName || "Player B"}</p>
+          <p>
+            {contextState.round.name}: {participantA?.companyName || "Player A"}{" "}
+            vs {participantB?.companyName || "Player B"}
+          </p>
         </div>
       </div>
 
       <div className="pairing-player-switch">
         {[participantA, participantB].filter(Boolean).map((participant) => (
           <button
-            className={participant?.id === activeParticipantId ? "is-active" : ""}
+            className={
+              participant?.id === activeParticipantId ? "is-active" : ""
+            }
             type="button"
             key={participant?.id}
             onClick={() => {
               setActiveParticipantId(participant?.id || "");
               setStep(0);
             }}
-            disabled={!participant?.id || !allowedParticipantIds.includes(participant.id)}
+            disabled={
+              !participant?.id ||
+              !allowedParticipantIds.includes(participant.id)
+            }
           >
             <span>{participant?.userName}</span>
             <strong>{participant?.companyName}</strong>
@@ -1556,19 +2299,39 @@ function PairingWorkspace({ context, companies }: { context: PairingContext; com
 
       <div className="pairing-stepper" aria-label="Pairing steps">
         {["Deploy Troopers", "Mission", "Post Mission"].map((label, index) => (
-          <button className={step === index ? "is-active" : ""} type="button" key={label} onClick={() => setStep(index)}>
+          <button
+            className={step === index ? "is-active" : ""}
+            type="button"
+            key={label}
+            onClick={() => setStep(index)}
+          >
             {index + 1}. {label}
           </button>
         ))}
       </div>
 
-      {step === 0 && <DeploymentStep company={activeCompany} result={activeResult} onChange={updateDraft} onNext={() => setStep(1)} />}
+      {step === 0 && (
+        <DeploymentStep
+          company={activeCompany}
+          result={activeResult}
+          onChange={updateDraft}
+          onNext={() => setStep(1)}
+        />
+      )}
       {step === 1 && (
         <MissionStep
           company={activeCompany}
-          opposingCompany={activeParticipantId === contextState.pairing.player1Id ? companyB : companyA}
+          opposingCompany={
+            activeParticipantId === contextState.pairing.player1Id
+              ? companyB
+              : companyA
+          }
           result={activeResult}
-          opposingResult={activeParticipantId === contextState.pairing.player1Id ? resultB : resultA}
+          opposingResult={
+            activeParticipantId === contextState.pairing.player1Id
+              ? resultB
+              : resultA
+          }
           roundNumber={contextState.round.number}
           onChange={updateDraft}
           onBack={() => setStep(0)}
@@ -1582,16 +2345,31 @@ function PairingWorkspace({ context, companies }: { context: PairingContext; com
               <span className="panel-kicker">Post Mission</span>
               <h2>Review Results</h2>
             </div>
-            <button className="command-button command-button--primary" type="button" onClick={submitResult}>
+            <button
+              className="command-button command-button--primary"
+              type="button"
+              onClick={submitResult}
+            >
               Submit {activeParticipant?.companyName || "Result"}
             </button>
           </div>
           <div className="pairing-summary-grid">
-            <SummaryCard title="Player A" company={companyA} result={resultA} roundNumber={contextState.round.number} />
-            <SummaryCard title="Player B" company={companyB} result={resultB} roundNumber={contextState.round.number} />
+            <SummaryCard
+              title="Player A"
+              company={companyA}
+              result={resultA}
+              roundNumber={contextState.round.number}
+            />
+            <SummaryCard
+              title="Player B"
+              company={companyB}
+              result={resultB}
+              roundNumber={contextState.round.number}
+            />
           </div>
           <p className="legacy-specops-note">
-            This saves pairing results locally. Applying XP, CR, injuries, and downtime effects to company files will be the next pass.
+            This saves pairing results locally. Applying XP, CR, injuries, and
+            downtime effects to company files will be the next pass.
           </p>
         </section>
       )}
@@ -1618,7 +2396,9 @@ export default function PairingManager() {
     registeredCompanies?: Record<string, RegisteredCompanyRef>;
   } | null>(null);
   const [companies, setCompanies] = useState<LocalCompany[]>([]);
-  const [ownedSharedCompanyFileIds, setOwnedSharedCompanyFileIds] = useState<Set<string>>(new Set());
+  const [ownedSharedCompanyFileIds, setOwnedSharedCompanyFileIds] = useState<
+    Set<string>
+  >(new Set());
   const [signedIn, setSignedIn] = useState(false);
   const [loadingShared, setLoadingShared] = useState(false);
   const [sharedError, setSharedError] = useState<string | null>(null);
@@ -1675,37 +2455,50 @@ export default function PairingManager() {
             player2Name: String(pairing?.player2Name || "Player B"),
             mission: String(pairing?.mission || "") || undefined,
           },
-          registeredCompanies: Array.isArray((payload as any)?.registeredCompanies)
-            ? (payload as any).registeredCompanies.reduce((acc: Record<string, RegisteredCompanyRef>, entry: any) => {
-                const companyFileId = extractFileId(String(entry?.fileId || ""))
-                  || extractFileId(String(entry?.shareLink || ""))
-                  || String(entry?.fileId || "").trim();
-                if (!companyFileId) return acc;
+          registeredCompanies: Array.isArray(
+            (payload as any)?.registeredCompanies,
+          )
+            ? (payload as any).registeredCompanies.reduce(
+                (acc: Record<string, RegisteredCompanyRef>, entry: any) => {
+                  const companyFileId =
+                    extractFileId(String(entry?.fileId || "")) ||
+                    extractFileId(String(entry?.shareLink || "")) ||
+                    String(entry?.fileId || "").trim();
+                  if (!companyFileId) return acc;
 
-                const companyEventFileId = extractFileId(String(entry?.companyEventFileId || ""))
-                  || extractFileId(String(entry?.companyEventShareLink || ""))
-                  || extractFileId(String(entry?.companyEventFile?.fileId || ""))
-                  || extractFileId(String(entry?.companyEventFile?.shareLink || ""))
-                  || extractFileId(String(entry?.companyEventFile?.link || ""));
-                if (!companyEventFileId) return acc;
+                  const companyEventFileId =
+                    extractFileId(String(entry?.companyEventFileId || "")) ||
+                    extractFileId(String(entry?.companyEventShareLink || "")) ||
+                    extractFileId(
+                      String(entry?.companyEventFile?.fileId || ""),
+                    ) ||
+                    extractFileId(
+                      String(entry?.companyEventFile?.shareLink || ""),
+                    ) ||
+                    extractFileId(String(entry?.companyEventFile?.link || ""));
+                  if (!companyEventFileId) return acc;
 
-                acc[companyFileId] = {
-                  companyEventFileId,
-                  companyEventShareLink: String(
-                    entry?.companyEventShareLink
-                    || entry?.companyEventFile?.shareLink
-                    || entry?.companyEventFile?.link
-                    || `${window.location.origin}/view?id=${encodeURIComponent(companyEventFileId)}`,
-                  ),
-                };
-                return acc;
-              }, {})
+                  acc[companyFileId] = {
+                    companyEventFileId,
+                    companyEventShareLink: String(
+                      entry?.companyEventShareLink ||
+                        entry?.companyEventFile?.shareLink ||
+                        entry?.companyEventFile?.link ||
+                        `${window.location.origin}/view?id=${encodeURIComponent(companyEventFileId)}`,
+                    ),
+                  };
+                  return acc;
+                },
+                {},
+              )
             : undefined,
         });
       })
       .catch((error) => {
         if (!alive) return;
-        setSharedError(error instanceof Error ? error.message : "Unknown error");
+        setSharedError(
+          error instanceof Error ? error.message : "Unknown error",
+        );
       })
       .finally(() => {
         if (alive) setLoadingShared(false);
@@ -1725,7 +2518,11 @@ export default function PairingManager() {
     const pairingId = getQueryParam("pairingId");
     const loaded = getEventRoundPairing(eventId, roundId, pairingId);
     if (loaded.event && loaded.round && loaded.pairing) {
-      setContext({ event: loaded.event, round: loaded.round, pairing: loaded.pairing });
+      setContext({
+        event: loaded.event,
+        round: loaded.round,
+        pairing: loaded.pairing,
+      });
     }
   }, []);
 
@@ -1751,7 +2548,10 @@ export default function PairingManager() {
             if (idFromLink) owned.add(idFromLink);
           }
         } catch (error) {
-          console.warn("Could not load appdata company ownership references:", error);
+          console.warn(
+            "Could not load appdata company ownership references:",
+            error,
+          );
         }
       }
 
@@ -1770,7 +2570,9 @@ export default function PairingManager() {
           <span className="panel-kicker">Google Sign-In Required</span>
           <h1>Sign In to Open Pairing</h1>
           <p>Use the Google button in the nav bar, then reopen this pairing.</p>
-          <a className="command-button command-button--primary" href="/events/">Back to Events</a>
+          <a className="command-button command-button--primary" href="/events/">
+            Back to Events
+          </a>
         </div>
       </section>
     );
@@ -1795,15 +2597,18 @@ export default function PairingManager() {
           <span className="panel-kicker">Shared Pairing</span>
           <h1>Could Not Load Pairing</h1>
           <p>{sharedError}</p>
-          <a className="command-button command-button--primary" href="/events/">Back to Events</a>
+          <a className="command-button command-button--primary" href="/events/">
+            Back to Events
+          </a>
         </div>
       </section>
     );
   }
 
   if (sharedContext) {
-    const canAccess = ownedSharedCompanyFileIds.has(sharedContext.pairing.player1FileId)
-      || ownedSharedCompanyFileIds.has(sharedContext.pairing.player2FileId);
+    const canAccess =
+      ownedSharedCompanyFileIds.has(sharedContext.pairing.player1FileId) ||
+      ownedSharedCompanyFileIds.has(sharedContext.pairing.player2FileId);
 
     if (!canAccess) {
       return (
@@ -1811,8 +2616,14 @@ export default function PairingManager() {
           <div className="company-empty-state">
             <span className="panel-kicker">Access Denied</span>
             <h1>You Do Not Own This Pairing</h1>
-            <p>You can only open pairings where one of your company files is in the matchup.</p>
-            <a className="command-button command-button--primary" href={`/events/manage/?fileId=${encodeURIComponent(sharedContext.fileId)}`}>
+            <p>
+              You can only open pairings where one of your company files is in
+              the matchup.
+            </p>
+            <a
+              className="command-button command-button--primary"
+              href={`/events/manage/?fileId=${encodeURIComponent(sharedContext.fileId)}`}
+            >
               Back to Event
             </a>
           </div>
@@ -1836,11 +2647,15 @@ export default function PairingManager() {
   }
 
   const allowedParticipantIds = context
-    ? [context.pairing.player1Id, context.pairing.player2Id].filter((participantId) => {
-        const participant = getParticipant(context.event, participantId);
-        if (!participant) return false;
-        return companies.some((company) => company.id === participant.companyId);
-      })
+    ? [context.pairing.player1Id, context.pairing.player2Id].filter(
+        (participantId) => {
+          const participant = getParticipant(context.event, participantId);
+          if (!participant) return false;
+          return companies.some(
+            (company) => company.id === participant.companyId,
+          );
+        },
+      )
     : [];
 
   if (!context) {
@@ -1850,7 +2665,9 @@ export default function PairingManager() {
           <span className="panel-kicker">Missing Pairing</span>
           <h1>Pairing Not Found</h1>
           <p>This local event pairing could not be loaded.</p>
-          <a className="command-button command-button--primary" href="/events/">Back to Events</a>
+          <a className="command-button command-button--primary" href="/events/">
+            Back to Events
+          </a>
         </div>
       </section>
     );
@@ -1862,8 +2679,14 @@ export default function PairingManager() {
         <div className="company-empty-state">
           <span className="panel-kicker">Access Denied</span>
           <h1>You Do Not Own This Pairing</h1>
-          <p>You can only open pairings where one of your local companies is in the matchup.</p>
-          <a className="command-button command-button--primary" href={`/events/manage/?id=${encodeURIComponent(context.event.id)}`}>
+          <p>
+            You can only open pairings where one of your local companies is in
+            the matchup.
+          </p>
+          <a
+            className="command-button command-button--primary"
+            href={`/events/manage/?id=${encodeURIComponent(context.event.id)}`}
+          >
             Back to Event
           </a>
         </div>

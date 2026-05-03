@@ -77,9 +77,9 @@ function parseResponseEntryIdsFromPrefilledLink(value: string): {
     });
 
     if (
-      mapping.companyNameEntryId
-      && mapping.companyLinkEntryId
-      && mapping.eventFileIdEntryId
+      mapping.companyNameEntryId &&
+      mapping.companyLinkEntryId &&
+      mapping.eventFileIdEntryId
     ) {
       return mapping as {
         companyNameEntryId: string;
@@ -101,14 +101,20 @@ export default function CreateEventWizard() {
   const [error, setError] = useState<string | null>(null);
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [driveFileLink, setDriveFileLink] = useState<string | null>(null);
-  const [registrationFormLink, setRegistrationFormLink] = useState<string | null>(null);
+  const [registrationFormLink, setRegistrationFormLink] = useState<
+    string | null
+  >(null);
   const [templateLoading, setTemplateLoading] = useState(false);
-  const [registrationTemplate, setRegistrationTemplate] = useState<OrganizerRegistrationTemplate | null>(null);
-  const [onboardingForm, setOnboardingForm] = useState<EventRegistrationForm | null>(null);
+  const [registrationTemplate, setRegistrationTemplate] =
+    useState<OrganizerRegistrationTemplate | null>(null);
+  const [onboardingForm, setOnboardingForm] =
+    useState<EventRegistrationForm | null>(null);
   const [onboardingPrefilledLink, setOnboardingPrefilledLink] = useState("");
   const [onboardingBusy, setOnboardingBusy] = useState(false);
   const [onboardingError, setOnboardingError] = useState<string | null>(null);
-  const [onboardingSuccess, setOnboardingSuccess] = useState<string | null>(null);
+  const [onboardingSuccess, setOnboardingSuccess] = useState<string | null>(
+    null,
+  );
   const [details, setDetails] = useState<EventDetails>({
     name: "",
     description: "",
@@ -139,10 +145,10 @@ export default function CreateEventWizard() {
       .then((template) => {
         if (!alive) return;
         if (
-          template
-          && template.responseEntries?.companyNameEntryId
-          && template.responseEntries?.companyLinkEntryId
-          && template.responseEntries?.eventFileIdEntryId
+          template &&
+          template.responseEntries?.companyNameEntryId &&
+          template.responseEntries?.companyLinkEntryId &&
+          template.responseEntries?.eventFileIdEntryId
         ) {
           setRegistrationTemplate(template);
           setRegistrationFormLink(template.responderUri);
@@ -152,7 +158,10 @@ export default function CreateEventWizard() {
       })
       .catch((loadError) => {
         if (!alive) return;
-        console.error("Failed to load organizer registration template:", loadError);
+        console.error(
+          "Failed to load organizer registration template:",
+          loadError,
+        );
         setRegistrationTemplate(null);
       })
       .finally(() => {
@@ -201,10 +210,14 @@ export default function CreateEventWizard() {
       setOnboardingBusy(true);
       setOnboardingError(null);
       setOnboardingSuccess(null);
-      const form = await createEventRegistrationForm("Infinity Mercenaries Organizer Registrations");
+      const form = await createEventRegistrationForm(
+        "Infinity Mercenaries Organizer Registrations",
+      );
       setOnboardingForm(form);
       setRegistrationFormLink(form.responderUri);
-      setOnboardingSuccess("Registration form created. Follow the instructions below to capture responder IDs once.");
+      setOnboardingSuccess(
+        "Registration form created. Follow the instructions below to capture responder IDs once.",
+      );
     } catch (err) {
       console.error("Failed to create organizer registration form:", err);
       setOnboardingError(
@@ -216,7 +229,9 @@ export default function CreateEventWizard() {
   }
 
   async function handleSaveOrganizerTemplate() {
-    const parsed = parseResponseEntryIdsFromPrefilledLink(onboardingPrefilledLink);
+    const parsed = parseResponseEntryIdsFromPrefilledLink(
+      onboardingPrefilledLink,
+    );
     if (!parsed) {
       setOnboardingError(
         "Could not parse the prefilled URL. Use placeholders COMPANY_NAME, COMPANY_LINK, and EVENT_FILE_ID when generating the prefilled link.",
@@ -240,7 +255,9 @@ export default function CreateEventWizard() {
       await saveOrganizerRegistrationTemplate(template);
       setRegistrationTemplate(template);
       setRegistrationFormLink(template.responderUri);
-      setOnboardingSuccess("Organizer registration template saved. Future event creation can skip this setup.");
+      setOnboardingSuccess(
+        "Organizer registration template saved. Future event creation can skip this setup.",
+      );
       setOnboardingPrefilledLink("");
     } catch (err) {
       console.error("Failed saving organizer registration template:", err);
@@ -264,7 +281,9 @@ export default function CreateEventWizard() {
     }
 
     if (!registrationTemplate) {
-      setError("Complete organizer onboarding first so event registrations can be submitted.");
+      setError(
+        "Complete organizer onboarding first so event registrations can be submitted.",
+      );
       return;
     }
 
@@ -275,7 +294,9 @@ export default function CreateEventWizard() {
       const timestamp = new Date().toISOString();
       const startingCr = Number(details.startingCr);
       const roundCount = details.rounds ? Number(details.rounds) : undefined;
-      const maxPlayers = details.maxPlayers ? Number(details.maxPlayers) : undefined;
+      const maxPlayers = details.maxPlayers
+        ? Number(details.maxPlayers)
+        : undefined;
       const registrationForm = registrationTemplate;
 
       const eventPayload = {
@@ -290,10 +311,14 @@ export default function CreateEventWizard() {
           name: details.name.trim(),
           description: details.description.trim() || "",
           location: details.location.trim() || "",
-          maxPlayers: Number.isFinite(maxPlayers as number) ? maxPlayers : undefined,
+          maxPlayers: Number.isFinite(maxPlayers as number)
+            ? maxPlayers
+            : undefined,
           startDate: toIsoDate(details.startDate),
           endDate: toIsoDate(details.endDate),
-          rounds: Number.isFinite(roundCount as number) ? roundCount : undefined,
+          rounds: Number.isFinite(roundCount as number)
+            ? roundCount
+            : undefined,
           startingCr,
           rules: {
             allEnabled: true,
@@ -307,7 +332,11 @@ export default function CreateEventWizard() {
 
       const fileName = `mercs-event-${makeSlug(details.name)}-${Date.now()}.json`;
       const folders = await getOrCreateOrganizerFolders();
-      const fileId = await createSharedFile(fileName, eventPayload, folders.eventsFolderId);
+      const fileId = await createSharedFile(
+        fileName,
+        eventPayload,
+        folders.eventsFolderId,
+      );
       await makeFilePublic(fileId);
 
       const playerLink = `${window.location.origin}/events/manage/?fileId=${encodeURIComponent(fileId)}`;
@@ -323,7 +352,9 @@ export default function CreateEventWizard() {
       });
 
       setShareLink(playerLink);
-      setDriveFileLink(`https://drive.google.com/file/d/${encodeURIComponent(fileId)}/view`);
+      setDriveFileLink(
+        `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/view`,
+      );
       setRegistrationFormLink(registrationForm.responderUri);
       setStep("complete");
     } catch (err) {
@@ -337,7 +368,10 @@ export default function CreateEventWizard() {
   }
 
   return (
-    <section className="company-section-card event-create-card event-create-wizard" aria-label="Create event">
+    <section
+      className="company-section-card event-create-card event-create-wizard"
+      aria-label="Create event"
+    >
       <div className="company-wizard__masthead">
         <div>
           <p className="eyebrow">Organizer Tools</p>
@@ -347,35 +381,37 @@ export default function CreateEventWizard() {
 
       {registrationTemplate && (
         <nav className="company-wizard__steps" aria-label="Event setup steps">
-        {STEPS.map((entry, index) => {
-          const isComplete = index < currentStepIndex;
-          const isCurrent = entry === step;
-          return (
-            <div
-              key={entry}
-              className={[
-                "company-wizard__step-indicator",
-                isComplete ? "is-complete" : "",
-                isCurrent ? "is-current" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              aria-current={isCurrent ? "step" : undefined}
-            >
-              <span className="company-wizard__step-number">
-                {isComplete ? <AppIcon name="check" size={14} /> : index + 1}
-              </span>
-              <span className="company-wizard__step-label">{STEP_LABELS[entry]}</span>
-            </div>
-          );
-        })}
+          {STEPS.map((entry, index) => {
+            const isComplete = index < currentStepIndex;
+            const isCurrent = entry === step;
+            return (
+              <div
+                key={entry}
+                className={[
+                  "company-wizard__step-indicator",
+                  isComplete ? "is-complete" : "",
+                  isCurrent ? "is-current" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                aria-current={isCurrent ? "step" : undefined}
+              >
+                <span className="company-wizard__step-number">
+                  {isComplete ? <AppIcon name="check" size={14} /> : index + 1}
+                </span>
+                <span className="company-wizard__step-label">
+                  {STEP_LABELS[entry]}
+                </span>
+              </div>
+            );
+          })}
         </nav>
       )}
 
       {!signedIn && (
         <p className="legacy-empty-note event-wizard-note">
-          Sign in with Google first. Event creation is only supported for organizers
-          with Drive and Forms create/edit permissions.
+          Sign in with Google first. Event creation is only supported for
+          organizers with Drive and Forms create/edit permissions.
         </p>
       )}
 
@@ -383,8 +419,9 @@ export default function CreateEventWizard() {
         <div className="company-wizard__panel">
           <h3>Organizer Onboarding (One-Time)</h3>
           <p>
-            Before creating events, we create one reusable registration form for your account.
-            This keeps setup simple and lets all your events share one response pipeline.
+            Before creating events, we create one reusable registration form for
+            your account. This keeps setup simple and lets all your events share
+            one response pipeline.
           </p>
 
           {!onboardingForm ? (
@@ -395,24 +432,36 @@ export default function CreateEventWizard() {
                 onClick={handleCreateOrganizerForm}
                 disabled={onboardingBusy}
               >
-                {onboardingBusy ? "Creating Form..." : "Create My Registration Form"}
+                {onboardingBusy
+                  ? "Creating Form..."
+                  : "Create My Registration Form"}
               </button>
             </div>
           ) : (
             <>
-              <section className="procedure-card" aria-label="Capture responder entry IDs">
+              <section
+                className="procedure-card"
+                aria-label="Capture responder entry IDs"
+              >
                 <header>
                   <span>Procedure</span>
                   <strong>Capture Responder Entry IDs</strong>
                 </header>
                 <ol>
                   <li>Open the prefill page linked below.</li>
-                  <li>Generate a prefilled URL using placeholders COMPANY_NAME, COMPANY_LINK, and EVENT_FILE_ID.</li>
+                  <li>
+                    Generate a prefilled URL using placeholders COMPANY_NAME,
+                    COMPANY_LINK, and EVENT_FILE_ID.
+                  </li>
                   <li>Paste that generated URL into the field below.</li>
                 </ol>
               </section>
               <p className="event-wizard-file-note">
-                <a href={`https://docs.google.com/forms/d/${encodeURIComponent(onboardingForm.formId)}/prefill`} target="_blank" rel="noreferrer">
+                <a
+                  href={`https://docs.google.com/forms/d/${encodeURIComponent(onboardingForm.formId)}/prefill`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Open prefill page
                 </a>
               </p>
@@ -420,7 +469,9 @@ export default function CreateEventWizard() {
                 <span>Paste Prefilled URL</span>
                 <input
                   value={onboardingPrefilledLink}
-                  onChange={(event) => setOnboardingPrefilledLink(event.target.value)}
+                  onChange={(event) =>
+                    setOnboardingPrefilledLink(event.target.value)
+                  }
                   placeholder="Paste the prefilled Google Form URL"
                 />
               </label>
@@ -437,15 +488,21 @@ export default function CreateEventWizard() {
             </>
           )}
 
-          {onboardingError && <p className="legacy-empty-note">{onboardingError}</p>}
-          {onboardingSuccess && <p className="info-message">{onboardingSuccess}</p>}
+          {onboardingError && (
+            <p className="legacy-empty-note">{onboardingError}</p>
+          )}
+          {onboardingSuccess && (
+            <p className="info-message">{onboardingSuccess}</p>
+          )}
         </div>
       )}
 
       {registrationTemplate && step === "details" && (
         <div className="company-wizard__panel">
           <h3>General Details</h3>
-          <p>Set core event information that will be shared with all players.</p>
+          <p>
+            Set core event information that will be shared with all players.
+          </p>
 
           <div className="event-form-grid">
             <label className="field">
@@ -462,7 +519,9 @@ export default function CreateEventWizard() {
               <input
                 type="date"
                 value={details.startDate}
-                onChange={(event) => updateField("startDate", event.target.value)}
+                onChange={(event) =>
+                  updateField("startDate", event.target.value)
+                }
               />
             </label>
 
@@ -470,7 +529,9 @@ export default function CreateEventWizard() {
               <span>Description (optional)</span>
               <textarea
                 value={details.description}
-                onChange={(event) => updateField("description", event.target.value)}
+                onChange={(event) =>
+                  updateField("description", event.target.value)
+                }
                 placeholder="Describe the event format or theme"
               />
             </label>
@@ -479,7 +540,9 @@ export default function CreateEventWizard() {
               <span>Location (optional)</span>
               <input
                 value={details.location}
-                onChange={(event) => updateField("location", event.target.value)}
+                onChange={(event) =>
+                  updateField("location", event.target.value)
+                }
                 placeholder="Store, city, or online platform"
               />
             </label>
@@ -490,7 +553,9 @@ export default function CreateEventWizard() {
                 type="number"
                 min="0"
                 value={details.maxPlayers}
-                onChange={(event) => updateField("maxPlayers", event.target.value)}
+                onChange={(event) =>
+                  updateField("maxPlayers", event.target.value)
+                }
                 placeholder="Unlimited"
               />
             </label>
@@ -541,7 +606,9 @@ export default function CreateEventWizard() {
                 type="number"
                 min="1"
                 value={details.startingCr}
-                onChange={(event) => updateField("startingCr", event.target.value)}
+                onChange={(event) =>
+                  updateField("startingCr", event.target.value)
+                }
               />
             </label>
           </div>
@@ -550,22 +617,30 @@ export default function CreateEventWizard() {
             <p className="panel-kicker">Recommended Starting CR</p>
             <ul>
               <li>
-                <strong>60 CR</strong>: Slow-burn campaigns where companies grow over many rounds.
+                <strong>60 CR</strong>: Slow-burn campaigns where companies grow
+                over many rounds.
               </li>
               <li>
-                <strong>75 CR</strong>: Standard recommendation and most playtested default.
+                <strong>75 CR</strong>: Standard recommendation and most
+                playtested default.
               </li>
               <li>
-                <strong>90 CR</strong>: Higher-powered starts for shorter or experienced-group events.
+                <strong>90 CR</strong>: Higher-powered starts for shorter or
+                experienced-group events.
               </li>
             </ul>
             <p className="legacy-empty-note">
-              Rules selection controls are coming later. For now, all rules remain enabled.
+              Rules selection controls are coming later. For now, all rules
+              remain enabled.
             </p>
           </div>
 
           <div className="wizard-actions-row">
-            <button type="button" className="command-button" onClick={handleBack}>
+            <button
+              type="button"
+              className="command-button"
+              onClick={handleBack}
+            >
               Back
             </button>
             <button
@@ -574,7 +649,9 @@ export default function CreateEventWizard() {
               onClick={handleCreateEventFile}
               disabled={!signedIn || loading || !canContinueFromSetup()}
             >
-              {loading ? "Creating Event File..." : "Create Shareable Event File"}
+              {loading
+                ? "Creating Event File..."
+                : "Create Shareable Event File"}
             </button>
           </div>
         </div>
@@ -584,7 +661,8 @@ export default function CreateEventWizard() {
         <div className="company-wizard__panel">
           <h3>Event File Ready</h3>
           <p>
-            Your event JSON file and registration Google Form were created and are now ready.
+            Your event JSON file and registration Google Form were created and
+            are now ready.
           </p>
 
           {shareLink && (
@@ -600,7 +678,7 @@ export default function CreateEventWizard() {
 
           {driveFileLink && (
             <p className="event-wizard-file-note">
-              This is the event file in your Google Drive: {" "}
+              This is the event file in your Google Drive:{" "}
               <a href={driveFileLink} target="_blank" rel="noreferrer">
                 Open file in Drive
               </a>
@@ -609,7 +687,7 @@ export default function CreateEventWizard() {
 
           {registrationFormLink && (
             <p className="event-wizard-file-note">
-              This is the registration form players submit to: {" "}
+              This is the registration form players submit to:{" "}
               <a href={registrationFormLink} target="_blank" rel="noreferrer">
                 Open registration form
               </a>
@@ -617,13 +695,13 @@ export default function CreateEventWizard() {
           )}
 
           <div className="event-wizard-warning">
-            <strong>Important:</strong> Do not edit this file directly in Drive. Copy the
-            event link above and give it to players.
+            <strong>Important:</strong> Do not edit this file directly in Drive.
+            Copy the event link above and give it to players.
           </div>
 
           <p className="legacy-empty-note">
-            Players can now attach this event during company creation. Their company
-            link will be auto-submitted to the registration form.
+            Players can now attach this event during company creation. Their
+            company link will be auto-submitted to the registration form.
           </p>
         </div>
       )}

@@ -7,9 +7,7 @@ import {
   type CompanyTypeVariant,
   ICON_PATHS,
 } from "./CompanyTypeDetail";
-import {
-  createLocalCompany,
-} from "../lib/mercs/companyStore";
+import { createLocalCompany } from "../lib/mercs/companyStore";
 import {
   createSharedFile,
   getOrCreateOrganizerFolders,
@@ -27,7 +25,13 @@ import { CaptainCreatorStep } from "./CaptainCreatorStep";
 
 type WizardStep = "name" | "companyType" | "sectorials" | "captain" | "share";
 
-const STEPS: WizardStep[] = ["name", "companyType", "sectorials", "captain", "share"];
+const STEPS: WizardStep[] = [
+  "name",
+  "companyType",
+  "sectorials",
+  "captain",
+  "share",
+];
 
 const STEP_LABELS: Record<WizardStep, string> = {
   name: "Name",
@@ -242,12 +246,16 @@ export default function CreateCompanyWizard({
 
   async function handleCaptainConfirm(trooper: any) {
     if (!isSignedIn()) {
-      setWizardError("Sign in with Google before creating and sharing a company file.");
+      setWizardError(
+        "Sign in with Google before creating and sharing a company file.",
+      );
       return;
     }
 
     if (eventLink.trim() && !linkedEvent) {
-      setWizardError("The event link could not be validated. Fix it or clear it before continuing.");
+      setWizardError(
+        "The event link could not be validated. Fix it or clear it before continuing.",
+      );
       return;
     }
 
@@ -286,9 +294,16 @@ export default function CreateCompanyWizard({
           : null,
       };
 
-      const fileName = `mercs-company-${name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.json`;
+      const fileName = `mercs-company-${name
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.json`;
       const folders = await getOrCreateOrganizerFolders();
-      const fileId = await createSharedFile(fileName, companyFilePayload, folders.companiesFolderId);
+      const fileId = await createSharedFile(
+        fileName,
+        companyFilePayload,
+        folders.companiesFolderId,
+      );
       await makeFilePublic(fileId);
 
       const companyShareLink = `${window.location.origin}/view?id=${encodeURIComponent(fileId)}`;
@@ -316,8 +331,15 @@ export default function CreateCompanyWizard({
           pairings: {},
         };
 
-        const companyEventFileName = `mercs-company-event-${name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.json`;
-        companyEventFileId = await createSharedFile(companyEventFileName, companyEventPayload, folders.eventsFolderId);
+        const companyEventFileName = `mercs-company-event-${name
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")}-${Date.now()}.json`;
+        companyEventFileId = await createSharedFile(
+          companyEventFileName,
+          companyEventPayload,
+          folders.eventsFolderId,
+        );
         await makeFilePublic(companyEventFileId);
         companyEventShareLink = `${window.location.origin}/view?id=${encodeURIComponent(companyEventFileId)}`;
 
@@ -440,12 +462,16 @@ export default function CreateCompanyWizard({
           typeof registrationForm.formId !== "string" ||
           typeof registrationForm.responderUri !== "string" ||
           !registrationForm.questions ||
-          typeof registrationForm.questions.companyNameQuestionId !== "string" ||
-          typeof registrationForm.questions.companyLinkQuestionId !== "string" ||
+          typeof registrationForm.questions.companyNameQuestionId !==
+            "string" ||
+          typeof registrationForm.questions.companyLinkQuestionId !==
+            "string" ||
           typeof registrationForm.questions.eventFileIdQuestionId !== "string"
         ) {
           setLinkedEvent(null);
-          setEventLookupError("This event is missing registration form metadata. Recreate the event file.");
+          setEventLookupError(
+            "This event is missing registration form metadata. Recreate the event file.",
+          );
           return;
         }
 
@@ -456,7 +482,9 @@ export default function CreateCompanyWizard({
           registrationForm,
         });
         if (!registrationForm.responseEntries) {
-          setEventLookupError("Event linked, but responder entry IDs are not configured yet. Auto-submit may fail until those are saved from the event page dev tools.");
+          setEventLookupError(
+            "Event linked, but responder entry IDs are not configured yet. Auto-submit may fail until those are saved from the event page dev tools.",
+          );
         } else {
           setEventLookupError(null);
         }
@@ -521,7 +549,10 @@ export default function CreateCompanyWizard({
         {step === "name" && (
           <div className="company-wizard__panel">
             <h2>Name Your Company</h2>
-            <p>Every company needs a name. Optionally attach an event link to import event context.</p>
+            <p>
+              Every company needs a name. Optionally attach an event link to
+              import event context.
+            </p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -550,7 +581,9 @@ export default function CreateCompanyWizard({
                   <small>Linked event: {linkedEvent.name}</small>
                 )}
                 {!eventLookupLoading && eventLookupError && (
-                  <small className="company-wizard__error-text">{eventLookupError}</small>
+                  <small className="company-wizard__error-text">
+                    {eventLookupError}
+                  </small>
                 )}
               </label>
             </form>
@@ -682,21 +715,29 @@ export default function CreateCompanyWizard({
               }
               onConfirm={handleCaptainConfirm}
             />
-            {creatingShare && <p className="company-wizard__note">Creating shareable company file...</p>}
+            {creatingShare && (
+              <p className="company-wizard__note">
+                Creating shareable company file...
+              </p>
+            )}
           </div>
         )}
 
         {step === "share" && (
           <div className="company-wizard__panel">
             <h2>Company File Ready</h2>
-            <p>Your company file has been created and shared in Google Drive.</p>
+            <p>
+              Your company file has been created and shared in Google Drive.
+            </p>
             {shareLink && (
               <label className="field">
                 <span>Company Link</span>
                 <input
                   readOnly
                   value={shareLink}
-                  onClick={(event) => (event.target as HTMLInputElement).select()}
+                  onClick={(event) =>
+                    (event.target as HTMLInputElement).select()
+                  }
                 />
                 <small>Give this link to the event organizer.</small>
               </label>
@@ -712,7 +753,11 @@ export default function CreateCompanyWizard({
       {wizardError && <p className="company-wizard__error">{wizardError}</p>}
 
       <footer className="company-wizard__footer">
-        <button className="command-button" type="button" onClick={step === "share" ? cancelWizard : handleBack}>
+        <button
+          className="command-button"
+          type="button"
+          onClick={step === "share" ? cancelWizard : handleBack}
+        >
           {currentStepIndex === 0 ? "Cancel" : "Back"}
         </button>
 

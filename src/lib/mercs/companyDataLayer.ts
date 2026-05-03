@@ -81,7 +81,9 @@ function mergeDriveCompanyEnvelope(
   return {
     schemaVersion: 1,
     kind: "infinity-mercenaries-company",
-    createdAt: (existingRaw as Record<string, unknown> | null)?.createdAt || new Date().toISOString(),
+    createdAt:
+      (existingRaw as Record<string, unknown> | null)?.createdAt ||
+      new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     company: nextCompany,
     event: (existingRaw as Record<string, unknown> | null)?.event || null,
@@ -114,8 +116,7 @@ export async function loadCompany(
         companyId: baseCompany.id || idOrFileId,
         name: baseCompany.name || "Drive Company",
         shareLink:
-          baseCompany.shareLink ||
-          `/view?id=${encodeURIComponent(idOrFileId)}`,
+          baseCompany.shareLink || `/view?id=${encodeURIComponent(idOrFileId)}`,
         eventFileId: baseCompany.eventFileId,
         eventName: baseCompany.eventName,
         updatedAt: baseCompany.updatedAt || new Date().toISOString(),

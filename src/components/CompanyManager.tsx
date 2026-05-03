@@ -1209,9 +1209,11 @@ export default function CompanyManager() {
         // Select the requested company.
         let selectedCompany: LocalCompany | null = null;
         if (requestedId) {
-          selectedCompany = allCompanies.find((c) => c.id === requestedId) || null;
+          selectedCompany =
+            allCompanies.find((c) => c.id === requestedId) || null;
         } else if (requestedFileId) {
-          selectedCompany = allCompanies.find((c) => c.shareFileId === requestedFileId) || null;
+          selectedCompany =
+            allCompanies.find((c) => c.shareFileId === requestedFileId) || null;
           if (!selectedCompany) {
             restorePersistedAuthState();
             selectedCompany = await loadCompany(requestedFileId);
@@ -1236,7 +1238,9 @@ export default function CompanyManager() {
 
         if (alive) {
           setCompanies(allCompanies);
-          setCompany(selectedCompany ? normalizeCompany(selectedCompany) : null);
+          setCompany(
+            selectedCompany ? normalizeCompany(selectedCompany) : null,
+          );
           setIsLoading(false);
         }
       } catch (error) {
@@ -1322,7 +1326,7 @@ export default function CompanyManager() {
       : [normalized, ...mappedCompanies];
     setCompanies(nextCompanies);
     setCompany(normalized);
-    
+
     // Use data layer to save to appropriate backend
     void (async () => {
       try {
@@ -1461,7 +1465,9 @@ export default function CompanyManager() {
           <h1>{company.name || "Company"}</h1>
           <div className="legacy-company-meta">
             <span className="legacy-storage-chip">
-              {isCompanyDriveBacked(company) ? "Drive-backed Company" : "Local Company"}
+              {isCompanyDriveBacked(company)
+                ? "Drive-backed Company"
+                : "Local Company"}
             </span>
             <span>{troopers.length} troopers</span>
             <span>{totalRenown} renown</span>

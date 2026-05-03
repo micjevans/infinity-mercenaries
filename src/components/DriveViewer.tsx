@@ -109,7 +109,9 @@ export default function DriveViewer() {
   if (isCompanyFile && fileId) {
     // Use a meta redirect since we're in a React component in Astro
     if (typeof window !== "undefined") {
-      window.location.replace(`/companies/manage/?fileId=${encodeURIComponent(fileId)}`);
+      window.location.replace(
+        `/companies/manage/?fileId=${encodeURIComponent(fileId)}`,
+      );
     }
     return (
       <div className="viewer-state">
@@ -131,7 +133,8 @@ export default function DriveViewer() {
           <>
             <div className="data-display">
               <p>
-                <strong>Event Name:</strong> {data?.event?.name || "Unnamed event"}
+                <strong>Event Name:</strong>{" "}
+                {data?.event?.name || "Unnamed event"}
               </p>
               {data?.event?.location && (
                 <p>
@@ -140,7 +143,8 @@ export default function DriveViewer() {
               )}
               {data?.event?.startDate && (
                 <p>
-                  <strong>Starts:</strong> {formatDateTime(data.event.startDate)}
+                  <strong>Starts:</strong>{" "}
+                  {formatDateTime(data.event.startDate)}
                 </p>
               )}
             </div>
@@ -149,10 +153,14 @@ export default function DriveViewer() {
                 <strong>Event Workspace</strong>
               </p>
               <p>
-                Register companies and create rounds/pairings from the event management workspace.
+                Register companies and create rounds/pairings from the event
+                management workspace.
               </p>
               {fileId && (
-                <a className="primary-btn" href={`/events/manage/?fileId=${encodeURIComponent(fileId)}`}>
+                <a
+                  className="primary-btn"
+                  href={`/events/manage/?fileId=${encodeURIComponent(fileId)}`}
+                >
                   Open Event Workspace
                 </a>
               )}
