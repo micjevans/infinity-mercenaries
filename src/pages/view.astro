@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DriveViewer from "../components/DriveViewer";
+---
+
+<BaseLayout title="View Shared Data">
+  <div class="view-container">
+    <h1>Shared Data Viewer</h1>
+    <p class="lead">Viewing data shared by another user.</p>
+    <DriveViewer client:load />
+  </div>
+</BaseLayout>
+
+<style>
+  .view-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  h1 {
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+
+  .lead {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .viewer-state {
+    margin-top: 2rem;
+  }
+
+  .viewer-content {
+    margin-top: 1rem;
+  }
+
+  .viewer-meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .form-section h2 {
+    margin-top: 0;
+    color: var(--lilac);
+  }
+
+  .data-display {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  .data-display p {
+    margin: 0.5rem 0;
+    color: var(--text);
+  }
+
+  .data-display strong {
+    color: var(--lilac-soft);
+  }
+
+  .data-display pre {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 0.8rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0.5rem 0;
+  }
+
+  .viewer-register-group {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .viewer-register-group input {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+    color: var(--text);
+    padding: 0.65rem;
+    border-radius: 0.3rem;
+    font: inherit;
+  }
+
+  .registered-company-list {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .registered-company-list li {
+    display: grid;
+    gap: 0.15rem;
+    border: 1px solid var(--line);
+    padding: 0.55rem 0.65rem;
+    background: rgba(14, 15, 13, 0.38);
+  }
+
+  .registered-company-list a {
+    color: var(--teal);
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  .registered-company-list span {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .primary-btn {
+    width: fit-content;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    background: var(--amber);
+    color: #16130d;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .primary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .error-message {
+    padding: 0.8rem;
+    background: rgba(216, 76, 62, 0.15);
+    border: 1px solid var(--red);
+    border-radius: 0.3rem;
+    color: #ff9999;
+  }
+
+  .info-message {
+    padding: 0.8rem;
+    background: rgba(56, 183, 164, 0.15);
+    border: 1px solid var(--teal);
+    border-radius: 0.3rem;
+    color: #65d9ca;
+  }
+</style>

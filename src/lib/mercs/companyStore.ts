@@ -11,6 +11,13 @@ export type LocalCompany = Company & {
   createdAt: string;
   updatedAt: string;
   description?: string;
+  eventFileId?: string;
+  eventName?: string;
+  eventLink?: string;
+  shareFileId?: string;
+  shareLink?: string;
+  companyEventFileId?: string;
+  companyEventShareLink?: string;
 };
 
 export type NewCompanyInput = {

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import GoogleAuthButton from "../components/GoogleAuthButton";
 
 interface Props {
   title?: string;
@@ -8,10 +9,16 @@ interface Props {
 
 const {
   title = "Infinity: Mercenaries",
-  description = "A narrative campaign framework for Infinity N5 mercenary companies."
+  description = "A narrative campaign framework for Infinity N5 mercenary companies.",
 } = Astro.props;
 
-const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infinity: Mercenaries`;
+const pageTitle =
+  title === "Infinity: Mercenaries"
+    ? title
+    : `${title} | Infinity: Mercenaries`;
+
+const googleClientId =
+  import.meta.env.PUBLIC_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
 ---
 
 <!doctype html>
@@ -29,6 +36,8 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
       href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>{pageTitle}</title>
   </head>
   <body>
@@ -36,7 +45,12 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
     <header class="site-header">
       <nav class="site-nav" aria-label="Main navigation">
         <a class="brand" href="/">
-          <img class="brand-mark" src="/images/m2-logo.png" alt="" aria-hidden="true" />
+          <img
+            class="brand-mark"
+            src="/images/m2-logo.png"
+            alt=""
+            aria-hidden="true"
+          />
           <span>Infinity: Mercenaries</span>
         </a>
         <div class="nav-links">
@@ -47,7 +61,12 @@ const pageTitle = title === "Infinity: Mercenaries" ? title : `${title} | Infini
           <a href="/#campaign">Campaign</a>
           <a href="/#tutorial">Tutorial</a>
           <a href="/#resources">Resources</a>
-          <a href="https://discord.gg/QJyzrQZGvG" target="_blank" rel="noreferrer">Discord</a>
+          <a
+            href="https://discord.gg/QJyzrQZGvG"
+            target="_blank"
+            rel="noreferrer">Discord</a
+          >
+          <GoogleAuthButton client:load clientId={googleClientId} />
         </div>
       </nav>
     </header>

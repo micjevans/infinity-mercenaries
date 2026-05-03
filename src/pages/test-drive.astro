@@ -1,0 +1,291 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TestDriveClient from "../components/TestDriveClient";
+---
+
+<BaseLayout title="Test Drive Integration">
+  <div class="test-drive-container">
+    <h1>Google Drive Integration Test</h1>
+    <p class="lead">Test reading and writing data to your Google Drive.</p>
+
+    <div class="test-info">
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          Sign in with your Google account using the button in the navigation
+          bar
+        </li>
+        <li>Fill in the form below with test data</li>
+        <li>Click "Save to Drive" to write the data to your Drive</li>
+        <li>Click "Load from Drive" to read the data back</li>
+        <li>
+          Check your Google Drive for the <code>infinity-data.json</code> file
+        </li>
+      </ol>
+    </div>
+
+    <TestDriveClient client:load />
+  </div>
+</BaseLayout>
+
+<style>
+  .test-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form-section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+
+  .form-section h2 {
+    margin-top: 0;
+    color: var(--lilac);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  label {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  input,
+  textarea {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 0.7rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(242, 169, 59, 0.2);
+  }
+
+  input:disabled,
+  textarea:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .primary-btn {
+    background: var(--amber);
+    color: #16130d;
+  }
+
+  .primary-btn:hover:not(:disabled) {
+    background: #f5b854;
+    transform: translateY(-1px);
+  }
+
+  .secondary-btn {
+    background: var(--lilac);
+    color: #16130d;
+  }
+
+  .secondary-btn:hover:not(:disabled) {
+    background: var(--lilac-soft);
+    transform: translateY(-1px);
+  }
+
+  .primary-btn:disabled,
+  .secondary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .error-message {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(216, 76, 62, 0.15);
+    border: 1px solid var(--red);
+    border-radius: 0.3rem;
+    color: #ff9999;
+  }
+
+  .success-message {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(56, 183, 164, 0.15);
+    border: 1px solid var(--teal);
+    border-radius: 0.3rem;
+    color: #65d9ca;
+  }
+
+  .info-message {
+    padding: 0.8rem;
+    background: rgba(56, 183, 164, 0.15);
+    border: 1px solid var(--teal);
+    border-radius: 0.3rem;
+    color: #65d9ca;
+  }
+
+  .data-display {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  .data-display p {
+    margin: 0.5rem 0;
+    color: var(--text);
+  }
+
+  .data-display strong {
+    color: var(--lilac-soft);
+  }
+
+  .data-display pre {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 0.8rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0.5rem 0;
+  }
+
+  .share-description {
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .share-link-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--teal);
+    border-radius: 0.4rem;
+  }
+
+  .share-link-box p {
+    margin: 0 0 0.5rem;
+    color: var(--text);
+  }
+
+  .share-link-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .share-link-row input {
+    flex: 1;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    padding: 0.6rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-family: monospace;
+  }
+
+  .copy-btn {
+    padding: 0.6rem 1rem;
+    background: var(--teal);
+    color: #0e0f0d;
+    border: none;
+    border-radius: 0.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .copy-btn:hover {
+    background: #4dcfbd;
+  }
+
+  .share-preview-link {
+    display: inline-block;
+    margin-top: 0.6rem;
+    color: var(--teal);
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+</style>
+
+<style>
+  .test-drive-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  h1 {
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+
+  .lead {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .test-info {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .test-info h2 {
+    margin-top: 0;
+    color: var(--lilac);
+  }
+
+  .test-info ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .test-info li {
+    margin-bottom: 0.7rem;
+    color: var(--text);
+  }
+
+  .test-info code {
+    background: var(--bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.9em;
+  }
+</style>

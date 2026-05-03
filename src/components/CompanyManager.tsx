@@ -7,6 +7,16 @@ import {
   updateCompanySectorials,
   type LocalCompany,
 } from "../lib/mercs/companyStore";
+import {
+  loadCompany,
+  loadAllCompanies,
+  saveCompany as saveCompanyToLayer,
+  isCompanyDriveBacked,
+} from "../lib/mercs/companyDataLayer";
+import {
+  isSignedIn as getGoogleSignedIn,
+  restorePersistedAuthState,
+} from "../lib/google-drive-adapter";
 import { perkTrees, type Perk } from "../data/perks";
 import baseMarket from "../data/infinity/markets/baseMarket.json";
 import silhouetteImage from "../legacy/old-app/assets/images/silhouette.png?url";
@@ -1180,17 +1190,66 @@ export default function CompanyManager() {
   const [addTrooperOpen, setAddTrooperOpen] = useState(false);
   const [editingTrooper, setEditingTrooper] = useState<any | null>(null);
   const [shopOpen, setShopOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadedCompanies = loadLocalCompanies();
-    const params = new URLSearchParams(window.location.search);
-    const requestedId = params.get("id");
-    const selectedCompany =
-      loadedCompanies.find((item) => item.id === requestedId) ||
-      loadedCompanies[0] ||
-      null;
-    setCompanies(loadedCompanies);
-    setCompany(selectedCompany ? normalizeCompany(selectedCompany) : null);
+    let alive = true;
+    void (async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const requestedId = params.get("id");
+        const requestedFileId = params.get("fileId");
+        const hasExplicitRequest = Boolean(requestedId || requestedFileId);
+        const waitForAuthTick = () =>
+          new Promise<void>((resolve) => window.setTimeout(resolve, 250));
+
+        // Load all companies for the list. This may be local-only until auth is ready.
+        const allCompanies = await loadAllCompanies();
+
+        // Select the requested company.
+        let selectedCompany: LocalCompany | null = null;
+        if (requestedId) {
+          selectedCompany = allCompanies.find((c) => c.id === requestedId) || null;
+        } else if (requestedFileId) {
+          selectedCompany = allCompanies.find((c) => c.shareFileId === requestedFileId) || null;
+          if (!selectedCompany) {
+            restorePersistedAuthState();
+            selectedCompany = await loadCompany(requestedFileId);
+          }
+
+          // If auth is still initializing, briefly wait and retry direct file load.
+          if (!selectedCompany && !getGoogleSignedIn()) {
+            for (let attempt = 0; attempt < 8; attempt += 1) {
+              if (!alive) break;
+              await waitForAuthTick();
+              if (restorePersistedAuthState() || getGoogleSignedIn()) {
+                selectedCompany = await loadCompany(requestedFileId);
+                if (selectedCompany) break;
+              }
+            }
+          }
+        }
+        // Only default to the first company when no explicit route param is provided.
+        if (!selectedCompany && !hasExplicitRequest) {
+          selectedCompany = allCompanies[0] || null;
+        }
+
+        if (alive) {
+          setCompanies(allCompanies);
+          setCompany(selectedCompany ? normalizeCompany(selectedCompany) : null);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Failed to load companies:", error);
+        if (alive) {
+          setIsLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
   const troopers = (company?.troopers || []) as any[];
@@ -1218,6 +1277,7 @@ export default function CompanyManager() {
   );
 
   function normalizeCompany(value: LocalCompany): LocalCompany {
+    const driveBacked = Boolean(value.shareFileId || value.shareLink);
     return {
       ...value,
       sectorials: value.sectorials || [],
@@ -1226,7 +1286,7 @@ export default function CompanyManager() {
       credits: value.credits || 0,
       sponsor: value.sponsor || "",
       troopers: value.troopers || [],
-      local: value.local ?? true,
+      local: value.local ?? !driveBacked,
     };
   }
 
@@ -1245,15 +1305,36 @@ export default function CompanyManager() {
   }
 
   function saveCompany(nextCompany = company) {
-    if (!nextCompany) return;
+    if (!nextCompany || isLoading) return;
     const normalized = normalizeCompany(nextCompany);
-    const nextCompanies = companies.map((item) =>
-      item.id === normalized.id ? normalized : item,
+    const mappedCompanies = companies.map((item) =>
+      item.id === normalized.id || item.shareFileId === normalized.shareFileId
+        ? normalized
+        : item,
     );
+    const exists = mappedCompanies.some(
+      (item) =>
+        item.id === normalized.id ||
+        (item.shareFileId && item.shareFileId === normalized.shareFileId),
+    );
+    const nextCompanies = exists
+      ? mappedCompanies
+      : [normalized, ...mappedCompanies];
     setCompanies(nextCompanies);
     setCompany(normalized);
-    saveLocalCompanies(nextCompanies);
-    setIsModified(false);
+    
+    // Use data layer to save to appropriate backend
+    void (async () => {
+      try {
+        await saveCompanyToLayer(normalized);
+        setIsModified(false);
+      } catch (error) {
+        console.error("Failed to save company:", error);
+        // Revert UI state on save failure
+        setCompany(company);
+        setCompanies(companies);
+      }
+    })();
   }
 
   function addTrooper(trooper: any) {
@@ -1324,13 +1405,33 @@ export default function CompanyManager() {
     saveCompany(nextCompany);
   }
 
+  if (isLoading) {
+    return (
+      <section className="company-manager legacy-company-page">
+        <div className="company-empty-state">
+          <span className="panel-kicker">Loading</span>
+          <h1>Opening Company...</h1>
+        </div>
+      </section>
+    );
+  }
+
   if (!company) {
+    const requestedFileId =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("fileId")
+        : null;
+
     return (
       <section className="company-manager legacy-company-page">
         <div className="company-empty-state">
           <span className="panel-kicker">No Company Selected</span>
           <h1>Open a Company</h1>
-          <p>This page needs a company id from the company list.</p>
+          <p>
+            {requestedFileId
+              ? "Could not load this Drive company yet. Make sure you are signed in and still have access to the file."
+              : "This page needs a company id from the company list."}
+          </p>
           <a
             className="command-button command-button--primary"
             href="/companies/"
@@ -1360,7 +1461,7 @@ export default function CompanyManager() {
           <h1>{company.name || "Company"}</h1>
           <div className="legacy-company-meta">
             <span className="legacy-storage-chip">
-              {company.local ? "Local Company" : "Database Company"}
+              {isCompanyDriveBacked(company) ? "Drive-backed Company" : "Local Company"}
             </span>
             <span>{troopers.length} troopers</span>
             <span>{totalRenown} renown</span>

@@ -97,13 +97,19 @@ function makeId(prefix: string): string {
 }
 
 function canUseStorage(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 function sortEvents(events: LocalEvent[]): LocalEvent[] {
   return [...events].sort((a, b) => {
-    const aTime = a.startDate ? new Date(a.startDate).getTime() : new Date(a.createdAt).getTime();
-    const bTime = b.startDate ? new Date(b.startDate).getTime() : new Date(b.createdAt).getTime();
+    const aTime = a.startDate
+      ? new Date(a.startDate).getTime()
+      : new Date(a.createdAt).getTime();
+    const bTime = b.startDate
+      ? new Date(b.startDate).getTime()
+      : new Date(b.createdAt).getTime();
     return bTime - aTime;
   });
 }
@@ -111,7 +117,7 @@ function sortEvents(events: LocalEvent[]): LocalEvent[] {
 function touchEvent(event: LocalEvent): LocalEvent {
   return {
     ...event,
-    updatedAt: nowIso()
+    updatedAt: nowIso(),
   };
 }
 
@@ -152,7 +158,7 @@ export function createLocalEvent(input: NewEventInput): LocalEvent {
     rounds: [],
     organizers: ["local-organizer"],
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
   };
 }
 
@@ -177,11 +183,16 @@ export function deleteLocalEvent(eventId: string): LocalEvent[] {
   return events;
 }
 
-export function addEventParticipant(eventId: string, input: { userName: string; company: LocalCompany }): LocalEvent | null {
+export function addEventParticipant(
+  eventId: string,
+  input: { userName: string; company: LocalCompany },
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event) return null;
 
-  const existingParticipant = event.participants.find((participant) => participant.companyId === input.company.id);
+  const existingParticipant = event.participants.find(
+    (participant) => participant.companyId === input.company.id,
+  );
   if (existingParticipant) return event;
 
   const participant: EventParticipant = {
@@ -189,36 +200,54 @@ export function addEventParticipant(eventId: string, input: { userName: string; 
     userName: input.userName.trim() || "Local Player",
     companyId: input.company.id,
     companyName: input.company.name,
-    registeredAt: nowIso()
+    registeredAt: nowIso(),
   };
 
   const updatedEvent = touchEvent({
     ...event,
-    participants: [...event.participants, participant]
+    participants: [...event.participants, participant],
   });
 
   upsertLocalEvent(updatedEvent);
   return updatedEvent;
 }
 
-export function removeEventParticipant(eventId: string, participantId: string): LocalEvent | null {
+export function removeEventParticipant(
+  eventId: string,
+  participantId: string,
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event) return null;
 
   const updatedEvent = touchEvent({
     ...event,
-    participants: event.participants.filter((participant) => participant.id !== participantId),
+    participants: event.participants.filter(
+      (participant) => participant.id !== participantId,
+    ),
     rounds: event.rounds.map((round) => ({
       ...round,
-      pairings: round.pairings.filter((pairing) => pairing.player1Id !== participantId && pairing.player2Id !== participantId)
-    }))
+      pairings: round.pairings.filter(
+        (pairing) =>
+          pairing.player1Id !== participantId &&
+          pairing.player2Id !== participantId,
+      ),
+    })),
   });
 
   upsertLocalEvent(updatedEvent);
   return updatedEvent;
 }
 
-export function createEventRound(eventId: string, input: { name?: string; startDate?: string; endDate?: string; mission?: string; description?: string }): LocalEvent | null {
+export function createEventRound(
+  eventId: string,
+  input: {
+    name?: string;
+    startDate?: string;
+    endDate?: string;
+    mission?: string;
+    description?: string;
+  },
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event) return null;
 
@@ -234,19 +263,25 @@ export function createEventRound(eventId: string, input: { name?: string; startD
     description: input.description?.trim() || "",
     pairings: [],
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
   };
 
   const updatedEvent = touchEvent({
     ...event,
-    rounds: [...event.rounds, round]
+    rounds: [...event.rounds, round],
   });
 
   upsertLocalEvent(updatedEvent);
   return updatedEvent;
 }
 
-export function updateEventRound(eventId: string, roundId: string, input: Partial<Omit<EventRound, "id" | "number" | "pairings" | "createdAt" | "updatedAt">>): LocalEvent | null {
+export function updateEventRound(
+  eventId: string,
+  roundId: string,
+  input: Partial<
+    Omit<EventRound, "id" | "number" | "pairings" | "createdAt" | "updatedAt">
+  >,
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event) return null;
 
@@ -257,17 +292,21 @@ export function updateEventRound(eventId: string, roundId: string, input: Partia
         ? {
             ...round,
             ...input,
-            updatedAt: nowIso()
+            updatedAt: nowIso(),
           }
-        : round
-    )
+        : round,
+    ),
   });
 
   upsertLocalEvent(updatedEvent);
   return updatedEvent;
 }
 
-export function createEventPairing(eventId: string, roundId: string, input: { player1Id: string; player2Id: string; mission?: string }): LocalEvent | null {
+export function createEventPairing(
+  eventId: string,
+  roundId: string,
+  input: { player1Id: string; player2Id: string; mission?: string },
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event || input.player1Id === input.player2Id) return null;
 
@@ -280,7 +319,7 @@ export function createEventPairing(eventId: string, roundId: string, input: { pl
     complete: false,
     results: {},
     createdAt: timestamp,
-    updatedAt: timestamp
+    updatedAt: timestamp,
   };
 
   const updatedEvent = touchEvent({
@@ -290,10 +329,10 @@ export function createEventPairing(eventId: string, roundId: string, input: { pl
         ? {
             ...round,
             pairings: [...round.pairings, pairing],
-            updatedAt: timestamp
+            updatedAt: timestamp,
           }
-        : round
-    )
+        : round,
+    ),
   });
 
   upsertLocalEvent(updatedEvent);
@@ -304,15 +343,25 @@ export function getAvailableEventCompanies(): LocalCompany[] {
   return loadLocalCompanies();
 }
 
-export function getEventRoundPairing(eventId: string, roundId: string, pairingId: string) {
+export function getEventRoundPairing(
+  eventId: string,
+  roundId: string,
+  pairingId: string,
+) {
   const event = getLocalEvent(eventId);
   const round = event?.rounds.find((entry) => entry.id === roundId) || null;
-  const pairing = round?.pairings.find((entry) => entry.id === pairingId) || null;
+  const pairing =
+    round?.pairings.find((entry) => entry.id === pairingId) || null;
 
   return { event, round, pairing };
 }
 
-export function upsertPairingResult(eventId: string, roundId: string, pairingId: string, result: PairingResult): LocalEvent | null {
+export function upsertPairingResult(
+  eventId: string,
+  roundId: string,
+  pairingId: string,
+  result: PairingResult,
+): LocalEvent | null {
   const event = getLocalEvent(eventId);
   if (!event) return null;
 
@@ -331,22 +380,25 @@ export function upsertPairingResult(eventId: string, roundId: string, pairingId:
                 ...(pairing.results || {}),
                 [result.participantId]: {
                   ...result,
-                  updatedAt: timestamp
-                }
+                  updatedAt: timestamp,
+                },
               };
 
-              const bothSubmitted = [pairing.player1Id, pairing.player2Id].every((participantId) => results[participantId]?.submitted);
+              const bothSubmitted = [
+                pairing.player1Id,
+                pairing.player2Id,
+              ].every((participantId) => results[participantId]?.submitted);
 
               return {
                 ...pairing,
                 results,
                 complete: bothSubmitted,
-                updatedAt: timestamp
+                updatedAt: timestamp,
               };
-            })
+            }),
           }
-        : round
-    )
+        : round,
+    ),
   });
 
   upsertLocalEvent(updatedEvent);

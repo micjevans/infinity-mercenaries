@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CreateCompanyWizard from "../../../components/CreateCompanyWizard";
+---
+
+<BaseLayout
+  title="Create Company"
+  description="Create a company and generate a shareable Drive file for organizers."
+>
+  <CreateCompanyWizard client:load />
+</BaseLayout>

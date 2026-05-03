@@ -4,8 +4,16 @@ import {
   loadLocalCompanies,
   type LocalCompany,
 } from "../lib/mercs/companyStore";
+import {
+  isSignedIn as getGoogleSignedIn,
+  subscribeAuthState,
+  listAppDataCompanyReferences,
+  checkSharedFileAccess,
+  removeAppDataCompanyReference,
+  deleteSharedFile,
+  type AppDataCompanyReference,
+} from "../lib/google-drive-adapter";
 import { AppIcon } from "./AppIcon";
-import CreateCompanyWizard from "./CreateCompanyWizard";
 
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -21,28 +29,134 @@ function getCompanyHref(companyId: string): string {
 
 export default function CompanyListPage() {
   const [companies, setCompanies] = useState<LocalCompany[]>([]);
-  const [showWizard, setShowWizard] = useState(false);
+  const [driveCompanies, setDriveCompanies] = useState<AppDataCompanyReference[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [signedIn, setSignedIn] = useState(false);
+  const [brokenFileIds, setBrokenFileIds] = useState<Set<string>>(new Set());
+  const [deletingFileIds, setDeletingFileIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setCompanies(loadLocalCompanies());
   }, []);
 
-  const filteredCompanies = useMemo(() => {
-    const normalized = searchTerm.trim().toLowerCase();
-    if (!normalized) return companies;
-    return companies.filter((company) =>
-      company.name.toLowerCase().includes(normalized),
-    );
-  }, [companies, searchTerm]);
+  useEffect(() => {
+    return subscribeAuthState((nextSignedIn) => {
+      setSignedIn(nextSignedIn);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!signedIn) {
+      setDriveCompanies([]);
+      return;
+    }
+
+    let alive = true;
+    listAppDataCompanyReferences()
+      .then((entries) => {
+        if (!alive) return;
+        setDriveCompanies(entries);
+      })
+      .catch((error) => {
+        console.error("Failed to load appdata company index:", error);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [signedIn]);
+
+  useEffect(() => {
+    if (!signedIn || driveCompanies.length === 0) {
+      setBrokenFileIds(new Set());
+      return;
+    }
+
+    let alive = true;
+    void (async () => {
+      const broken = new Set<string>();
+      for (const company of driveCompanies) {
+        const isAccessible = await checkSharedFileAccess(company.fileId);
+        if (!isAccessible) {
+          broken.add(company.fileId);
+        }
+      }
+      if (alive) setBrokenFileIds(broken);
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [signedIn, driveCompanies]);
 
   function handleDeleteCompany(companyId: string) {
     setCompanies(deleteLocalCompany(companyId));
   }
 
-  if (showWizard) {
-    return <CreateCompanyWizard onCancel={() => setShowWizard(false)} />;
+  async function handleDeleteDriveCompany(fileId: string, companyName: string) {
+    if (!window.confirm(`Delete "${companyName}" from Drive and remove from your account?`)) return;
+
+    setDeletingFileIds((current) => new Set([...current, fileId]));
+    try {
+      await deleteSharedFile(fileId);
+      await removeAppDataCompanyReference(fileId);
+      setDriveCompanies((current) => current.filter((company) => company.fileId !== fileId));
+    } catch (error) {
+      console.error("Failed to delete company:", error);
+    } finally {
+      setDeletingFileIds((current) => {
+        const next = new Set(current);
+        next.delete(fileId);
+        return next;
+      });
+    }
   }
+
+  async function handleCleanupBrokenCompanyReference(fileId: string, companyName: string) {
+    if (!window.confirm(`Remove broken reference to "${companyName}" from your account?`)) return;
+
+    setDeletingFileIds((current) => new Set([...current, fileId]));
+    try {
+      await removeAppDataCompanyReference(fileId);
+      setDriveCompanies((current) => current.filter((company) => company.fileId !== fileId));
+      setBrokenFileIds((current) => {
+        const next = new Set(current);
+        next.delete(fileId);
+        return next;
+      });
+    } catch (error) {
+      console.error("Failed to remove reference:", error);
+    } finally {
+      setDeletingFileIds((current) => {
+        const next = new Set(current);
+        next.delete(fileId);
+        return next;
+      });
+    }
+  }
+
+  const localOnlyCompanies = useMemo(
+    () => companies.filter((company) => !company.shareFileId && !company.shareLink),
+    [companies],
+  );
+
+  const filteredCompanies = useMemo(() => {
+    const normalized = searchTerm.trim().toLowerCase();
+    if (!normalized) return localOnlyCompanies;
+    return localOnlyCompanies.filter((company) =>
+      company.name.toLowerCase().includes(normalized),
+    );
+  }, [localOnlyCompanies, searchTerm]);
+
+  const filteredDriveCompanies = useMemo(() => {
+    const normalized = searchTerm.trim().toLowerCase();
+    if (!normalized) return driveCompanies;
+    return driveCompanies.filter((company) =>
+      [company.name, company.eventName || ""].some((value) =>
+        value.toLowerCase().includes(normalized),
+      ),
+    );
+  }, [driveCompanies, searchTerm]);
 
   return (
     <section
@@ -52,77 +166,114 @@ export default function CompanyListPage() {
       <div className="company-manager__masthead">
         <p className="eyebrow">Company Command</p>
         <h1>Companies</h1>
-        <p>
-          Create and open local mercenary companies. The detailed manager lives
-          on its own page so the workspace has room to breathe.
-        </p>
+        <p>Manage your saved companies and open each roster workspace.</p>
       </div>
 
-      <div className="company-list-layout">
-        <section className="company-section-card company-create-card">
-          <span className="panel-kicker">Local Storage</span>
-          <h2>Create Company</h2>
-          <p>
-            Set up a name, company type, sectorials, and captain before
-            accessing the full manager.
-          </p>
-          <button
-            className="command-button command-button--primary"
-            type="button"
-            onClick={() => setShowWizard(true)}
-          >
-            <AppIcon name="add" size={16} />
-            New Company
-          </button>
-        </section>
+      <div className="event-list-toolbar">
+        <a className="command-button command-button--primary" href="/companies/create/">
+          <AppIcon name="add" size={16} />
+          New Company
+        </a>
+      </div>
 
-        <section className="company-section-card company-index-card">
-          <div className="section-heading-row">
-            <div>
-              <span className="panel-kicker">Saved Companies</span>
-              <h2>Roster Files</h2>
-            </div>
-            <span className="company-count">{companies.length}</span>
+      <section className="company-section-card company-index-card">
+        <div className="section-heading-row">
+          <div>
+            <span className="panel-kicker">Saved Companies</span>
+            <h2>Company List</h2>
           </div>
+          <span className="company-count">{filteredCompanies.length + filteredDriveCompanies.length}</span>
+        </div>
 
-          <label className="field">
-            <span>Search</span>
-            <input
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Find a company"
-            />
-          </label>
+        <label className="field">
+          <span>Search</span>
+          <input
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Find by company or linked event"
+          />
+        </label>
 
-          <div className="company-card-list">
-            {filteredCompanies.map((company) => (
-              <article className="company-index-item" key={company.id}>
-                <a href={getCompanyHref(company.id)}>
-                  <span className="panel-kicker">
-                    {company.sectorial1?.name || "No sectorial selected"}
-                  </span>
+        <div className="company-card-list">
+          {filteredCompanies.map((company) => (
+            <article className="company-index-item" key={company.id}>
+              <a href={getCompanyHref(company.id)}>
+                <span className="panel-kicker">
+                  {company.sectorial1?.name || "No sectorial selected"}
+                </span>
+                <h3>{company.name}</h3>
+                <p>
+                  {company.troopers?.length || 0} troopers. Updated{" "}
+                  {formatDate(company.updatedAt)}.
+                </p>
+                {company.eventName && (
+                  <p>Linked event: {company.eventName}</p>
+                )}
+              </a>
+              <button
+                className="command-button command-button--danger"
+                type="button"
+                onClick={() => handleDeleteCompany(company.id)}
+              >
+                <AppIcon name="trash" size={16} />
+                Delete
+              </button>
+            </article>
+          ))}
+
+          {filteredDriveCompanies.map((company) => (
+            <article className="company-index-item" key={`drive-${company.fileId}`}>
+              {brokenFileIds.has(company.fileId) ? (
+                <div>
+                  <span className="panel-kicker">Drive-backed (Broken Link)</span>
+                  <h3>{company.name}</h3>
+                  <p>File not found. Organizer or co-owner may have deleted it.</p>
+                  {company.eventName && <p>Was linked event: {company.eventName}</p>}
+                </div>
+              ) : (
+                <a href={company.shareLink || `/view?id=${encodeURIComponent(company.fileId)}`}>
+                  <span className="panel-kicker">Drive-backed</span>
                   <h3>{company.name}</h3>
                   <p>
-                    {company.troopers?.length || 0} troopers. Updated{" "}
-                    {formatDate(company.updatedAt)}.
+                    Shared company file. Updated {formatDate(company.updatedAt)}.
                   </p>
+                  {company.eventName && <p>Linked event: {company.eventName}</p>}
                 </a>
+              )}
+              {brokenFileIds.has(company.fileId) ? (
                 <button
                   className="command-button command-button--danger"
                   type="button"
-                  onClick={() => handleDeleteCompany(company.id)}
+                  disabled={deletingFileIds.has(company.fileId)}
+                  onClick={() => handleCleanupBrokenCompanyReference(company.fileId, company.name)}
                 >
                   <AppIcon name="trash" size={16} />
-                  Delete
+                  {deletingFileIds.has(company.fileId) ? "Removing..." : "Remove Reference"}
                 </button>
-              </article>
-            ))}
-            {filteredCompanies.length === 0 && (
-              <p className="empty-note">No companies found.</p>
-            )}
-          </div>
-        </section>
-      </div>
+              ) : (
+                <>
+                  <a className="command-button" href={company.shareLink || `/view?id=${encodeURIComponent(company.fileId)}`}>
+                    Open
+                  </a>
+                  <button
+                    className="command-button command-button--danger"
+                    type="button"
+                    disabled={deletingFileIds.has(company.fileId)}
+                    onClick={() => handleDeleteDriveCompany(company.fileId, company.name)}
+                  >
+                    <AppIcon name="trash" size={16} />
+                    {deletingFileIds.has(company.fileId) ? "Deleting..." : "Delete"}
+                  </button>
+                </>
+              )}
+            </article>
+          ))}
+
+          {filteredCompanies.length === 0 && filteredDriveCompanies.length === 0 && (
+            <p className="empty-note">No companies found.</p>
+          )}
+        </div>
+      </section>
     </section>
   );
 }

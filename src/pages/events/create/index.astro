@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CreateEventWizard from "../../../components/CreateEventWizard";
+---
+
+<BaseLayout
+  title="Create Event"
+  description="Create a shareable event file for Infinity: Mercenaries organizers."
+>
+  <section class="company-manager event-manager" aria-label="Create Event">
+    <div class="company-manager__masthead">
+      <p class="eyebrow">Organizer Tools</p>
+      <h1>Create Event</h1>
+      <p>Set your event details, configure starting conditions, and generate a player-ready share link.</p>
+    </div>
+
+    <div class="event-list-toolbar">
+      <a class="command-button" href="/events/">Back to Event List</a>
+    </div>
+
+    <CreateEventWizard client:load />
+  </section>
+</BaseLayout>

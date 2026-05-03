@@ -138,6 +138,66 @@ img {
   outline: none;
 }
 
+/* Google Auth Button Styles */
+.google-auth-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.login-btn,
+.logout-btn {
+  min-height: 2.4rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--amber);
+  color: #16130d;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.login-btn:hover:not(:disabled),
+.logout-btn:hover:not(:disabled) {
+  background: #f5b854;
+  transform: translateY(-1px);
+}
+
+.login-btn:disabled,
+.logout-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.user-name {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.auth-error {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  background: var(--red);
+  color: var(--text);
+  font-size: 0.85rem;
+  border-radius: 0.3rem;
+  white-space: nowrap;
+  z-index: 100;
+}
+
 .hero {
   position: relative;
   min-height: calc(100svh - var(--header-height));
@@ -5599,6 +5659,10 @@ details.patch-section[open] > summary {
   background: rgba(248, 113, 113, 0.06);
 }
 
+.company-wizard__error-text {
+  color: #ff9187;
+}
+
 /* ── Footer ──────────────────────────────────────────────────────────── */
 
 .company-wizard__footer {
@@ -7520,6 +7584,12 @@ details.patch-section[open] > summary {
   align-items: start;
 }
 
+.event-list-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem;
+}
+
 .event-form,
 .event-tool-panel {
   display: grid;
@@ -7574,6 +7644,73 @@ details.patch-section[open] > summary {
 
 .event-form-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.event-form-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.event-create-wizard .company-wizard__masthead {
+  margin-bottom: 0.75rem;
+}
+
+.event-create-wizard .company-wizard__masthead h2 {
+  margin: 0.35rem 0 0;
+  font-size: 1.5rem;
+}
+
+.event-create-wizard .company-wizard__panel h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.event-create-wizard .company-wizard__panel > p {
+  margin: 0.45rem 0 0.9rem;
+  color: var(--muted);
+}
+
+.event-wizard-note {
+  margin-bottom: 0.8rem;
+}
+
+.event-cr-suggestions {
+  border: 1px solid rgba(56, 183, 164, 0.32);
+  background: rgba(56, 183, 164, 0.08);
+  padding: 0.85rem;
+}
+
+.event-cr-suggestions ul {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.event-cr-suggestions li {
+  color: var(--text);
+}
+
+.wizard-actions-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 0.9rem;
+}
+
+.event-wizard-file-note {
+  margin: 0.7rem 0;
+  color: var(--muted);
+}
+
+.event-wizard-file-note a {
+  color: var(--teal);
+}
+
+.event-wizard-warning {
+  border: 1px solid rgba(242, 169, 59, 0.42);
+  background: rgba(242, 169, 59, 0.12);
+  color: var(--text);
+  padding: 0.75rem 0.8rem;
 }
 
 .event-register-grid {
@@ -7959,6 +8096,10 @@ button.pairing-trooper-row:focus-visible {
   margin-top: 1rem;
 }
 
+.pairing-step-actions--flush {
+  margin-top: 0;
+}
+
 .pairing-mission-header {
   display: flex;
   justify-content: space-between;
@@ -8082,10 +8223,62 @@ button.pairing-trooper-row:focus-visible {
   padding-top: 0.35rem;
 }
 
+.pairing-force-item-with-note {
+  align-items: flex-start;
+}
+
+.pairing-force-item-with-note div {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.pairing-force-item-with-note strong {
+  color: var(--text);
+}
+
+.pairing-force-item-with-note small {
+  color: var(--teal);
+  font-size: 0.72rem;
+}
+
 .pairing-force-card li span {
   color: var(--amber);
   font-weight: 850;
   white-space: nowrap;
+}
+
+.pairing-inducement-inline {
+  display: block;
+  color: var(--teal);
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
+.pairing-inducement-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.pairing-inducement-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pairing-inducement-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 0.6rem;
+  align-items: end;
+  border: 1px solid rgba(243, 240, 232, 0.1);
+  background: rgba(243, 240, 232, 0.03);
+  padding: 0.6rem;
+}
+
+.is-over-budget {
+  color: #ff8f8f;
 }
 
 @media (max-width: 900px) {
@@ -8133,7 +8326,9 @@ button.pairing-trooper-row:focus-visible {
   }
 
   .pairing-mission-header,
-  .pairing-score-controls {
+  .pairing-score-controls,
+  .pairing-inducement-toolbar,
+  .pairing-inducement-row {
     display: grid;
   }
 
