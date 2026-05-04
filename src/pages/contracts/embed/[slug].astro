@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from "astro:content";
+import "../../../styles/global.css";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("contracts");
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.mdx?$/, "") },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const title = entry?.data?.title || "Contract";
+const description =
+  entry?.data?.description || "Mission contract details for Infinity: Mercenaries.";
+const section = entry?.data?.contractType ?? "Contract";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title>{title}</title>
+    <style>
+      .contract-embed {
+        width: min(100% - 2rem, var(--max));
+        margin: 0 auto;
+      }
+
+      .contract-embed .page-hero {
+        width: 100%;
+        margin: 0;
+        padding: 2rem 0 1.8rem;
+      }
+
+      .contract-embed .rules-content {
+        width: 100%;
+        margin: 0 0 2rem;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="contract-embed">
+      <section class="page-hero compact markdown-hero">
+        <p class="eyebrow">{section}</p>
+        <h1>{title}</h1>
+        {description && <p>{description}</p>}
+      </section>
+      <article class="rules-content">
+        <Content />
+      </article>
+    </main>
+  </body>
+</html>

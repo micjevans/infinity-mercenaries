@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { applyItemToTrooper, renderCombinedDetails } from "../lib/mercs/trooperUtils";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { loadRecruitmentPool } from "../lib/mercs/recruitment";
 import {
   createSharedFile,
   getOrCreateOrganizerFolders,
@@ -23,7 +25,17 @@ import {
   loadLocalCompanies,
   type LocalCompany,
 } from "../lib/mercs/companyStore";
+import {
+  contractHrefFromValue,
+  contractTitleFromValue,
+} from "../data/contracts";
+import {
+  INDUCEMENT_HIRE_MAPPINGS,
+  INDUCEMENT_WEAPON_MAPPINGS,
+} from "../data/inducementMappings";
 import { AppIcon } from "./AppIcon";
+import UnifiedProfileCard, { UnitProfileDisplay } from "./UnifiedProfileCard";
+import { npcGroups, type NpcProfile } from "../data/npcs";
 
 const INJURY_OPTIONS = [
   "",
@@ -47,10 +59,13 @@ const DOWNTIME_EVENTS = [
 ];
 const DOWNTIME_RESULTS = ["", "Critical Success", "Success", "Failure"];
 
+type InducementTargetType = "trooper" | "company" | "hire";
+
 type PairingInducementSelection = {
   id: string;
   optionId: string;
-  trooperId: string;
+  targetType: InducementTargetType;
+  targetId: string;
 };
 
 type PairingInducements = {
@@ -58,10 +73,17 @@ type PairingInducements = {
   updatedAt: string;
 };
 
+type InducementCategory =
+  | "troops"
+  | "command"
+  | "primary"
+  | "secondary"
+  | "equipment";
+
 type InducementOption = {
   id: string;
   label: string;
-  category: "troops" | "command" | "primary" | "secondary" | "equipment";
+  category: InducementCategory;
   cost: number;
   maxCount?: number;
 };
@@ -236,6 +258,26 @@ const INDUCEMENT_OPTIONS: InducementOption[] = [
 const INDUCEMENT_OPTION_BY_ID = new Map(
   INDUCEMENT_OPTIONS.map((option) => [option.id, option]),
 );
+
+const INDUCEMENT_CATEGORY_LABEL: Record<InducementCategory, string> = {
+  troops: "Troops for Hire",
+  command: "Command Tokens",
+  primary: "Rented Primary Weapons",
+  secondary: "Rented Secondary Weapons",
+  equipment: "Rented Utility Equipment",
+};
+
+function getInducementTargetType(option: InducementOption): InducementTargetType {
+  if (option.category === "command") return "company";
+  if (option.category === "troops") return "hire";
+  return "trooper";
+}
+
+function getInducementTargetLabel(targetType: InducementTargetType): string {
+  if (targetType === "company") return "Company";
+  if (targetType === "hire") return "Temporary Hire";
+  return "Assigned Trooper";
+}
 
 type PairingContext = {
   event: LocalEvent;
@@ -490,6 +532,334 @@ function getResult(
   return pairing.results?.[participantId] || defaultResult(participantId);
 }
 
+function getContractHref(contractName?: string): string | null {
+  return contractHrefFromValue(contractName);
+}
+
+function getContractNpcProfiles(contractName?: string): NpcProfile[] {
+  const target = contractTitleFromValue(contractName)
+    .trim()
+    .toLowerCase();
+  if (!target) return [];
+
+  return npcGroups.flatMap((group) =>
+    (group.profiles || []).filter((profile) =>
+      (profile.contracts || []).some(
+        (name) => String(name).trim().toLowerCase() === target,
+      ),
+    ),
+  );
+}
+
+/** Loads unit profile data for each unique hire inducement option ID. */
+function useHireProfilesByOptionIds(optionIds: string[]): Map<string, any> {
+  const [profiles, setProfiles] = useState<Map<string, any>>(new Map());
+  const optionIdsKey = optionIds.join("|");
+
+  const uniqueOptionIds = useMemo(
+    () => [...new Set(optionIds.filter(Boolean))],
+    [optionIdsKey],
+  );
+
+  useEffect(() => {
+    if (!uniqueOptionIds.length) {
+      setProfiles(new Map());
+      return;
+    }
+    let alive = true;
+    Promise.all(
+      uniqueOptionIds.map(async (optionId) => {
+        const mapping = INDUCEMENT_HIRE_MAPPINGS[optionId];
+        if (!mapping) return null;
+        try {
+          const { units } = await loadRecruitmentPool([mapping.factionSlug]);
+          const unit = (units || []).find(
+            (u: any) => u.id === mapping.unitId,
+          );
+          return { optionId, unit: unit || null, displayName: mapping.displayName };
+        } catch {
+          return null;
+        }
+      }),
+    ).then((results) => {
+      if (!alive) return;
+      const map = new Map<string, any>();
+      results.forEach((r) => {
+        if (r) map.set(r.optionId, r);
+      });
+      setProfiles(map);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [uniqueOptionIds]);
+
+  return profiles;
+}
+
+/** Loads unit profile data for each unique hire inducement selection. */
+function useHireProfiles(
+  hireSelections: PairingInducementSelection[],
+): Map<string, any> {
+  const optionIds = useMemo(
+    () => hireSelections.map((selection) => selection.optionId),
+    [hireSelections],
+  );
+  return useHireProfilesByOptionIds(optionIds);
+}
+
+function makeHireProfileTargetId(
+  optionId: string,
+  groupId: string | number,
+  profileOptionId: string | number,
+): string {
+  return `hire:${encodeURIComponent(optionId)}:${encodeURIComponent(String(groupId))}:${encodeURIComponent(String(profileOptionId))}`;
+}
+
+function parseHireProfileTargetId(
+  targetId: string,
+):
+  | {
+      optionId: string;
+      groupId: string;
+      profileOptionId: string;
+      groupIndex?: number;
+      optionIndex?: number;
+    }
+  | null {
+  const raw = String(targetId || "");
+  const parts = raw.split(":");
+  if (parts.length !== 4 || parts[0] !== "hire") return null;
+  let optionId = "";
+  let groupId = "";
+  let profileOptionId = "";
+  try {
+    optionId = decodeURIComponent(parts[1]);
+    groupId = decodeURIComponent(parts[2]);
+    profileOptionId = decodeURIComponent(parts[3]);
+  } catch {
+    return null;
+  }
+  const parsed: {
+    optionId: string;
+    groupId: string;
+    profileOptionId: string;
+    groupIndex?: number;
+    optionIndex?: number;
+  } = {
+    optionId,
+    groupId,
+    profileOptionId,
+  };
+  if (/^\d+$/.test(groupId)) parsed.groupIndex = Number(groupId);
+  if (/^\d+$/.test(profileOptionId)) parsed.optionIndex = Number(profileOptionId);
+  return parsed;
+}
+
+function getHireConstraintTokens(optionLabel: string): string[] {
+  const match = String(optionLabel || "").match(/\(([^)]+)\)/);
+  if (!match) return [];
+  const raw = String(match[1] || "").trim();
+  if (!raw || /^any\b/i.test(raw)) return [];
+  return raw
+    .replace(/\+/g, " or ")
+    .split(/\bor\b|\band\b|,|\//i)
+    .map((token) => token.trim())
+    .filter(Boolean)
+    .filter((token) => !/^immunity\b/i.test(token));
+}
+
+function getHireProfileChoices(option: InducementOption, unit: any):
+  Array<{
+    targetId: string;
+    label: string;
+    groupIndex: number;
+    optionIndex: number;
+    groupId: string | number;
+    profileOptionId: string | number;
+  }> {
+  const groups = Array.isArray(unit?.profileGroups) ? unit.profileGroups : [];
+  const constraints = getHireConstraintTokens(option.label).map((entry) =>
+    entry.toLowerCase(),
+  );
+  const matchesConstraint = (value: string) => {
+    if (!constraints.length) return true;
+    const lower = String(value || "").toLowerCase();
+    return constraints.some((token) => lower.includes(token));
+  };
+
+  const allChoices = groups.flatMap((group: any, groupIndex: number) =>
+    (Array.isArray(group?.options) ? group.options : []).map(
+      (groupOption: any, optionIndex: number) => {
+        const label = String(
+          groupOption?.name || group?.isc || unit?.isc || unit?.name || "Profile",
+        );
+        const groupId = group?.id ?? groupIndex;
+        const profileOptionId = groupOption?.id ?? optionIndex;
+        return {
+          targetId: makeHireProfileTargetId(option.id, groupId, profileOptionId),
+          label,
+          groupIndex,
+          optionIndex,
+          groupId,
+          profileOptionId,
+        };
+      },
+    ),
+  );
+
+  const filtered = allChoices.filter((choice) => matchesConstraint(choice.label));
+  return filtered.length ? filtered : allChoices;
+}
+
+function getRenderableHireProfileGroups(option: InducementOption, unit: any): any[] {
+  const choices = getHireProfileChoices(option, unit);
+  const allowedTargets = new Set(choices.map((choice) => choice.targetId));
+  const groups = Array.isArray(unit?.profileGroups) ? unit.profileGroups : [];
+
+  return groups
+    .map((group: any, groupIndex: number) => {
+      const options = Array.isArray(group?.options) ? group.options : [];
+      const profiles = Array.isArray(group?.profiles) ? group.profiles : [];
+
+      const selectedEntries = options
+        .map((profileOption: any, optionIndex: number) => {
+          const groupId = group?.id ?? groupIndex;
+          const profileOptionId = profileOption?.id ?? optionIndex;
+          const targetId = makeHireProfileTargetId(option.id, groupId, profileOptionId);
+          if (!allowedTargets.has(targetId)) return null;
+          return { profileOption, optionIndex };
+        })
+        .filter(Boolean) as Array<{ profileOption: any; optionIndex: number }>;
+
+      if (!selectedEntries.length) return null;
+
+      const nextOptions = selectedEntries.map((entry) => ({
+        ...entry.profileOption,
+        disabled: false,
+      }));
+      const nextProfiles = selectedEntries
+        .map((entry) => profiles[entry.optionIndex])
+        .filter(Boolean);
+
+      // Keep options/profiles paired by index for UnitProfileDisplay rows.
+      if (!nextProfiles.length) return null;
+
+      return {
+        ...structuredClone(group),
+        options: nextOptions,
+        profiles: nextProfiles,
+      };
+    })
+    .filter(Boolean);
+}
+
+function resolveHireTargetIdFromSelection(
+  option: InducementOption,
+  unit: any,
+  group: any,
+  profileOption: any,
+): string | null {
+  const groups = Array.isArray(unit?.profileGroups) ? unit.profileGroups : [];
+  for (let groupIndex = 0; groupIndex < groups.length; groupIndex += 1) {
+    const sourceGroup = groups[groupIndex];
+    const sourceOptions = Array.isArray(sourceGroup?.options)
+      ? sourceGroup.options
+      : [];
+    for (let optionIndex = 0; optionIndex < sourceOptions.length; optionIndex += 1) {
+      const sourceOption = sourceOptions[optionIndex];
+      const groupId = sourceGroup?.id ?? groupIndex;
+      const profileOptionId = sourceOption?.id ?? optionIndex;
+
+      const sameGroup =
+        String(sourceGroup?.id ?? "") === String(group?.id ?? "") ||
+        String(sourceGroup?.isc ?? "") === String(group?.isc ?? "");
+      const sameOption =
+        String(sourceOption?.id ?? "") === String(profileOption?.id ?? "") ||
+        String(sourceOption?.name ?? "") === String(profileOption?.name ?? "");
+
+      if (sameGroup && sameOption) {
+        return makeHireProfileTargetId(option.id, groupId, profileOptionId);
+      }
+    }
+  }
+  return null;
+}
+
+function getSelectedHireDisplayData(selection: PairingInducementSelection, unit: any):
+  { unit: any; profileGroups: any[]; profileLabel: string } | null {
+  const option = INDUCEMENT_OPTION_BY_ID.get(selection.optionId);
+  if (!option || !unit) return null;
+
+  const choices = getHireProfileChoices(option, unit);
+  if (!choices.length) return null;
+
+  const parsed = parseHireProfileTargetId(selection.targetId);
+  const selectedChoice =
+    choices.find((choice) => choice.targetId === selection.targetId) ||
+    (parsed && parsed.optionId === selection.optionId
+      ? choices.find(
+          (choice) =>
+            String(choice.groupId) === parsed.groupId &&
+            String(choice.profileOptionId) === parsed.profileOptionId,
+        ) ||
+        choices.find(
+          (choice) =>
+            parsed.groupIndex === choice.groupIndex &&
+            parsed.optionIndex === choice.optionIndex,
+        )
+      : null) ||
+    choices[0];
+
+  const groups = Array.isArray(unit.profileGroups) ? unit.profileGroups : [];
+  const sourceGroup = groups[selectedChoice.groupIndex];
+  if (!sourceGroup) return null;
+
+  const groupClone = structuredClone(sourceGroup);
+  const options = Array.isArray(groupClone.options) ? groupClone.options : [];
+  const profiles = Array.isArray(groupClone.profiles) ? groupClone.profiles : [];
+
+  if (options[selectedChoice.optionIndex]) {
+    groupClone.options = [options[selectedChoice.optionIndex]];
+  }
+  if (profiles.length > 1) {
+    const profileIndex = Math.min(selectedChoice.optionIndex, profiles.length - 1);
+    groupClone.profiles = [profiles[profileIndex]];
+  }
+
+  const unitClone = structuredClone(unit);
+  unitClone.isc = selectedChoice.label || unitClone.isc;
+
+  return {
+    unit: unitClone,
+    profileGroups: [groupClone],
+    profileLabel: selectedChoice.label,
+  };
+}
+
+/** Injects rented weapon/equip metadata into a trooper profile clone. */
+function applyInducementEquipment(
+  trooper: any,
+  rentals: PairingInducementSelection[],
+): any {
+  let result = structuredClone(trooper);
+  for (const sel of rentals) {
+    const mapping = INDUCEMENT_WEAPON_MAPPINGS[sel.optionId];
+    if (!mapping) continue;
+    result = applyItemToTrooper(result, { id: mapping.metadataId }, mapping.collectionKey);
+  }
+  return result;
+}
+
+function getMissionTroopers(
+  company: LocalCompany | null,
+  result: PairingResult,
+): any[] {
+  return (result.troopers || [])
+    .map((entry) => findTrooper(company, entry.trooper))
+    .filter(Boolean);
+}
+
 function calculateTrooperXp(
   result: TrooperMissionResult,
   roundNumber: number,
@@ -549,13 +919,17 @@ function DeploymentStep({
   onChange,
   onNext,
   nextLabel,
+  hireSelections,
 }: {
   company: LocalCompany | null;
   result: PairingResult;
   onChange: (result: PairingResult) => void;
   onNext: () => void;
   nextLabel?: string;
+  hireSelections?: PairingInducementSelection[];
 }) {
+  const hireProfiles = useHireProfiles(hireSelections || []);
+  const [expandedHires, setExpandedHires] = useState<Record<string, boolean>>({});
   const troopers = (company?.troopers || []) as any[];
   const deployedIds = new Set(
     result.troopers.map((trooper) => trooper.trooper),
@@ -672,9 +1046,49 @@ function DeploymentStep({
               </div>
             );
           })}
-          {result.troopers.length === 0 && (
+          {result.troopers.length === 0 && (hireSelections || []).length === 0 && (
             <p className="empty-note">No troopers deployed yet.</p>
           )}
+          {(hireSelections || []).map((sel) => {
+            const profileEntry = hireProfiles.get(sel.optionId);
+            const isExpanded = expandedHires[sel.id] || false;
+            if (profileEntry?.unit) {
+              const selected = getSelectedHireDisplayData(sel, profileEntry.unit);
+              if (selected) {
+                return (
+                  <article key={sel.id} className="legacy-trooper-card">
+                    <p className="pairing-hire-subtitle">Temporary Hire</p>
+                    <UnitProfileDisplay
+                      unit={selected.unit}
+                      profileGroups={selected.profileGroups}
+                      collapsible
+                      expanded={isExpanded}
+                      onToggle={() =>
+                        setExpandedHires((prev) => ({
+                          ...prev,
+                          [sel.id]: !prev[sel.id],
+                        }))
+                      }
+                    />
+                  </article>
+                );
+              }
+            }
+            const option = INDUCEMENT_OPTION_BY_ID.get(sel.optionId);
+            return (
+              <div
+                className="pairing-trooper-row pairing-trooper-row--hire"
+                key={sel.id}
+              >
+                <span>
+                  <strong>
+                    {profileEntry?.displayName || option?.label || "Hired Trooper"}
+                  </strong>
+                  <small>Temporary Hire · Loading profile...</small>
+                </span>
+              </div>
+            );
+          })}
         </div>
         <div className="pairing-step-actions">
           <button
@@ -722,22 +1136,36 @@ function InducementsStep({
     opposingResult,
   );
   const inducementBudget = calculateInducements(activeRenown, opposingRenown);
+  const hasBudget = inducementBudget > 0;
   const deployedTroopers = result.troopers
     .map((entry) => findTrooper(company, entry.trooper))
     .filter(Boolean);
+  const deployedTrooperIds = new Set(result.troopers.map((entry) => entry.trooper));
   const opposingDeployed = opposingResult.troopers
     .map((entry) => findTrooper(opposingCompany, entry.trooper))
     .filter(Boolean);
   const bothDeployed =
     result.troopers.length > 0 && opposingResult.troopers.length > 0;
-  const spent = selections.reduce(
+
+  const normalizedSelections = selections.filter((selection) => {
+    const option = INDUCEMENT_OPTION_BY_ID.get(selection.optionId);
+    if (!option) return false;
+
+    if (selection.targetType === "trooper") {
+      return Boolean(selection.targetId) && deployedTrooperIds.has(selection.targetId);
+    }
+
+    return true;
+  });
+
+  const spent = normalizedSelections.reduce(
     (total, selection) =>
-      total +
-      Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0),
+      total + Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0),
     0,
   );
   const remaining = inducementBudget - spent;
-  const countByOption = selections.reduce<Record<string, number>>(
+
+  const countByOption = normalizedSelections.reduce<Record<string, number>>(
     (acc, selection) => {
       acc[selection.optionId] = (acc[selection.optionId] || 0) + 1;
       return acc;
@@ -745,30 +1173,54 @@ function InducementsStep({
     {},
   );
 
-  function canChooseOption(optionId: string, selectionId: string): boolean {
-    const option = INDUCEMENT_OPTION_BY_ID.get(optionId);
-    if (!option?.maxCount) return true;
-    const currentCount = countByOption[optionId] || 0;
-    const currentSelection = selections.find(
-      (entry) => entry.id === selectionId,
-    );
-    if (currentSelection?.optionId === optionId) return true;
-    return currentCount < option.maxCount;
+  const companySelections = normalizedSelections.filter(
+    (selection) => selection.targetType === "company",
+  );
+  const hiredTroopSelections = normalizedSelections.filter(
+    (selection) => selection.targetType === "hire",
+  );
+  const trooperSelections = normalizedSelections.filter(
+    (selection) => selection.targetType === "trooper",
+  );
+  const troopOptions = useMemo(
+    () => INDUCEMENT_OPTIONS.filter((option) => option.category === "troops"),
+    [],
+  );
+  const troopProfiles = useHireProfilesByOptionIds(
+    troopOptions.map((option) => option.id),
+  );
+
+  function canAddOption(option: InducementOption): boolean {
+    const currentCount = countByOption[option.id] || 0;
+    if (option.maxCount && currentCount >= option.maxCount) return false;
+    return remaining >= option.cost;
   }
 
-  function addSelection() {
-    if (deployedTroopers.length === 0) return;
-    const defaultOption = INDUCEMENT_OPTIONS.find((option) =>
-      canChooseOption(option.id, ""),
-    );
-    if (!defaultOption) return;
+  function addSelection(
+    option: InducementOption,
+    targetIdOverride?: string,
+  ) {
+    if (!canAddOption(option)) return;
+
+    const targetType = getInducementTargetType(option);
+    const targetId =
+      targetIdOverride ||
+      (targetType === "trooper"
+        ? String(deployedTroopers[0]?.id || "")
+        : targetType === "company"
+          ? "company"
+          : "");
+
+    if ((targetType === "trooper" || targetType === "hire") && !targetId)
+      return;
 
     onChangeSelections([
-      ...selections,
+      ...normalizedSelections,
       {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-        optionId: defaultOption.id,
-        trooperId: String(deployedTroopers[0]?.id || ""),
+        optionId: option.id,
+        targetType,
+        targetId,
       },
     ]);
   }
@@ -778,7 +1230,7 @@ function InducementsStep({
     patch: Partial<PairingInducementSelection>,
   ) {
     onChangeSelections(
-      selections.map((selection) =>
+      normalizedSelections.map((selection) =>
         selection.id === selectionId ? { ...selection, ...patch } : selection,
       ),
     );
@@ -786,7 +1238,133 @@ function InducementsStep({
 
   function removeSelection(selectionId: string) {
     onChangeSelections(
-      selections.filter((selection) => selection.id !== selectionId),
+      normalizedSelections.filter((selection) => selection.id !== selectionId),
+    );
+  }
+
+  function renderShopSection(
+    title: string,
+    description: string,
+    options: InducementOption[],
+  ) {
+    return (
+      <article className="pairing-shop-section">
+        <header>
+          <span className="panel-kicker">{title}</span>
+          <p>{description}</p>
+        </header>
+        <div className="pairing-shop-option-list">
+          {options.map((option) => {
+            const count = countByOption[option.id] || 0;
+            const canAdd = canAddOption(option);
+            const maxText = option.maxCount ? ` / ${option.maxCount}` : "";
+
+            return (
+              <div className="pairing-shop-option" key={option.id}>
+                <div>
+                  <strong>{option.label}</strong>
+                  <small>
+                    {INDUCEMENT_CATEGORY_LABEL[option.category]} · {option.cost} Ind
+                  </small>
+                </div>
+                <div className="pairing-shop-option__meta">
+                  <span>
+                    {count}
+                    {maxText}
+                  </span>
+                  <button
+                    className="command-button command-button--small"
+                    type="button"
+                    onClick={() => addSelection(option)}
+                    disabled={!canAdd || !bothDeployed || !hasBudget}
+                  >
+                    Buy
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </article>
+    );
+  }
+
+  function renderTroopShopSection() {
+    return (
+      <article className="pairing-shop-section">
+        <header>
+          <span className="panel-kicker">Temporary Troops</span>
+          <p>
+            Choose a profile/loadout and buy it directly from the profile row.
+          </p>
+        </header>
+        <div className="pairing-shop-profile-list">
+          {troopOptions.map((option) => {
+            const count = countByOption[option.id] || 0;
+            const canAdd = canAddOption(option);
+            const maxText = option.maxCount ? ` / ${option.maxCount}` : "";
+            const unit = troopProfiles.get(option.id)?.unit;
+            const renderableGroups = unit
+              ? getRenderableHireProfileGroups(option, unit)
+              : [];
+            const buyEnabled = canAdd && bothDeployed && hasBudget;
+            const displayGroups = renderableGroups.map((group: any) => ({
+              ...group,
+              options: (group.options || []).map((profileOption: any) => ({
+                ...profileOption,
+                disabled: !buyEnabled,
+              })),
+            }));
+
+            return (
+              <article className="legacy-recruit-card pairing-shop-recruit-card" key={option.id}>
+                {!unit && <p className="empty-note">Loading troop profiles...</p>}
+                {unit && renderableGroups.length === 0 && (
+                  <p className="empty-note">
+                    No matching profiles found for this inducement.
+                  </p>
+                )}
+                {unit && renderableGroups.length > 0 && (
+                  <UnitProfileDisplay
+                    unit={unit}
+                    profileGroups={displayGroups}
+                    showAva
+                    hideOptionSwcPts
+                    optionActionLabel="Buy"
+                    extraHeadChips={
+                      <>
+                        <span className="legacy-profile-chip legacy-profile-chip--ind">
+                          <small>Cost</small>
+                          <b>{option.cost} Ind</b>
+                        </span>
+                        <span className="legacy-profile-chip legacy-profile-chip--ind">
+                          <small>Bought</small>
+                          <b>
+                            {count}
+                            {maxText}
+                          </b>
+                        </span>
+                      </>
+                    }
+                    optionClick={(group, profileOption) => {
+                      if (!buyEnabled) return;
+                      const targetId = resolveHireTargetIdFromSelection(
+                        option,
+                        unit,
+                        group,
+                        profileOption,
+                      );
+                      if (!targetId) return;
+                      addSelection(option, targetId);
+                    }}
+                    collapsible={false}
+                  />
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </article>
     );
   }
 
@@ -833,12 +1411,17 @@ function InducementsStep({
       {!bothDeployed && (
         <div className="legacy-specops-note">
           Waiting for both players to save deployment to their company event
-          files. Once both deployments are present, inducement options will
-          appear.
+          files. Once both deployments are present, the shop will unlock.
         </div>
       )}
 
-      {bothDeployed && (
+      {bothDeployed && !hasBudget && (
+        <div className="legacy-specops-note">
+          No inducements are available for this pairing. Continue to Mission.
+        </div>
+      )}
+
+      {bothDeployed && hasBudget && (
         <>
           <div className="pairing-inducement-toolbar">
             <div className="event-mini-stats">
@@ -848,72 +1431,96 @@ function InducementsStep({
                 Remaining: {remaining}
               </span>
             </div>
-            <button
-              className="command-button command-button--small"
-              type="button"
-              onClick={addSelection}
-              disabled={deployedTroopers.length === 0}
-            >
-              Add Inducement
-            </button>
+          </div>
+
+          <div className="pairing-shop-grid">
+            {renderShopSection(
+              "Company-Wide",
+              "Command Tokens benefit the whole company and are not assigned to a trooper.",
+              INDUCEMENT_OPTIONS.filter((option) => option.category === "command"),
+            )}
+            {renderTroopShopSection()}
+            {renderShopSection(
+              "Equipment Rentals",
+              "Rentals are assigned to deployed troopers for this Contract only.",
+              INDUCEMENT_OPTIONS.filter(
+                (option) =>
+                  option.category === "primary" ||
+                  option.category === "secondary" ||
+                  option.category === "equipment",
+              ),
+            )}
           </div>
 
           <div className="pairing-inducement-list">
-            {selections.map((selection) => (
-              <div className="pairing-inducement-row" key={selection.id}>
-                <label className="field">
-                  <span>Benefit</span>
-                  <select
-                    value={selection.optionId}
-                    onChange={(event) => {
-                      const nextOptionId = event.target.value;
-                      if (!canChooseOption(nextOptionId, selection.id)) return;
-                      updateSelection(selection.id, { optionId: nextOptionId });
-                    }}
-                  >
-                    {INDUCEMENT_OPTIONS.map((option) => (
-                      <option
-                        value={option.id}
-                        key={option.id}
-                        disabled={!canChooseOption(option.id, selection.id)}
+            <h3>Purchased Benefits</h3>
+            {normalizedSelections.map((selection) => {
+              const option = INDUCEMENT_OPTION_BY_ID.get(selection.optionId);
+              if (!option) return null;
+
+              return (
+                <div className="pairing-inducement-row" key={selection.id}>
+                  <div className="pairing-inducement-row__summary">
+                    <strong>{option.label}</strong>
+                    <small>
+                      {option.cost} Ind · {getInducementTargetLabel(selection.targetType)}
+                    </small>
+                  </div>
+
+                  {selection.targetType === "trooper" ? (
+                    <label className="field">
+                      <span>Assigned Trooper</span>
+                      <select
+                        value={selection.targetId}
+                        onChange={(event) =>
+                          updateSelection(selection.id, {
+                            targetId: event.target.value,
+                          })
+                        }
                       >
-                        {option.label} ({option.cost} Ind)
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="field">
-                  <span>Assigned Trooper</span>
-                  <select
-                    value={selection.trooperId}
-                    onChange={(event) =>
-                      updateSelection(selection.id, {
-                        trooperId: event.target.value,
-                      })
-                    }
+                        {deployedTroopers.map((trooper) => (
+                          <option
+                            value={String(trooper?.id || "")}
+                            key={String(trooper?.id || "")}
+                          >
+                            {getTrooperName(trooper)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  ) : selection.targetType === "hire" ? (
+                    <div className="pairing-inducement-row__tag">
+                      {(() => {
+                        const hireUnit = troopProfiles.get(selection.optionId)?.unit;
+                        const choices = hireUnit
+                          ? getHireProfileChoices(option, hireUnit)
+                          : [];
+                        const selectedChoice =
+                          choices.find(
+                            (choice) => choice.targetId === selection.targetId,
+                          ) || choices[0];
+                        return selectedChoice?.label || "Temporary hire";
+                      })()}
+                    </div>
+                  ) : (
+                    <div className="pairing-inducement-row__tag">
+                      Company-wide benefit
+                    </div>
+                  )}
+
+                  <button
+                    className="icon-button"
+                    type="button"
+                    onClick={() => removeSelection(selection.id)}
+                    aria-label="Remove inducement"
                   >
-                    {deployedTroopers.map((trooper) => (
-                      <option
-                        value={String(trooper?.id || "")}
-                        key={String(trooper?.id || "")}
-                      >
-                        {getTrooperName(trooper)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <button
-                  className="icon-button"
-                  type="button"
-                  onClick={() => removeSelection(selection.id)}
-                  aria-label="Remove inducement"
-                >
-                  <AppIcon name="remove" size={17} />
-                </button>
-              </div>
-            ))}
-            {selections.length === 0 && (
-              <p className="empty-note">No inducements selected.</p>
+                    <AppIcon name="remove" size={17} />
+                  </button>
+                </div>
+              );
+            })}
+            {normalizedSelections.length === 0 && (
+              <p className="empty-note">No inducements purchased yet.</p>
             )}
           </div>
 
@@ -924,14 +1531,12 @@ function InducementsStep({
               <ul>
                 {result.troopers.map((entry) => {
                   const trooper = findTrooper(company, entry.trooper);
-                  const assigned = selections
-                    .filter(
-                      (selection) => selection.trooperId === entry.trooper,
-                    )
+                  const assigned = trooperSelections
+                    .filter((selection) => selection.targetId === entry.trooper)
                     .map(
                       (selection) =>
-                        INDUCEMENT_OPTION_BY_ID.get(selection.optionId)
-                          ?.label || "Unknown",
+                        INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
+                        "Unknown",
                     );
                   return (
                     <li
@@ -950,6 +1555,26 @@ function InducementsStep({
                 })}
               </ul>
             </article>
+
+            <article className="pairing-force-card">
+              <span className="panel-kicker">Inducement Summary</span>
+              <h3>Purchased This Contract</h3>
+              <ul>
+                <li>
+                  Command Tokens
+                  <span>{companySelections.length}</span>
+                </li>
+                <li>
+                  Temporary Hires
+                  <span>{hiredTroopSelections.length}</span>
+                </li>
+                <li>
+                  Trooper Equipment Rentals
+                  <span>{trooperSelections.length}</span>
+                </li>
+              </ul>
+            </article>
+
             <article className="pairing-force-card">
               <span className="panel-kicker">Opponent Deployment</span>
               <h3>{opposingCompany?.name || "Opponent"}</h3>
@@ -958,8 +1583,7 @@ function InducementsStep({
                   const trooper = findTrooper(opposingCompany, entry.trooper);
                   return (
                     <li key={entry.trooper}>
-                      {getTrooperName(trooper)}{" "}
-                      <span>{getTrooperPoints(trooper)} RN</span>
+                      {getTrooperName(trooper)} <span>{getTrooperPoints(trooper)} RN</span>
                     </li>
                   );
                 })}
@@ -995,6 +1619,7 @@ function MissionStep({
   result,
   opposingResult,
   inducementSelections,
+  contractName,
   roundNumber,
   onChange,
   onBack,
@@ -1005,21 +1630,32 @@ function MissionStep({
   result: PairingResult;
   opposingResult: PairingResult;
   inducementSelections?: PairingInducementSelection[];
+  contractName?: string;
   roundNumber: number;
   onChange: (result: PairingResult) => void;
   onBack: () => void;
   onNext: () => void;
 }) {
   const eliteDeployed = isEliteDeployed(result);
-  const deployedRenown = calculateDeployedRenown(company, result);
-  const opposingRenown = calculateDeployedRenown(
-    opposingCompany,
-    opposingResult,
-  );
-  const inducements = calculateInducements(deployedRenown, opposingRenown);
   const selections = Array.isArray(inducementSelections)
     ? inducementSelections
     : [];
+  const [activeTab, setActiveTab] = useState<
+    "results" | "mission" | "troopers"
+  >("results");
+  const [expandedTroopers, setExpandedTroopers] = useState<
+    Record<string, boolean>
+  >({});
+  const playerTroopers = getMissionTroopers(company, result);
+  const opponentTroopers = getMissionTroopers(opposingCompany, opposingResult);
+  const contractTitle = contractTitleFromValue(contractName) || "Mission";
+  const hireSelectionsForPlayer = useMemo(
+    () => selections.filter((s) => s.targetType === "hire"),
+    [selections],
+  );
+  const hireProfiles = useHireProfiles(hireSelectionsForPlayer);
+  const contractHref = getContractHref(contractName);
+  const npcProfiles = getContractNpcProfiles(contractName);
 
   function updateTrooper(index: number, patch: Partial<TrooperMissionResult>) {
     onChange({
@@ -1049,266 +1685,464 @@ function MissionStep({
           <span className="panel-kicker">Mission Report</span>
           <h2>Track Contract Results</h2>
         </div>
-        <div className="pairing-score-controls">
-          <label className="field">
-            <span>Objective Points</span>
-            <input
-              type="number"
-              min="0"
-              value={result.op}
-              onChange={(event) =>
-                onChange({
-                  ...result,
-                  op: Number(event.target.value) || 0,
-                  submitted: false,
-                })
-              }
-            />
-          </label>
-          <label className="pairing-check">
-            <input
-              type="checkbox"
-              checked={result.won}
-              onChange={(event) =>
-                onChange({
-                  ...result,
-                  won: event.target.checked,
-                  submitted: false,
-                })
-              }
-            />
-            <span>Victory</span>
-          </label>
-        </div>
       </div>
 
-      <div className="pairing-rule-grid">
-        <article>
-          <span>Deployment XP</span>
-          <strong>+{roundNumber}</strong>
-          <p>
-            Every deployed trooper gains XP equal to the current round number.
-          </p>
-        </article>
-        <article>
-          <span>Elite Deployment</span>
-          <strong>{eliteDeployed ? "+3 XP" : "Inactive"}</strong>
-          <p>
-            Deploying the Captain and no more than 3 additional troopers grants
-            Elite Deployment XP.
-          </p>
-        </article>
-        <article>
-          <span>Inducements</span>
-          <strong>{inducements}</strong>
-          <p>
-            {deployedRenown} vs {opposingRenown} deployed Renown, using half the
-            difference rounded down to 5.
-          </p>
-        </article>
+      <div className="legacy-tabs pairing-mission-tabs" role="tablist">
+        <button
+          type="button"
+          className={activeTab === "results" ? "is-active" : ""}
+          onClick={() => setActiveTab("results")}
+        >
+          Results
+        </button>
+        <button
+          type="button"
+          className={activeTab === "mission" ? "is-active" : ""}
+          onClick={() => setActiveTab("mission")}
+        >
+          Mission
+        </button>
+        <button
+          type="button"
+          className={activeTab === "troopers" ? "is-active" : ""}
+          onClick={() => setActiveTab("troopers")}
+        >
+          Troopers
+        </button>
       </div>
 
-      <div className="pairing-table-wrap">
-        <table className="pairing-performance-table">
-          <thead>
-            <tr>
-              <th>Trooper</th>
-              <th>XP</th>
-              <th>Aid</th>
-              <th>States</th>
-              <th>Objective</th>
-              <th>Scan / Tag</th>
-              <th>Alive</th>
-              <th>Injury</th>
-              <th>MVP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.troopers.map((entry, index) => {
-              const trooper = findTrooper(company, entry.trooper);
-              const assignedInducements = selections
-                .filter((selection) => selection.trooperId === entry.trooper)
-                .map(
-                  (selection) =>
-                    INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
-                    "Unknown Benefit",
-                );
-              return (
-                <tr key={entry.trooper}>
-                  <td>
-                    <div className="pairing-table-trooper">
-                      {getTrooperLogo(trooper) && (
-                        <img
-                          src={getTrooperLogo(trooper)}
-                          alt=""
-                          aria-hidden="true"
-                        />
-                      )}
-                      <span>
-                        {getTrooperName(trooper)}
-                        {assignedInducements.length > 0 && (
-                          <small className="pairing-inducement-inline">
-                            + {assignedInducements.join(" | ")}
-                          </small>
-                        )}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="numeric">
-                    {calculateTrooperXp(entry, roundNumber, eliteDeployed)}
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      min="0"
-                      max="2"
-                      value={entry.aidCount ?? (entry.aid ? 1 : 0)}
-                      onChange={(event) =>
-                        updateTrooper(index, {
-                          aidCount: Math.min(
-                            Number(event.target.value) || 0,
-                            2,
-                          ),
-                          aid: Number(event.target.value) > 0,
-                        })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      min="0"
-                      max="3"
-                      value={entry.stateCount ?? (entry.state ? 1 : 0)}
-                      onChange={(event) =>
-                        updateTrooper(index, {
-                          stateCount: Math.min(
-                            Number(event.target.value) || 0,
-                            3,
-                          ),
-                          state: Number(event.target.value) > 0,
-                        })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <select
-                      value={entry.objective || ""}
-                      onChange={(event) =>
-                        updateTrooper(index, {
-                          objective: event.target
-                            .value as TrooperMissionResult["objective"],
-                        })
-                      }
-                    >
-                      <option value="">None</option>
-                      <option value="attempt">Attempt</option>
-                      <option value="success">Success</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select
-                      value={entry.tag || ""}
-                      onChange={(event) =>
-                        updateTrooper(index, {
-                          tag: event.target
-                            .value as TrooperMissionResult["tag"],
-                        })
-                      }
-                    >
-                      <option value="">None</option>
-                      <option value="scan">Scan</option>
-                      <option value="fo-scan">FO Scan</option>
-                      <option value="tag">Tag and Bag</option>
-                    </select>
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={Boolean(entry.alive)}
-                      onChange={(event) =>
-                        updateTrooper(index, { alive: event.target.checked })
-                      }
-                    />
-                  </td>
-                  <td>
-                    <select
-                      value={entry.injury || ""}
-                      onChange={(event) =>
-                        updateTrooper(index, { injury: event.target.value })
-                      }
-                    >
-                      {INJURY_OPTIONS.map((option) => (
-                        <option value={option} key={option}>
-                          {option || "None"}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="pairing-mvp"
-                      checked={Boolean(entry.mvp)}
-                      onChange={() => setMvp(entry.trooper)}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <div className="pairing-mission-tab-body">
+        {activeTab === "results" && (
+          <>
+            <div className="pairing-score-controls">
+              <label className="field">
+                <span>Objective Points</span>
+                <input
+                  type="number"
+                  min="0"
+                  value={result.op}
+                  onChange={(event) =>
+                    onChange({
+                      ...result,
+                      op: Number(event.target.value) || 0,
+                      submitted: false,
+                    })
+                  }
+                />
+              </label>
+              <label className="pairing-check">
+                <input
+                  type="checkbox"
+                  checked={result.won}
+                  onChange={(event) =>
+                    onChange({
+                      ...result,
+                      won: event.target.checked,
+                      submitted: false,
+                    })
+                  }
+                />
+                <span>Victory</span>
+              </label>
+            </div>
 
-      <div className="pairing-force-grid">
-        <article className="pairing-force-card">
-          <span className="panel-kicker">Your Deployed Forces</span>
-          <h3>{company?.name || "Unknown Company"}</h3>
-          <ul>
-            {result.troopers.map((entry) => {
-              const trooper = findTrooper(company, entry.trooper);
-              const assignedInducements = selections
-                .filter((selection) => selection.trooperId === entry.trooper)
-                .map(
-                  (selection) =>
-                    INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
-                    "Unknown Benefit",
-                );
-              return (
-                <li
-                  key={entry.trooper}
-                  className="pairing-force-item-with-note"
-                >
-                  <div>
-                    <strong>{getTrooperName(trooper)}</strong>
-                    {assignedInducements.length > 0 && (
-                      <small>{assignedInducements.join(" | ")}</small>
-                    )}
-                  </div>
-                  <span>{getTrooperPoints(trooper)} RN</span>
-                </li>
-              );
-            })}
-          </ul>
-        </article>
-        <article className="pairing-force-card">
-          <span className="panel-kicker">Opponent Deployed Forces</span>
-          <h3>{opposingCompany?.name || "Waiting on opponent"}</h3>
-          <ul>
-            {opposingResult.troopers.map((entry) => {
-              const trooper = findTrooper(opposingCompany, entry.trooper);
-              return (
-                <li key={entry.trooper}>
-                  {getTrooperName(trooper)}{" "}
-                  <span>{getTrooperPoints(trooper)} RN</span>
-                </li>
-              );
-            })}
-            {opposingResult.troopers.length === 0 && (
-              <li>No opposing deployment saved yet.</li>
+            <div className="pairing-table-wrap">
+              <table className="pairing-performance-table">
+                <thead>
+                  <tr>
+                    <th>Trooper</th>
+                    <th>XP</th>
+                    <th>Aid</th>
+                    <th>States</th>
+                    <th>Objective</th>
+                    <th>Scan / Tag</th>
+                    <th>Alive</th>
+                    <th>Injury</th>
+                    <th>MVP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.troopers.map((entry, index) => {
+                    const trooper = findTrooper(company, entry.trooper);
+                    const assignedInducements = selections
+                      .filter(
+                        (selection) =>
+                          selection.targetType === "trooper" &&
+                          selection.targetId === entry.trooper,
+                      )
+                      .map(
+                        (selection) =>
+                          INDUCEMENT_OPTION_BY_ID.get(selection.optionId)
+                            ?.label || "Unknown Benefit",
+                      );
+                    return (
+                      <tr key={entry.trooper}>
+                        <td>
+                          <div className="pairing-table-trooper">
+                            {getTrooperLogo(trooper) && (
+                              <img
+                                src={getTrooperLogo(trooper)}
+                                alt=""
+                                aria-hidden="true"
+                              />
+                            )}
+                            <span>
+                              {getTrooperName(trooper)}
+                              {assignedInducements.length > 0 && (
+                                <small className="pairing-inducement-inline">
+                                  + {assignedInducements.join(" | ")}
+                                </small>
+                              )}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="numeric">
+                          {calculateTrooperXp(
+                            entry,
+                            roundNumber,
+                            eliteDeployed,
+                          )}
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            min="0"
+                            max="2"
+                            value={entry.aidCount ?? (entry.aid ? 1 : 0)}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                aidCount: Math.min(
+                                  Number(event.target.value) || 0,
+                                  2,
+                                ),
+                                aid: Number(event.target.value) > 0,
+                              })
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            min="0"
+                            max="3"
+                            value={entry.stateCount ?? (entry.state ? 1 : 0)}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                stateCount: Math.min(
+                                  Number(event.target.value) || 0,
+                                  3,
+                                ),
+                                state: Number(event.target.value) > 0,
+                              })
+                            }
+                          />
+                        </td>
+                        <td>
+                          <select
+                            value={entry.objective || ""}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                objective: event.target
+                                  .value as TrooperMissionResult["objective"],
+                              })
+                            }
+                          >
+                            <option value="">None</option>
+                            <option value="attempt">Attempt</option>
+                            <option value="success">Success</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select
+                            value={entry.tag || ""}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                tag: event.target
+                                  .value as TrooperMissionResult["tag"],
+                              })
+                            }
+                          >
+                            <option value="">None</option>
+                            <option value="scan">Scan</option>
+                            <option value="fo-scan">FO Scan</option>
+                            <option value="tag">Tag and Bag</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={Boolean(entry.alive)}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                alive: event.target.checked,
+                              })
+                            }
+                          />
+                        </td>
+                        <td>
+                          <select
+                            value={entry.injury || ""}
+                            onChange={(event) =>
+                              updateTrooper(index, {
+                                injury: event.target.value,
+                              })
+                            }
+                          >
+                            {INJURY_OPTIONS.map((option) => (
+                              <option value={option} key={option}>
+                                {option || "None"}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="radio"
+                            name="pairing-mvp"
+                            checked={Boolean(entry.mvp)}
+                            onChange={() => setMvp(entry.trooper)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {activeTab === "mission" && (
+          <section>
+            {contractHref ? (
+              <iframe
+                title={`Contract reference: ${contractTitle}`}
+                src={contractHref}
+                className="pairing-contract-frame"
+              />
+            ) : (
+              <article className="pairing-playing-card pairing-playing-card--fallback">
+                <h3>No Contract Reference Available</h3>
+                <p>
+                  Set a contract on this pairing to display mission details.
+                </p>
+              </article>
             )}
-          </ul>
-        </article>
+          </section>
+        )}
+
+        {activeTab === "troopers" && (
+          <section>
+            <div className="pairing-playing-stack">
+              <details className="pairing-playing-accordion" open>
+                <summary>
+                  <span className="panel-kicker">Player A</span>
+                  <h3>{company?.name || "Unknown Company"}</h3>
+                </summary>
+                <div className="legacy-trooper-list pairing-playing-accordion__body">
+                  {playerTroopers.map((trooper) => {
+                    const trooperId = `a-${String(trooper?.id || getTrooperName(trooper))}`;
+                    const isExpanded = expandedTroopers[trooperId] || false;
+                    const trooperRentals = selections.filter(
+                      (sel) =>
+                        sel.targetType === "trooper" &&
+                        sel.targetId === String(trooper?.id || ""),
+                    );
+                    const trooperWithRentals = applyInducementEquipment(
+                      trooper,
+                      trooperRentals,
+                    );
+                    const renderedTrooper = renderCombinedDetails(trooperWithRentals);
+
+                    return (
+                      <article
+                        key={trooperId}
+                        className={`legacy-trooper-card${trooper?.captain ? " is-captain" : ""}`}
+                      >
+                        <UnitProfileDisplay
+                          unit={renderedTrooper}
+                          profileGroups={renderedTrooper.profileGroups || []}
+                          collapsible
+                          expanded={isExpanded}
+                          onToggle={() =>
+                            setExpandedTroopers((prev) => ({
+                              ...prev,
+                              [trooperId]: !prev[trooperId],
+                            }))
+                          }
+                        />
+                      </article>
+                    );
+                  })}
+
+                  {hireSelectionsForPlayer.map((sel) => {
+                    const profileEntry = hireProfiles.get(sel.optionId);
+                    const trooperId = `a-hire-${sel.id}`;
+                    const isExpanded = expandedTroopers[trooperId] || false;
+
+                    if (profileEntry?.unit) {
+                      const selected = getSelectedHireDisplayData(
+                        sel,
+                        profileEntry.unit,
+                      );
+                      if (selected) {
+                        return (
+                          <article key={trooperId} className="legacy-trooper-card">
+                            <p className="pairing-hire-subtitle">Temporary Hire</p>
+                            <UnitProfileDisplay
+                              unit={selected.unit}
+                              profileGroups={selected.profileGroups}
+                              collapsible
+                              expanded={isExpanded}
+                              onToggle={() =>
+                                setExpandedTroopers((prev) => ({
+                                  ...prev,
+                                  [trooperId]: !prev[trooperId],
+                                }))
+                              }
+                            />
+                          </article>
+                        );
+                      }
+                    }
+
+                    const option = INDUCEMENT_OPTION_BY_ID.get(sel.optionId);
+                    return (
+                      <article key={trooperId} className="legacy-trooper-card">
+                        <div className="pairing-hire-card__header">
+                          <p className="pairing-hire-subtitle">Temporary Hire</p>
+                          <strong>
+                            {profileEntry?.displayName ||
+                              option?.label ||
+                              "Hired Trooper"}
+                          </strong>
+                          <small>Loading profile...</small>
+                        </div>
+                      </article>
+                    );
+                  })}
+
+                  {(() => {
+                    const commandTokens = selections.filter(
+                      (sel) =>
+                        sel.targetType === "company" && sel.optionId === "cmd-token",
+                    ).length;
+                    if (!commandTokens) return null;
+                    return (
+                      <article className="legacy-trooper-card pairing-hire-card">
+                        <div className="pairing-hire-card__header">
+                          <span className="panel-kicker">Company Benefit</span>
+                          <strong>
+                            +{commandTokens} Command Token
+                            {commandTokens === 1 ? "" : "s"}
+                          </strong>
+                        </div>
+                      </article>
+                    );
+                  })()}
+                </div>
+              </details>
+
+              <details className="pairing-playing-accordion">
+                <summary>
+                  <span className="panel-kicker">Player B</span>
+                  <h3>{opposingCompany?.name || "Opponent"}</h3>
+                </summary>
+                <div className="legacy-trooper-list pairing-playing-accordion__body">
+                  {opponentTroopers.map((trooper) => {
+                    const trooperId = `b-${String(trooper?.id || getTrooperName(trooper))}`;
+                    const isExpanded = expandedTroopers[trooperId] || false;
+                    const renderedTrooper = renderCombinedDetails(trooper);
+                    return (
+                      <article
+                        key={trooperId}
+                        className={`legacy-trooper-card${trooper?.captain ? " is-captain" : ""}`}
+                      >
+                        <UnitProfileDisplay
+                          unit={renderedTrooper}
+                          profileGroups={renderedTrooper.profileGroups || []}
+                          collapsible
+                          expanded={isExpanded}
+                          onToggle={() =>
+                            setExpandedTroopers((prev) => ({
+                              ...prev,
+                              [trooperId]: !prev[trooperId],
+                            }))
+                          }
+                        />
+                      </article>
+                    );
+                  })}
+                  {opponentTroopers.length === 0 && (
+                    <article className="pairing-playing-card pairing-playing-card--fallback">
+                      <h3>No Opponent Troopers</h3>
+                      <p>The opposing deployment has not been saved yet.</p>
+                    </article>
+                  )}
+                </div>
+              </details>
+
+              <details className="pairing-playing-accordion">
+                <summary>
+                  <span className="panel-kicker">Contract NPCs</span>
+                  <h3>{contractTitle || "Mission NPCs"}</h3>
+                </summary>
+                <div className="legacy-trooper-list pairing-playing-accordion__body">
+                  {npcProfiles.map((profile) => (
+                    <article key={profile.id} className="legacy-trooper-card">
+                      <UnifiedProfileCard profile={profile} />
+                    </article>
+                  ))}
+                  {npcProfiles.length === 0 && (
+                    <article className="pairing-playing-card pairing-playing-card--fallback">
+                      <h3>No NPC Profiles</h3>
+                      <p>
+                        There are no NPC profiles mapped to this contract yet.
+                      </p>
+                    </article>
+                  )}
+                </div>
+              </details>
+            </div>
+          </section>
+        )}
+
+      </div>
+
+      <div className="pairing-step-actions">
+        <button className="command-button" type="button" onClick={onBack}>
+          Back
+        </button>
+        <button
+          className="command-button command-button--primary"
+          type="button"
+          onClick={onNext}
+        >
+          Continue to Downtime
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function DowntimeStep({
+  result,
+  onChange,
+  onBack,
+  onNext,
+}: {
+  result: PairingResult;
+  onChange: (result: PairingResult) => void;
+  onBack: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <section className="pairing-panel">
+      <div className="pairing-mission-header">
+        <div>
+          <span className="panel-kicker">Downtime</span>
+          <h2>Resolve Post-Mission Activity</h2>
+        </div>
       </div>
 
       <div className="pairing-downtime-grid">
@@ -1418,6 +2252,7 @@ function SharedPairingWorkspace({
   pairingId,
   eventName,
   roundName,
+  roundMission,
   roundNumber,
   pairing,
   registeredCompanies,
@@ -1428,6 +2263,7 @@ function SharedPairingWorkspace({
   pairingId: string;
   eventName: string;
   roundName: string;
+  roundMission?: string;
   roundNumber: number;
   pairing: {
     player1FileId: string;
@@ -1540,12 +2376,40 @@ function SharedPairingWorkspace({
       : [];
     return {
       selections: rawSelections
-        .map((entry: any, index: number) => ({
-          id: String(entry?.id || `${player.side}-${index}`),
-          optionId: String(entry?.optionId || ""),
-          trooperId: String(entry?.trooperId || ""),
-        }))
-        .filter((entry) => entry.optionId && entry.trooperId),
+        .map((entry: any, index: number) => {
+          const optionId = String(entry?.optionId || "");
+          const option = INDUCEMENT_OPTION_BY_ID.get(optionId);
+          const fallbackTargetType = option
+            ? getInducementTargetType(option)
+            : "trooper";
+          const legacyTrooperId = String(entry?.trooperId || "");
+          const parsedTargetType = String(
+            entry?.targetType || fallbackTargetType,
+          ) as InducementTargetType;
+          const targetType: InducementTargetType =
+            parsedTargetType === "company" ||
+            parsedTargetType === "hire" ||
+            parsedTargetType === "trooper"
+              ? parsedTargetType
+              : fallbackTargetType;
+          const targetId = String(
+            entry?.targetId ||
+              legacyTrooperId ||
+              (targetType === "company"
+                ? "company"
+                : targetType === "hire"
+                  ? `hire-${player.side}-${index}`
+                  : ""),
+          );
+
+          return {
+            id: String(entry?.id || `${player.side}-${index}`),
+            optionId,
+            targetType,
+            targetId,
+          };
+        })
+        .filter((entry) => entry.optionId),
       updatedAt: String(stored.updatedAt || ""),
     };
   }
@@ -1678,6 +2542,18 @@ function SharedPairingWorkspace({
           A: sideA ? readSideInducements(sideA) : defaultInducements(),
           B: sideB ? readSideInducements(sideB) : defaultInducements(),
         });
+        const ownedPlayer = withEventData.find((p) => p.ownsThisCompany);
+        if (ownedPlayer) {
+          const storedStep =
+            ownedPlayer.companyEventData?.pairings?.[pairingKey]?.step;
+          if (
+            typeof storedStep === "number" &&
+            storedStep >= 0 &&
+            storedStep <= 4
+          ) {
+            setStep(storedStep);
+          }
+        }
       } catch (error) {
         setLoadError(error instanceof Error ? error.message : "Unknown error");
       } finally {
@@ -1741,6 +2617,14 @@ function SharedPairingWorkspace({
   const opposingResult = activeSide === "A" ? resultsBySide.B : resultsBySide.A;
   const activeInducements =
     inducementsBySide[activeSide] || defaultInducements();
+
+  useEffect(() => {
+    const ownedPlayer = players.find((player) => player.ownsThisCompany);
+    if (!ownedPlayer) return;
+    if (ownedPlayer.side !== activeSide) {
+      setActiveSide(ownedPlayer.side);
+    }
+  }, [players, activeSide]);
 
   useEffect(() => {
     if (!activePlayer || !activeCompany) return;
@@ -1828,7 +2712,7 @@ function SharedPairingWorkspace({
             eventFileId: fileId,
             roundId,
             pairingId,
-            mission: pairing.mission || null,
+            mission: pairing.mission || roundMission || null,
             side: owner.side,
             companyFileId: owner.companyFileId,
             ...nextResult,
@@ -1837,6 +2721,7 @@ function SharedPairingWorkspace({
               ...(inducementsBySide[owner.side] || defaultInducements()),
               updatedAt: now,
             },
+            step,
             submitted,
             status: submitted ? "submitted" : "live",
             updatedAt: now,
@@ -1871,12 +2756,12 @@ function SharedPairingWorkspace({
     const ok = await persistSharedResult(activeResult, false);
     if (!ok) return;
     await refreshSharedData(false);
-    setStep(1);
+    goToStep(1);
   }
 
   async function handleContinueToMission() {
     const ok = await persistSharedResult(activeResult, false);
-    if (ok) setStep(2);
+    if (ok) goToStep(2);
   }
 
   function updateActiveDraft(nextResult: PairingResult) {
@@ -1902,6 +2787,39 @@ function SharedPairingWorkspace({
     }));
   }
 
+  async function persistStepOnly(nextStep: number) {
+    const owner = players.find((p) => p.ownsThisCompany);
+    if (!owner?.companyEventFileId) return;
+    try {
+      const existing = await readSharedFile(owner.companyEventFileId);
+      const pairings =
+        typeof existing?.pairings === "object" && existing?.pairings
+          ? existing.pairings
+          : {};
+      const now = new Date().toISOString();
+      const currentEntry = pairings[pairingKey] || {};
+      await updateSharedFile(owner.companyEventFileId, {
+        ...existing,
+        updatedAt: now,
+        pairings: {
+          ...pairings,
+          [pairingKey]: {
+            ...currentEntry,
+            step: nextStep,
+            updatedAt: now,
+          },
+        },
+      });
+    } catch {
+      // non-critical, step persistence failure is silent
+    }
+  }
+
+  function goToStep(nextStep: number) {
+    setStep(nextStep);
+    void persistStepOnly(nextStep);
+  }
+
   return (
     <section className="company-manager pairing-manager">
       <div className="event-detail-header">
@@ -1914,7 +2832,10 @@ function SharedPairingWorkspace({
         </a>
         <div>
           <p className="eyebrow">Shared Pairing</p>
-          <h1>{pairing.mission || "Contract TBD"}</h1>
+          <h1>
+            {contractTitleFromValue(pairing.mission || roundMission) ||
+              "Contract TBD"}
+          </h1>
           <p>
             {roundName}: {pairing.player1Name} vs {pairing.player2Name}
           </p>
@@ -1928,10 +2849,6 @@ function SharedPairingWorkspace({
             <h2>{eventName}</h2>
           </div>
         </div>
-        <p className="legacy-empty-note">
-          Both players can read each other's company and company-event files
-          from here.
-        </p>
 
         {loadingData && (
           <p className="legacy-empty-note">
@@ -1942,84 +2859,19 @@ function SharedPairingWorkspace({
 
         {!loadingData && !loadError && (
           <>
-            <div className="event-participant-list">
-              {players.map((player) => (
-                <article
-                  className="event-participant-row"
-                  key={player.companyFileId}
-                >
-                  <div>
-                    <span className="panel-kicker">Player {player.side}</span>
-                    <h3>{player.companyName}</h3>
-                    <p>
-                      {player.ownsThisCompany ? "Owned by you" : "Opponent"}
-                    </p>
-                  </div>
-                  <a
-                    className="command-button command-button--small"
-                    href={player.companyShareLink}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Open Company File
-                  </a>
-                  {player.companyEventFileId ? (
-                    <a
-                      className="command-button command-button--small"
-                      href={
-                        player.companyEventShareLink ||
-                        `${window.location.origin}/view?id=${encodeURIComponent(player.companyEventFileId)}`
-                      }
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Open Company Event File
-                    </a>
-                  ) : (
-                    <button
-                      className="command-button command-button--small"
-                      type="button"
-                      disabled
-                    >
-                      Missing Event File
-                    </button>
-                  )}
-                </article>
-              ))}
-            </div>
-
-            <div className="pairing-player-switch">
-              {[playerA, playerB].filter(Boolean).map((player) => (
-                <button
-                  className={player?.side === activeSide ? "is-active" : ""}
-                  type="button"
-                  key={player?.companyFileId}
-                  onClick={() => {
-                    setActiveSide(player?.side || "A");
-                    setStep(0);
-                  }}
-                  disabled={!player?.ownsThisCompany || saving}
-                >
-                  <span>
-                    {player?.ownsThisCompany ? "Owned by you" : "Opponent"}
-                  </span>
-                  <strong>{player?.companyName}</strong>
-                </button>
-              ))}
-            </div>
-
             <div className="pairing-stepper" aria-label="Pairing steps">
               {[
                 "Deploy Troopers",
                 "Inducements",
                 "Mission",
+                "Downtime",
                 "Post Mission",
               ].map((label, index) => (
                 <button
                   className={step === index ? "is-active" : ""}
                   type="button"
                   key={label}
-                  onClick={() => setStep(index)}
+                  onClick={() => goToStep(index)}
                 >
                   {index + 1}. {label}
                 </button>
@@ -2032,6 +2884,9 @@ function SharedPairingWorkspace({
                 result={activeResult}
                 onChange={updateActiveDraft}
                 nextLabel="Continue to Inducements"
+                hireSelections={activeInducements.selections.filter(
+                  (sel) => sel.targetType === "hire",
+                )}
                 onNext={() => void handleContinueToInducements()}
               />
             )}
@@ -2046,7 +2901,7 @@ function SharedPairingWorkspace({
                 onRefresh={() => void refreshSharedData(false)}
                 refreshing={refreshing}
                 saving={saving}
-                onBack={() => setStep(0)}
+                onBack={() => goToStep(0)}
                 onNext={() => void handleContinueToMission()}
               />
             )}
@@ -2057,13 +2912,22 @@ function SharedPairingWorkspace({
                 result={activeResult}
                 opposingResult={opposingResult}
                 inducementSelections={activeInducements.selections}
+                contractName={pairing.mission || roundMission}
                 roundNumber={roundNumber || 1}
                 onChange={updateActiveDraft}
-                onBack={() => setStep(1)}
-                onNext={() => setStep(3)}
+                onBack={() => goToStep(1)}
+                onNext={() => goToStep(3)}
               />
             )}
             {step === 3 && (
+              <DowntimeStep
+                result={activeResult}
+                onChange={updateActiveDraft}
+                onBack={() => goToStep(2)}
+                onNext={() => goToStep(4)}
+              />
+            )}
+            {step === 4 && (
               <section className="pairing-panel">
                 <div className="section-heading-row">
                   <div>
@@ -2179,9 +3043,8 @@ function PairingWorkspace({
     contextState.pairing.player2Id,
   );
   const contractName =
-    contextState.pairing.mission ||
-    contextState.round.mission ||
-    "Contract TBD";
+    contextState.pairing.mission || contextState.round.mission || "";
+  const contractTitle = contractTitleFromValue(contractName) || "Contract TBD";
 
   useEffect(() => {
     if (!allowedParticipantIds.includes(activeParticipantId)) {
@@ -2266,7 +3129,7 @@ function PairingWorkspace({
         </a>
         <div>
           <p className="eyebrow">Pairing</p>
-          <h1>{contractName}</h1>
+          <h1>{contractTitle}</h1>
           <p>
             {contextState.round.name}: {participantA?.companyName || "Player A"}{" "}
             vs {participantB?.companyName || "Player B"}
@@ -2298,16 +3161,18 @@ function PairingWorkspace({
       </div>
 
       <div className="pairing-stepper" aria-label="Pairing steps">
-        {["Deploy Troopers", "Mission", "Post Mission"].map((label, index) => (
-          <button
-            className={step === index ? "is-active" : ""}
-            type="button"
-            key={label}
-            onClick={() => setStep(index)}
-          >
-            {index + 1}. {label}
-          </button>
-        ))}
+        {["Deploy Troopers", "Mission", "Downtime", "Post Mission"].map(
+          (label, index) => (
+            <button
+              className={step === index ? "is-active" : ""}
+              type="button"
+              key={label}
+              onClick={() => setStep(index)}
+            >
+              {index + 1}. {label}
+            </button>
+          ),
+        )}
       </div>
 
       {step === 0 && (
@@ -2332,6 +3197,7 @@ function PairingWorkspace({
               ? resultB
               : resultA
           }
+          contractName={contractName}
           roundNumber={contextState.round.number}
           onChange={updateDraft}
           onBack={() => setStep(0)}
@@ -2339,6 +3205,14 @@ function PairingWorkspace({
         />
       )}
       {step === 2 && (
+        <DowntimeStep
+          result={activeResult}
+          onChange={updateDraft}
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+        />
+      )}
+      {step === 3 && (
         <section className="pairing-panel">
           <div className="section-heading-row">
             <div>
@@ -2385,6 +3259,7 @@ export default function PairingManager() {
     pairingId: string;
     eventName: string;
     roundName: string;
+    roundMission?: string;
     roundNumber: number;
     pairing: {
       player1FileId: string;
@@ -2447,6 +3322,7 @@ export default function PairingManager() {
           pairingId,
           eventName: String(payload?.event?.name || "Shared Event"),
           roundName: String(round?.name || "Round"),
+          roundMission: String(round?.mission || "") || undefined,
           roundNumber: Number(round?.number || 1),
           pairing: {
             player1FileId: String(pairing?.player1FileId || ""),
@@ -2638,6 +3514,7 @@ export default function PairingManager() {
         pairingId={sharedContext.pairingId}
         eventName={sharedContext.eventName}
         roundName={sharedContext.roundName}
+        roundMission={sharedContext.roundMission}
         roundNumber={sharedContext.roundNumber}
         pairing={sharedContext.pairing}
         registeredCompanies={sharedContext.registeredCompanies}

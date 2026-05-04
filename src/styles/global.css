@@ -6566,6 +6566,14 @@ details.patch-section[open] > summary {
   text-align: right;
 }
 
+.legacy-option-header--action {
+  grid-template-columns: 2.2rem minmax(0, 1fr) 6.5rem;
+}
+
+.legacy-option-header--action span:nth-child(3) {
+  text-align: right;
+}
+
 /* Individual option rows */
 .legacy-option-row {
   width: 100%;
@@ -6582,6 +6590,24 @@ details.patch-section[open] > summary {
   text-align: left;
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s;
+}
+
+.legacy-option-row--action {
+  grid-template-columns: 2.2rem minmax(0, 1fr) 6.5rem;
+}
+
+.legacy-option-action {
+  justify-self: end;
+  min-width: 5.6rem;
+  text-align: center;
+  border: 1px solid rgba(56, 183, 164, 0.45);
+  background: rgba(56, 183, 164, 0.16);
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.45rem;
 }
 
 /* In recruit/add-trooper modal: dark treatment */
@@ -6614,6 +6640,18 @@ details.patch-section[open] > summary {
 .legacy-trooper-details .legacy-option-row {
   background: rgba(243, 240, 232, 0.05);
   color: var(--text);
+}
+
+.pairing-shop-recruit-card .legacy-option-row {
+  background: rgba(243, 240, 232, 0.05);
+  color: var(--text);
+}
+
+.pairing-shop-recruit-card .legacy-option-row:hover,
+.pairing-shop-recruit-card .legacy-option-row:focus-visible {
+  background: rgba(56, 183, 164, 0.12);
+  border-top-color: rgba(56, 183, 164, 0.35);
+  outline: none;
 }
 
 .legacy-option-row:disabled {
@@ -6691,6 +6729,180 @@ details.patch-section[open] > summary {
   line-height: 1.15;
   color: var(--amber);
   font-weight: 900;
+}
+
+.legacy-weapon-profiles {
+  border-top: 1px solid rgba(242, 169, 59, 0.2);
+  background:
+    linear-gradient(180deg, rgba(56, 183, 164, 0.04), transparent 65%),
+    rgba(14, 15, 13, 0.45);
+}
+
+.legacy-weapon-profiles > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  color: var(--amber);
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legacy-weapon-profiles > summary::-webkit-details-marker {
+  display: none;
+}
+
+.legacy-weapon-profiles > summary small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.35rem;
+  border: 1px solid rgba(242, 169, 59, 0.4);
+  background: rgba(242, 169, 59, 0.1);
+  color: var(--text);
+  font-size: 0.72rem;
+}
+
+.legacy-weapon-profiles__list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 0.85rem 0.9rem;
+}
+
+.legacy-weapon-profile-card {
+  border: 1px solid rgba(243, 240, 232, 0.12);
+  background: rgba(243, 240, 232, 0.03);
+}
+
+.legacy-weapon-profile-card h5 {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.legacy-weapon-profile-table-wrap {
+  overflow-x: auto;
+}
+
+.legacy-weapon-profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 54rem;
+  table-layout: fixed;
+}
+
+.legacy-weapon-profile-table th,
+.legacy-weapon-profile-table td {
+  border-top: 1px solid rgba(243, 240, 232, 0.08);
+  padding: 0.5rem 0.55rem;
+  font-size: 0.8rem;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.legacy-weapon-profile-table th {
+  color: var(--teal);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.legacy-weapon-profile-table td {
+  color: var(--muted);
+}
+
+.legacy-weapon-profile-table td:first-child {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.legacy-weapon-profile-table th:nth-child(1),
+.legacy-weapon-profile-table td:nth-child(1) {
+  width: 12.5rem;
+}
+
+.legacy-weapon-profile-table th:nth-child(7),
+.legacy-weapon-profile-table td:nth-child(7) {
+  width: 21rem;
+}
+
+.legacy-weapon-profile-table th:nth-child(8),
+.legacy-weapon-profile-table td:nth-child(8) {
+  width: 12rem;
+}
+
+.legacy-weapon-mode-cell {
+  text-align: center;
+}
+
+.legacy-weapon-traits-cell {
+  text-align: left;
+  line-height: 1.35;
+}
+
+.legacy-weapon-range-grid-cell {
+  min-width: 17rem;
+}
+
+.legacy-weapon-range-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid rgba(243, 240, 232, 0.16);
+}
+
+.legacy-weapon-range-mod {
+  display: grid;
+  place-items: center;
+  gap: 0.12rem;
+  border-right: 1px solid rgba(243, 240, 232, 0.16);
+  background: rgba(243, 240, 232, 0.05);
+  min-height: 2.2rem;
+  color: var(--text);
+}
+
+.legacy-weapon-range-mod:last-child {
+  border-right: 0;
+}
+
+.legacy-weapon-range-mod small {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.legacy-weapon-range-mod b {
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.legacy-weapon-range-mod.is-minus-6 {
+  background: rgba(234, 84, 85, 0.34);
+}
+
+.legacy-weapon-range-mod.is-minus-3 {
+  background: rgba(242, 169, 59, 0.3);
+}
+
+.legacy-weapon-range-mod.is-zero {
+  background: rgba(56, 183, 164, 0.24);
+}
+
+.legacy-weapon-range-mod.is-plus-3,
+.legacy-weapon-range-mod.is-plus-6 {
+  background: rgba(106, 214, 140, 0.28);
 }
 
 @media (max-width: 760px) {
@@ -8247,11 +8459,110 @@ button.pairing-trooper-row:focus-visible {
   white-space: nowrap;
 }
 
+.pairing-mission-tabs {
+  margin: 0 -1rem 1rem;
+}
+
+.pairing-mission-tab-body {
+  margin-top: 1rem;
+}
+
+.pairing-contract-frame {
+  width: 100%;
+  min-height: 72rem;
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.92);
+}
+
+.pairing-playing-stack {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pairing-playing-accordion {
+  border: 1px solid var(--line);
+  background: rgba(243, 240, 232, 0.03);
+}
+
+.pairing-playing-accordion > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+}
+
+.pairing-playing-accordion > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pairing-playing-accordion > summary h3 {
+  margin: 0.15rem 0 0;
+}
+
+.pairing-playing-accordion__body {
+  padding: 0.9rem;
+}
+
+.pairing-playing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pairing-profile-column {
+  align-content: start;
+}
+
+.pairing-profile-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.pairing-playing-card {
+  overflow: hidden;
+}
+
+.pairing-playing-card--fallback {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pairing-playing-card--fallback p {
+  margin: 0;
+  color: var(--amber);
+  font-weight: 850;
+}
+
 .pairing-inducement-inline {
   display: block;
   color: var(--teal);
   font-size: 0.68rem;
   line-height: 1.25;
+}
+
+.pairing-inducement-inline--card {
+  padding: 0.25rem 0.75rem 0.5rem;
+  margin-top: -0.25rem;
+}
+
+.pairing-trooper-row--hire {
+  opacity: 0.8;
+  background: rgba(56, 183, 164, 0.06);
+  border-left: 2px solid var(--teal);
+}
+
+.pairing-hire-card {
+  padding: 0.6rem 0.75rem;
+  background: rgba(56, 183, 164, 0.06);
+  border-left: 2px solid var(--teal);
+}
+
+.pairing-hire-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
 }
 
 .pairing-inducement-toolbar {
@@ -8262,19 +8573,114 @@ button.pairing-trooper-row:focus-visible {
   margin-bottom: 0.75rem;
 }
 
-.pairing-inducement-list {
+.pairing-shop-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.pairing-shop-section {
+  border: 1px solid rgba(56, 183, 164, 0.26);
+  background: rgba(12, 33, 28, 0.38);
+  padding: 0.75rem;
+}
+
+.pairing-shop-section header p {
+  margin: 0.35rem 0 0.65rem;
+  color: var(--muted);
+}
+
+.pairing-shop-option-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pairing-shop-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  border: 1px solid rgba(243, 240, 232, 0.1);
+  background: rgba(243, 240, 232, 0.03);
+  padding: 0.55rem;
+}
+
+.pairing-shop-profile-list {
+  margin-top: 0.2rem;
   display: grid;
   gap: 0.6rem;
 }
 
+.pairing-shop-recruit-card {
+  margin: 0;
+}
+
+.legacy-profile-chip--ind b {
+  color: var(--amber);
+}
+
+.pairing-hire-subtitle {
+  margin: 0 0 0.35rem;
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pairing-shop-option strong,
+.pairing-inducement-row__summary strong {
+  display: block;
+  color: var(--text);
+}
+
+.pairing-shop-option small,
+.pairing-inducement-row__summary small {
+  color: var(--teal);
+  font-size: 0.74rem;
+}
+
+.pairing-shop-option__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pairing-shop-option__meta span {
+  color: var(--amber);
+  font-weight: 850;
+  min-width: 2.8rem;
+  text-align: right;
+}
+
+.pairing-inducement-list {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.pairing-inducement-list h3 {
+  margin: 0;
+}
+
 .pairing-inducement-row {
   display: grid;
-  grid-template-columns: 1.4fr 1fr auto;
+  grid-template-columns: minmax(0, 1fr) minmax(13rem, 1fr) auto;
   gap: 0.6rem;
-  align-items: end;
+  align-items: center;
   border: 1px solid rgba(243, 240, 232, 0.1);
   background: rgba(243, 240, 232, 0.03);
   padding: 0.6rem;
+}
+
+.pairing-inducement-row__tag {
+  border: 1px solid rgba(56, 183, 164, 0.3);
+  background: rgba(56, 183, 164, 0.08);
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.45rem 0.55rem;
+  text-align: center;
 }
 
 .is-over-budget {
@@ -8328,8 +8734,14 @@ button.pairing-trooper-row:focus-visible {
   .pairing-mission-header,
   .pairing-score-controls,
   .pairing-inducement-toolbar,
-  .pairing-inducement-row {
+  .pairing-inducement-row,
+  .pairing-shop-option {
     display: grid;
+  }
+
+  .pairing-inducement-row,
+  .pairing-shop-option {
+    grid-template-columns: 1fr;
   }
 
   .legacy-company-header,

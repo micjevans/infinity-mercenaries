@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type React from "react";
 import {
   infinityMetadata,
@@ -33,6 +33,36 @@ const ORDER_ICON_BY_TYPE: Record<string, string> = {
   IMPETUOUS: "https://assets.corvusbelli.net/army/img/icon/impetuous.svg",
   LIEUTENANT: "https://assets.corvusbelli.net/army/img/icon/lieutenant.svg",
   TACTICAL: "https://assets.corvusbelli.net/army/img/icon/tactical.svg",
+};
+
+type WeaponDistanceBand = {
+  max?: number | string;
+  mod?: string | number;
+};
+
+type WeaponDistance = {
+  short?: WeaponDistanceBand | null;
+  med?: WeaponDistanceBand | null;
+  long?: WeaponDistanceBand | null;
+  max?: WeaponDistanceBand | null;
+};
+
+type WeaponProfileRow = {
+  name: string;
+  mode: string;
+  damage: string;
+  burst: string;
+  ammunition: string;
+  saving: string;
+  savingNum: string;
+  properties: string[];
+  distance?: WeaponDistance | null;
+};
+
+type WeaponProfileGroup = {
+  key: string;
+  name: string;
+  rows: WeaponProfileRow[];
 };
 
 type ProfileStat = {
@@ -112,6 +142,111 @@ function getItemDisplay(
   ).map(formatExtra);
   const label = `${resolved.name || item.name || item.id}${extras.length ? ` (${extras.join(", ")})` : ""}`;
   return { label, wiki: String(resolved.wiki || item.wiki || "") || undefined };
+}
+
+function getAmmoLabel(ammunition: unknown): string {
+  const options = (infinityMetadata.ammunitions || []) as MetadataItem[];
+  const ammoId =
+    typeof ammunition === "number" || typeof ammunition === "string"
+      ? ammunition
+      : "";
+  const match = options.find((item) => item.id === ammoId);
+  return String(match?.name || ammunition || "-");
+}
+
+function getWeaponRangeMods(distance?: WeaponDistance | null): string[] {
+  if (!distance || typeof distance !== "object") {
+    return ["", "", "", "", "", "", ""];
+  }
+
+  const endpoints = [20, 40, 60, 80, 100, 120, 240];
+  const bands = Object.values(distance)
+    .filter(Boolean)
+    .map((band) => ({
+      max: Number((band as WeaponDistanceBand).max),
+      mod: String((band as WeaponDistanceBand).mod ?? ""),
+    }))
+    .filter((band) => Number.isFinite(band.max) && band.mod !== "")
+    .sort((a, b) => a.max - b.max);
+
+  if (!bands.length) return ["", "", "", "", "", "", ""];
+
+  return endpoints.map((endpoint) => {
+    const match = bands.find((band) => endpoint <= band.max);
+    return match?.mod || "";
+  });
+}
+
+function getRangeModClass(mod: string): string {
+  const normalized = String(mod || "").trim();
+  if (normalized === "-6") return "is-minus-6";
+  if (normalized === "-3") return "is-minus-3";
+  if (normalized === "0") return "is-zero";
+  if (normalized === "+3" || normalized === "3") return "is-plus-3";
+  if (normalized === "+6" || normalized === "6") return "is-plus-6";
+  return "";
+}
+
+function collectWeaponProfileGroups(
+  groups: ProfileGroup[],
+): WeaponProfileGroup[] {
+  const items: MetadataItem[] = [];
+
+  for (const group of groups || []) {
+    for (const profile of group.profiles || []) {
+      items.push(...(profile.weapons || []));
+    }
+    for (const option of group.options || []) {
+      items.push(...(option.weapons || []));
+    }
+  }
+
+  const weaponGroups = new Map<string, WeaponProfileGroup>();
+
+  for (const item of items) {
+    const sourceName = String(item?.name || item?.id || "Weapon");
+    const mappedRows = mapItemData({ ...item, key: "weapons" })
+      .filter(Boolean)
+      .map((entry) => ({
+        name: String(entry.name || sourceName),
+        mode: String(entry.mode || "-"),
+        damage: String(entry.damage ?? "-"),
+        burst: String(entry.burst ?? "-"),
+        ammunition: getAmmoLabel(entry.ammunition),
+        saving: String(entry.saving ?? "-"),
+        savingNum: String(entry.savingNum ?? "-"),
+        properties: Array.isArray(entry.properties)
+          ? entry.properties.map((value) => String(value))
+          : [],
+        distance:
+          entry.distance && typeof entry.distance === "object"
+            ? (entry.distance as WeaponDistance)
+            : null,
+      }));
+
+    if (!mappedRows.length) continue;
+
+    const key = `${String(item.id)}-${String(item.type || "")}`;
+    if (!weaponGroups.has(key)) {
+      weaponGroups.set(key, {
+        key,
+        name: mappedRows[0].name,
+        rows: mappedRows,
+      });
+      continue;
+    }
+
+    const existing = weaponGroups.get(key);
+    if (!existing) continue;
+    const existingModes = new Set(existing.rows.map((row) => row.mode));
+    for (const row of mappedRows) {
+      if (!existingModes.has(row.mode)) {
+        existing.rows.push(row);
+      }
+    }
+  }
+
+  return Array.from(weaponGroups.values());
 }
 
 export function MetadataItemList({
@@ -225,9 +360,13 @@ export function ProfileStats({
 export function ProfileOptionRow({
   option,
   onClick,
+  hideSwcPts = false,
+  actionLabel,
 }: {
   option: ProfileOption;
   onClick?: () => void;
+  hideSwcPts?: boolean;
+  actionLabel?: string;
 }) {
   const disabled = Boolean(option.disabled);
   const hasDetails = Boolean(
@@ -238,7 +377,7 @@ export function ProfileOptionRow({
   );
   return (
     <button
-      className={`legacy-option-row${hasDetails ? "" : " legacy-option-row--name-only"}`}
+      className={`legacy-option-row${hasDetails ? "" : " legacy-option-row--name-only"}${hideSwcPts ? " legacy-option-row--action" : ""}`}
       type="button"
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
@@ -293,10 +432,16 @@ export function ProfileOptionRow({
           </span>
         )}
       </span>
-      <span className="legacy-option-swc">{String(option.swc ?? "-")}</span>
-      <span className="legacy-option-points">
-        {String(option.points ?? "-")}
-      </span>
+      {hideSwcPts ? (
+        <span className="legacy-option-action">{actionLabel || "Select"}</span>
+      ) : (
+        <>
+          <span className="legacy-option-swc">{String(option.swc ?? "-")}</span>
+          <span className="legacy-option-points">
+            {String(option.points ?? "-")}
+          </span>
+        </>
+      )}
     </button>
   );
 }
@@ -516,6 +661,9 @@ export function UnitProfileDisplay({
   showTts = false,
   ttsActions,
   children,
+  optionActionLabel,
+  hideOptionSwcPts = false,
+  extraHeadChips,
 }: {
   unit: { isc?: string; resume?: { type?: string | number } | null };
   profileGroups?: ProfileGroup[];
@@ -528,10 +676,18 @@ export function UnitProfileDisplay({
   showTts?: boolean;
   ttsActions?: React.ReactNode;
   children?: React.ReactNode;
+  optionActionLabel?: string;
+  hideOptionSwcPts?: boolean;
+  extraHeadChips?: React.ReactNode;
 }) {
   const groupsToRender = profileGroups?.length
     ? profileGroups
     : buildParentProfileGroup(unit);
+  const weaponProfileGroups = useMemo(
+    () => collectWeaponProfileGroups(groupsToRender),
+    [groupsToRender],
+  );
+  const rangeLabels = ['8"', '16"', '24"', '32"', '40"', '48"', '96"'];
 
   if (!groupsToRender.length) return null;
 
@@ -645,6 +801,7 @@ export function UnitProfileDisplay({
                             <small>Type</small>
                             <b>{troopType}</b>
                           </span>
+                          {extraHeadChips}
                         </div>
                         {collapsible && (
                           <span
@@ -694,16 +851,20 @@ export function UnitProfileDisplay({
           })()}
           {(!collapsible || expanded) && (group.options || []).length > 0 && (
             <>
-              <div className="legacy-option-header">
+              <div
+                className={`legacy-option-header${hideOptionSwcPts ? " legacy-option-header--action" : ""}`}
+              >
                 <span aria-hidden="true" />
                 <span>Name</span>
-                <span>SWC</span>
-                <span>PTS</span>
+                {hideOptionSwcPts ? <span>Action</span> : <span>SWC</span>}
+                {!hideOptionSwcPts && <span>PTS</span>}
               </div>
               {(group.options || []).map((option, optionIndex) => (
                 <ProfileOptionRow
                   key={`${unit.isc || "unit"}-${groupIndex}-${optionIndex}`}
                   option={option}
+                  hideSwcPts={hideOptionSwcPts}
+                  actionLabel={optionActionLabel}
                   onClick={
                     optionClick ? () => optionClick(group, option) : undefined
                   }
@@ -713,6 +874,73 @@ export function UnitProfileDisplay({
           )}
         </section>
       ))}
+      {(!collapsible || expanded) && weaponProfileGroups.length > 0 && (
+        <details className="legacy-weapon-profiles">
+          <summary>
+            Weapon Profiles
+            <small>{weaponProfileGroups.length}</small>
+          </summary>
+          <div className="legacy-weapon-profiles__list">
+            {weaponProfileGroups.map((weaponGroup) => (
+              <article
+                key={weaponGroup.key}
+                className="legacy-weapon-profile-card"
+              >
+                <h5>{weaponGroup.name}</h5>
+                <div className="legacy-weapon-profile-table-wrap">
+                  <table className="legacy-weapon-profile-table">
+                    <thead>
+                      <tr>
+                        <th>Mode</th>
+                        <th>PS</th>
+                        <th>B</th>
+                        <th>Ammo</th>
+                        <th>SR:Attrib</th>
+                        <th>SR: No.</th>
+                        <th>Range</th>
+                        <th>Traits</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {weaponGroup.rows.map((row, rowIndex) => {
+                        const rangeMods = getWeaponRangeMods(row.distance);
+                        return (
+                          <tr key={`${weaponGroup.key}-${row.mode}-${rowIndex}`}>
+                            <td className="legacy-weapon-mode-cell">{row.mode}</td>
+                            <td>{row.damage}</td>
+                            <td>{row.burst}</td>
+                            <td>{row.ammunition}</td>
+                            <td>{row.saving}</td>
+                            <td>{row.savingNum}</td>
+                            <td className="legacy-weapon-range-grid-cell">
+                              <div className="legacy-weapon-range-grid">
+                                {rangeLabels.map((label, index) => (
+                                  <span
+                                    key={`${weaponGroup.key}-${rowIndex}-${label}`}
+                                    className={`legacy-weapon-range-mod ${getRangeModClass(rangeMods[index] || "")}`.trim()}
+                                  >
+                                    <small>{label}</small>
+                                    <b>{rangeMods[index] || "-"}</b>
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                            <td className="legacy-weapon-traits-cell">
+                              {row.properties.length
+                                ? row.properties.join(", ")
+                                : "-"}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            ))}
+          </div>
+        </details>
+      )}
       {(!collapsible || expanded) && showTts && (
         <TtsCopyPanel
           ttsText={generateTrooperTtsText(unit, groupsToRender)}

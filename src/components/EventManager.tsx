@@ -29,6 +29,11 @@ import {
   type LocalEvent,
 } from "../lib/mercs/eventStore";
 import {
+  CONTRACT_OPTIONS,
+  contractSlugFromValue,
+  contractTitleFromValue,
+} from "../data/contracts";
+import {
   loadLocalCompanies,
   type LocalCompany,
 } from "../lib/mercs/companyStore";
@@ -859,7 +864,7 @@ function SharedEventWorkspace({
           id: makeId("drive-round"),
           name: roundForm.name.trim(),
           number: rounds.length + 1,
-          mission: roundForm.mission.trim() || undefined,
+          mission: contractSlugFromValue(roundForm.mission) || undefined,
           description: roundForm.description.trim() || undefined,
           startDate: roundForm.startDate
             ? new Date(roundForm.startDate).toISOString()
@@ -919,7 +924,7 @@ function SharedEventWorkspace({
             player1Name: player1.companyName,
             player2FileId,
             player2Name: player2.companyName,
-            mission: pairingMission.trim() || undefined,
+            mission: contractSlugFromValue(pairingMission) || undefined,
             createdAt: timestamp,
           },
         ];
@@ -1239,7 +1244,7 @@ function SharedEventWorkspace({
             </label>
             <label className="field">
               <span>Default Contract</span>
-              <input
+              <select
                 value={roundForm.mission}
                 onChange={(event) =>
                   setRoundForm((current) => ({
@@ -1247,8 +1252,14 @@ function SharedEventWorkspace({
                     mission: event.target.value,
                   }))
                 }
-                placeholder="Control Room, The Mole..."
-              />
+              >
+                <option value="">No default contract</option>
+                {CONTRACT_OPTIONS.map((contract) => (
+                  <option key={contract.slug} value={contract.slug}>
+                    {contract.title}
+                  </option>
+                ))}
+              </select>
             </label>
             <div className="event-form-grid">
               <label className="field">
@@ -1348,11 +1359,17 @@ function SharedEventWorkspace({
             </div>
             <label className="field">
               <span>Contract</span>
-              <input
+              <select
                 value={pairingMission}
                 onChange={(event) => setPairingMission(event.target.value)}
-                placeholder="Optional contract override"
-              />
+              >
+                <option value="">Use round default</option>
+                {CONTRACT_OPTIONS.map((contract) => (
+                  <option key={contract.slug} value={contract.slug}>
+                    {contract.title}
+                  </option>
+                ))}
+              </select>
             </label>
             <button
               className="command-button command-button--primary"
@@ -1387,7 +1404,7 @@ function SharedEventWorkspace({
                     <h3>{round.name}</h3>
                     <p>
                       {round.description ||
-                        round.mission ||
+                        contractTitleFromValue(round.mission) ||
                         "No round notes yet."}
                     </p>
                   </div>
@@ -1414,7 +1431,9 @@ function SharedEventWorkspace({
                           <strong>{pairing.player2Name}</strong>
                         </div>
                         <small>
-                          {pairing.mission || round.mission || "Contract TBD"}
+                          {contractTitleFromValue(
+                            pairing.mission || round.mission,
+                          ) || "Contract TBD"}
                         </small>
                         {ownedCompanyFileIds.has(pairing.player1FileId) ||
                         ownedCompanyFileIds.has(pairing.player2FileId) ? (
@@ -1633,7 +1652,7 @@ function RoundsPanel({
     eventSubmit.preventDefault();
     const updatedEvent = createEventRound(event.id, {
       name: roundForm.name,
-      mission: roundForm.mission,
+      mission: contractSlugFromValue(roundForm.mission),
       startDate: roundForm.startDate
         ? new Date(roundForm.startDate).toISOString()
         : undefined,
@@ -1655,7 +1674,7 @@ function RoundsPanel({
     const updatedEvent = createEventPairing(event.id, pairingRoundId, {
       player1Id,
       player2Id,
-      mission: pairingMission,
+      mission: contractSlugFromValue(pairingMission),
     });
 
     if (updatedEvent) {
@@ -1686,13 +1705,19 @@ function RoundsPanel({
           </label>
           <label className="field">
             <span>Default Contract</span>
-            <input
+            <select
               value={roundForm.mission}
               onChange={(event) =>
                 updateRoundField("mission", event.target.value)
               }
-              placeholder="Control Room, The Mole..."
-            />
+            >
+              <option value="">No default contract</option>
+              {CONTRACT_OPTIONS.map((contract) => (
+                <option key={contract.slug} value={contract.slug}>
+                  {contract.title}
+                </option>
+              ))}
+            </select>
           </label>
           <div className="event-form-grid">
             <label className="field">
@@ -1782,11 +1807,17 @@ function RoundsPanel({
           </div>
           <label className="field">
             <span>Contract</span>
-            <input
+            <select
               value={pairingMission}
               onChange={(event) => setPairingMission(event.target.value)}
-              placeholder="Optional contract override"
-            />
+            >
+              <option value="">Use round default</option>
+              {CONTRACT_OPTIONS.map((contract) => (
+                <option key={contract.slug} value={contract.slug}>
+                  {contract.title}
+                </option>
+              ))}
+            </select>
           </label>
           <button
             className="command-button command-button--primary"
@@ -1815,7 +1846,7 @@ function RoundsPanel({
                   <h3>{round.name}</h3>
                   <p>
                     {round.description ||
-                      round.mission ||
+                      contractTitleFromValue(round.mission) ||
                       "No round notes yet."}
                   </p>
                 </div>
@@ -1842,7 +1873,9 @@ function RoundsPanel({
                       </strong>
                     </div>
                     <small>
-                      {pairing.mission || round.mission || "Contract TBD"}
+                      {contractTitleFromValue(
+                        pairing.mission || round.mission,
+                      ) || "Contract TBD"}
                     </small>
                     {(() => {
                       const participant1 = event.participants.find(
