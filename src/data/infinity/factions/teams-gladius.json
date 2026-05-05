@@ -1,5 +1,5 @@
 {
-  "version": "7.2577.251",
+  "version": "7.25288.295",
   "units": [
     {
       "id": 1732,
@@ -3796,7 +3796,8 @@
       {
         "id": 246,
         "name": "Bangbomb",
-        "type": "WEAPON"
+        "type": "WEAPON",
+        "wiki": "https://infinitythewiki.com/Bangbomb?version=n4"
       },
       {
         "id": 184,
@@ -3994,11 +3995,13 @@
       },
       {
         "id": 262,
-        "name": "Combat Instinct"
+        "name": "Combat Instinct",
+        "wiki": "https://infinitythewiki.com/Combat_Instinct?version=n4"
       },
       {
         "id": 267,
-        "name": "Warhorse"
+        "name": "Warhorse",
+        "wiki": "https://infinitythewiki.com/Warhorse?version=n4"
       },
       {
         "id": 1000,

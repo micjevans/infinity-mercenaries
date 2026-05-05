@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Fragment } from "react";
 import type React from "react";
 import {
   deleteLocalCompany,
@@ -19,6 +19,7 @@ import {
 } from "../lib/google-drive-adapter";
 import { perkTrees, type Perk } from "../data/perks";
 import baseMarket from "../data/infinity/markets/baseMarket.json";
+import { warMarkets } from "../data/markets";
 import silhouetteImage from "../legacy/old-app/assets/images/silhouette.png?url";
 import { factionList, mapItemData, mapType } from "../lib/mercs/metadata";
 import {
@@ -50,7 +51,7 @@ import type {
   ProfileOption,
   Unit,
 } from "../lib/mercs/types";
-import { AppIcon } from "./AppIcon";
+import { AppIcon, type AppIconName } from "./AppIcon";
 import {
   RecruitableUnit,
   SpecOpsConfigurator,
@@ -117,22 +118,22 @@ function LegacyAccordion({
       className={`legacy-accordion${expanded ? " is-expanded" : ""}`}
       id={id}
     >
-      <button
-        className="legacy-accordion__summary"
-        type="button"
-        onClick={onToggle}
-      >
-        <span className="legacy-accordion__title">
-          <span className="legacy-accordion__icon" aria-hidden="true">
-            {icon}
+      <div className="legacy-accordion__header">
+        <button
+          className="legacy-accordion__summary"
+          type="button"
+          onClick={onToggle}
+        >
+          <span className="legacy-accordion__title">
+            <span className="legacy-accordion__icon" aria-hidden="true">
+              {icon}
+            </span>
+            {title}
           </span>
-          {title}
-        </span>
-        <span className="legacy-accordion__right">
-          {action}
           <AppIcon name={expanded ? "up" : "down"} size={17} />
-        </span>
-      </button>
+        </button>
+        {action && <div className="legacy-accordion__action">{action}</div>}
+      </div>
       {expanded && <div className="legacy-accordion__details">{children}</div>}
     </section>
   );
@@ -285,6 +286,128 @@ function getShopSlotLabel(slot: string): string {
   return labels[slot] || slot;
 }
 
+function normalizeShopLookupName(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9+]/g, "");
+}
+
+function canonicalShopLookupName(value: string): string {
+  const normalized = normalizeShopLookupName(value);
+  const aliases: Record<string, string> = {
+    heavymachinegun: "hmg",
+    shockmine: "shockmines",
+    daccweapon: "daccw",
+    paraccweapon: "paracc3",
+    paraccw3: "paracc3",
+  };
+  return aliases[normalized] || normalized;
+}
+
+type BaseMarketRuleInfo = {
+  section: string;
+  type?: string;
+  arm?: string;
+  bts?: string;
+  effect?: string;
+  note?: string;
+  swc?: string;
+};
+
+function findShopSectionNoteForItem(
+  sectionNote: string | undefined,
+  itemName: string,
+): string | undefined {
+  if (!sectionNote) return undefined;
+  const noteNormalized = normalizeShopLookupName(sectionNote);
+  const itemNormalized = normalizeShopLookupName(itemName);
+  if (!itemNormalized) return undefined;
+  if (noteNormalized.includes(itemNormalized)) return sectionNote;
+
+  const itemTokens = itemName
+    .split(/[^A-Za-z0-9+]+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 4)
+    .map((token) => normalizeShopLookupName(token));
+
+  return itemTokens.some((token) => token && noteNormalized.includes(token))
+    ? sectionNote
+    : undefined;
+}
+
+const baseMarketRuleLookup = (() => {
+  const lookup = new Map<string, BaseMarketRuleInfo>();
+  const baseMarketData = warMarkets.find(
+    (market) => market.name === "Base Market",
+  );
+  if (!baseMarketData) return lookup;
+
+  baseMarketData.sections.forEach((section) => {
+    section.items.forEach((entry) => {
+      lookup.set(canonicalShopLookupName(entry.name), {
+        section: section.name,
+        type: entry.type,
+        arm: entry.arm,
+        bts: entry.bts,
+        effect: entry.effect,
+        note: findShopSectionNoteForItem(section.note, entry.name),
+        swc: entry.swc,
+      });
+    });
+  });
+
+  return lookup;
+})();
+
+function getShopItemRuleInfo(
+  item: MetadataItem,
+): BaseMarketRuleInfo | undefined {
+  const mapped = mapItemData(item);
+  const mappedName = String(mapped[0]?.name || item.name || "");
+  const lookupKey = canonicalShopLookupName(mappedName);
+  return baseMarketRuleLookup.get(lookupKey);
+}
+
+function getShopItemVisualMeta(item: MetadataItem): {
+  kicker: string;
+  detail?: string;
+  chips: string[];
+  note?: string;
+} {
+  const slot = getInventoryItemSlot(item);
+  const slotLabel = getShopSlotLabel(slot);
+  const mapped = mapItemData(item);
+  const mappedItem = mapped[0] as Record<string, unknown> | undefined;
+  const rule = getShopItemRuleInfo(item);
+
+  const chips: string[] = [slotLabel];
+  if (rule?.type && rule.type !== "-") chips.push(`Type ${rule.type}`);
+  if (rule?.arm && rule.arm !== "-") chips.push(`ARM ${rule.arm}`);
+  if (rule?.bts && rule.bts !== "-") chips.push(`BTS ${rule.bts}`);
+
+  if (item.key === "weapons" && mappedItem) {
+    const burst = String(mappedItem.burst || "");
+    const damage = String(mappedItem.damage || "");
+    if (burst && burst !== "-") chips.push(`B ${burst}`);
+    if (damage && damage !== "-") chips.push(`DMG ${damage}`);
+  }
+
+  const properties = Array.isArray(mappedItem?.properties)
+    ? (mappedItem?.properties as unknown[])
+        .map((entry) => String(entry).trim())
+        .filter((entry) => entry && !entry.startsWith("["))
+    : [];
+
+  const detail =
+    rule?.effect ||
+    (properties.length > 0 ? properties.slice(0, 3).join(", ") : undefined);
+
+  return {
+    kicker: rule ? `${rule.section} Catalog` : `${slotLabel} Listing`,
+    detail,
+    chips,
+    note: rule?.note,
+  };
+}
+
 function getStaticMarketCost(item: MetadataItem): number {
   if (item.cr !== undefined) return Number(item.cr) || 0;
   const byName: Record<string, number> = {
@@ -333,22 +456,127 @@ function getPerkIdentity(perk: any): string {
   });
 }
 
+function mergeMetadataItemsById(
+  items: any[],
+): Map<string, Set<number | string>> {
+  const merged = new Map<string, Set<number | string>>();
+
+  items.forEach((item: any) => {
+    const key = String(item?.id ?? "");
+    if (!key) return;
+
+    const extras = merged.get(key) || new Set<number | string>();
+    const itemExtra = Array.isArray(item?.extra) ? item.extra : [];
+    itemExtra.forEach((extra: number | string) => extras.add(extra));
+    merged.set(key, extras);
+  });
+
+  return merged;
+}
+
+function collectTrooperMetadataItems(trooper: any, keys: string[]): any[] {
+  const profile = trooper.profileGroups?.[0]?.profiles?.[0] || {};
+  const option = trooper.profileGroups?.[0]?.options?.[0] || {};
+
+  return keys.flatMap((key) => {
+    const topLevelItems = Array.isArray(trooper[key]) ? trooper[key] : [];
+    const profileItems = Array.isArray(profile[key]) ? profile[key] : [];
+    const optionItems = Array.isArray(option[key]) ? option[key] : [];
+    return [...topLevelItems, ...profileItems, ...optionItems];
+  });
+}
+
+function hasAllMetadataItems(
+  currentItems: any[],
+  requiredItems: any[],
+): boolean {
+  const mergedCurrentItems = mergeMetadataItemsById(currentItems);
+
+  return requiredItems.every((requiredItem: any) => {
+    const requiredExtra = Array.isArray(requiredItem.extra)
+      ? requiredItem.extra
+      : [];
+    const currentExtra = mergedCurrentItems.get(String(requiredItem.id));
+    if (!currentExtra) return false;
+    return requiredExtra.every((extraId: number | string) =>
+      currentExtra.has(extraId),
+    );
+  });
+}
+
 function isPerkSelected(trooper: any, perk: any): boolean {
-  return (trooper.perks || []).some(
-    (existing: any) => getPerkIdentity(existing) === getPerkIdentity(perk),
+  if (
+    (trooper.perks || []).some(
+      (existing: any) => getPerkIdentity(existing) === getPerkIdentity(perk),
+    )
+  ) {
+    return true;
+  }
+
+  // Include currently equipped shop/loadout items by checking the rendered trooper state.
+  const renderedTrooper = renderCombinedDetails(trooper);
+
+  const metadataChecks: Array<[any[], any[]]> = [
+    [
+      [
+        ...collectTrooperMetadataItems(trooper, ["skills"]),
+        ...collectTrooperMetadataItems(renderedTrooper, ["skills"]),
+      ],
+      Array.isArray(perk.skills) ? perk.skills : [],
+    ],
+    [
+      [
+        ...collectTrooperMetadataItems(trooper, ["equip", "equips"]),
+        ...collectTrooperMetadataItems(renderedTrooper, ["equip", "equips"]),
+      ],
+      Array.isArray(perk.equips) ? perk.equips : [],
+    ],
+    [
+      [
+        ...collectTrooperMetadataItems(trooper, ["weapons"]),
+        ...collectTrooperMetadataItems(renderedTrooper, ["weapons"]),
+      ],
+      Array.isArray(perk.weapons) ? perk.weapons : [],
+    ],
+    [
+      [
+        ...collectTrooperMetadataItems(trooper, ["peripheral", "peripherals"]),
+        ...collectTrooperMetadataItems(renderedTrooper, [
+          "peripheral",
+          "peripherals",
+        ]),
+      ],
+      Array.isArray(perk.peripherals) ? perk.peripherals : [],
+    ],
+  ];
+
+  const activeChecks = metadataChecks.filter(
+    ([, requiredItems]) => requiredItems.length > 0,
   );
+  if (activeChecks.length > 0) {
+    return activeChecks.every(([currentItems, requiredItems]) =>
+      hasAllMetadataItems(currentItems, requiredItems),
+    );
+  }
+
+  return false;
 }
 
 function makeReferencePerk(treeName: string, perk: Perk): MetadataItem {
-  return {
-    id: `perk:${treeName}:${perk.tier}:${perk.roll}:${perk.name}:${perk.detail || ""}`,
-    name: perk.detail ? `${perk.name} (${perk.detail})` : perk.name,
+  const baseId = `perk:${treeName}:${perk.tier}:${perk.roll}:${perk.name}:${perk.detail || ""}`;
+  const displayName = perk.detail ? `${perk.name} (${perk.detail})` : perk.name;
+
+  const base: MetadataItem = {
+    id: baseId,
+    name: displayName,
     key: "perk",
     tree: treeName,
     tier: perk.tier,
     roll: perk.roll,
     requires: perk.requires || [],
   };
+
+  return perk.effect ? { ...base, ...structuredClone(perk.effect) } : base;
 }
 
 function EditTrooperDialog({
@@ -719,6 +947,7 @@ function ShopExchangeDialog({
             items={availableCompanyItems}
             emptyText="No company inventory."
             onItemClick={stageCompanyItem}
+            variant="company"
           />
 
           <section className="legacy-shop-staging">
@@ -762,6 +991,7 @@ function ShopExchangeDialog({
             items={availableMerchantItems}
             emptyText="No merchant items."
             onItemClick={stageMerchantItem}
+            variant="merchant"
           />
         </div>
 
@@ -791,11 +1021,13 @@ function ShopInventoryColumn({
   items,
   emptyText,
   onItemClick,
+  variant,
 }: {
   title: string;
   items: MetadataItem[];
   emptyText: string;
   onItemClick: (item: MetadataItem) => void;
+  variant?: "company" | "merchant";
 }) {
   const grouped = groupShopItems(items);
   const slots = [
@@ -809,7 +1041,9 @@ function ShopInventoryColumn({
     "other",
   ];
   return (
-    <section className="legacy-shop-column">
+    <section
+      className={`legacy-shop-column${variant ? ` legacy-shop-column--${variant}` : ""}`}
+    >
       <h3>{title}</h3>
       {items.length === 0 && <p className="empty-note">{emptyText}</p>}
       {slots.map((slot) =>
@@ -818,15 +1052,11 @@ function ShopInventoryColumn({
             <h4>{getShopSlotLabel(slot)}</h4>
             <div className="legacy-shop-items">
               {grouped[slot].map((item) => (
-                <button
-                  className="legacy-shop-item"
-                  type="button"
+                <ShopItemButton
+                  item={item}
                   key={String(item.uuid || item.id)}
-                  onClick={() => onItemClick(item)}
-                >
-                  <span>{getInventoryItemName(item)}</span>
-                  <strong>{Number(item.cr || 0)} CR</strong>
-                </button>
+                  onClick={onItemClick}
+                />
               ))}
             </div>
           </div>
@@ -849,18 +1079,48 @@ function StagedItems({
     <div className="legacy-staged-items">
       <h4>{title}</h4>
       {items.map((item) => (
-        <button
-          className="legacy-shop-item"
-          type="button"
+        <ShopItemButton
+          item={item}
           key={String(item.uuid || item.id)}
-          onClick={() => onItemClick(item)}
-        >
-          <span>{getInventoryItemName(item)}</span>
-          <strong>{Number(item.cr || 0)} CR</strong>
-        </button>
+          onClick={onItemClick}
+        />
       ))}
       {items.length === 0 && <p className="empty-note">Nothing staged.</p>}
     </div>
+  );
+}
+
+function ShopItemButton({
+  item,
+  onClick,
+}: {
+  item: MetadataItem;
+  onClick: (item: MetadataItem) => void;
+}) {
+  const visual = getShopItemVisualMeta(item);
+  return (
+    <button
+      className="legacy-shop-item"
+      type="button"
+      onClick={() => onClick(item)}
+    >
+      <div className="legacy-shop-item__body">
+        <span className="legacy-shop-item__kicker">{visual.kicker}</span>
+        <strong className="legacy-shop-item__title">
+          {getInventoryItemName(item)}
+        </strong>
+        {visual.detail && <p>{visual.detail}</p>}
+        {visual.note && <small>{visual.note}</small>}
+        {visual.chips.length > 0 && (
+          <div className="legacy-shop-item__chips">
+            {visual.chips.map((chip) => (
+              <span key={`${String(item.id)}-${chip}`}>{chip}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <span className="legacy-shop-item__price">{Number(item.cr || 0)} CR</span>
+    </button>
   );
 }
 
@@ -881,30 +1141,83 @@ function VisualPerkTree({
   trooper: any;
   setTrooper: React.Dispatch<React.SetStateAction<any>>;
 }) {
-  const [selectedTree, setSelectedTree] = useState(
-    perkTrees[0]?.name || "Initiative",
-  );
+  const allPerkTrees = perkTrees;
+  const [selectedTree, setSelectedTree] = useState<string | null>(null);
+  const perkTreeIconByName: Record<string, AppIconName> = {
+    Initiative: "target",
+    Cool: "rank4",
+    Body: "rank5",
+    Reflex: "rank6",
+    Intelligence: "info",
+    Empathy: "troopers",
+  };
+  const getTreeIconName = (treeName: string): AppIconName =>
+    perkTreeIconByName[treeName] || "target";
   const tree =
-    perkTrees.find((candidate) => candidate.name === selectedTree) ||
-    perkTrees[0];
+    allPerkTrees.find((candidate) => candidate.name === selectedTree) ||
+    allPerkTrees[0];
   const rolls = [...new Set(tree.perks.map((perk) => perk.roll))].sort(
     (a, b) => rollSortValue(a) - rollSortValue(b),
   );
   const perkPoints = Number(trooper.perkPoints || 0);
   const level = calculateLevel(trooper.xp);
+  const perkCountsByTree = useMemo(() => {
+    const counts = Object.fromEntries(
+      allPerkTrees.map((candidate) => [candidate.name, 0]),
+    ) as Record<string, number>;
+
+    (trooper.perks || []).forEach((selected: any) => {
+      const selectedTreeName = String(selected.tree || "");
+      if (selectedTreeName in counts) {
+        counts[selectedTreeName] += 1;
+        return;
+      }
+
+      const selectedName = String(selected.name || "").toLowerCase();
+      const matchedTree = allPerkTrees.find((candidate) =>
+        candidate.perks.some((candidatePerk) => {
+          const candidateName = candidatePerk.detail
+            ? `${candidatePerk.name} (${candidatePerk.detail})`
+            : candidatePerk.name;
+          return candidateName.toLowerCase() === selectedName;
+        }),
+      );
+
+      if (matchedTree) counts[matchedTree.name] += 1;
+    });
+
+    return counts;
+  }, [allPerkTrees, trooper.perks]);
+
+  const treeProgramStats = useMemo(
+    () =>
+      allPerkTrees.map((candidate) => {
+        const allocated = perkCountsByTree[candidate.name] || 0;
+        const total = candidate.perks.length || 1;
+        const completion = Math.min(100, Math.round((allocated / total) * 100));
+        return {
+          candidate,
+          allocated,
+          total,
+          completion,
+        };
+      }),
+    [allPerkTrees, perkCountsByTree],
+  );
 
   function togglePerk(perk: Perk) {
     const referencePerk = makeReferencePerk(tree.name, perk);
     if (isPerkSelected(trooper, referencePerk)) return;
     if (perkPoints <= 0) return;
     if (level < perk.tier) return;
-    if ((perk.requires || []).length > 0) {
+    const requirements = perk.requires || [];
+    if (requirements.length > 0) {
       const selectedNames = new Set(
         (trooper.perks || []).map((selected: any) =>
           String(selected.name || "").toLowerCase(),
         ),
       );
-      const hasRequirement = perk.requires.some((requirement) =>
+      const hasRequirement = requirements.some((requirement) =>
         selectedNames.has(requirement.toLowerCase()),
       );
       if (!hasRequirement) return;
@@ -919,75 +1232,149 @@ function VisualPerkTree({
 
   return (
     <div className="legacy-perk-tree-editor">
-      <div className="legacy-perk-toolbar">
-        <div>
-          <span className="panel-kicker">Perk Tree</span>
-          <strong>{perkPoints} Perk Points</strong>
-        </div>
-        <select
-          value={selectedTree}
-          onChange={(event) => setSelectedTree(event.target.value)}
-        >
-          {perkTrees.map((candidate) => (
-            <option key={candidate.name} value={candidate.name}>
-              {candidate.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      {!selectedTree ? (
+        <div className="legacy-perk-selection-view">
+          <header className="legacy-perk-program-header">
+            <span className="panel-kicker">Program Matrix</span>
+            <h3>Select a perk program to install</h3>
+            <p>
+              Each tree is themed as a tactical software package for your
+              trooper. Pick one to open its module lanes.
+            </p>
+          </header>
 
-      <div
-        className="legacy-perk-grid"
-        style={{ "--perk-columns": rolls.length } as React.CSSProperties}
-      >
-        <div className="legacy-perk-corner">Tier</div>
-        {rolls.map((roll) => (
-          <div className="legacy-perk-roll" key={roll}>
-            {roll}
-          </div>
-        ))}
-
-        {[1, 2, 3, 4, 5].map((tier) => (
-          <>
-            <div className="legacy-perk-tier" key={`${tree.name}-tier-${tier}`}>
-              <span>Tier</span>
-              {tier}
-            </div>
-            {rolls.map((roll) => {
-              const perks = tree.perks.filter(
-                (perk) => perk.tier === tier && perk.roll === roll,
-              );
-              return (
-                <div
-                  className="legacy-perk-cell"
-                  key={`${tree.name}-${tier}-${roll}`}
+          <div
+            className="legacy-perk-program-grid"
+            role="list"
+            aria-label="Perk tree selection"
+          >
+            {treeProgramStats.map(
+              ({ candidate, allocated, total, completion }) => (
+                <button
+                  className="legacy-perk-program-card"
+                  key={candidate.name}
+                  type="button"
+                  onClick={() => setSelectedTree(candidate.name)}
                 >
-                  {perks.map((perk) => {
-                    const referencePerk = makeReferencePerk(tree.name, perk);
-                    const selected = isPerkSelected(trooper, referencePerk);
-                    const locked =
-                      !selected && (perkPoints <= 0 || level < perk.tier);
-                    return (
-                      <button
-                        className={`legacy-perk-node${selected ? " is-selected" : ""}${locked ? " is-locked" : ""}`}
-                        key={String(referencePerk.id)}
-                        type="button"
-                        onClick={() => togglePerk(perk)}
-                      >
-                        <strong>{perk.name}</strong>
-                        {perk.detail && <small>{perk.detail}</small>}
-                        {perk.requires?.length ? (
-                          <em>Requires {perk.requires.join(", ")}</em>
-                        ) : null}
-                      </button>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </>
-        ))}
-      </div>
+                  <div className="legacy-perk-program-card__head">
+                    <span className="legacy-perk-program-icon">
+                      <AppIcon
+                        name={getTreeIconName(candidate.name)}
+                        size={16}
+                      />
+                    </span>
+                    <div>
+                      <strong>{candidate.name}</strong>
+                      <small>{candidate.roll}</small>
+                    </div>
+                  </div>
+                  <p>{candidate.summary}</p>
+                  <div className="legacy-perk-program-metrics">
+                    <span>Installed {allocated}</span>
+                    <span>Total {total}</span>
+                  </div>
+                  <div
+                    className="legacy-perk-program-progress"
+                    aria-hidden="true"
+                  >
+                    <div
+                      style={{ width: `${completion}%` } as React.CSSProperties}
+                    />
+                  </div>
+                </button>
+              ),
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="legacy-perk-toolbar">
+            <div>
+              <span className="panel-kicker">Program Slots</span>
+              <strong>{perkPoints} Available</strong>
+            </div>
+            <div className="legacy-perk-toolbar__status">
+              <span>Trooper Level</span>
+              <strong>{level}</strong>
+            </div>
+          </div>
+
+          <div className="legacy-perk-tree-heading">
+            <button
+              className="command-button command-button--small"
+              type="button"
+              onClick={() => setSelectedTree(null)}
+            >
+              <AppIcon name="back" size={14} />
+              Back to program matrix
+            </button>
+            <div className="legacy-perk-tree-heading__meta">
+              <AppIcon name={getTreeIconName(tree.name)} size={16} />
+              <strong>{tree.name}</strong>
+              <small>{tree.roll}</small>
+            </div>
+          </div>
+
+          <div
+            className="legacy-perk-grid"
+            style={{ "--perk-columns": 5 } as React.CSSProperties}
+          >
+            <div className="legacy-perk-corner">Roll</div>
+            {[1, 2, 3, 4, 5].map((tier) => (
+              <div
+                className="legacy-perk-tier-head"
+                key={`${tree.name}-tier-head-${tier}`}
+              >
+                <span>Tier</span>
+                {tier}
+              </div>
+            ))}
+
+            {rolls.map((roll) => (
+              <Fragment key={`${tree.name}-roll-row-${roll}`}>
+                <div className="legacy-perk-roll">{roll}</div>
+                {[1, 2, 3, 4, 5].map((tier) => {
+                  const perks = tree.perks.filter(
+                    (perk) => perk.tier === tier && perk.roll === roll,
+                  );
+                  return (
+                    <div
+                      className="legacy-perk-cell"
+                      key={`${tree.name}-${roll}-${tier}`}
+                    >
+                      {perks.map((perk) => {
+                        const referencePerk = makeReferencePerk(
+                          tree.name,
+                          perk,
+                        );
+                        const selected = isPerkSelected(trooper, referencePerk);
+                        const locked =
+                          !selected && (perkPoints <= 0 || level < perk.tier);
+                        return (
+                          <button
+                            className={`legacy-perk-node${selected ? " is-selected" : ""}${locked ? " is-locked" : ""}`}
+                            key={String(referencePerk.id)}
+                            type="button"
+                            onClick={() => togglePerk(perk)}
+                          >
+                            <strong>{perk.name}</strong>
+                            {perk.detail && <small>{perk.detail}</small>}
+                            {perk.requires?.length ? (
+                              <em>Dependencies: {perk.requires.join(", ")}</em>
+                            ) : (
+                              <em>Ready to install</em>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </Fragment>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -9,12 +9,36 @@
       "logo": "https://assets.corvusbelli.net/army/img/logo/factions/panoceania.svg"
     },
     {
+      "id": 102,
+      "parent": 101,
+      "name": "Shock Army of Acontecimento",
+      "slug": "shock-army-of-acontecimento",
+      "discontinued": true,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/shock-army-of-acontecimento.svg"
+    },
+    {
       "id": 103,
       "parent": 101,
       "name": "Military Orders",
       "slug": "military-orders",
       "discontinued": false,
       "logo": "https://assets.corvusbelli.net/army/img/logo/factions/military-orders.svg"
+    },
+    {
+      "id": 104,
+      "parent": 101,
+      "name": "Neoterran Capitaline Army",
+      "slug": "neoterran-capitaline-army",
+      "discontinued": false,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/neoterran-capitaline-army.svg"
+    },
+    {
+      "id": 105,
+      "parent": 101,
+      "name": "Varuna Immediate Reaction Division",
+      "slug": "varuna-immediate-reaction-division",
+      "discontinued": true,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/varuna-immediate-reaction-division.svg"
     },
     {
       "id": 106,
@@ -87,6 +111,22 @@
       "slug": "ariadna",
       "discontinued": false,
       "logo": "https://assets.corvusbelli.net/army/img/logo/factions/ariadna.svg"
+    },
+    {
+      "id": 302,
+      "parent": 301,
+      "name": "Caledonian Highlander Army",
+      "slug": "caledonian-highlander-army",
+      "discontinued": true,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/caledonian-highlander-army.svg"
+    },
+    {
+      "id": 303,
+      "parent": 301,
+      "name": "Force de Réponse Rapide Merovingienne",
+      "slug": "force-de-reponse-rapide-merovingienne",
+      "discontinued": false,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/force-de-reponse-rapide-merovingienne.svg"
     },
     {
       "id": 304,
@@ -233,6 +273,14 @@
       "logo": "https://assets.corvusbelli.net/army/img/logo/factions/onyx.svg"
     },
     {
+      "id": 605,
+      "parent": 601,
+      "name": "Next Wave",
+      "slug": "next-wave",
+      "discontinued": false,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/next-wave.svg"
+    },
+    {
       "id": 699,
       "parent": 691,
       "name": "The Exrah Comissariat",
@@ -311,6 +359,14 @@
       "slug": "ikari",
       "discontinued": false,
       "logo": "https://assets.corvusbelli.net/army/img/logo/factions/ikari.svg"
+    },
+    {
+      "id": 905,
+      "parent": 901,
+      "name": "Starco. Free Company of the Star",
+      "slug": "starco-free-company-of-the-star",
+      "discontinued": false,
+      "logo": "https://assets.corvusbelli.net/army/img/logo/factions/starco-free-company-of-the-star.svg"
     },
     {
       "id": 908,
@@ -414,10 +470,15 @@
       "id": 1,
       "name": "Adhesive",
       "ammunition": "PARA",
-      "properties": ["NON-LETHAL", "State: IMMOBILIZED-A"],
+      "properties": [
+        "NON-LETHAL",
+        "State: IMMOBILIZED-A"
+      ],
       "saving": "PH-6",
       "multiplier": 1.2,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 2,
@@ -431,7 +492,9 @@
       "ammunition": "AP",
       "saving": "ARM/2",
       "multiplier": 1.2,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 4,
@@ -448,18 +511,26 @@
       "wiki": "https://infinitythewiki.com/Explosive_(EXP)_Ammunition?version=n4",
       "ammunition": "EXP",
       "savingNum": 3,
-      "properties": ["ANTI-MATERIAL"],
+      "properties": [
+        "ANTI-MATERIAL"
+      ],
       "multiplier": 2,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 7,
       "name": "Monofilament",
       "saving": "ARM=0",
-      "properties": ["State: DEAD"],
+      "properties": [
+        "State: DEAD"
+      ],
       "damage": "8",
       "multiplier": 2.5,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 8,
@@ -467,7 +538,9 @@
       "wiki": "https://infinitythewiki.com/Shock_Ammunition?version=n4",
       "ammunition": "SHOCK",
       "multiplier": 1.1,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 9,
@@ -475,9 +548,13 @@
       "wiki": "https://infinitythewiki.com/Double_Action_(DA)_Ammunition?version=n4",
       "ammunition": "DA",
       "savingNum": 2,
-      "properties": ["ANTI-MATERIAL"],
+      "properties": [
+        "ANTI-MATERIAL"
+      ],
       "multiplier": 1.5,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 10,
@@ -489,9 +566,13 @@
       "id": 11,
       "name": "Viral",
       "saving": "BTS",
-      "properties": ["BIOWEAPON (DA+SHOCK)"],
+      "properties": [
+        "BIOWEAPON (DA+SHOCK)"
+      ],
       "multiplier": 1.5,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 12,
@@ -508,11 +589,15 @@
       "name": "E/M",
       "wiki": "https://infinitythewiki.com/Electromagnetic_(E/M)_Ammunition?version=n4",
       "ammunition": "E/M",
-      "properties": ["NON-LETHAL"],
+      "properties": [
+        "NON-LETHAL"
+      ],
       "saving": "BTS/2",
       "savingNum": 2,
       "multiplier": 1.7,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 15,
@@ -531,9 +616,13 @@
       "name": "T2",
       "wiki": "https://infinitythewiki.com/T2_Ammunition?version=n4",
       "ammunition": "T2",
-      "properties": ["ANTI-MATERIAL"],
+      "properties": [
+        "ANTI-MATERIAL"
+      ],
       "multiplier": 1.6,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 19,
@@ -548,9 +637,15 @@
       "name": "Smoke",
       "wiki": "https://infinitythewiki.com/Smoke_Ammunition?version=n4",
       "ammunition": "SMOKE",
-      "properties": ["IMPACT TEMPLATE (CIRCULAR)", "NON-LETHAL", "TARGETLESS"],
+      "properties": [
+        "IMPACT TEMPLATE (CIRCULAR)",
+        "NON-LETHAL",
+        "TARGETLESS"
+      ],
       "multiplier": 2,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 22,
@@ -564,23 +659,34 @@
         "TARGETLESS"
       ],
       "multiplier": 3,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 23,
       "name": "Flash",
       "ammunition": "STUN",
       "saving": "BTS",
-      "properties": ["NON-LETHAL", "State: STUNNED"],
+      "properties": [
+        "NON-LETHAL",
+        "State: STUNNED"
+      ],
       "multiplier": 0.8,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 24,
       "name": "Fire",
-      "properties": ["CONTINUOUS DAMAGE"],
+      "properties": [
+        "CONTINUOUS DAMAGE"
+      ],
       "multiplier": 1.7,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 25,
@@ -614,15 +720,19 @@
       "name": "K1",
       "saving": "ARM=0",
       "damage": "7",
-      "multiplier": 1.5,
-      "types": ["weapons"]
+      "multiplier": 1.7,
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 32,
       "name": "Breaker",
       "saving": "BTS/2",
       "multiplier": 1.3,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 33,
@@ -634,7 +744,9 @@
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
       "multiplier": 2,
-      "types": ["weapons"]
+      "types": [
+        "weapons"
+      ]
     },
     {
       "id": 35,
@@ -674,7 +786,9 @@
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
-      "properties": ["Non-lethal"],
+      "properties": [
+        "Non-lethal"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -708,7 +822,11 @@
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
-      "properties": ["Disposable (2)", "State: IMM-A", "Non-lethal"],
+      "properties": [
+        "Disposable (2)",
+        "State: IMM-A",
+        "Non-lethal"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -742,7 +860,10 @@
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "2",
-      "properties": ["Anti-materiel", "CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "AP + DA CC Weapon",
       "cr": 0,
@@ -759,7 +880,10 @@
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "3",
-      "properties": ["Anti-materiel", "CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "AP + EXP CC Weapon",
       "cr": 0,
@@ -776,7 +900,9 @@
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "CC"
+      ],
       "distance": null,
       "abbr": "AP + Shock CC Weapon",
       "cr": 0,
@@ -793,7 +919,10 @@
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "AP + T2 CC Weapon",
       "cr": 0,
@@ -810,7 +939,9 @@
       "damage": "8",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "CC"
+      ],
       "distance": null,
       "abbr": "AP CC Weapon",
       "cr": 0,
@@ -827,7 +958,9 @@
       "damage": "5",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -892,7 +1025,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -950,7 +1085,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1018,7 +1155,9 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1052,7 +1191,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1081,12 +1222,18 @@
       "id": 226,
       "type": "WEAPON",
       "name": "Armed Turret",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
+      "ammunition": null,
       "burst": "-",
       "damage": "-",
-      "profile": "CC=5, BS=10, ARM=2, BTS=3, STR=1, S=2, Equip: 360 Visor, Skills: Total Reaction, CCW: PARA CC Weapon (-3)",
       "saving": "-",
-      "savingNum": "-",
-      "properties": [],
+      "savingNum": "1",
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": null,
       "abbr": "Armed Turret",
       "cr": 0,
@@ -1099,12 +1246,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Adhesive Launcher Rifle",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 37,
       "burst": "2",
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
-      "properties": ["Non-lethal"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1134,12 +1287,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "AP Rifle",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 3,
       "burst": "3",
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1169,20 +1328,27 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Combi Rifle",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
-        "med": {
-          "max": 80,
-          "mod": "-3"
-        },
         "short": {
           "max": 40,
           "mod": "+3"
+        },
+        "max": null,
+        "med": {
+          "max": 80,
+          "mod": "-3"
         },
         "long": {
           "max": 120,
@@ -1200,12 +1366,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "E/Mitter",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 14,
       "burst": "2",
       "damage": "7",
       "saving": "BTS/2",
-      "savingNum": "2",
-      "properties": ["Non-lethal", "[**]"],
+      "savingNum": "1",
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1235,12 +1407,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Marksman Rifle",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1270,12 +1448,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Mk12",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 2,
       "burst": "3",
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1305,12 +1489,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "PARA CC Weapon",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 37,
       "burst": "1",
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
-      "properties": ["Non-lethal", "State: IMM-A"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": null,
       "abbr": "Armed Turret",
       "cr": 0,
@@ -1323,12 +1513,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Rifle",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 2,
       "burst": "3",
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1358,12 +1554,18 @@
       "type": "WEAPON",
       "name": "Armed Turret",
       "mode": "Thunderbolt",
+      "wiki": "https://infinitythewiki.com/Armed_Turret?version=n4",
       "ammunition": 2,
       "burst": "2",
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": [],
+      "properties": [
+        "Disposable (1)",
+        "Perimeter",
+        "Deployable",
+        "Non-Reloadable"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1427,7 +1629,11 @@
       "damage": "6",
       "saving": "BTS/2",
       "savingNum": "2",
-      "properties": ["Disposable (2)", "Non-lethal", "[**]"],
+      "properties": [
+        "Disposable (2)",
+        "Non-lethal",
+        "[**]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1461,7 +1667,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Intuitive Attack", "Direct Template (Small Teardrop)"],
+      "properties": [
+        "Intuitive Attack",
+        "Direct Template (Small Teardrop)"
+      ],
       "distance": null,
       "abbr": "Boarding Pistol",
       "cr": 0,
@@ -1539,7 +1748,9 @@
       "damage": "7",
       "saving": "BTS/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -1599,7 +1810,9 @@
       "damage": "7",
       "saving": "BTS/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1633,7 +1846,9 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "CC"
+      ],
       "distance": null,
       "abbr": "CC Weapon",
       "cr": 0,
@@ -1650,7 +1865,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Intuitive Attack", "Direct Template (Large Teardrop)"],
+      "properties": [
+        "Intuitive Attack",
+        "Direct Template (Large Teardrop)"
+      ],
       "distance": null,
       "abbr": "Chain Rifle",
       "cr": 0,
@@ -1667,7 +1885,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Intuitive Attack", "Direct Template (Small Teardrop)"],
+      "properties": [
+        "Intuitive Attack",
+        "Direct Template (Small Teardrop)"
+      ],
       "distance": null,
       "abbr": "Chain-colt",
       "cr": 0,
@@ -1709,7 +1930,11 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["CC Attack (+3)", "Disposable (2)", "[*]"],
+      "properties": [
+        "CC Attack (+3)",
+        "Disposable (2)",
+        "[*]"
+      ],
       "distance": null,
       "abbr": "Chest Mine",
       "cr": 0,
@@ -1726,7 +1951,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -1756,7 +1983,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "med": {
           "max": 60,
@@ -1864,7 +2093,11 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "3",
-      "properties": ["Anti-materiel", "Disposable (3)", "[*]"],
+      "properties": [
+        "Anti-materiel",
+        "Disposable (3)",
+        "[*]"
+      ],
       "distance": null,
       "abbr": "D-Charges",
       "cr": 0,
@@ -1880,7 +2113,10 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel", "CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "DA CC Weapon",
       "cr": 3,
@@ -1899,7 +2135,11 @@
       "profile": "ARM=0, BTS=0, STR=1, S=0",
       "saving": "",
       "savingNum": "-",
-      "properties": ["Disposable (3)", "Deployable", "Zone of Control"],
+      "properties": [
+        "Disposable (3)",
+        "Deployable",
+        "Zone of Control"
+      ],
       "distance": null,
       "abbr": "Dazer",
       "cr": 0,
@@ -1916,7 +2156,10 @@
       "damage": "-",
       "saving": "",
       "savingNum": "-",
-      "properties": ["BS Weapon (WIP)", "[***]"],
+      "properties": [
+        "BS Weapon (WIP)",
+        "[***]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -1948,7 +2191,10 @@
       "profile": "ARM=0, BTS=0, STR=1, S=1",
       "saving": "",
       "savingNum": "-",
-      "properties": ["Disposable (3)", "Deployable"],
+      "properties": [
+        "Disposable (3)",
+        "Deployable"
+      ],
       "distance": null,
       "abbr": "Deployable Repeater",
       "img": "https://assets.corvusbelli.net/wiki/repeater_position0.jpg",
@@ -2004,8 +2250,8 @@
       "burst": "-",
       "damage": "-",
       "profile": "ARM=0, BTS=0, STR=1, S=1",
-      "saving": "BTS",
-      "savingNum": "1",
+      "saving": "-",
+      "savingNum": "-",
       "properties": [],
       "distance": null,
       "abbr": "Disco Baller",
@@ -2023,7 +2269,9 @@
       "damage": "-",
       "saving": "",
       "savingNum": "-",
-      "properties": ["[***]"],
+      "properties": [
+        "[***]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2117,7 +2365,10 @@
       "damage": "7",
       "saving": "BTS/2",
       "savingNum": "2",
-      "properties": ["Non-lethal", "[**]"],
+      "properties": [
+        "Non-lethal",
+        "[**]"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -2146,7 +2397,10 @@
       "damage": "8",
       "saving": "BTS/2",
       "savingNum": "2",
-      "properties": ["CC", "[**]"],
+      "properties": [
+        "CC",
+        "[**]"
+      ],
       "distance": null,
       "abbr": "E/M CC Weapon",
       "cr": 0,
@@ -2277,7 +2531,10 @@
       "damage": "7",
       "saving": "BTS/2",
       "savingNum": "2",
-      "properties": ["Non-lethal", "[**]"],
+      "properties": [
+        "Non-lethal",
+        "[**]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2381,7 +2638,10 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "3",
-      "properties": ["Anti-materiel", "CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "EXP CC Weapon",
       "cr": 0,
@@ -2424,7 +2684,9 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2458,7 +2720,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "3",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2530,7 +2794,10 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Continous Damage", "Disposable (2)"],
+      "properties": [
+        "Continous Damage",
+        "Disposable (2)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2563,7 +2830,11 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["BS Weapon (WIP)", "State: Stunned", "Non-lethal"],
+      "properties": [
+        "BS Weapon (WIP)",
+        "State: Stunned",
+        "Non-lethal"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2633,7 +2904,10 @@
       "damage": "-",
       "saving": "",
       "savingNum": "-",
-      "properties": ["Non-lethal", "[***]"],
+      "properties": [
+        "Non-lethal",
+        "[***]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2663,7 +2937,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Speculative Attack", "Impact Template (Circular)"],
+      "properties": [
+        "Speculative Attack",
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "max": {
           "max": 120,
@@ -2744,7 +3021,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2812,7 +3091,8 @@
       "properties": [
         "State: IMM-A",
         "Non-lethal",
-        "Direct Template (Large Teardrop)"
+        "Direct Template (Large Teardrop)",
+        "Intuitive Attack"
       ],
       "distance": null,
       "abbr": "Heavy Riotstopper",
@@ -2831,7 +3111,10 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Continous Damage", "Impact Template (Circular)"],
+      "properties": [
+        "Continous Damage",
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2866,7 +3149,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Continous Damage"],
+      "properties": [
+        "Continous Damage"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2931,7 +3216,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2965,7 +3252,9 @@
       "damage": "5",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -2999,7 +3288,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3057,7 +3348,10 @@
       "damage": "7",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["Anti-materiel", "Suppressive Fire"],
+      "properties": [
+        "Anti-materiel",
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -3087,7 +3381,10 @@
       "damage": "7",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["Anti-materiel", "Suppressive Fire"],
+      "properties": [
+        "Anti-materiel",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3121,7 +3418,9 @@
       "damage": "7",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3194,7 +3493,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["[*]"],
+      "properties": [
+        "[*]"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -3225,7 +3526,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["CC", "[*]"],
+      "properties": [
+        "CC",
+        "[*]"
+      ],
       "distance": null,
       "abbr": "Kobra Pistol",
       "cr": 0,
@@ -3266,7 +3570,8 @@
       "properties": [
         "State: IMM-A",
         "Non-lethal",
-        "Direct Template (Small Teardrop)"
+        "Direct Template (Small Teardrop)",
+        "Intuitive Attack"
       ],
       "distance": null,
       "abbr": "Light Riotstopper",
@@ -3285,7 +3590,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Continous Damage", "Impact Template (Circular)"],
+      "properties": [
+        "Continous Damage",
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3320,7 +3628,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Continous Damage"],
+      "properties": [
+        "Continous Damage"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3409,7 +3719,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3444,7 +3756,10 @@
       "damage": "-",
       "saving": "",
       "savingNum": "-",
-      "properties": ["Non-lethal", "[***]"],
+      "properties": [
+        "Non-lethal",
+        "[***]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3515,7 +3830,10 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "3",
-      "properties": ["Anti-materiel", "Impact Template (Circular)"],
+      "properties": [
+        "Anti-materiel",
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3550,7 +3868,9 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "3",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3584,7 +3904,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3618,7 +3940,10 @@
       "damage": "8",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["CC", "State: Dead"],
+      "properties": [
+        "CC",
+        "State: Dead"
+      ],
       "distance": null,
       "abbr": "Monofilament CC Weapon",
       "cr": 0,
@@ -3661,7 +3986,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "3",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3696,7 +4023,9 @@
       "damage": "5",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3731,7 +4060,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3766,7 +4097,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3801,7 +4134,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3836,7 +4171,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3871,7 +4208,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -3964,7 +4303,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -3998,7 +4339,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4032,7 +4375,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4066,7 +4411,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4097,7 +4444,9 @@
       "damage": "7",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4128,7 +4477,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4159,7 +4510,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4263,7 +4616,10 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Direct Template (Small Teardrop)"],
+      "properties": [
+        "Direct Template (Small Teardrop)",
+        "Intuitive Attack"
+      ],
       "distance": null,
       "abbr": "Nanopulser",
       "cr": 0,
@@ -4280,7 +4636,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4317,7 +4675,10 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "3",
-      "properties": ["Anti-materiel", "Disposable (2)"],
+      "properties": [
+        "Anti-materiel",
+        "Disposable (2)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4350,7 +4711,11 @@
       "damage": "-",
       "saving": "PH-6",
       "savingNum": "1",
-      "properties": ["CC", "Non-lethal", "State: IMM-A"],
+      "properties": [
+        "CC",
+        "Non-lethal",
+        "State: IMM-A"
+      ],
       "distance": null,
       "abbr": "PARA CC Weapon",
       "cr": 4,
@@ -4437,11 +4802,11 @@
           "mod": "-6"
         },
         "short": {
-          "max": 60,
+          "max": 40,
           "mod": "0"
         },
         "long": {
-          "max": 80,
+          "max": 60,
           "mod": "-3"
         }
       },
@@ -4460,7 +4825,9 @@
       "damage": "7",
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
-      "properties": ["Impact Template (Circular)"],
+      "properties": [
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4522,7 +4889,10 @@
       "damage": "7",
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
-      "properties": ["Suppressive Fire", "Impact Template (Circular)"],
+      "properties": [
+        "Suppressive Fire",
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4553,7 +4923,9 @@
       "damage": "6",
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "med": {
           "max": 80,
@@ -4584,7 +4956,9 @@
       "damage": "6",
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
-      "properties": ["Impact Template (Circular)"],
+      "properties": [
+        "Impact Template (Circular)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4653,7 +5027,9 @@
       "damage": "5",
       "saving": "ARM/2",
       "savingNum": "3",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4683,7 +5059,7 @@
       "type": "WEAPON",
       "name": "PT: Endgame",
       "ammunition": 3,
-      "burst": "2",
+      "burst": "1",
       "damage": "7",
       "saving": "BTS/2",
       "savingNum": "1",
@@ -4759,7 +5135,10 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Intuitive Attack", "Direct Template (Large Teardrop)"],
+      "properties": [
+        "Intuitive Attack",
+        "Direct Template (Large Teardrop)"
+      ],
       "distance": null,
       "abbr": "Pulzar",
       "cr": 0,
@@ -4776,7 +5155,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4809,7 +5190,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4889,7 +5272,9 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "CC"
+      ],
       "distance": null,
       "abbr": "Shock CC Weapon",
       "cr": 0,
@@ -4906,7 +5291,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -4956,30 +5343,6 @@
       "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
     },
     {
-      "id": "77F8EEBB-3CA6-4C35-94F7-715838C02CA8",
-      "type": "WEAPON",
-      "name": "Mine",
-      "ammunition": 2,
-      "burst": "1",
-      "damage": "7",
-      "saving": "ARM",
-      "savingNum": "1",
-      "properties": [
-        "Intuitive Attack",
-        "Concealed",
-        "Disposable (3)",
-        "Direct Template (Small Teardrop)",
-        "Deployable",
-        "[*]"
-      ],
-      "distance": null,
-      "abbr": "Shock Mine",
-      "cr": 5,
-      "swc": 0,
-      "slot": "secondary",
-      "img": "https://assets.corvusbelli.net/wiki/shock_mine0.jpg"
-    },
-    {
       "id": 211,
       "type": "WEAPON",
       "name": "Silenced Pistol",
@@ -4988,7 +5351,9 @@
       "damage": "8",
       "saving": "BTS/2",
       "savingNum": "1",
-      "properties": ["Silent (-6)"],
+      "properties": [
+        "Silent (-6)"
+      ],
       "distance": {
         "max": {
           "max": 60,
@@ -5121,7 +5486,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5156,7 +5523,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5191,7 +5560,9 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5226,7 +5597,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5260,7 +5633,10 @@
       "damage": "8",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["State: Stunned", "Non-lethal"],
+      "properties": [
+        "State: Stunned",
+        "Non-lethal"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -5290,7 +5666,9 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Suppressive Fire"],
+      "properties": [
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5324,7 +5702,9 @@
       "damage": "*",
       "saving": "*",
       "savingNum": "*",
-      "properties": ["[***]"],
+      "properties": [
+        "[***]"
+      ],
       "distance": {
         "med": {
           "max": 60,
@@ -5349,7 +5729,9 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5380,7 +5762,10 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["CC"],
+      "properties": [
+        "Anti-materiel",
+        "CC"
+      ],
       "distance": null,
       "abbr": "T2 CC Weapon",
       "cr": 0,
@@ -5397,7 +5782,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel", "Suppressive Fire"],
+      "properties": [
+        "Anti-materiel",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5431,7 +5819,10 @@
       "damage": "7",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel", "Suppressive Fire"],
+      "properties": [
+        "Anti-materiel",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5465,7 +5856,9 @@
       "damage": "5",
       "saving": "ARM",
       "savingNum": "1",
-      "properties": ["Anti-materiel"],
+      "properties": [
+        "Anti-materiel"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5499,7 +5892,10 @@
       "damage": "8",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel", "Silent (-6)"],
+      "properties": [
+        "Anti-materiel",
+        "Silent (-6)"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -5594,7 +5990,12 @@
       "damage": "6",
       "saving": "ARM",
       "savingNum": "2",
-      "properties": ["Anti-materiel", "CC", "Disposable (3)", "[*]"],
+      "properties": [
+        "Anti-materiel",
+        "CC",
+        "Disposable (3)",
+        "[*]"
+      ],
       "distance": null,
       "abbr": "Trench-Hammer",
       "cr": 0,
@@ -5649,7 +6050,9 @@
       "damage": "5",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Burst: Single Target"],
+      "properties": [
+        "Burst: Single Target"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5682,7 +6085,10 @@
       "damage": "8",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["CC", "Bioweapon (DA+SHOCK)"],
+      "properties": [
+        "CC",
+        "Bioweapon (DA+SHOCK)"
+      ],
       "distance": null,
       "abbr": "Viral CC Weapon",
       "cr": 0,
@@ -5699,7 +6105,10 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)", "Suppressive Fire"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 40,
@@ -5730,7 +6139,10 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)", "Suppressive Fire"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5789,7 +6201,9 @@
       "damage": "8",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -5819,7 +6233,10 @@
       "damage": "7",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)", "Suppressive Fire"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)",
+        "Suppressive Fire"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5853,7 +6270,9 @@
       "damage": "5",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5887,7 +6306,10 @@
       "damage": "8",
       "saving": "BTS",
       "savingNum": "1",
-      "properties": ["Bioweapon (DA+SHOCK)", "Silent (-6)"],
+      "properties": [
+        "Bioweapon (DA+SHOCK)",
+        "Silent (-6)"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -5918,7 +6340,11 @@
       "damage": "8",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["BS Weapon (PH)", "State: Dead", "[*]"],
+      "properties": [
+        "BS Weapon (PH)",
+        "State: Dead",
+        "[*]"
+      ],
       "distance": {
         "short": {
           "max": 20,
@@ -5945,7 +6371,11 @@
       "damage": "8",
       "saving": "ARM=0",
       "savingNum": "1",
-      "properties": ["CC", "State: Dead", "[*]"],
+      "properties": [
+        "CC",
+        "State: Dead",
+        "[*]"
+      ],
       "distance": null,
       "abbr": "Vorpal CC Weapon",
       "cr": 0,
@@ -5962,7 +6392,9 @@
       "damage": "6",
       "saving": "ARM/2",
       "savingNum": "1",
-      "properties": ["Continous Damage"],
+      "properties": [
+        "Continous Damage"
+      ],
       "distance": {
         "med": {
           "max": 40,
@@ -6035,500 +6467,764 @@
     {
       "id": 19,
       "name": "Martial Arts L1",
-      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4"
+      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 1
     },
     {
       "id": 20,
       "name": "Martial Arts L2",
-      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4"
+      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 2
     },
     {
       "id": 21,
       "name": "Martial Arts L3",
-      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4"
+      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 3
     },
     {
       "id": 22,
       "name": "Martial Arts L4",
-      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4"
+      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 4
     },
     {
       "id": 23,
       "name": "Martial Arts L5",
-      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4"
+      "wiki": "https://infinitythewiki.com/Martial_Arts?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 5
     },
     {
       "id": 24,
       "name": "Berserk",
-      "wiki": "https://infinitythewiki.com/Berserk?version=n4"
+      "wiki": "https://infinitythewiki.com/Berserk?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 25,
       "name": "Booty",
-      "wiki": "https://infinitythewiki.com/Booty?version=n4"
+      "wiki": "https://infinitythewiki.com/Booty?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 26,
       "name": "Chain of Command",
-      "wiki": "https://infinitythewiki.com/Chain_of_Command?version=n4"
+      "wiki": "https://infinitythewiki.com/Chain_of_Command?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 3
     },
     {
       "id": 28,
       "name": "Mimetism",
-      "wiki": "https://infinitythewiki.com/Mimetism?version=n4"
+      "wiki": "https://infinitythewiki.com/Mimetism?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 2
     },
     {
       "id": 29,
       "name": "Camouflage",
-      "wiki": "https://infinitythewiki.com/Camouflage?version=n4"
+      "wiki": "https://infinitythewiki.com/Camouflage?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 3
     },
     {
       "id": 33,
       "name": "Parachutist",
-      "wiki": "https://infinitythewiki.com/Parachutist?version=n4"
+      "wiki": "https://infinitythewiki.com/Parachutist?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 2
     },
     {
       "id": 35,
       "name": "Combat Jump",
-      "wiki": "https://infinitythewiki.com/Combat_Jump?version=n4"
+      "wiki": "https://infinitythewiki.com/Combat_Jump?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 2
     },
     {
       "id": 38,
       "name": "Explode",
-      "wiki": "https://infinitythewiki.com/Explode?version=n4"
+      "wiki": "https://infinitythewiki.com/Explode?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 39,
       "name": "Natural Born Warrior",
-      "wiki": "https://infinitythewiki.com/Natural_Born_Warrior?version=n4"
+      "wiki": "https://infinitythewiki.com/Natural_Born_Warrior?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 40,
       "name": "Dodge",
-      "wiki": "https://infinitythewiki.com/Dodge?version=n4"
+      "wiki": "https://infinitythewiki.com/Dodge?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 46,
       "name": "Inferior Infiltration",
-      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4"
+      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 2
     },
     {
       "id": 47,
       "name": "Infiltration",
-      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4"
+      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 3
     },
     {
       "id": 48,
       "name": "Superior Infiltration",
-      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4"
+      "wiki": "https://infinitythewiki.com/Infiltrate?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 4
     },
     {
       "id": 49,
       "name": "Engineer",
-      "wiki": "https://infinitythewiki.com/Engineer?version=n4"
+      "wiki": "https://infinitythewiki.com/Engineer?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 3
     },
     {
       "id": 52,
       "name": "Inspiring Leadership",
-      "wiki": "https://infinitythewiki.com/Inspiring_Leadership?version=n4"
+      "wiki": "https://infinitythewiki.com/Inspiring_Leadership?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 3
     },
     {
       "id": 53,
       "name": "Doctor",
-      "wiki": "https://infinitythewiki.com/Doctor?version=n4"
+      "wiki": "https://infinitythewiki.com/Doctor?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 3
     },
     {
       "id": 55,
       "name": "MetaChemistry",
-      "wiki": "https://infinitythewiki.com/MetaChemistry?version=n4"
+      "wiki": "https://infinitythewiki.com/MetaChemistry?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 56,
       "name": "Minelayer",
-      "wiki": "https://infinitythewiki.com/Minelayer?version=n4"
+      "wiki": "https://infinitythewiki.com/Minelayer?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 1
     },
     {
       "id": 58,
       "name": "Terrain",
-      "wiki": "https://infinitythewiki.com/Terrain?version=n4"
+      "wiki": "https://infinitythewiki.com/Terrain?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
     },
     {
       "id": 59,
       "name": "Forward Observer",
-      "wiki": "https://infinitythewiki.com/Forward_Observer?version=n4"
+      "wiki": "https://infinitythewiki.com/Forward_Observer?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 3
     },
     {
       "id": 60,
       "name": "Pilot",
-      "wiki": "https://infinitythewiki.com/Pilot?version=n4"
+      "wiki": "https://infinitythewiki.com/Pilot?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 61,
       "name": "Total Reaction",
-      "wiki": "https://infinitythewiki.com/Total_Reaction?version=n4"
+      "wiki": "https://infinitythewiki.com/Total_Reaction?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 5
     },
     {
       "id": 62,
       "name": "Regeneration",
-      "wiki": "https://infinitythewiki.com/Regeneration?version=n4"
+      "wiki": "https://infinitythewiki.com/Regeneration?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 64,
       "name": "Paramedic",
-      "wiki": "https://infinitythewiki.com/Paramedic?version=n4"
+      "wiki": "https://infinitythewiki.com/Paramedic?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 1
     },
     {
       "id": 65,
       "name": "Sensor",
-      "wiki": "https://infinitythewiki.com/Sensor?version=n4"
+      "wiki": "https://infinitythewiki.com/Sensor?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 66,
       "name": "Seed-Embryo",
-      "wiki": "https://infinitythewiki.com/Seed-Embryo?version=n4"
+      "wiki": "https://infinitythewiki.com/Seed-Embryo?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 67,
       "name": "Sixth Sense",
-      "wiki": "https://infinitythewiki.com/Sixth_Sense?version=n4"
+      "wiki": "https://infinitythewiki.com/Sixth_Sense?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 2
     },
     {
       "id": 69,
       "name": "Strategos L1",
-      "wiki": "https://infinitythewiki.com/Strategos?version=n4"
+      "wiki": "https://infinitythewiki.com/Strategos?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 1
     },
     {
       "id": 70,
       "name": "Strategos L2",
-      "wiki": "https://infinitythewiki.com/Strategos?version=n4"
+      "wiki": "https://infinitythewiki.com/Strategos?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 3
     },
     {
       "id": 71,
       "name": "Strategos L3",
-      "wiki": "https://infinitythewiki.com/Strategos?version=n4"
+      "wiki": "https://infinitythewiki.com/Strategos?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 5
     },
     {
       "id": 72,
       "name": "Protheion",
-      "wiki": "https://infinitythewiki.com/Protheion?version=n4"
+      "wiki": "https://infinitythewiki.com/Protheion?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 5
     },
     {
       "id": 73,
       "name": "Morpho-scan",
-      "wiki": "https://infinitythewiki.com/Morpho-Scan?version=n4"
+      "wiki": "https://infinitythewiki.com/Morpho-Scan?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 74,
       "name": "Super-Jump",
-      "wiki": "https://infinitythewiki.com/Super-Jump?version=n4"
+      "wiki": "https://infinitythewiki.com/Super-Jump?version=n4",
+      "perkTree": "Body",
+      "perkTier": 3
     },
     {
       "id": 82,
       "name": "Climbing Plus",
-      "wiki": "https://infinitythewiki.com/Climbing_Plus?version=n4"
+      "wiki": "https://infinitythewiki.com/Climbing_Plus?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
     },
     {
       "id": 83,
       "name": "Religious Troop",
-      "wiki": "https://infinitythewiki.com/Religious_Troop?version=n4"
+      "wiki": "https://infinitythewiki.com/Religious_Troop?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 84,
       "name": "Courage",
-      "wiki": "https://infinitythewiki.com/Courage?version=n4"
+      "wiki": "https://infinitythewiki.com/Courage?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
     },
     {
       "id": 85,
       "name": "Dogged",
-      "wiki": "https://infinitythewiki.com/Dogged?version=n4"
+      "wiki": "https://infinitythewiki.com/Dogged?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
     },
     {
       "id": 86,
       "name": "No Wound Incapacitation",
-      "wiki": "https://infinitythewiki.com/No_Wound_Incapacitation?version=n4"
+      "wiki": "https://infinitythewiki.com/No_Wound_Incapacitation?version=n4",
+      "perkTree": "Body",
+      "perkTier": 3
     },
     {
       "id": 88,
       "name": "Veteran",
-      "wiki": "https://infinitythewiki.com/Veteran?version=n4"
+      "wiki": "https://infinitythewiki.com/Veteran?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 2
     },
     {
       "id": 89,
       "name": "Sapper",
-      "wiki": "https://infinitythewiki.com/Sapper?version=n4"
+      "wiki": "https://infinitythewiki.com/Sapper?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 1
     },
     {
       "id": 109,
       "name": "Neurocinetics",
-      "wiki": "https://infinitythewiki.com/Neurocinetics?version=n4"
+      "wiki": "https://infinitythewiki.com/Neurocinetics?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 119,
       "name": "Lieutenant",
-      "wiki": "https://infinitythewiki.com/Lieutenant?version=n4"
+      "wiki": "https://infinitythewiki.com/Lieutenant?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 3
     },
     {
       "id": 120,
       "name": "Fireteam: Core",
-      "wiki": "https://infinitythewiki.com/Types_of_Fireteam#FIRETEAM:_CORE?version=n4"
+      "wiki": "https://infinitythewiki.com/Types_of_Fireteam#FIRETEAM:_CORE?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 121,
       "name": "Fireteam: Haris",
-      "wiki": "https://infinitythewiki.com/Fireteam:_Haris?version=n4"
+      "wiki": "https://infinitythewiki.com/Fireteam:_Haris?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 122,
       "name": "Number 2",
-      "wiki": "https://infinitythewiki.com/Number_2?version=n4"
+      "wiki": "https://infinitythewiki.com/Number_2?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 3
     },
     {
       "id": 125,
       "name": "Fireteam: Enomotarchos",
-      "wiki": "https://infinitythewiki.com/Fireteam:_Enomotarchos?version=n4"
+      "wiki": "https://infinitythewiki.com/Fireteam:_Enomotarchos?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 127,
-      "name": "Journalist L1"
+      "name": "Journalist L1",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 129,
       "name": "Fireteam: Triad",
-      "wiki": "https://infinitythewiki.com/Fireteam:_Triad?version=n4"
+      "wiki": "https://infinitythewiki.com/Fireteam:_Triad?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 131,
       "name": "Discover",
-      "wiki": "https://infinitythewiki.com/Discover?version=n4"
+      "wiki": "https://infinitythewiki.com/Discover?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 1
     },
     {
       "id": 132,
-      "name": "Civvie"
+      "name": "Civvie",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 138,
       "name": "Bioimmunity",
-      "wiki": "https://infinitythewiki.com/Bioimmunity?version=n4"
+      "wiki": "https://infinitythewiki.com/Bioimmunity?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 156,
       "name": "Marksmanship",
-      "wiki": "https://infinitythewiki.com/Marksmanship?version=n4"
+      "wiki": "https://infinitythewiki.com/Marksmanship?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 4
     },
     {
       "id": 161,
       "name": "Forward Deployment",
-      "wiki": "https://infinitythewiki.com/Forward_Deployment?version=n4"
+      "wiki": "https://infinitythewiki.com/Forward_Deployment?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 2
     },
     {
       "id": 162,
       "name": "Immunity",
-      "wiki": "https://infinitythewiki.com/Immunity?version=n4"
+      "wiki": "https://infinitythewiki.com/Immunity?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
     },
     {
       "id": 164,
       "name": "Stealth",
-      "wiki": "https://infinitythewiki.com/Stealth?version=n4"
+      "wiki": "https://infinitythewiki.com/Stealth?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 1
     },
     {
       "id": 181,
       "name": "Fireteam: Duo",
-      "wiki": "https://infinitythewiki.com/Fireteam:_Duo?version=n4"
+      "wiki": "https://infinitythewiki.com/Fireteam:_Duo?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 189,
       "name": "Specialist Operative",
-      "wiki": "https://infinitythewiki.com/Specialist_Operative?version=n4"
+      "wiki": "https://infinitythewiki.com/Specialist_Operative?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 1
     },
     {
       "id": 191,
       "name": "Surprise Attack",
-      "wiki": "https://infinitythewiki.com/Surprise_Attack?version=n4"
+      "wiki": "https://infinitythewiki.com/Surprise_Attack?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 3
     },
     {
       "id": 201,
       "name": "BS Attack",
-      "wiki": "https://infinitythewiki.com/BS_Attack?version=n4"
+      "wiki": "https://infinitythewiki.com/BS_Attack?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 3
     },
     {
       "id": 204,
-      "name": "Infinity Spec-Ops"
+      "name": "Infinity Spec-Ops",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 207,
       "name": "Counterintelligence",
-      "wiki": "https://infinitythewiki.com/Counterintelligence?version=n4"
+      "wiki": "https://infinitythewiki.com/Counterintelligence?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 2
     },
     {
       "id": 211,
       "name": "NCO",
-      "wiki": "https://infinitythewiki.com/NCO?version=n4"
+      "wiki": "https://infinitythewiki.com/NCO?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 2
     },
     {
       "id": 213,
       "name": "Tactical Awareness",
-      "wiki": "https://infinitythewiki.com/Tactical_Awareness?version=n4"
+      "wiki": "https://infinitythewiki.com/Tactical_Awareness?version=n4",
+      "perkTree": "Empathy",
+      "perkTier": 5
     },
     {
       "id": 215,
       "name": "Decoy",
-      "wiki": "https://infinitythewiki.com/Decoy?version=n4"
+      "wiki": "https://infinitythewiki.com/Decoy?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 1
     },
     {
       "id": 219,
       "name": "Tri-Core",
-      "wiki": "https://infinitythewiki.com/Tri-Core?version=n4"
+      "wiki": "https://infinitythewiki.com/Tri-Core?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 220,
       "name": "Vulnerability",
-      "wiki": "https://infinitythewiki.com/Vulnerability?version=n4"
+      "wiki": "https://infinitythewiki.com/Vulnerability?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 235,
       "name": "Remote Presence",
-      "wiki": "https://infinitythewiki.com/Remote_Presence?version=n4"
+      "wiki": "https://infinitythewiki.com/Remote_Presence?version=n4",
+      "perkTree": "Body",
+      "perkTier": 3
     },
     {
       "id": 237,
       "name": "Shasvastii",
-      "wiki": "https://infinitythewiki.com/Shasvastii?version=n4"
+      "wiki": "https://infinitythewiki.com/Shasvastii?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 238,
       "name": "Hidden Deployment",
-      "wiki": "https://infinitythewiki.com/Hidden_Deployment?version=n4"
+      "wiki": "https://infinitythewiki.com/Hidden_Deployment?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 2
     },
     {
       "id": 240,
       "name": "CC Attack",
-      "wiki": "https://infinitythewiki.com/CC_Attack?version=n4"
+      "wiki": "https://infinitythewiki.com/CC_Attack?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 1
     },
     {
       "id": 241,
       "name": "Triangulated Fire",
-      "wiki": "https://infinitythewiki.com/Triangulated_Fire?version=n4"
+      "wiki": "https://infinitythewiki.com/Triangulated_Fire?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 242,
       "name": "Triangulated Fire",
-      "wiki": "https://infinitythewiki.com/Triangulated_Fire?version=n4"
+      "wiki": "https://infinitythewiki.com/Triangulated_Fire?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 243,
       "name": "Peripheral",
-      "wiki": "https://infinitythewiki.com/Peripheral?version=n4"
+      "wiki": "https://infinitythewiki.com/Peripheral?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 246,
       "name": "Transmutation",
-      "wiki": "https://infinitythewiki.com/Transmutation?version=n4"
+      "wiki": "https://infinitythewiki.com/Transmutation?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 247,
       "name": "Guard",
-      "wiki": "https://infinitythewiki.com/Guard?version=n4"
+      "wiki": "https://infinitythewiki.com/Guard?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 2
     },
     {
       "id": 248,
       "name": "Mnemonica",
-      "wiki": "https://infinitythewiki.com/Mnemonica?version=n4"
+      "wiki": "https://infinitythewiki.com/Mnemonica?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 249,
       "name": "Impersonation",
-      "wiki": "https://infinitythewiki.com/Impersonation?version=n4"
+      "wiki": "https://infinitythewiki.com/Impersonation?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 4
     },
     {
       "id": 250,
       "name": "Frenzy",
-      "wiki": "https://infinitythewiki.com/Frenzy?version=n4"
+      "wiki": "https://infinitythewiki.com/Frenzy?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 251,
       "name": "Strategic Deployment",
-      "wiki": "https://infinitythewiki.com/Strategic_Deployment?version=n4"
+      "wiki": "https://infinitythewiki.com/Strategic_Deployment?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 3
     },
     {
       "id": 252,
       "name": "G: Jumper",
-      "wiki": "https://infinitythewiki.com/G:_Jumper?version=n4"
+      "wiki": "https://infinitythewiki.com/G:_Jumper?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 2
     },
     {
       "id": 253,
       "name": "Special Fireteam: Triad",
-      "wiki": "https://infinitythewiki.com/Fireteam:_Triad?version=n4"
+      "wiki": "https://infinitythewiki.com/Fireteam:_Triad?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 254,
-      "name": "Gizmokit"
+      "name": "Gizmokit",
+      "perkTree": "Intelligence",
+      "perkTier": 1
     },
     {
       "id": 255,
       "name": "RemDriver",
-      "wiki": "https://infinitythewiki.com/Remdriver?version=n4"
+      "wiki": "https://infinitythewiki.com/Remdriver?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 2
     },
     {
       "id": 256,
       "name": "Impetuous",
-      "wiki": "https://infinitythewiki.com/Impetuous?version=n4"
+      "wiki": "https://infinitythewiki.com/Impetuous?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 257,
-      "name": "Journalist L2"
+      "name": "Journalist L2",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 258,
-      "name": "Regular"
+      "name": "Regular",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 261,
-      "name": "FT Master"
+      "name": "FT Master",
+      "wiki": "https://infinitythewiki.com/FT_Master?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 262,
-      "name": "Combat Instinct"
+      "name": "Combat Instinct",
+      "wiki": "https://infinitythewiki.com/Combat_Instinct?version=n4",
+      "perkTree": "Reflex",
+      "perkTier": 2
     },
     {
       "id": 263,
-      "name": "Jump"
+      "name": "Jump",
+      "wiki": "https://infinitythewiki.com/Jump?version=n4",
+      "perkTree": "Body",
+      "perkTier": 2
     },
     {
       "id": 264,
-      "name": "No Cover"
+      "name": "No Cover",
+      "wiki": "https://infinitythewiki.com/No_Cover?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 265,
-      "name": "Aerial"
+      "name": "Aerial",
+      "wiki": "https://infinitythewiki.com/Aerial?version=n4",
+      "perkTree": "Initiative",
+      "perkTier": 3
     },
     {
       "id": 266,
-      "name": "Bangbomb"
+      "name": "Bangbomb",
+      "wiki": "https://infinitythewiki.com/Bangbomb?version=n4",
+      "perkTree": "Cool",
+      "perkTier": 2
     },
     {
       "id": 267,
-      "name": "Warhorse"
+      "name": "Warhorse",
+      "wiki": "https://infinitythewiki.com/Warhorse?version=n4",
+      "perkTree": "Body",
+      "perkTier": 3
     },
     {
       "id": 268,
-      "name": "Limited Cover"
+      "name": "Limited Cover",
+      "wiki": "https://infinitythewiki.com/Limited_Cover?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 269,
-      "name": "Auxiliar"
+      "name": "Auxiliar",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 270,
-      "name": "TAGCom"
+      "name": "TAGCom",
+      "wiki": "https://infinitythewiki.com/TAGCom?version=n4",
+      "perkTree": null,
+      "perkTier": 0
     },
     {
       "id": 271,
-      "name": "Climb"
+      "name": "Climb",
+      "wiki": "https://infinitythewiki.com/Climb?version=n4",
+      "perkTree": "Body",
+      "perkTier": 1
+    },
+    {
+      "id": 272,
+      "name": "Journalist",
+      "perkTree": null,
+      "perkTier": 0
+    },
+    {
+      "id": 273,
+      "name": "MediKit",
+      "perkTree": "Intelligence",
+      "perkTier": 1
+    },
+    {
+      "id": 274,
+      "name": "CC=21",
+      "perkTree": "Cool",
+      "perkTier": 3
+    },
+    {
+      "id": 275,
+      "name": "Tech-recovery",
+      "perkTree": null,
+      "perkTier": 0
+    },
+    {
+      "id": 276,
+      "name": "Technorganic",
+      "perkTree": null,
+      "perkTier": 0
+    },
+    {
+      "id": 277,
+      "name": "Cyberplug",
+      "perkTree": null,
+      "perkTier": 0
+    },
+    {
+      "id": 278,
+      "name": "BS=12",
+      "perkTree": "Reflex",
+      "perkTier": 2
+    },
+    {
+      "id": 279,
+      "name": "BS=11",
+      "perkTree": "Reflex",
+      "perkTier": 1
     },
     {
       "id": 1000,
       "name": "Hacker",
-      "wiki": "https://infinitythewiki.com/Hacker?version=n4"
+      "wiki": "https://infinitythewiki.com/Hacker?version=n4",
+      "perkTree": "Intelligence",
+      "perkTier": 1
     }
   ],
   "equips": [
@@ -6863,6 +7559,7 @@
     {
       "id": 246,
       "name": "Bangbomb",
+      "wiki": "https://infinitythewiki.com/Bangbomb?version=n4",
       "abbr": "Bangbomb",
       "cr": 0,
       "swc": 0,
@@ -6882,23 +7579,41 @@
     {
       "opponent": "-",
       "special": "Target gains Marksmanship.",
-      "skillType": ["entire order"],
+      "skillType": [
+        "entire order"
+      ],
       "extra": 18,
       "damage": "-",
-      "devices": [182],
-      "target": ["REM"],
+      "devices": [
+        182
+      ],
+      "target": [
+        "REM"
+      ],
       "attack": "-",
       "name": "Assisted Fire",
       "burst": "-"
     },
     {
       "opponent": "0",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "special": "DA Ammo.  State: IMM-B.  Non-Lethal.",
       "extra": 13,
       "damage": "7",
-      "devices": [100, 101],
-      "target": ["TAG", "HI", "REM", "Hacker", "VH"],
+      "devices": [
+        100,
+        101
+      ],
+      "target": [
+        "TAG",
+        "HI",
+        "REM",
+        "Hacker",
+        "VH"
+      ],
       "attack": "0",
       "name": "Carbonite",
       "burst": "2"
@@ -6906,10 +7621,15 @@
     {
       "opponent": "-",
       "special": "+3/-3 PH MOD to all Troopers performing Combat Jump. ",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "extra": 16,
       "damage": "-",
-      "devices": [182],
+      "devices": [
+        182
+      ],
       "target": [],
       "attack": "-",
       "name": "Controlled Jump",
@@ -6918,10 +7638,15 @@
     {
       "opponent": "-",
       "special": "Replace the Hacker with an Impersonation 2 Marker.",
-      "skillType": ["entire order"],
+      "skillType": [
+        "entire order"
+      ],
       "extra": 289,
       "damage": "-",
-      "devices": [145, 101],
+      "devices": [
+        145,
+        101
+      ],
       "target": [],
       "attack": "-",
       "name": "Cybermask",
@@ -6930,23 +7655,38 @@
     {
       "opponent": "-",
       "special": "Target gains B2 in ARO.",
-      "skillType": ["entire order"],
+      "skillType": [
+        "entire order"
+      ],
       "extra": 19,
       "damage": "-",
-      "devices": [182],
-      "target": ["REM"],
+      "devices": [
+        182
+      ],
+      "target": [
+        "REM"
+      ],
       "attack": "-",
       "name": "Enhanced Reaction",
       "burst": "-"
     },
     {
       "opponent": "-",
-      "skillType": ["entire order"],
+      "skillType": [
+        "entire order"
+      ],
       "special": "Targets gain the Firewall MODs.",
       "extra": 17,
       "damage": "-",
-      "devices": [182],
-      "target": ["TAG", "HI", "REM", "VH"],
+      "devices": [
+        182
+      ],
+      "target": [
+        "TAG",
+        "HI",
+        "REM",
+        "VH"
+      ],
       "attack": "-",
       "name": "Fairy Dust",
       "burst": "-"
@@ -6954,22 +7694,40 @@
     {
       "opponent": "0",
       "special": "AP Ammo, Non-Lethal,  State: ISOLATED.",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "extra": 21,
       "damage": "4",
-      "devices": [100, 101],
-      "target": ["TAG", "HI", "REM", "Hacker", "VH"],
+      "devices": [
+        100,
+        101
+      ],
+      "target": [
+        "TAG",
+        "HI",
+        "REM",
+        "Hacker",
+        "VH"
+      ],
       "attack": "0",
       "name": "Oblivion",
       "burst": "2"
     },
     {
       "opponent": "0",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "special": "AP Ammo, State: TARGETED, Non-Lethal.",
       "extra": 14,
       "damage": "5",
-      "devices": [100, 101],
+      "devices": [
+        100,
+        101
+      ],
       "attack": "0",
       "name": "Spotlight",
       "burst": "2",
@@ -6978,11 +7736,19 @@
     {
       "opponent": "0",
       "special": "DA Ammo, Non-Lethal,  State: POS/NORMAL.",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "extra": 15,
       "damage": "4",
-      "devices": [100, 101],
-      "target": ["TAG"],
+      "devices": [
+        100,
+        101
+      ],
+      "target": [
+        "TAG"
+      ],
       "attack": "0",
       "name": "Total Control",
       "burst": "1"
@@ -6990,22 +7756,33 @@
     {
       "opponent": "0",
       "special": "Target suffers 1 Wound for each failed SR.",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "extra": 12,
       "damage": "6",
-      "devices": [145],
-      "target": ["Hacker"],
+      "devices": [
+        145
+      ],
+      "target": [
+        "Hacker"
+      ],
       "attack": "+3",
       "name": "Trinity",
       "burst": "3"
     },
     {
       "opponent": "-",
-      "special": "NFB, Reflective: Circular Template without LoF for Multispectral Visors.",
-      "skillType": ["short"],
+      "special": "NFB, Reflective: Circular Template",
+      "skillType": [
+        "short"
+      ],
       "extra": 20,
       "damage": "-",
-      "devices": [101],
+      "devices": [
+        101
+      ],
       "target": [],
       "attack": "-",
       "name": "White Noise",
@@ -7014,7 +7791,10 @@
     {
       "opponent": "-3",
       "special": "Nullifies Comms Attack. B2 in ARO, Non-Lethal.",
-      "skillType": ["short", "aro"],
+      "skillType": [
+        "short",
+        "aro"
+      ],
       "extra": 287,
       "damage": "-",
       "target": [],
@@ -7210,14 +7990,20 @@
       "name": "-3",
       "type": "TEXT",
       "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 7,
       "name": "-6",
       "type": "TEXT",
       "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 259,
@@ -7225,7 +8011,10 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 2.5,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 298,
@@ -7252,14 +8041,20 @@
       "name": "+1B",
       "type": "TEXT",
       "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 308,
       "name": "+1SD",
       "type": "TEXT",
       "multiplier": 1.5,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 11,
@@ -7276,14 +8071,20 @@
       "name": "+2B",
       "type": "TEXT",
       "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 1,
       "name": "+3",
       "type": "TEXT",
       "multiplier": 2,
-      "types": ["weapons", "equips"]
+      "types": [
+        "weapons",
+        "equips"
+      ]
     },
     {
       "id": 310,
@@ -7312,8 +8113,8 @@
       "type": "TEXT"
     },
     {
-      "id": 324,
-      "name": "20",
+      "id": 372,
+      "name": "7.5",
       "type": "DISTANCE"
     },
     {
@@ -7333,7 +8134,9 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.3,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 35,
@@ -7344,6 +8147,15 @@
       "id": 319,
       "name": "ARM",
       "type": "TEXT"
+    },
+    {
+      "id": 292,
+      "name": "Continous Damage",
+      "type": "TEXT",
+      "multiplier": 1.7,
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 49,
@@ -7406,6 +8218,11 @@
     {
       "id": 37,
       "name": "Jungle",
+      "type": "TEXT"
+    },
+    {
+      "id": 375,
+      "name": "Non Specialist",
       "type": "TEXT"
     },
     {
@@ -7493,14 +8310,20 @@
       "name": "Shock",
       "type": "TEXT",
       "multiplier": 1.1,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 305,
       "name": "SR-1",
       "type": "TEXT",
       "multiplier": 1.1,
-      "types": ["weapons", "equips", "hacks"]
+      "types": [
+        "weapons",
+        "equips",
+        "hacks"
+      ]
     },
     {
       "id": 40,
@@ -7513,7 +8336,9 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 33,
@@ -7526,7 +8351,14 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
+    },
+    {
+      "id": 334,
+      "name": "UPGRADE: Firewall (-3)",
+      "type": "TEXT"
     },
     {
       "id": 278,
@@ -7534,7 +8366,9 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 314,
@@ -7542,7 +8376,9 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 287,
@@ -7550,7 +8386,9 @@
       "type": "TEXT",
       "mercs": true,
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 34,
@@ -7559,11 +8397,28 @@
       "mercs": true
     },
     {
-      "id": 292,
-      "name": "Continous Damage",
+      "id": 271,
+      "name": "+1 BS",
+      "type": "TEXT"
+    },
+    {
+      "id": 300,
+      "name": "+5 CC",
+      "type": "TEXT"
+    },
+    {
+      "id": 50,
+      "name": "Aquatic/Jungle",
+      "type": "TEXT"
+    },
+    {
+      "id": 352,
+      "name": "UPGRADE: Trinity (SR-2)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 306,
@@ -7581,20 +8436,18 @@
       "type": "TEXT"
     },
     {
-      "id": 12,
-      "name": "UPGRADE: Trinity",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
-    },
-    {
-      "id": 271,
-      "name": "+1 BS",
+      "id": 378,
+      "name": "UPGRADE: Trinity (+1SD)",
       "type": "TEXT"
     },
     {
-      "id": 300,
-      "name": "+5 CC",
+      "id": 348,
+      "name": "Isolated",
+      "type": "TEXT"
+    },
+    {
+      "id": 327,
+      "name": "IMM-B",
       "type": "TEXT"
     },
     {
@@ -7603,18 +8456,26 @@
       "type": "TEXT"
     },
     {
-      "id": 2,
-      "name": "+6",
-      "type": "TEXT",
-      "multiplier": 3,
-      "types": ["weapons", "equips", "hacks"]
-    },
-    {
       "id": 337,
       "name": "SR-2",
       "type": "TEXT",
       "multiplier": 1.2,
-      "types": ["weapons", "equips", "hacks"]
+      "types": [
+        "weapons",
+        "equips",
+        "hacks"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "+6",
+      "type": "TEXT",
+      "multiplier": 3,
+      "types": [
+        "weapons",
+        "equips",
+        "hacks"
+      ]
     },
     {
       "id": 254,
@@ -7646,14 +8507,27 @@
       "name": "UPGRADE: Carbonite (PS=6)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 14,
       "name": "UPGRADE: Spotlight",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "UPGRADE: Trinity",
+      "type": "TEXT",
+      "multiplier": 1.7,
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 260,
@@ -7671,28 +8545,22 @@
       "type": "TEXT"
     },
     {
-      "id": 348,
-      "name": "Isolated",
-      "type": "TEXT"
-    },
-    {
       "id": 13,
       "name": "UPGRADE: Carbonite",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 25,
       "name": "UPGRADE: Cybermask",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
-    },
-    {
-      "id": 334,
-      "name": "UPGRADE: Firewall (-3)",
-      "type": "TEXT"
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 282,
@@ -7702,11 +8570,6 @@
     {
       "id": 367,
       "name": "AP Marksman Rifle",
-      "type": "TEXT"
-    },
-    {
-      "id": 327,
-      "name": "IMM-B",
       "type": "TEXT"
     },
     {
@@ -7725,6 +8588,11 @@
       "type": "TEXT"
     },
     {
+      "id": 353,
+      "name": "PH=15",
+      "type": "TEXT"
+    },
+    {
       "id": 318,
       "name": "PH=19",
       "type": "TEXT"
@@ -7733,6 +8601,11 @@
       "id": 265,
       "name": "Zero Pain",
       "type": "TEXT"
+    },
+    {
+      "id": 324,
+      "name": "20",
+      "type": "DISTANCE"
     },
     {
       "id": 253,
@@ -7744,21 +8617,34 @@
       "name": "UPGRADE: Trinity (-3)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 335,
       "name": "UPGRADES: Carbonite, Firewall (-3)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 3,
       "name": "+9",
       "type": "TEXT",
       "multiplier": 4,
-      "types": ["weapons", "equips", "hacks"]
+      "types": [
+        "weapons",
+        "equips",
+        "hacks"
+      ]
+    },
+    {
+      "id": 341,
+      "name": "Cybermines",
+      "type": "TEXT"
     },
     {
       "id": 338,
@@ -7770,21 +8656,27 @@
       "name": "UPGRADE: Oblivion (+1B)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 270,
       "name": "UPGRADE: Trinity (AP)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 339,
       "name": "UPGRADE: Trinity (SR-1)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 332,
@@ -7811,14 +8703,23 @@
       "name": "UPGRADE: Carbonite (+1 B)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 331,
       "name": "UPGRADE: Carbonite (SR-2)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
+    },
+    {
+      "id": 374,
+      "name": "Cyberplug",
+      "type": "TEXT"
     },
     {
       "id": 346,
@@ -7835,14 +8736,18 @@
       "name": "UPGRADE: Oblivion",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 344,
       "name": "UPGRADE: SR-1",
       "type": "TEXT",
       "multiplier": 1.1,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 373,
@@ -7854,14 +8759,18 @@
       "name": "UPGRADE: Trinity (+1B)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 343,
       "name": "UPGRADE: Trinity (PS=5)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 347,
@@ -7873,16 +8782,37 @@
       "name": "UPGRADE: White Noise",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
+    },
+    {
+      "id": 51,
+      "name": "-8",
+      "type": "TEXT"
+    },
+    {
+      "id": 377,
+      "name": "Stingers",
+      "type": "TEXT"
+    },
+    {
+      "id": 376,
+      "name": "UPGRADE: Firewall (-6)",
+      "type": "TEXT"
+    },
+    {
+      "id": 39,
+      "name": "Viral",
+      "type": "TEXT",
+      "multiplier": 1.7,
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 360,
       "name": "Combi R.",
-      "type": "TEXT"
-    },
-    {
-      "id": 341,
-      "name": "Cybermines",
       "type": "TEXT"
     },
     {
@@ -7895,26 +8825,18 @@
       "name": "PARA",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 350,
       "name": "UPGRADE: Trinity (PS=4)",
       "type": "TEXT",
       "multiplier": 1.7,
-      "types": ["hacks"]
-    },
-    {
-      "id": 353,
-      "name": "PH=15",
-      "type": "TEXT"
-    },
-    {
-      "id": 352,
-      "name": "UPGRADE: Trinity (SR-2)",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
+      "types": [
+        "hacks"
+      ]
     },
     {
       "id": 281,
@@ -7930,13 +8852,6 @@
       "id": 354,
       "name": "3",
       "type": "TEXT"
-    },
-    {
-      "id": 39,
-      "name": "Viral",
-      "type": "TEXT",
-      "multiplier": 1.7,
-      "types": ["hacks"]
     },
     {
       "id": 251,
@@ -8042,415 +8957,81 @@
   ],
   "peripheral": [
     {
-      "id": 38,
+      "id": 192,
       "name": "AUXBOT_3"
     },
     {
-      "id": 39,
+      "id": 193,
       "name": "AUXBOT_3B"
     },
     {
-      "id": 42,
+      "id": 196,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 32,
+      "id": 186,
       "name": "CRABBOT"
     },
     {
-      "id": 33,
+      "id": 187,
       "name": "DRUMBOT_1"
     },
     {
-      "id": 34,
+      "id": 188,
       "name": "DRUMBOT_2"
     },
     {
-      "id": 35,
+      "id": 189,
       "name": "DRUMBOT_3"
     },
     {
-      "id": 36,
+      "id": 190,
       "name": "DRUMBOT_4"
     },
     {
-      "id": 37,
+      "id": 191,
       "name": "DRUMBOT_5"
     },
     {
-      "id": 41,
+      "id": 195,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 40,
+      "id": 194,
       "name": "TURTLEMEK",
       "mercs": true
-    },
-    {
-      "id": 104,
-      "name": "AUXBOT"
-    },
-    {
-      "id": 106,
-      "name": "AUXBOT_2"
-    },
-    {
-      "id": 107,
-      "name": "AUXBOT_3"
-    },
-    {
-      "id": 108,
-      "name": "AUXBOT_3B"
-    },
-    {
-      "id": 111,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 105,
-      "name": "CRABBOT"
-    },
-    {
-      "id": 110,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 109,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 1,
-      "name": "AUXBOT_3"
-    },
-    {
-      "id": 2,
-      "name": "AUXBOT_3B"
-    },
-    {
-      "id": 6,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 3,
-      "name": "CRABBOT"
-    },
-    {
-      "id": 5,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 4,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 93,
-      "name": "AUXBOT_3"
-    },
-    {
-      "id": 94,
-      "name": "AUXBOT_3B"
-    },
-    {
-      "id": 103,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 95,
-      "name": "CRABBOT"
-    },
-    {
-      "id": 96,
-      "name": "DRUMBOT_1"
-    },
-    {
-      "id": 97,
-      "name": "DRUMBOT_2"
-    },
-    {
-      "id": 98,
-      "name": "DRUMBOT_3"
-    },
-    {
-      "id": 99,
-      "name": "DRUMBOT_4"
-    },
-    {
-      "id": 100,
-      "name": "DRUMBOT_5"
-    },
-    {
-      "id": 102,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 101,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 219,
-      "name": "CRABBOT"
-    },
-    {
-      "id": 18,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 17,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 15,
-      "name": "SHÀNGDIÀO"
-    },
-    {
-      "id": 16,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 31,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 30,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 28,
-      "name": "SHÀNGDIÀO"
-    },
-    {
-      "id": 29,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 51,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 50,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 48,
-      "name": "SHÀNGDIÀO"
-    },
-    {
-      "id": 49,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 152,
-      "name": "ANTIPODE"
-    },
-    {
-      "id": 157,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 156,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 153,
-      "name": "K-9 ANTIPODE"
-    },
-    {
-      "id": 154,
-      "name": "RB-235 SAMODELKIN"
-    },
-    {
-      "id": 155,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 707,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 705,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 704,
-      "name": "K-9 ANTIPODE"
-    },
-    {
-      "id": 706,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 168,
-      "name": "ANTIPODE"
-    },
-    {
-      "id": 167,
-      "name": "BÂTARD"
-    },
-    {
-      "id": 169,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 166,
-      "name": "K-9 ANTIPODE"
-    },
-    {
-      "id": 170,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 72,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 69,
-      "name": "JACKBOT"
-    },
-    {
-      "id": 70,
-      "name": "JANDAB"
-    },
-    {
-      "id": 71,
-      "name": "TURTLEMEK"
-    },
-    {
-      "id": 81,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 80,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 78,
-      "name": "JANDAB"
-    },
-    {
-      "id": 79,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 68,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 66,
-      "name": "JACKBOT"
-    },
-    {
-      "id": 67,
-      "name": "JANDAB"
-    },
-    {
-      "id": 65,
-      "name": "TURTLEMEK"
-    },
-    {
-      "id": 138,
-      "name": "BÂTARD"
-    },
-    {
-      "id": 139,
-      "name": "JACKBOT"
-    },
-    {
-      "id": 136,
-      "name": "JANDAB"
-    },
-    {
-      "id": 137,
-      "name": "NASMAT A2"
-    },
-    {
-      "id": 140,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 160,
-      "name": "NASMAT A2"
-    },
-    {
-      "id": 116,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 114,
-      "name": "GO-BOT"
-    },
-    {
-      "id": 115,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 112,
-      "name": "ZONDMATE"
-    },
-    {
-      "id": 113,
-      "name": "Π-WELL SYNC"
-    },
-    {
-      "id": 416,
-      "name": "ROBBYBOT"
-    },
-    {
-      "id": 8,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 7,
-      "name": "JACKBOT",
-      "mercs": true
-    },
-    {
-      "id": 61,
-      "name": "RAKDRON"
-    },
-    {
-      "id": 62,
-      "name": "SKURGOT"
     },
     {
       "id": 63,
-      "name": "SYNC PRETA"
+      "name": "AUXBOT"
+    },
+    {
+      "id": 60,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 61,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 66,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 59,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 62,
+      "name": "DEVABOT CHARYBDIS"
+    },
+    {
+      "id": 65,
+      "name": "JACKBOT",
+      "mercs": true
     },
     {
       "id": 64,
@@ -8458,112 +9039,699 @@
       "mercs": true
     },
     {
-      "id": 21,
+      "id": 55,
+      "name": "AUXBOT"
+    },
+    {
+      "id": 58,
+      "name": "AUXBOT_2"
+    },
+    {
+      "id": 56,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 57,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 54,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 209,
+      "name": "AUXBOT_1"
+    },
+    {
+      "id": 210,
+      "name": "AUXBOT_2"
+    },
+    {
+      "id": 207,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 208,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 214,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 20,
+      "id": 206,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 211,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 213,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 19,
+      "id": 212,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
+      "id": 20,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 21,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 24,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 19,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 23,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 22,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 136,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 137,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 141,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 138,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 140,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 139,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 49,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 50,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 48,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 51,
+      "name": "DRUMBOT_1"
+    },
+    {
+      "id": 52,
+      "name": "DRUMBOT_2"
+    },
+    {
+      "id": 53,
+      "name": "DRUMBOT_3"
+    },
+    {
+      "id": 143,
+      "name": "CRABBOT"
+    },
+    {
+      "id": 181,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 180,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 178,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 179,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 106,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 102,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 105,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 103,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 104,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 229,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 228,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 226,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 227,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 134,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 135,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 107,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 273,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 272,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 271,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 669,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 668,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 666,
+      "name": "K-9 ANTIPODE"
+    },
+    {
+      "id": 667,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 543,
+      "name": "ANTIPODE"
+    },
+    {
+      "id": 541,
+      "name": "BÂTARD"
+    },
+    {
+      "id": 545,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 542,
+      "name": "K-9 ANTIPODE"
+    },
+    {
+      "id": 544,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 249,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 248,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 246,
+      "name": "RB-235 SAMODELKIN"
+    },
+    {
+      "id": 247,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 151,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 148,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 149,
+      "name": "JANDAB"
+    },
+    {
+      "id": 150,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 177,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 176,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 174,
+      "name": "JANDAB"
+    },
+    {
+      "id": 175,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 39,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 36,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 38,
+      "name": "JANDAB"
+    },
+    {
+      "id": 37,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 351,
+      "name": "BÂTARD"
+    },
+    {
+      "id": 352,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 349,
+      "name": "JANDAB"
+    },
+    {
+      "id": 350,
+      "name": "NASMAT A2"
+    },
+    {
+      "id": 353,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 327,
+      "name": "NASMAT A2"
+    },
+    {
+      "id": 526,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 524,
+      "name": "GO-BOT"
+    },
+    {
+      "id": 520,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 521,
+      "name": "PUPNIK"
+    },
+    {
+      "id": 522,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 525,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 519,
+      "name": "ZONDMATE"
+    },
+    {
+      "id": 523,
+      "name": "Π-WELL SYNC"
+    },
+    {
+      "id": 18,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 16,
+      "name": "MORIARTY"
+    },
+    {
+      "id": 15,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 17,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 14,
+      "name": "ZONDCAT"
+    },
+    {
+      "id": 71,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 69,
+      "name": "PUPNIK"
+    },
+    {
+      "id": 68,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 70,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 67,
+      "name": "Π-WELL SYNC"
+    },
+    {
+      "id": 83,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 79,
+      "name": "GO-BOT"
+    },
+    {
+      "id": 81,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 80,
+      "name": "ROBBYBOT"
+    },
+    {
+      "id": 82,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 78,
+      "name": "ZONDMATE"
+    },
+    {
+      "id": 380,
+      "name": "ROBBYBOT"
+    },
+    {
       "id": 27,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 26,
       "name": "JACKBOT",
       "mercs": true
     },
     {
       "id": 25,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 183,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 182,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 7,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 6,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 4,
       "name": "KISS!"
     },
     {
-      "id": 24,
+      "id": 3,
       "name": "KISS! (Repeater)"
     },
     {
-      "id": 23,
+      "id": 2,
       "name": "SCINDRON"
     },
     {
-      "id": 22,
+      "id": 1,
       "name": "STALDRON"
     },
     {
-      "id": 26,
+      "id": 5,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 56,
-      "name": "BÂTARD",
-      "mercs": true
-    },
-    {
-      "id": 53,
-      "name": "DEVABOT"
-    },
-    {
-      "id": 55,
+      "id": 142,
       "name": "JACKBOT",
       "mercs": true
-    },
-    {
-      "id": 52,
-      "name": "KARKATA"
-    },
-    {
-      "id": 54,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 75,
-      "name": "DEVABOT CHARYBDIS"
     },
     {
       "id": 76,
-      "name": "KARKATA"
-    },
-    {
-      "id": 77,
-      "name": "TURTLEMEK",
-      "mercs": true
-    },
-    {
-      "id": 11,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 10,
+      "id": 72,
+      "name": "DEVABOT CHARYBDIS"
+    },
+    {
+      "id": 75,
       "name": "JACKBOT",
       "mercs": true
     },
     {
-      "id": 9,
+      "id": 73,
+      "name": "KARKATA"
+    },
+    {
+      "id": 74,
       "name": "TURTLEMEK",
       "mercs": true
     },
     {
-      "id": 578,
-      "name": "KIRANBOT"
-    },
-    {
-      "id": 629,
-      "name": "CHAKSA PERIPHERAL"
-    },
-    {
-      "id": 73,
+      "id": 88,
       "name": "BÂTARD",
       "mercs": true
     },
     {
-      "id": 57,
+      "id": 87,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 84,
+      "name": "KARKATA"
+    },
+    {
+      "id": 85,
+      "name": "KIRANBOT"
+    },
+    {
+      "id": 86,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 29,
+      "name": "KIRANBOT"
+    },
+    {
+      "id": 44,
+      "name": "CHAKSA PERIPHERAL"
+    },
+    {
+      "id": 45,
+      "name": "CHAKSA PERIPHERAL A"
+    },
+    {
+      "id": 46,
+      "name": "CHAKSA PERIPHERAL B"
+    },
+    {
+      "id": 47,
+      "name": "SURDA SYMBIOBEAST"
+    },
+    {
+      "id": 101,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 100,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 125,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 122,
+      "name": "JACKBOT"
+    },
+    {
+      "id": 123,
+      "name": "JANDAB"
+    },
+    {
+      "id": 124,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 112,
+      "name": "AUXBOT_3"
+    },
+    {
+      "id": 113,
+      "name": "AUXBOT_3B"
+    },
+    {
+      "id": 111,
+      "name": "BÂTARD"
+    },
+    {
+      "id": 115,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 110,
+      "name": "SHÀNGDIÀO"
+    },
+    {
+      "id": 114,
+      "name": "TURTLEMEK"
+    },
+    {
+      "id": 197,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 185,
+      "name": "DEVABOT"
+    },
+    {
+      "id": 184,
+      "name": "SIDEBOT"
+    },
+    {
+      "id": 133,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 132,
+      "name": "JACKBOT",
+      "mercs": true
+    },
+    {
+      "id": 131,
+      "name": "TURTLEMEK",
+      "mercs": true
+    },
+    {
+      "id": 130,
+      "name": "ZETBOT"
+    },
+    {
+      "id": 8,
+      "name": "BÂTARD",
+      "mercs": true
+    },
+    {
+      "id": 28,
       "name": "BÂTARD",
       "mercs": true
     }
@@ -8574,20 +9742,20 @@
       "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "IRREGULAR",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/irregular.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "IMPETUOUS",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/impetuous.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "LIEUTENANT",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/lieutenant.svg"
     },
     {
-      "type": "REGULAR",
-      "logo": "https://assets.corvusbelli.net/army/img/icon/regular.svg"
+      "type": "TACTICAL",
+      "logo": "https://assets.corvusbelli.net/army/img/icon/tactical.svg"
     }
   ],
   "chars": [
@@ -8630,6 +9798,7 @@
       "logo": "https://assets.corvusbelli.net/army/img/icon/peripheral.svg"
     }
   ],
+  "armors": [],
   "upgrades": [
     {
       "id": 1,
@@ -8637,7 +9806,9 @@
       "saving": "BTS/2",
       "ammunition": "E/M",
       "savingNum": "2",
-      "properties": ["Non-lethal"]
+      "properties": [
+        "Non-lethal"
+      ]
     },
     {
       "id": 2,
@@ -8650,20 +9821,26 @@
       "name": "DA",
       "ammunition": "DA",
       "savingNum": "2",
-      "properties": ["Anti-materiel"]
+      "properties": [
+        "Anti-materiel"
+      ]
     },
     {
       "id": 3,
       "name": "EXP",
       "ammunition": "EXP",
       "savingNum": "3",
-      "properties": ["Anti-materiel"]
+      "properties": [
+        "Anti-materiel"
+      ]
     },
     {
       "id": 4,
       "name": "T2",
       "ammunition": "T2",
-      "properties": ["Anti-materiel"]
+      "properties": [
+        "Anti-materiel"
+      ]
     },
     {
       "id": 5,
@@ -8680,7 +9857,9 @@
       "id": 7,
       "name": "Viral",
       "saving": "BTS",
-      "properties": ["Bioweapon (DA+SHOCK)"]
+      "properties": [
+        "Bioweapon (DA+SHOCK)"
+      ]
     },
     {
       "id": 8,
@@ -8691,64 +9870,88 @@
       "id": 9,
       "name": "Monofilament",
       "saving": "ARM=0",
-      "properties": ["State: Dead"]
+      "properties": [
+        "State: Dead"
+      ]
     },
     {
       "id": 10,
       "name": "Plasma",
       "saving": "ARM and BTS",
       "savingNum": "1 and 1",
-      "properties": ["Impact Template (Circular)"]
+      "properties": [
+        "Impact Template (Circular)"
+      ]
     },
     {
       "id": 11,
       "name": "Para",
       "ammunition": "PARA",
       "saving": "PH-6",
-      "properties": ["State: IMM-A"]
+      "properties": [
+        "State: IMM-A"
+      ]
     },
     {
       "id": 14,
       "name": "Flash",
       "ammunition": "STUN",
       "saving": "BTS",
-      "properties": ["Non-lethal", "State: Stunned"]
+      "properties": [
+        "Non-lethal",
+        "State: Stunned"
+      ]
     },
     {
       "id": 15,
       "name": "Silent",
-      "properties": ["Silent (-6)"]
+      "properties": [
+        "Silent (-6)"
+      ]
     },
     {
       "id": 16,
       "name": "Targetting",
-      "properties": ["State: Targeted"]
+      "properties": [
+        "State: Targeted"
+      ]
     },
     {
       "id": 17,
       "name": "Smart",
-      "properties": ["BS Weapon (WIP)"]
+      "properties": [
+        "BS Weapon (WIP)"
+      ]
     },
     {
       "id": 18,
       "name": "Propulsive",
       "burst": 1,
-      "properties": ["BS Weapon (PH)", "*MAY USE 20-PH AS PS"]
+      "properties": [
+        "BS Weapon (PH)",
+        "*MAY USE 20-PH AS PS"
+      ]
     },
     {
       "id": 19,
       "name": "Disposable",
-      "properties": ["Disposable (3)"]
+      "properties": [
+        "Disposable (3)"
+      ]
     },
     {
       "id": 20,
       "name": "Flaming",
-      "properties": ["Continous Damage"]
+      "properties": [
+        "Continous Damage"
+      ]
     },
     {
       "id": 21,
       "name": "Impact",
-      "properties": ["Impact Template (Circular)"]
+      "properties": [
+        "Impact Template (Circular)"
+      ]
     },
     {
       "id": 22,
@@ -8780,12 +9983,24 @@
       {
         "search": "DA",
         "key": "burst",
-        "mod": ["3", "4", "5", "6", "7"]
+        "mod": [
+          "3",
+          "4",
+          "5",
+          "6",
+          "7"
+        ]
       },
       {
         "search": "EXP",
         "key": "burst",
-        "mod": ["3", "4", "5", "6", "7"]
+        "mod": [
+          "3",
+          "4",
+          "5",
+          "6",
+          "7"
+        ]
       }
     ],
     "saving": [
@@ -8837,12 +10052,18 @@
       {
         "search": "Template",
         "key": "properties",
-        "mod": ["Template", "CC"]
+        "mod": [
+          "Template",
+          "CC"
+        ]
       },
       {
         "search": "BS Weapon",
         "key": "properties",
-        "mod": ["BS Weapon", "CC"]
+        "mod": [
+          "BS Weapon",
+          "CC"
+        ]
       },
       {
         "search": "Disposable",

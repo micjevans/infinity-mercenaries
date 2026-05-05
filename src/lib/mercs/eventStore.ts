@@ -34,14 +34,25 @@ export type TrooperMissionResult = {
   mvp?: boolean;
 };
 
+export type PairingDowntimeOutcome = "" | "failure" | "pass" | "critical-pass";
+
+export type PairingDowntimeResult = {
+  roll?: number | null;
+  eventId: string;
+  choiceId: string;
+  participantTrooperId: string;
+  beneficiaryTrooperId: string;
+  opponentBeneficiaryTrooperId: string;
+  spentCr: number;
+  outcome: PairingDowntimeOutcome;
+  notes: string;
+};
+
 export type PairingResult = {
   participantId: string;
   op: number;
   won: boolean;
-  downtime: {
-    event: string;
-    result: string;
-  };
+  downtime: PairingDowntimeResult;
   troopers: TrooperMissionResult[];
   submitted: boolean;
   updatedAt: string;

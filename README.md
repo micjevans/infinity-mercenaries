@@ -9,6 +9,40 @@ npm install
 npm run dev
 ```
 
+## Faction Data ETL
+
+Faction JSON consumed by the app lives in `src/data/infinity/factions`.
+
+The ETL uses Playwright to load the Infinity Army Builder and intercept the live API responses.
+Run it locally when CB updates their data, then redeploy.
+
+### First-time setup
+
+Install the Chromium browser for Playwright:
+
+```bash
+npm install
+npm run etl:install
+```
+
+### Refresh Data
+
+```bash
+npm run etl:factions
+```
+
+Dry-run preview (lists what would be fetched, no files written):
+
+```bash
+npm run etl:factions:dry
+```
+
+Validation only (checks existing faction files for app compatibility):
+
+```bash
+npm run validate:factions
+```
+
 ### Google Drive Integration
 
 To enable user data persistence on Google Drive:

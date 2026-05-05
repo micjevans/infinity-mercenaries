@@ -905,8 +905,12 @@ export function UnitProfileDisplay({
                       {weaponGroup.rows.map((row, rowIndex) => {
                         const rangeMods = getWeaponRangeMods(row.distance);
                         return (
-                          <tr key={`${weaponGroup.key}-${row.mode}-${rowIndex}`}>
-                            <td className="legacy-weapon-mode-cell">{row.mode}</td>
+                          <tr
+                            key={`${weaponGroup.key}-${row.mode}-${rowIndex}`}
+                          >
+                            <td className="legacy-weapon-mode-cell">
+                              {row.mode}
+                            </td>
                             <td>{row.damage}</td>
                             <td>{row.burst}</td>
                             <td>{row.ammunition}</td>

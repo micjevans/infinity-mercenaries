@@ -1,1888 +1,6 @@
 {
-  "version": "7.2534.182",
+  "version": "7.2668.372",
   "units": [
-    {
-      "id": 1647,
-      "idArmy": 1647,
-      "canonical": 199,
-      "isc": "Reinf. Squalos Mk-II",
-      "iscAbbr": null,
-      "name": "REINF: SQUALOS, PanOceanian Armored Cavalry Heavy Lancers",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Squalos Mk-II",
-          "profiles": [
-            {
-              "bts": 6,
-              "cc": 18,
-              "move": [
-                15,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 4,
-              "ava": 1,
-              "str": true,
-              "bs": 15,
-              "s": 6,
-              "equip": [
-                {
-                  "q": 1,
-                  "extra": [
-                    7
-                  ],
-                  "id": 239,
-                  "order": 1
-                }
-              ],
-              "w": 3,
-              "ph": 15,
-              "name": "REINF: SQUALOS, PanOceanian Armored Cavalry Heavy Lancers",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-squalos-mk-ii-1-1.svg",
-              "id": 1,
-              "arm": 6,
-              "weapons": [],
-              "chars": [
-                3,
-                5,
-                21
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    305
-                  ],
-                  "id": 201,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    11
-                  ],
-                  "id": 40,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    27
-                  ],
-                  "id": 40,
-                  "order": 4
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    52
-                  ],
-                  "id": 254,
-                  "order": 5
-                },
-                {
-                  "q": 1,
-                  "id": 262,
-                  "order": 6
-                },
-                {
-                  "q": 1,
-                  "id": 235,
-                  "order": 7
-                },
-                {
-                  "q": 1,
-                  "id": 213,
-                  "order": 8
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [
-                {
-                  "q": 1,
-                  "group": 2,
-                  "option": 1
-                }
-              ],
-              "minis": 1,
-              "points": 55,
-              "equip": [],
-              "name": "SQUALO Mk-II REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                },
-                {
-                  "type": "TACTICAL",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 169,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    8
-                  ],
-                  "id": 189,
-                  "order": 2
-                },
-                {
-                  "extra": [
-                    302
-                  ],
-                  "id": 5,
-                  "order": 3
-                }
-              ],
-              "chars": [],
-              "swc": "1",
-              "skills": [],
-              "peripheral": [
-                {
-                  "id": 219
-                }
-              ]
-            },
-            {
-              "includes": [
-                {
-                  "q": 1,
-                  "group": 2,
-                  "option": 1
-                }
-              ],
-              "minis": 1,
-              "points": 62,
-              "equip": [],
-              "name": "SQUALO Mk-II REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                },
-                {
-                  "type": "TACTICAL",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "id": 157,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    303
-                  ],
-                  "id": 194,
-                  "order": 2
-                },
-                {
-                  "extra": [
-                    8
-                  ],
-                  "id": 189,
-                  "order": 3
-                },
-                {
-                  "extra": [
-                    302
-                  ],
-                  "id": 5,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "1.5",
-              "skills": [],
-              "peripheral": [
-                {
-                  "id": 219
-                }
-              ]
-            },
-            {
-              "includes": [
-                {
-                  "q": 1,
-                  "group": 2,
-                  "option": 1
-                }
-              ],
-              "minis": 1,
-              "points": 60,
-              "equip": [],
-              "name": "SQUALO Mk-II REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                },
-                {
-                  "type": "TACTICAL",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 3,
-              "weapons": [
-                {
-                  "id": 157,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    8
-                  ],
-                  "id": 189,
-                  "order": 2
-                },
-                {
-                  "extra": [
-                    302
-                  ],
-                  "id": 5,
-                  "order": 3
-                }
-              ],
-              "chars": [],
-              "swc": "1.5",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 211,
-                  "order": 1
-                }
-              ],
-              "peripheral": [
-                {
-                  "id": 219
-                }
-              ]
-            }
-          ],
-          "id": 1,
-          "category": 7
-        },
-        {
-          "notes": null,
-          "isc": "Crabbot Ancillary Remote Unit",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": -1,
-              "move": [
-                15,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 5,
-              "ava": -1,
-              "str": true,
-              "bs": -1,
-              "s": 1,
-              "equip": [],
-              "w": 1,
-              "ph": 10,
-              "name": "CRABBOT Ancillary Remote Unit",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-squalos-mk-ii-2-1.svg",
-              "id": 1,
-              "arm": 0,
-              "weapons": [],
-              "chars": [
-                21,
-                27
-              ],
-              "wip": 12,
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    1
-                  ],
-                  "id": 40,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    6
-                  ],
-                  "id": 28,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "id": 189,
-                  "order": 4
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    322
-                  ],
-                  "id": 243,
-                  "order": 5
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 3,
-              "equip": [],
-              "name": "CRABBOT",
-              "disabled": true,
-              "orders": [],
-              "id": 1,
-              "weapons": [],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            }
-          ],
-          "id": 2,
-          "category": null
-        }
-      ],
-      "options": [],
-      "slug": "reinf-squalos-mk-ii",
-      "filters": {
-        "categories": [
-          7
-        ],
-        "skills": [
-          28,
-          40,
-          84,
-          189,
-          201,
-          211,
-          213,
-          235,
-          243,
-          254,
-          262
-        ],
-        "equip": [
-          239
-        ],
-        "chars": [
-          3,
-          5,
-          21,
-          27
-        ],
-        "types": [
-          4,
-          5
-        ],
-        "weapons": [
-          5,
-          157,
-          169,
-          189,
-          194
-        ],
-        "ammunition": [
-          2,
-          3,
-          8,
-          9
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1645,
-      "idArmy": 1645,
-      "canonical": 199,
-      "isc": " Reinf. Swiss Guard",
-      "iscAbbr": null,
-      "name": "REINF: SWISS GUARD",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": " Reinf. Swiss Guard",
-          "profiles": [
-            {
-              "bts": 6,
-              "cc": 15,
-              "move": [
-                10,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 3,
-              "ava": 1,
-              "str": false,
-              "bs": 15,
-              "s": 2,
-              "equip": [],
-              "w": 2,
-              "ph": 14,
-              "name": "REINF: SWISS GUARD",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-swiss-guard-1-1.svg",
-              "id": 1,
-              "arm": 5,
-              "weapons": [],
-              "chars": [
-                1,
-                3,
-                5,
-                21
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    7
-                  ],
-                  "id": 28,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "id": 164,
-                  "order": 3
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 47,
-              "equip": [],
-              "name": "SWISS GUARD REF.",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 2,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    303
-                  ],
-                  "id": 6,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 145,
-                  "order": 2
-                },
-                {
-                  "extra": null,
-                  "id": 107,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "1.5",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 40,
-              "equip": [
-                {
-                  "q": 1,
-                  "extra": [
-                    6
-                  ],
-                  "id": 169,
-                  "order": 1
-                }
-              ],
-              "name": "SWISS GUARD REF.",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "id": 77,
-                  "order": 1
-                },
-                {
-                  "id": 145,
-                  "order": 2
-                },
-                {
-                  "extra": [
-                    303
-                  ],
-                  "id": 6,
-                  "order": 4
-                },
-                {
-                  "extra": null,
-                  "id": 107,
-                  "order": 3
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 19,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    2
-                  ],
-                  "id": 240,
-                  "order": 2
-                }
-              ],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 46,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 100,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 117,
-                  "order": 2
-                }
-              ],
-              "name": "SWISS GUARD REF.",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 3,
-              "weapons": [
-                {
-                  "id": 41,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    303
-                  ],
-                  "id": 6,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 145,
-                  "order": 2
-                },
-                {
-                  "extra": null,
-                  "id": 107,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0.5",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 1000,
-                  "order": 1
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 6
-        }
-      ],
-      "options": [],
-      "slug": "reinf-swiss-guard",
-      "filters": {
-        "categories": [
-          6
-        ],
-        "skills": [
-          19,
-          28,
-          162,
-          164,
-          240,
-          1000
-        ],
-        "equip": [
-          100,
-          117,
-          169
-        ],
-        "chars": [
-          1,
-          3,
-          5,
-          21
-        ],
-        "types": [
-          3
-        ],
-        "weapons": [
-          2,
-          6,
-          41,
-          77,
-          107,
-          145
-        ],
-        "ammunition": [
-          2,
-          3,
-          8,
-          9
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1649,
-      "idArmy": 1649,
-      "canonical": 199,
-      "isc": "Reinf. Armbots: Bulleteers",
-      "iscAbbr": null,
-      "name": "REINF: ARMBOTS BULLETEERS",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Armbots: Bulleteers",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": 13,
-              "move": [
-                15,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 5,
-              "ava": 1,
-              "str": true,
-              "bs": 12,
-              "s": 4,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 63,
-                  "order": 1
-                }
-              ],
-              "w": 1,
-              "ph": 10,
-              "name": "REINF: ARMBOTS BULLETEERS",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-armbots-bulleteers-null-1.svg",
-              "id": 1,
-              "arm": 1,
-              "weapons": [],
-              "chars": [
-                3,
-                5,
-                21
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 235,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    7
-                  ],
-                  "id": 28,
-                  "order": 4
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 21,
-              "equip": [],
-              "name": "BULLETEER REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 29,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    6
-                  ],
-                  "id": 71,
-                  "order": 2
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 26,
-              "equip": [],
-              "name": "BULLETEER REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "id": 74,
-                  "order": 1
-                },
-                {
-                  "extra": [
-                    6
-                  ],
-                  "id": 71,
-                  "order": 2
-                }
-              ],
-              "chars": [],
-              "swc": "1",
-              "skills": [],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 8
-        }
-      ],
-      "options": [],
-      "slug": "reinf-armbots-bulleteers",
-      "filters": {
-        "categories": [
-          8
-        ],
-        "skills": [
-          28,
-          84,
-          162,
-          235
-        ],
-        "equip": [
-          63
-        ],
-        "chars": [
-          3,
-          5,
-          21
-        ],
-        "types": [
-          5
-        ],
-        "weapons": [
-          29,
-          71,
-          74
-        ],
-        "ammunition": [
-          2,
-          3,
-          37
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1641,
-      "idArmy": 1641,
-      "canonical": 199,
-      "isc": "Reinf. Blockers, Attached Agents of the CDCI",
-      "iscAbbr": "Reinf. Blockers",
-      "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Blockers, Attached Agents of the CDCI",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": 17,
-              "move": [
-                10,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 1,
-              "ava": 1,
-              "str": false,
-              "bs": 12,
-              "s": 2,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 184,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 117,
-                  "order": 2
-                }
-              ],
-              "w": 1,
-              "ph": 10,
-              "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blockers-1-1.svg",
-              "id": 1,
-              "arm": 1,
-              "weapons": [],
-              "chars": [
-                1,
-                3,
-                5
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    8
-                  ],
-                  "id": 201,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 65,
-                  "order": 2
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 14,
-              "equip": [],
-              "name": "BLOCKER REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "extra": null,
-                  "id": 216,
-                  "order": 1
-                },
-                {
-                  "extra": null,
-                  "id": 65,
-                  "order": 2
-                },
-                {
-                  "extra": null,
-                  "id": 72,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 189,
-                  "order": 4
-                },
-                {
-                  "extra": [
-                    7
-                  ],
-                  "id": 71,
-                  "order": 5
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 19,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 100,
-                  "order": 1
-                }
-              ],
-              "name": "BLOCKER REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "extra": null,
-                  "id": 216,
-                  "order": 1
-                },
-                {
-                  "extra": null,
-                  "id": 65,
-                  "order": 2
-                },
-                {
-                  "extra": null,
-                  "id": 72,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 189,
-                  "order": 4
-                },
-                {
-                  "extra": [
-                    7
-                  ],
-                  "id": 71,
-                  "order": 5
-                }
-              ],
-              "chars": [],
-              "swc": "0.5",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 1000,
-                  "order": 1
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 3
-        }
-      ],
-      "options": [],
-      "slug": "reinf-blockers",
-      "filters": {
-        "categories": [
-          3
-        ],
-        "skills": [
-          65,
-          201,
-          1000
-        ],
-        "equip": [
-          100,
-          117,
-          184
-        ],
-        "chars": [
-          1,
-          3,
-          5
-        ],
-        "types": [
-          1
-        ],
-        "weapons": [
-          65,
-          71,
-          72,
-          189,
-          216
-        ],
-        "ammunition": [
-          2,
-          3,
-          8,
-          9,
-          29,
-          37
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1646,
-      "idArmy": 1646,
-      "canonical": 199,
-      "isc": "Reinf. Aquila Guard",
-      "iscAbbr": null,
-      "name": "REINF: AQUILA GUARD",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Aquila Guard",
-          "profiles": [
-            {
-              "bts": 6,
-              "cc": 15,
-              "move": [
-                10,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 3,
-              "ava": 1,
-              "str": false,
-              "bs": 15,
-              "s": 2,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 116,
-                  "order": 1
-                }
-              ],
-              "w": 2,
-              "ph": 14,
-              "name": "REINF: AQUILA GUARD",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-aquila-guard-1-1.svg",
-              "id": 1,
-              "arm": 4,
-              "weapons": [],
-              "chars": [
-                1,
-                3,
-                5,
-                21
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 1
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 50,
-              "equip": [],
-              "name": "AQUILA REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "id": 2,
-                  "order": 1
-                },
-                {
-                  "id": 69,
-                  "order": 2
-                },
-                {
-                  "id": 10,
-                  "order": 3
-                }
-              ],
-              "chars": [],
-              "swc": "1.5",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 47,
-              "equip": [],
-              "name": "AQUILA REINF FTO",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 3,
-              "weapons": [
-                {
-                  "id": 169,
-                  "order": 1
-                },
-                {
-                  "id": 69,
-                  "order": 2
-                },
-                {
-                  "id": 10,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 208,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 189,
-                  "order": 1
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 6
-        }
-      ],
-      "options": [],
-      "slug": "reinf-aquila-guard",
-      "filters": {
-        "categories": [
-          6
-        ],
-        "skills": [
-          162,
-          189
-        ],
-        "equip": [
-          116
-        ],
-        "chars": [
-          1,
-          3,
-          5,
-          21
-        ],
-        "types": [
-          3
-        ],
-        "weapons": [
-          2,
-          10,
-          69,
-          169,
-          208
-        ],
-        "ammunition": [
-          2,
-          3,
-          8,
-          9
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1642,
-      "idArmy": 1642,
-      "canonical": 199,
-      "isc": "Reinf. Blade-Ops",
-      "iscAbbr": null,
-      "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Blade-Ops",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": 16,
-              "move": [
-                10,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 1,
-              "ava": 2,
-              "str": false,
-              "bs": 13,
-              "s": 2,
-              "equip": [],
-              "w": 1,
-              "ph": 10,
-              "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blade-ops-1-1.svg",
-              "id": 1,
-              "arm": 2,
-              "weapons": [],
-              "chars": [
-                1,
-                3,
-                5
-              ],
-              "wip": 12,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    337
-                  ],
-                  "id": 201,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    6
-                  ],
-                  "id": 28,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "id": 164,
-                  "order": 4
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    33
-                  ],
-                  "id": 58,
-                  "order": 5
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 17,
-              "equip": [],
-              "name": "BLADE REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 26,
-                  "order": 1
-                },
-                {
-                  "id": 17,
-                  "order": 2
-                },
-                {
-                  "id": 211,
-                  "order": 3
-                },
-                {
-                  "id": 5,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 23,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 237,
-                  "order": 1
-                }
-              ],
-              "name": "BLADE REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                },
-                {
-                  "type": "TACTICAL",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "id": 77,
-                  "order": 1
-                },
-                {
-                  "id": 17,
-                  "order": 2
-                },
-                {
-                  "id": 211,
-                  "order": 3
-                },
-                {
-                  "id": 5,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 49,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 213,
-                  "order": 2
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 3
-        }
-      ],
-      "options": [],
-      "slug": "reinf-blade-ops",
-      "filters": {
-        "categories": [
-          3
-        ],
-        "skills": [
-          28,
-          49,
-          58,
-          162,
-          164,
-          201,
-          213
-        ],
-        "equip": [
-          237
-        ],
-        "chars": [
-          1,
-          3,
-          5
-        ],
-        "types": [
-          1
-        ],
-        "weapons": [
-          5,
-          17,
-          26,
-          77,
-          211
-        ],
-        "ammunition": [
-          2,
-          3,
-          13,
-          30
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1638,
-      "idArmy": 1638,
-      "canonical": 199,
-      "isc": "Reinf. Flight Officer Agnes Ferreira",
-      "iscAbbr": null,
-      "name": "Reinf: Flight Officer AGNES FERREIRA",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Flight Officer Agnes Ferreira",
-          "profiles": [
-            {
-              "bts": 6,
-              "cc": 14,
-              "move": [
-                10,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 1,
-              "ava": 1,
-              "str": false,
-              "bs": 11,
-              "s": 2,
-              "equip": [],
-              "w": 1,
-              "ph": 10,
-              "name": "Reinf: Flight Officer AGNES FERREIRA",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-flight-officer-agnes-ferreira-1-1.svg",
-              "id": 1,
-              "arm": 1,
-              "weapons": [],
-              "chars": [
-                1,
-                3,
-                5
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 189,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "id": 67,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    34
-                  ],
-                  "id": 58,
-                  "order": 4
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 14,
-              "equip": [],
-              "name": "AGNES REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 77,
-                  "order": 1
-                },
-                {
-                  "id": 65,
-                  "order": 2
-                },
-                {
-                  "id": 69,
-                  "order": 3
-                },
-                {
-                  "id": 5,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            },
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 21,
-              "equip": [],
-              "name": "AGNES REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 2,
-              "weapons": [
-                {
-                  "extra": null,
-                  "id": 77,
-                  "order": 1
-                },
-                {
-                  "extra": null,
-                  "id": 65,
-                  "order": 2
-                },
-                {
-                  "extra": null,
-                  "id": 69,
-                  "order": 3
-                },
-                {
-                  "extra": null,
-                  "id": 5,
-                  "order": 4
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    271,
-                    300
-                  ],
-                  "id": 255,
-                  "order": 1
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 10
-        }
-      ],
-      "options": [],
-      "slug": "reinf-flight-officer-agnes-ferreira",
-      "filters": {
-        "categories": [
-          10
-        ],
-        "skills": [
-          58,
-          67,
-          84,
-          189,
-          255
-        ],
-        "equip": [],
-        "chars": [
-          1,
-          3,
-          5
-        ],
-        "types": [
-          1
-        ],
-        "weapons": [
-          5,
-          65,
-          69,
-          77
-        ],
-        "ammunition": [
-          2
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1650,
-      "idArmy": 1650,
-      "canonical": 199,
-      "isc": "Reinf. Palbots",
-      "iscAbbr": null,
-      "name": "REINF: PALBOTS",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Palbots",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": 11,
-              "move": [
-                15,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 5,
-              "ava": 2,
-              "str": true,
-              "bs": 8,
-              "s": 1,
-              "equip": [],
-              "w": 1,
-              "ph": 10,
-              "name": "REINF: PALBOTS",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-palbots-1-1.svg",
-              "id": 1,
-              "arm": 0,
-              "weapons": [],
-              "chars": [
-                21,
-                27
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    41
-                  ],
-                  "id": 243,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    6
-                  ],
-                  "id": 28,
-                  "order": 4
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 0,
-              "points": 3,
-              "equip": [],
-              "name": "PALBOT REINF",
-              "disabled": false,
-              "orders": [],
-              "id": 1,
-              "weapons": [
-                {
-                  "extra": [
-                    6
-                  ],
-                  "id": 71,
-                  "order": 1
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 8
-        }
-      ],
-      "options": [],
-      "slug": "reinf-palbots",
-      "filters": {
-        "categories": [
-          8
-        ],
-        "skills": [
-          28,
-          84,
-          162,
-          243
-        ],
-        "equip": [],
-        "chars": [
-          21,
-          27
-        ],
-        "types": [
-          5
-        ],
-        "weapons": [
-          71
-        ],
-        "ammunition": [
-          37
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
     {
       "id": 1643,
       "idArmy": 1643,
@@ -2412,6 +530,2011 @@
       ]
     },
     {
+      "id": 1650,
+      "idArmy": 1650,
+      "canonical": 199,
+      "isc": "Reinf. Palbots",
+      "iscAbbr": null,
+      "name": "REINF: PALBOTS",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Palbots",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": 11,
+              "move": [
+                15,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 5,
+              "ava": 2,
+              "str": true,
+              "bs": 8,
+              "s": 1,
+              "equip": [],
+              "w": 1,
+              "ph": 10,
+              "name": "REINF: PALBOTS",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-palbots-1-1.svg",
+              "id": 1,
+              "arm": 0,
+              "weapons": [],
+              "chars": [
+                21,
+                27
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    41
+                  ],
+                  "id": 243,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 28,
+                  "order": 4
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 0,
+              "points": 3,
+              "equip": [],
+              "name": "PALBOT REINF",
+              "disabled": false,
+              "orders": [],
+              "id": 1,
+              "weapons": [
+                {
+                  "extra": [
+                    6
+                  ],
+                  "id": 71,
+                  "order": 1
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 8
+        }
+      ],
+      "options": [],
+      "slug": "reinf-palbots",
+      "filters": {
+        "categories": [
+          8
+        ],
+        "skills": [
+          28,
+          84,
+          243
+        ],
+        "equip": [],
+        "chars": [
+          21,
+          27
+        ],
+        "types": [
+          5
+        ],
+        "weapons": [
+          71
+        ],
+        "ammunition": [
+          37
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1638,
+      "idArmy": 1638,
+      "canonical": 199,
+      "isc": "Reinf. Flight Officer Agnes Ferreira",
+      "iscAbbr": null,
+      "name": "Reinf: Flight Officer AGNES FERREIRA",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Flight Officer Agnes Ferreira",
+          "profiles": [
+            {
+              "bts": 6,
+              "cc": 14,
+              "move": [
+                10,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 1,
+              "ava": 1,
+              "str": false,
+              "bs": 11,
+              "s": 2,
+              "equip": [],
+              "w": 1,
+              "ph": 10,
+              "name": "Reinf: Flight Officer AGNES FERREIRA",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-flight-officer-agnes-ferreira-1-1.svg",
+              "id": 1,
+              "arm": 1,
+              "weapons": [],
+              "chars": [
+                1,
+                3,
+                5
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 189,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "id": 67,
+                  "order": 3
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    34
+                  ],
+                  "id": 58,
+                  "order": 4
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 13,
+              "equip": [],
+              "name": "AGNES REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 77,
+                  "order": 1
+                },
+                {
+                  "id": 65,
+                  "order": 2
+                },
+                {
+                  "id": 69,
+                  "order": 3
+                },
+                {
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 16,
+              "equip": [],
+              "name": "AGNES REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "id": 77,
+                  "order": 1
+                },
+                {
+                  "id": 65,
+                  "order": 2
+                },
+                {
+                  "id": 69,
+                  "order": 3
+                },
+                {
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    271,
+                    300
+                  ],
+                  "id": 255,
+                  "order": 1
+                }
+              ],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 18,
+              "equip": [],
+              "name": "AGNES REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 3,
+              "weapons": [
+                {
+                  "id": 77,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    8
+                  ],
+                  "id": 65,
+                  "order": 2
+                },
+                {
+                  "id": 69,
+                  "order": 3
+                },
+                {
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 26,
+                  "order": 1
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 10
+        }
+      ],
+      "options": [],
+      "slug": "reinf-flight-officer-agnes-ferreira",
+      "filters": {
+        "categories": [
+          10
+        ],
+        "skills": [
+          26,
+          58,
+          67,
+          84,
+          189,
+          255
+        ],
+        "equip": [],
+        "chars": [
+          1,
+          3,
+          5
+        ],
+        "types": [
+          1
+        ],
+        "weapons": [
+          5,
+          65,
+          69,
+          77
+        ],
+        "ammunition": [
+          2
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1641,
+      "idArmy": 1641,
+      "canonical": 199,
+      "isc": "Reinf. Blockers, Attached Agents of the CDCI",
+      "iscAbbr": "Reinf. Blockers",
+      "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Blockers, Attached Agents of the CDCI",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": 17,
+              "move": [
+                10,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 1,
+              "ava": 1,
+              "str": false,
+              "bs": 12,
+              "s": 2,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 184,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 117,
+                  "order": 2
+                }
+              ],
+              "w": 1,
+              "ph": 10,
+              "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blockers-1-1.svg",
+              "id": 1,
+              "arm": 1,
+              "weapons": [],
+              "chars": [
+                1,
+                3,
+                5
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    8
+                  ],
+                  "id": 201,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 65,
+                  "order": 2
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 14,
+              "equip": [],
+              "name": "BLOCKER REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "extra": null,
+                  "id": 216,
+                  "order": 1
+                },
+                {
+                  "extra": null,
+                  "id": 65,
+                  "order": 2
+                },
+                {
+                  "extra": null,
+                  "id": 72,
+                  "order": 3
+                },
+                {
+                  "extra": null,
+                  "id": 189,
+                  "order": 4
+                },
+                {
+                  "extra": [
+                    7
+                  ],
+                  "id": 71,
+                  "order": 5
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 19,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 100,
+                  "order": 1
+                }
+              ],
+              "name": "BLOCKER REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "extra": null,
+                  "id": 216,
+                  "order": 1
+                },
+                {
+                  "extra": null,
+                  "id": 65,
+                  "order": 2
+                },
+                {
+                  "extra": null,
+                  "id": 72,
+                  "order": 3
+                },
+                {
+                  "extra": null,
+                  "id": 189,
+                  "order": 4
+                },
+                {
+                  "extra": [
+                    7
+                  ],
+                  "id": 71,
+                  "order": 5
+                }
+              ],
+              "chars": [],
+              "swc": "0.5",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 1000,
+                  "order": 1
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 3
+        }
+      ],
+      "options": [],
+      "slug": "reinf-blockers",
+      "filters": {
+        "categories": [
+          3
+        ],
+        "skills": [
+          65,
+          201,
+          1000
+        ],
+        "equip": [
+          100,
+          117,
+          184
+        ],
+        "chars": [
+          1,
+          3,
+          5
+        ],
+        "types": [
+          1
+        ],
+        "weapons": [
+          65,
+          71,
+          72,
+          189,
+          216
+        ],
+        "ammunition": [
+          2,
+          3,
+          8,
+          9,
+          29,
+          37
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1642,
+      "idArmy": 1642,
+      "canonical": 199,
+      "isc": "Reinf. Blade-Ops",
+      "iscAbbr": null,
+      "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Blade-Ops",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": 16,
+              "move": [
+                10,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 1,
+              "ava": 2,
+              "str": false,
+              "bs": 13,
+              "s": 2,
+              "equip": [],
+              "w": 1,
+              "ph": 10,
+              "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blade-ops-1-1.svg",
+              "id": 1,
+              "arm": 2,
+              "weapons": [],
+              "chars": [
+                1,
+                3,
+                5
+              ],
+              "wip": 12,
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    337
+                  ],
+                  "id": 201,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    30
+                  ],
+                  "id": 162,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 28,
+                  "order": 3
+                },
+                {
+                  "q": 1,
+                  "id": 164,
+                  "order": 4
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    33
+                  ],
+                  "id": 58,
+                  "order": 5
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 17,
+              "equip": [],
+              "name": "BLADE REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 26,
+                  "order": 1
+                },
+                {
+                  "id": 17,
+                  "order": 2
+                },
+                {
+                  "id": 211,
+                  "order": 3
+                },
+                {
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 23,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 237,
+                  "order": 1
+                }
+              ],
+              "name": "BLADE REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                },
+                {
+                  "type": "TACTICAL",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "id": 77,
+                  "order": 1
+                },
+                {
+                  "id": 17,
+                  "order": 2
+                },
+                {
+                  "id": 211,
+                  "order": 3
+                },
+                {
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 49,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 213,
+                  "order": 2
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 3
+        }
+      ],
+      "options": [],
+      "slug": "reinf-blade-ops",
+      "filters": {
+        "categories": [
+          3
+        ],
+        "skills": [
+          28,
+          49,
+          58,
+          162,
+          164,
+          201,
+          213
+        ],
+        "equip": [
+          237
+        ],
+        "chars": [
+          1,
+          3,
+          5
+        ],
+        "types": [
+          1
+        ],
+        "weapons": [
+          5,
+          17,
+          26,
+          77,
+          211
+        ],
+        "ammunition": [
+          2,
+          3,
+          13,
+          30
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1646,
+      "idArmy": 1646,
+      "canonical": 199,
+      "isc": "Reinf. Aquila Guard",
+      "iscAbbr": null,
+      "name": "REINF: AQUILA GUARD",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Aquila Guard",
+          "profiles": [
+            {
+              "bts": 6,
+              "cc": 15,
+              "move": [
+                15,
+                5
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 3,
+              "ava": 1,
+              "str": false,
+              "bs": 15,
+              "s": 2,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 116,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 238,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 241,
+                  "order": 3
+                }
+              ],
+              "w": 2,
+              "ph": 14,
+              "name": "REINF: AQUILA GUARD",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-aquila-guard-1-1.svg",
+              "id": 1,
+              "arm": 4,
+              "weapons": [],
+              "chars": [
+                1,
+                3,
+                5,
+                21
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    372
+                  ],
+                  "id": 263,
+                  "order": 2
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 52,
+              "equip": [],
+              "name": "AQUILA REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "id": 2,
+                  "order": 1
+                },
+                {
+                  "id": 10,
+                  "order": 3
+                },
+                {
+                  "extra": null,
+                  "id": 189,
+                  "order": 2
+                }
+              ],
+              "chars": [],
+              "swc": "1.5",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 49,
+              "equip": [],
+              "name": "AQUILA REINF FTO",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 3,
+              "weapons": [
+                {
+                  "id": 10,
+                  "order": 3
+                },
+                {
+                  "id": 208,
+                  "order": 4
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 169,
+                  "order": 1
+                },
+                {
+                  "extra": null,
+                  "id": 189,
+                  "order": 2
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 189,
+                  "order": 1
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 6
+        }
+      ],
+      "options": [],
+      "slug": "reinf-aquila-guard",
+      "filters": {
+        "categories": [
+          6
+        ],
+        "skills": [
+          84,
+          189,
+          263
+        ],
+        "equip": [
+          116,
+          238,
+          241
+        ],
+        "chars": [
+          1,
+          3,
+          5,
+          21
+        ],
+        "types": [
+          3
+        ],
+        "weapons": [
+          2,
+          10,
+          169,
+          189,
+          208
+        ],
+        "ammunition": [
+          2,
+          3,
+          8,
+          9
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1649,
+      "idArmy": 1649,
+      "canonical": 199,
+      "isc": "Reinf. Armbots: Bulleteers",
+      "iscAbbr": null,
+      "name": "REINF: ARMBOTS BULLETEERS",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Armbots: Bulleteers",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": 13,
+              "move": [
+                15,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 5,
+              "ava": 1,
+              "str": true,
+              "bs": 12,
+              "s": 4,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 63,
+                  "order": 1
+                }
+              ],
+              "w": 1,
+              "ph": 10,
+              "name": "REINF: ARMBOTS BULLETEERS",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-armbots-bulleteers-null-1.svg",
+              "id": 1,
+              "arm": 1,
+              "weapons": [],
+              "chars": [
+                3,
+                5,
+                21
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 235,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    7
+                  ],
+                  "id": 28,
+                  "order": 4
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 21,
+              "equip": [],
+              "name": "BULLETEER REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 29,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    6
+                  ],
+                  "id": 71,
+                  "order": 2
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 26,
+              "equip": [],
+              "name": "BULLETEER REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "id": 74,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    6
+                  ],
+                  "id": 71,
+                  "order": 2
+                }
+              ],
+              "chars": [],
+              "swc": "1",
+              "skills": [],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 8
+        }
+      ],
+      "options": [],
+      "slug": "reinf-armbots-bulleteers",
+      "filters": {
+        "categories": [
+          8
+        ],
+        "skills": [
+          28,
+          84,
+          235
+        ],
+        "equip": [
+          63
+        ],
+        "chars": [
+          3,
+          5,
+          21
+        ],
+        "types": [
+          5
+        ],
+        "weapons": [
+          29,
+          71,
+          74
+        ],
+        "ammunition": [
+          2,
+          3,
+          37
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1647,
+      "idArmy": 1647,
+      "canonical": 199,
+      "isc": "Reinf. Squalos Mk-II",
+      "iscAbbr": null,
+      "name": "REINF: SQUALOS, PanOceanian Armored Cavalry Heavy Lancers",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Squalos Mk-II",
+          "profiles": [
+            {
+              "bts": 6,
+              "cc": 18,
+              "move": [
+                15,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 4,
+              "ava": 1,
+              "str": true,
+              "bs": 15,
+              "s": 6,
+              "equip": [
+                {
+                  "q": 1,
+                  "extra": [
+                    7
+                  ],
+                  "id": 239,
+                  "order": 1
+                }
+              ],
+              "w": 3,
+              "ph": 15,
+              "name": "REINF: SQUALOS, PanOceanian Armored Cavalry Heavy Lancers",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-squalos-mk-ii-1-1.svg",
+              "id": 1,
+              "arm": 6,
+              "weapons": [],
+              "chars": [
+                3,
+                5,
+                21
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    305
+                  ],
+                  "id": 201,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    11
+                  ],
+                  "id": 40,
+                  "order": 3
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    27
+                  ],
+                  "id": 40,
+                  "order": 4
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    52
+                  ],
+                  "id": 254,
+                  "order": 5
+                },
+                {
+                  "q": 1,
+                  "id": 262,
+                  "order": 6
+                },
+                {
+                  "q": 1,
+                  "id": 235,
+                  "order": 7
+                },
+                {
+                  "q": 1,
+                  "id": 213,
+                  "order": 8
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [
+                {
+                  "q": 1,
+                  "group": 2,
+                  "option": 1
+                }
+              ],
+              "minis": 1,
+              "points": 55,
+              "equip": [],
+              "name": "SQUALO Mk-II REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                },
+                {
+                  "type": "TACTICAL",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 169,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    8
+                  ],
+                  "id": 189,
+                  "order": 2
+                },
+                {
+                  "extra": [
+                    302
+                  ],
+                  "id": 5,
+                  "order": 3
+                }
+              ],
+              "chars": [],
+              "swc": "1",
+              "skills": [],
+              "peripheral": [
+                {
+                  "id": 143
+                }
+              ]
+            },
+            {
+              "includes": [
+                {
+                  "q": 1,
+                  "group": 2,
+                  "option": 1
+                }
+              ],
+              "minis": 1,
+              "points": 62,
+              "equip": [],
+              "name": "SQUALO Mk-II REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                },
+                {
+                  "type": "TACTICAL",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "id": 157,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 194,
+                  "order": 2
+                },
+                {
+                  "extra": [
+                    8
+                  ],
+                  "id": 189,
+                  "order": 3
+                },
+                {
+                  "extra": [
+                    302
+                  ],
+                  "id": 5,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "1.5",
+              "skills": [],
+              "peripheral": [
+                {
+                  "id": 143
+                }
+              ]
+            },
+            {
+              "includes": [
+                {
+                  "q": 1,
+                  "group": 2,
+                  "option": 1
+                }
+              ],
+              "minis": 1,
+              "points": 60,
+              "equip": [],
+              "name": "SQUALO Mk-II REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                },
+                {
+                  "type": "TACTICAL",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 3,
+              "weapons": [
+                {
+                  "id": 157,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    8
+                  ],
+                  "id": 189,
+                  "order": 2
+                },
+                {
+                  "extra": [
+                    302
+                  ],
+                  "id": 5,
+                  "order": 3
+                }
+              ],
+              "chars": [],
+              "swc": "1.5",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 211,
+                  "order": 1
+                }
+              ],
+              "peripheral": [
+                {
+                  "id": 143
+                }
+              ]
+            }
+          ],
+          "id": 1,
+          "category": 7
+        },
+        {
+          "notes": null,
+          "isc": "Crabbot Ancillary Remote Unit",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": -1,
+              "move": [
+                15,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 5,
+              "ava": -1,
+              "str": true,
+              "bs": -1,
+              "s": 1,
+              "equip": [],
+              "w": 1,
+              "ph": 10,
+              "name": "CRABBOT Ancillary Remote Unit",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-squalos-mk-ii-2-1.svg",
+              "id": 1,
+              "arm": 0,
+              "weapons": [],
+              "chars": [
+                21,
+                27
+              ],
+              "wip": 12,
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    1
+                  ],
+                  "id": 40,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 28,
+                  "order": 3
+                },
+                {
+                  "q": 1,
+                  "id": 189,
+                  "order": 4
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    322
+                  ],
+                  "id": 243,
+                  "order": 5
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 3,
+              "equip": [],
+              "name": "CRABBOT",
+              "disabled": true,
+              "orders": [],
+              "id": 1,
+              "weapons": [],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            }
+          ],
+          "id": 2,
+          "category": null
+        }
+      ],
+      "options": [],
+      "slug": "reinf-squalos-mk-ii",
+      "filters": {
+        "categories": [
+          7
+        ],
+        "skills": [
+          28,
+          40,
+          84,
+          189,
+          201,
+          211,
+          213,
+          235,
+          243,
+          254,
+          262
+        ],
+        "equip": [
+          239
+        ],
+        "chars": [
+          3,
+          5,
+          21,
+          27
+        ],
+        "types": [
+          4,
+          5
+        ],
+        "weapons": [
+          5,
+          157,
+          169,
+          189,
+          194
+        ],
+        "ammunition": [
+          2,
+          3,
+          8,
+          9
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
+      "id": 1645,
+      "idArmy": 1645,
+      "canonical": 199,
+      "isc": " Reinf. Swiss Guard",
+      "iscAbbr": null,
+      "name": "REINF: SWISS GUARD",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": " Reinf. Swiss Guard",
+          "profiles": [
+            {
+              "bts": 6,
+              "cc": 15,
+              "move": [
+                10,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 3,
+              "ava": 1,
+              "str": false,
+              "bs": 15,
+              "s": 2,
+              "equip": [],
+              "w": 2,
+              "ph": 14,
+              "name": "REINF: SWISS GUARD",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-swiss-guard-1-1.svg",
+              "id": 1,
+              "arm": 5,
+              "weapons": [],
+              "chars": [
+                1,
+                3,
+                5,
+                21
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "extra": [
+                    7
+                  ],
+                  "id": 28,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "id": 164,
+                  "order": 3
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 47,
+              "equip": [],
+              "name": "SWISS GUARD REF.",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 2,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 6,
+                  "order": 3
+                },
+                {
+                  "id": 145,
+                  "order": 2
+                },
+                {
+                  "id": 107,
+                  "order": 4
+                }
+              ],
+              "chars": [],
+              "swc": "1.5",
+              "skills": [],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 41,
+              "equip": [
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 169,
+                  "order": 1
+                }
+              ],
+              "name": "SWISS GUARD REF.",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 2,
+              "weapons": [
+                {
+                  "extra": null,
+                  "id": 214,
+                  "order": 1
+                },
+                {
+                  "extra": null,
+                  "id": 145,
+                  "order": 2
+                },
+                {
+                  "extra": null,
+                  "id": 82,
+                  "order": 3
+                },
+                {
+                  "extra": null,
+                  "id": 107,
+                  "order": 4
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 6,
+                  "order": 5
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 19,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 274,
+                  "order": 2
+                }
+              ],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 47,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 100,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 117,
+                  "order": 2
+                }
+              ],
+              "name": "SWISS GUARD REF.",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 3,
+              "weapons": [
+                {
+                  "id": 41,
+                  "order": 1
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 6,
+                  "order": 3
+                },
+                {
+                  "id": 145,
+                  "order": 2
+                },
+                {
+                  "id": 107,
+                  "order": 4
+                },
+                {
+                  "id": 82,
+                  "order": 5
+                }
+              ],
+              "chars": [],
+              "swc": "0.5",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 1000,
+                  "order": 1
+                }
+              ],
+              "peripheral": []
+            },
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 44,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 145,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "extra": [
+                    6
+                  ],
+                  "id": 169,
+                  "order": 2
+                }
+              ],
+              "name": "SWISS GUARD REF.",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 4,
+              "weapons": [
+                {
+                  "id": 214,
+                  "order": 1
+                },
+                {
+                  "id": 145,
+                  "order": 2
+                },
+                {
+                  "id": 82,
+                  "order": 3
+                },
+                {
+                  "id": 107,
+                  "order": 4
+                },
+                {
+                  "extra": [
+                    303
+                  ],
+                  "id": 6,
+                  "order": 5
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 1000,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 19,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "id": 274,
+                  "order": 3
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 6
+        }
+      ],
+      "options": [],
+      "slug": "reinf-swiss-guard",
+      "filters": {
+        "categories": [
+          6
+        ],
+        "skills": [
+          19,
+          28,
+          164,
+          274,
+          1000
+        ],
+        "equip": [
+          100,
+          117,
+          145,
+          169
+        ],
+        "chars": [
+          1,
+          3,
+          5,
+          21
+        ],
+        "types": [
+          3
+        ],
+        "weapons": [
+          2,
+          6,
+          41,
+          82,
+          107,
+          145,
+          214
+        ],
+        "ammunition": [
+          2,
+          3,
+          8,
+          9
+        ]
+      },
+      "factions": [
+        199
+      ]
+    },
+    {
       "id": 1640,
       "idArmy": 1640,
       "canonical": 199,
@@ -2545,181 +2668,6 @@
           3,
           8,
           29
-        ]
-      },
-      "factions": [
-        199
-      ]
-    },
-    {
-      "id": 1648,
-      "idArmy": 1648,
-      "canonical": 199,
-      "isc": "Reinf. Pathfinder Dronbot",
-      "iscAbbr": null,
-      "name": "REINF: PATHFINDER DRONBOT",
-      "profileGroups": [
-        {
-          "notes": null,
-          "isc": "Reinf. Pathfinder Dronbot",
-          "profiles": [
-            {
-              "bts": 3,
-              "cc": 13,
-              "move": [
-                15,
-                10
-              ],
-              "notes": null,
-              "includes": [],
-              "type": 5,
-              "ava": 1,
-              "str": true,
-              "bs": 11,
-              "s": 3,
-              "equip": [
-                {
-                  "q": 1,
-                  "id": 238,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 63,
-                  "order": 2
-                }
-              ],
-              "w": 1,
-              "ph": 10,
-              "name": "REINF: PATHFINDER DRONBOT",
-              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-pathfinder-dronbot-1-1.svg",
-              "id": 1,
-              "arm": 0,
-              "weapons": [],
-              "chars": [
-                3,
-                5,
-                21
-              ],
-              "wip": 13,
-              "skills": [
-                {
-                  "q": 1,
-                  "id": 235,
-                  "order": 1
-                },
-                {
-                  "q": 1,
-                  "id": 84,
-                  "order": 2
-                },
-                {
-                  "q": 1,
-                  "id": 242,
-                  "order": 3
-                },
-                {
-                  "q": 1,
-                  "id": 59,
-                  "order": 4
-                },
-                {
-                  "q": 1,
-                  "id": 65,
-                  "order": 5
-                },
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 6
-                }
-              ],
-              "peripheral": []
-            }
-          ],
-          "options": [
-            {
-              "includes": [],
-              "minis": 1,
-              "points": 17,
-              "equip": [],
-              "name": "PATHFINDER DRONBOT REINF",
-              "disabled": false,
-              "orders": [
-                {
-                  "type": "REGULAR",
-                  "list": 1,
-                  "total": 1
-                }
-              ],
-              "id": 1,
-              "weapons": [
-                {
-                  "id": 41,
-                  "order": 1
-                },
-                {
-                  "id": 72,
-                  "order": 2
-                },
-                {
-                  "extra": [
-                    6
-                  ],
-                  "id": 71,
-                  "order": 3
-                }
-              ],
-              "chars": [],
-              "swc": "0",
-              "skills": [],
-              "peripheral": []
-            }
-          ],
-          "id": 1,
-          "category": 8
-        }
-      ],
-      "options": [],
-      "slug": "reinf-pathfinder-dronbot",
-      "filters": {
-        "categories": [
-          8
-        ],
-        "skills": [
-          59,
-          65,
-          84,
-          162,
-          235,
-          242
-        ],
-        "equip": [
-          63,
-          238
-        ],
-        "chars": [
-          3,
-          5,
-          21
-        ],
-        "types": [
-          5
-        ],
-        "weapons": [
-          41,
-          71,
-          72
-        ],
-        "ammunition": [
-          3,
-          8,
-          9,
-          29,
-          37
         ]
       },
       "factions": [
@@ -2965,16 +2913,7 @@
                 21
               ],
               "wip": 12,
-              "skills": [
-                {
-                  "q": 1,
-                  "extra": [
-                    30
-                  ],
-                  "id": 162,
-                  "order": 1
-                }
-              ],
+              "skills": [],
               "peripheral": []
             }
           ],
@@ -3265,7 +3204,6 @@
           4
         ],
         "skills": [
-          162,
           1000
         ],
         "equip": [
@@ -3302,12 +3240,178 @@
       "factions": [
         199
       ]
+    },
+    {
+      "id": 1648,
+      "idArmy": 1648,
+      "canonical": 199,
+      "isc": "Reinf. Pathfinder Dronbot",
+      "iscAbbr": null,
+      "name": "REINF: PATHFINDER DRONBOT",
+      "profileGroups": [
+        {
+          "notes": null,
+          "isc": "Reinf. Pathfinder Dronbot",
+          "profiles": [
+            {
+              "bts": 3,
+              "cc": 13,
+              "move": [
+                15,
+                10
+              ],
+              "notes": null,
+              "includes": [],
+              "type": 5,
+              "ava": 1,
+              "str": true,
+              "bs": 11,
+              "s": 3,
+              "equip": [
+                {
+                  "q": 1,
+                  "id": 238,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 63,
+                  "order": 2
+                }
+              ],
+              "w": 1,
+              "ph": 10,
+              "name": "REINF: PATHFINDER DRONBOT",
+              "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-pathfinder-dronbot-1-1.svg",
+              "id": 1,
+              "arm": 0,
+              "weapons": [],
+              "chars": [
+                3,
+                5,
+                21
+              ],
+              "wip": 13,
+              "skills": [
+                {
+                  "q": 1,
+                  "id": 235,
+                  "order": 1
+                },
+                {
+                  "q": 1,
+                  "id": 84,
+                  "order": 2
+                },
+                {
+                  "q": 1,
+                  "id": 242,
+                  "order": 3
+                },
+                {
+                  "q": 1,
+                  "id": 59,
+                  "order": 4
+                },
+                {
+                  "q": 1,
+                  "id": 65,
+                  "order": 5
+                }
+              ],
+              "peripheral": []
+            }
+          ],
+          "options": [
+            {
+              "includes": [],
+              "minis": 1,
+              "points": 17,
+              "equip": [],
+              "name": "PATHFINDER DRONBOT REINF",
+              "disabled": false,
+              "orders": [
+                {
+                  "type": "REGULAR",
+                  "list": 1,
+                  "total": 1
+                }
+              ],
+              "id": 1,
+              "weapons": [
+                {
+                  "id": 41,
+                  "order": 1
+                },
+                {
+                  "id": 72,
+                  "order": 2
+                },
+                {
+                  "extra": [
+                    6
+                  ],
+                  "id": 71,
+                  "order": 3
+                }
+              ],
+              "chars": [],
+              "swc": "0",
+              "skills": [],
+              "peripheral": []
+            }
+          ],
+          "id": 1,
+          "category": 8
+        }
+      ],
+      "options": [],
+      "slug": "reinf-pathfinder-dronbot",
+      "filters": {
+        "categories": [
+          8
+        ],
+        "skills": [
+          59,
+          65,
+          84,
+          235,
+          242
+        ],
+        "equip": [
+          63,
+          238
+        ],
+        "chars": [
+          3,
+          5,
+          21
+        ],
+        "types": [
+          5
+        ],
+        "weapons": [
+          41,
+          71,
+          72
+        ],
+        "ammunition": [
+          3,
+          8,
+          9,
+          29,
+          37
+        ]
+      },
+      "factions": [
+        199
+      ]
     }
   ],
   "filters": {
     "peripheral": [
       {
-        "id": 219,
+        "id": 143,
         "name": "CRABBOT"
       }
     ],
@@ -3389,12 +3493,24 @@
         "name": "3"
       },
       {
+        "id": 13,
+        "name": "13"
+      },
+      {
         "id": 14,
         "name": "14"
       },
       {
+        "id": 16,
+        "name": "16"
+      },
+      {
         "id": 17,
         "name": "17"
+      },
+      {
+        "id": 18,
+        "name": "18"
       },
       {
         "id": 19,
@@ -3449,20 +3565,24 @@
         "name": "35"
       },
       {
-        "id": 40,
-        "name": "40"
+        "id": 41,
+        "name": "41"
       },
       {
-        "id": 46,
-        "name": "46"
+        "id": 44,
+        "name": "44"
       },
       {
         "id": 47,
         "name": "47"
       },
       {
-        "id": 50,
-        "name": "50"
+        "id": 49,
+        "name": "49"
+      },
+      {
+        "id": 52,
+        "name": "52"
       },
       {
         "id": 55,
@@ -3642,6 +3762,12 @@
       {
         "id": 239,
         "name": "ECM: Guided",
+        "type": "WEAPON",
+        "wiki": "https://infinitythewiki.com/ECM?version=n4"
+      },
+      {
+        "id": 241,
+        "name": "ECM: Hacker",
         "type": "WEAPON",
         "wiki": "https://infinitythewiki.com/ECM?version=n4"
       },
@@ -3847,11 +3973,22 @@
       },
       {
         "id": 262,
-        "name": "Combat Instinct"
+        "name": "Combat Instinct",
+        "wiki": "https://infinitythewiki.com/Combat_Instinct?version=n4"
+      },
+      {
+        "id": 263,
+        "name": "Jump",
+        "wiki": "https://infinitythewiki.com/Jump?version=n4"
       },
       {
         "id": 267,
-        "name": "Warhorse"
+        "name": "Warhorse",
+        "wiki": "https://infinitythewiki.com/Warhorse?version=n4"
+      },
+      {
+        "id": 274,
+        "name": "CC=21"
       },
       {
         "id": 1000,
@@ -3873,6 +4010,11 @@
       {
         "id": 157,
         "name": "AP Spitfire",
+        "type": "BS"
+      },
+      {
+        "id": 214,
+        "name": "AP Submachine Gun",
         "type": "BS"
       },
       {
@@ -3925,6 +4067,11 @@
       {
         "id": 30,
         "name": "Feuerbach",
+        "type": "BS"
+      },
+      {
+        "id": 82,
+        "name": "Flammenspeer",
         "type": "BS"
       },
       {
@@ -4075,9 +4222,9 @@
         "type": "TEXT"
       },
       {
-        "id": 2,
-        "name": "+6",
-        "type": "TEXT"
+        "id": 372,
+        "name": "7.5",
+        "type": "DISTANCE"
       },
       {
         "id": 322,
@@ -4143,6 +4290,76 @@
   },
   "resume": [
     {
+      "id": 1643,
+      "isc": "Reinf. Neoterra Bolts",
+      "idArmy": 1643,
+      "name": "REINF: NEOTERRA BOLTS",
+      "slug": "reinf-neoterra-bolts",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-neoterra-bolts-1-1.svg",
+      "type": 2,
+      "category": 4
+    },
+    {
+      "id": 1650,
+      "isc": "Reinf. Palbots",
+      "idArmy": 1650,
+      "name": "REINF: PALBOTS",
+      "slug": "reinf-palbots",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-palbots-1-1.svg",
+      "type": 5,
+      "category": 8
+    },
+    {
+      "id": 1638,
+      "isc": "Reinf. Flight Officer Agnes Ferreira",
+      "idArmy": 1638,
+      "name": "Reinf: Flight Officer AGNES FERREIRA",
+      "slug": "reinf-flight-officer-agnes-ferreira",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-flight-officer-agnes-ferreira-1-1.svg",
+      "type": 1,
+      "category": 10
+    },
+    {
+      "id": 1641,
+      "isc": "Reinf. Blockers",
+      "idArmy": 1641,
+      "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
+      "slug": "reinf-blockers",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blockers-1-1.svg",
+      "type": 1,
+      "category": 3
+    },
+    {
+      "id": 1642,
+      "isc": "Reinf. Blade-Ops",
+      "idArmy": 1642,
+      "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
+      "slug": "reinf-blade-ops",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blade-ops-1-1.svg",
+      "type": 1,
+      "category": 3
+    },
+    {
+      "id": 1646,
+      "isc": "Reinf. Aquila Guard",
+      "idArmy": 1646,
+      "name": "REINF: AQUILA GUARD",
+      "slug": "reinf-aquila-guard",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-aquila-guard-1-1.svg",
+      "type": 3,
+      "category": 6
+    },
+    {
+      "id": 1649,
+      "isc": "Reinf. Armbots: Bulleteers",
+      "idArmy": 1649,
+      "name": "REINF: ARMBOTS BULLETEERS",
+      "slug": "reinf-armbots-bulleteers",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-armbots-bulleteers-null-1.svg",
+      "type": 5,
+      "category": 8
+    },
+    {
       "id": 1647,
       "isc": "Reinf. Squalos Mk-II",
       "idArmy": 1647,
@@ -4163,76 +4380,6 @@
       "category": 6
     },
     {
-      "id": 1649,
-      "isc": "Reinf. Armbots: Bulleteers",
-      "idArmy": 1649,
-      "name": "REINF: ARMBOTS BULLETEERS",
-      "slug": "reinf-armbots-bulleteers",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-armbots-bulleteers-null-1.svg",
-      "type": 5,
-      "category": 8
-    },
-    {
-      "id": 1641,
-      "isc": "Reinf. Blockers",
-      "idArmy": 1641,
-      "name": "REINF: BLOCKERS, Attached Agents of the CDCI",
-      "slug": "reinf-blockers",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blockers-1-1.svg",
-      "type": 1,
-      "category": 3
-    },
-    {
-      "id": 1646,
-      "isc": "Reinf. Aquila Guard",
-      "idArmy": 1646,
-      "name": "REINF: AQUILA GUARD",
-      "slug": "reinf-aquila-guard",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-aquila-guard-1-1.svg",
-      "type": 3,
-      "category": 6
-    },
-    {
-      "id": 1642,
-      "isc": "Reinf. Blade-Ops",
-      "idArmy": 1642,
-      "name": "REINF: BLADE-OPS, Unified Neoterran Commando Regiment",
-      "slug": "reinf-blade-ops",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-blade-ops-1-1.svg",
-      "type": 1,
-      "category": 3
-    },
-    {
-      "id": 1638,
-      "isc": "Reinf. Flight Officer Agnes Ferreira",
-      "idArmy": 1638,
-      "name": "Reinf: Flight Officer AGNES FERREIRA",
-      "slug": "reinf-flight-officer-agnes-ferreira",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-flight-officer-agnes-ferreira-1-1.svg",
-      "type": 1,
-      "category": 10
-    },
-    {
-      "id": 1650,
-      "isc": "Reinf. Palbots",
-      "idArmy": 1650,
-      "name": "REINF: PALBOTS",
-      "slug": "reinf-palbots",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-palbots-1-1.svg",
-      "type": 5,
-      "category": 8
-    },
-    {
-      "id": 1643,
-      "isc": "Reinf. Neoterra Bolts",
-      "idArmy": 1643,
-      "name": "REINF: NEOTERRA BOLTS",
-      "slug": "reinf-neoterra-bolts",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-neoterra-bolts-1-1.svg",
-      "type": 2,
-      "category": 4
-    },
-    {
       "id": 1640,
       "isc": "Reinf. Fusilier Indigo Richard Quinn",
       "idArmy": 1640,
@@ -4241,16 +4388,6 @@
       "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-fusilier-indigo-richard-quinn-1-1.svg",
       "type": 1,
       "category": 10
-    },
-    {
-      "id": 1648,
-      "isc": "Reinf. Pathfinder Dronbot",
-      "idArmy": 1648,
-      "name": "REINF: PATHFINDER DRONBOT",
-      "slug": "reinf-pathfinder-dronbot",
-      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-pathfinder-dronbot-1-1.svg",
-      "type": 5,
-      "category": 8
     },
     {
       "id": 1639,
@@ -4271,6 +4408,16 @@
       "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-orc-troops-1-1.svg",
       "type": 3,
       "category": 4
+    },
+    {
+      "id": 1648,
+      "isc": "Reinf. Pathfinder Dronbot",
+      "idArmy": 1648,
+      "name": "REINF: PATHFINDER DRONBOT",
+      "slug": "reinf-pathfinder-dronbot",
+      "logo": "https://assets.corvusbelli.net/army/img/logo/units/reinf-pathfinder-dronbot-1-1.svg",
+      "type": 5,
+      "category": 8
     }
   ],
   "fireteams": [],

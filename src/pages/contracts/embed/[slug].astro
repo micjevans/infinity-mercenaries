@@ -14,7 +14,8 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const title = entry?.data?.title || "Contract";
 const description =
-  entry?.data?.description || "Mission contract details for Infinity: Mercenaries.";
+  entry?.data?.description ||
+  "Mission contract details for Infinity: Mercenaries.";
 const section = entry?.data?.contractType ?? "Contract";
 ---
 

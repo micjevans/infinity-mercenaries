@@ -8,9 +8,11 @@ Coordinate multi-contributor development using small stories, explicit ownership
 
 ## Done (Recent)
 
-1. Repository secret cleanup completed across key remote branches.
-2. Main rules/content structure established under `src/content/rules` and `src/content/contracts`.
-3. Core component library scaffolded under `src/components`.
+5. Shop UI upgraded with rich market cards and Base Market rule detail mapping (effects, ARM/BTS/type, and contextual armor notes) sourced from war-markets data.
+6. Perk-trooper integration: `VisualPerkTree` now detects base profile skills as already-selected, and perk selections embed skill effects so `renderCombinedDetails`/`applyItemToTrooper` updates the rendered profile. Build passes.
+7. Repository secret cleanup completed across key remote branches.
+8. Main rules/content structure established under `src/content/rules` and `src/content/contracts`.
+9. Core component library scaffolded under `src/components`.
 
 ## In Progress
 
@@ -39,6 +41,7 @@ Use this as a temporary map; update as team members onboard.
 
 ## Change Log
 
+- 2026-05-04: Pivoted faction ETL to remote-first Corvus refresh workflow, removed legacy-default sync usage, updated npm commands/docs for local refresh + redeploy, and kept compatibility validation (`validate:factions`).
 - 2026-05-03: Added initial AI onboarding and story-driven collaboration docs.
 - 2026-05-03: Added one-time organizer onboarding for registration form template setup, plus Drive folder organization for events/companies/forms.
 - 2026-05-03: Added shared pairing Inducements step with deployment sync/refresh gating, per-trooper inducement assignment, and mission-time inducement profile overlays stored in company event files.

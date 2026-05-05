@@ -1,6 +1,10 @@
-import { applyItemToTrooper, renderCombinedDetails } from "../lib/mercs/trooperUtils";
+import {
+  applyItemToTrooper,
+  renderCombinedDetails,
+} from "../lib/mercs/trooperUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { loadRecruitmentPool } from "../lib/mercs/recruitment";
+import { mapItemData } from "../lib/mercs/metadata";
 import {
   createSharedFile,
   getOrCreateOrganizerFolders,
@@ -18,6 +22,7 @@ import {
   type EventParticipant,
   type EventRound,
   type LocalEvent,
+  type PairingDowntimeResult,
   type PairingResult,
   type TrooperMissionResult,
 } from "../lib/mercs/eventStore";
@@ -29,6 +34,18 @@ import {
   contractHrefFromValue,
   contractTitleFromValue,
 } from "../data/contracts";
+import {
+  DOWNTIME_EVENTS,
+  describeDowntimeOutcomeLabel,
+  getDowntimeActiveTraits,
+  getDowntimeChoiceById,
+  getDowntimeEffectSummary,
+  getDowntimeEventById,
+  getDowntimeTraitTooltip,
+  isDowntimeParticipantTrait,
+  isDowntimeResolutionTrait,
+  type DowntimeOutcome,
+} from "../data/downtime";
 import {
   INDUCEMENT_HIRE_MAPPINGS,
   INDUCEMENT_WEAPON_MAPPINGS,
@@ -48,16 +65,6 @@ const INJURY_OPTIONS = [
   "Eyes Injury",
   "Shell Shocked",
 ];
-
-const DOWNTIME_EVENTS = [
-  "",
-  "Training",
-  "Recovery",
-  "Supply Run",
-  "Intel Gathering",
-  "Recruitment",
-];
-const DOWNTIME_RESULTS = ["", "Critical Success", "Success", "Failure"];
 
 type InducementTargetType = "trooper" | "company" | "hire";
 
@@ -267,7 +274,9 @@ const INDUCEMENT_CATEGORY_LABEL: Record<InducementCategory, string> = {
   equipment: "Rented Utility Equipment",
 };
 
-function getInducementTargetType(option: InducementOption): InducementTargetType {
+function getInducementTargetType(
+  option: InducementOption,
+): InducementTargetType {
   if (option.category === "command") return "company";
   if (option.category === "troops") return "hire";
   return "trooper";
@@ -503,15 +512,67 @@ function isEliteDeployed(result: PairingResult): boolean {
   return result.troopers.length > 0 && result.troopers.length <= 4;
 }
 
+function defaultDowntimeResult(): PairingDowntimeResult {
+  return {
+    roll: null,
+    eventId: "",
+    choiceId: "",
+    participantTrooperId: "",
+    beneficiaryTrooperId: "",
+    opponentBeneficiaryTrooperId: "",
+    spentCr: 0,
+    outcome: "",
+    notes: "",
+  };
+}
+
+function normalizeDowntimeResult(raw: any): PairingDowntimeResult {
+  const next = defaultDowntimeResult();
+  if (!raw || typeof raw !== "object") return next;
+
+  const legacyEvent = String(raw.event || "").trim();
+  const legacyResult = String(raw.result || "")
+    .trim()
+    .toLowerCase();
+  const matchedLegacyEvent = DOWNTIME_EVENTS.find(
+    (event) => event.event.toLowerCase() === legacyEvent.toLowerCase(),
+  );
+
+  return {
+    roll:
+      raw.roll === null || raw.roll === undefined
+        ? null
+        : Number(raw.roll) || null,
+    eventId: String(raw.eventId || matchedLegacyEvent?.id || ""),
+    choiceId: String(raw.choiceId || ""),
+    participantTrooperId: String(raw.participantTrooperId || ""),
+    beneficiaryTrooperId: String(raw.beneficiaryTrooperId || ""),
+    opponentBeneficiaryTrooperId: String(
+      raw.opponentBeneficiaryTrooperId || "",
+    ),
+    spentCr: Math.max(0, Number(raw.spentCr || 0) || 0),
+    outcome:
+      raw.outcome === "failure" ||
+      raw.outcome === "pass" ||
+      raw.outcome === "critical-pass"
+        ? raw.outcome
+        : legacyResult === "failure"
+          ? "failure"
+          : legacyResult === "success"
+            ? "pass"
+            : legacyResult === "critical success"
+              ? "critical-pass"
+              : "",
+    notes: String(raw.notes || ""),
+  };
+}
+
 function defaultResult(participantId: string): PairingResult {
   return {
     participantId,
     op: 0,
     won: false,
-    downtime: {
-      event: "",
-      result: "",
-    },
+    downtime: defaultDowntimeResult(),
     troopers: [],
     submitted: false,
     updatedAt: new Date().toISOString(),
@@ -537,9 +598,7 @@ function getContractHref(contractName?: string): string | null {
 }
 
 function getContractNpcProfiles(contractName?: string): NpcProfile[] {
-  const target = contractTitleFromValue(contractName)
-    .trim()
-    .toLowerCase();
+  const target = contractTitleFromValue(contractName).trim().toLowerCase();
   if (!target) return [];
 
   return npcGroups.flatMap((group) =>
@@ -573,10 +632,12 @@ function useHireProfilesByOptionIds(optionIds: string[]): Map<string, any> {
         if (!mapping) return null;
         try {
           const { units } = await loadRecruitmentPool([mapping.factionSlug]);
-          const unit = (units || []).find(
-            (u: any) => u.id === mapping.unitId,
-          );
-          return { optionId, unit: unit || null, displayName: mapping.displayName };
+          const unit = (units || []).find((u: any) => u.id === mapping.unitId);
+          return {
+            optionId,
+            unit: unit || null,
+            displayName: mapping.displayName,
+          };
         } catch {
           return null;
         }
@@ -616,17 +677,13 @@ function makeHireProfileTargetId(
   return `hire:${encodeURIComponent(optionId)}:${encodeURIComponent(String(groupId))}:${encodeURIComponent(String(profileOptionId))}`;
 }
 
-function parseHireProfileTargetId(
-  targetId: string,
-):
-  | {
-      optionId: string;
-      groupId: string;
-      profileOptionId: string;
-      groupIndex?: number;
-      optionIndex?: number;
-    }
-  | null {
+function parseHireProfileTargetId(targetId: string): {
+  optionId: string;
+  groupId: string;
+  profileOptionId: string;
+  groupIndex?: number;
+  optionIndex?: number;
+} | null {
   const raw = String(targetId || "");
   const parts = raw.split(":");
   if (parts.length !== 4 || parts[0] !== "hire") return null;
@@ -652,7 +709,8 @@ function parseHireProfileTargetId(
     profileOptionId,
   };
   if (/^\d+$/.test(groupId)) parsed.groupIndex = Number(groupId);
-  if (/^\d+$/.test(profileOptionId)) parsed.optionIndex = Number(profileOptionId);
+  if (/^\d+$/.test(profileOptionId))
+    parsed.optionIndex = Number(profileOptionId);
   return parsed;
 }
 
@@ -669,15 +727,17 @@ function getHireConstraintTokens(optionLabel: string): string[] {
     .filter((token) => !/^immunity\b/i.test(token));
 }
 
-function getHireProfileChoices(option: InducementOption, unit: any):
-  Array<{
-    targetId: string;
-    label: string;
-    groupIndex: number;
-    optionIndex: number;
-    groupId: string | number;
-    profileOptionId: string | number;
-  }> {
+function getHireProfileChoices(
+  option: InducementOption,
+  unit: any,
+): Array<{
+  targetId: string;
+  label: string;
+  groupIndex: number;
+  optionIndex: number;
+  groupId: string | number;
+  profileOptionId: string | number;
+}> {
   const groups = Array.isArray(unit?.profileGroups) ? unit.profileGroups : [];
   const constraints = getHireConstraintTokens(option.label).map((entry) =>
     entry.toLowerCase(),
@@ -692,12 +752,20 @@ function getHireProfileChoices(option: InducementOption, unit: any):
     (Array.isArray(group?.options) ? group.options : []).map(
       (groupOption: any, optionIndex: number) => {
         const label = String(
-          groupOption?.name || group?.isc || unit?.isc || unit?.name || "Profile",
+          groupOption?.name ||
+            group?.isc ||
+            unit?.isc ||
+            unit?.name ||
+            "Profile",
         );
         const groupId = group?.id ?? groupIndex;
         const profileOptionId = groupOption?.id ?? optionIndex;
         return {
-          targetId: makeHireProfileTargetId(option.id, groupId, profileOptionId),
+          targetId: makeHireProfileTargetId(
+            option.id,
+            groupId,
+            profileOptionId,
+          ),
           label,
           groupIndex,
           optionIndex,
@@ -708,11 +776,16 @@ function getHireProfileChoices(option: InducementOption, unit: any):
     ),
   );
 
-  const filtered = allChoices.filter((choice) => matchesConstraint(choice.label));
+  const filtered = allChoices.filter((choice) =>
+    matchesConstraint(choice.label),
+  );
   return filtered.length ? filtered : allChoices;
 }
 
-function getRenderableHireProfileGroups(option: InducementOption, unit: any): any[] {
+function getRenderableHireProfileGroups(
+  option: InducementOption,
+  unit: any,
+): any[] {
   const choices = getHireProfileChoices(option, unit);
   const allowedTargets = new Set(choices.map((choice) => choice.targetId));
   const groups = Array.isArray(unit?.profileGroups) ? unit.profileGroups : [];
@@ -726,7 +799,11 @@ function getRenderableHireProfileGroups(option: InducementOption, unit: any): an
         .map((profileOption: any, optionIndex: number) => {
           const groupId = group?.id ?? groupIndex;
           const profileOptionId = profileOption?.id ?? optionIndex;
-          const targetId = makeHireProfileTargetId(option.id, groupId, profileOptionId);
+          const targetId = makeHireProfileTargetId(
+            option.id,
+            groupId,
+            profileOptionId,
+          );
           if (!allowedTargets.has(targetId)) return null;
           return { profileOption, optionIndex };
         })
@@ -766,7 +843,11 @@ function resolveHireTargetIdFromSelection(
     const sourceOptions = Array.isArray(sourceGroup?.options)
       ? sourceGroup.options
       : [];
-    for (let optionIndex = 0; optionIndex < sourceOptions.length; optionIndex += 1) {
+    for (
+      let optionIndex = 0;
+      optionIndex < sourceOptions.length;
+      optionIndex += 1
+    ) {
       const sourceOption = sourceOptions[optionIndex];
       const groupId = sourceGroup?.id ?? groupIndex;
       const profileOptionId = sourceOption?.id ?? optionIndex;
@@ -786,8 +867,10 @@ function resolveHireTargetIdFromSelection(
   return null;
 }
 
-function getSelectedHireDisplayData(selection: PairingInducementSelection, unit: any):
-  { unit: any; profileGroups: any[]; profileLabel: string } | null {
+function getSelectedHireDisplayData(
+  selection: PairingInducementSelection,
+  unit: any,
+): { unit: any; profileGroups: any[]; profileLabel: string } | null {
   const option = INDUCEMENT_OPTION_BY_ID.get(selection.optionId);
   if (!option || !unit) return null;
 
@@ -817,13 +900,18 @@ function getSelectedHireDisplayData(selection: PairingInducementSelection, unit:
 
   const groupClone = structuredClone(sourceGroup);
   const options = Array.isArray(groupClone.options) ? groupClone.options : [];
-  const profiles = Array.isArray(groupClone.profiles) ? groupClone.profiles : [];
+  const profiles = Array.isArray(groupClone.profiles)
+    ? groupClone.profiles
+    : [];
 
   if (options[selectedChoice.optionIndex]) {
     groupClone.options = [options[selectedChoice.optionIndex]];
   }
   if (profiles.length > 1) {
-    const profileIndex = Math.min(selectedChoice.optionIndex, profiles.length - 1);
+    const profileIndex = Math.min(
+      selectedChoice.optionIndex,
+      profiles.length - 1,
+    );
     groupClone.profiles = [profiles[profileIndex]];
   }
 
@@ -846,7 +934,11 @@ function applyInducementEquipment(
   for (const sel of rentals) {
     const mapping = INDUCEMENT_WEAPON_MAPPINGS[sel.optionId];
     if (!mapping) continue;
-    result = applyItemToTrooper(result, { id: mapping.metadataId }, mapping.collectionKey);
+    result = applyItemToTrooper(
+      result,
+      { id: mapping.metadataId },
+      mapping.collectionKey,
+    );
   }
   return result;
 }
@@ -929,7 +1021,9 @@ function DeploymentStep({
   hireSelections?: PairingInducementSelection[];
 }) {
   const hireProfiles = useHireProfiles(hireSelections || []);
-  const [expandedHires, setExpandedHires] = useState<Record<string, boolean>>({});
+  const [expandedHires, setExpandedHires] = useState<Record<string, boolean>>(
+    {},
+  );
   const troopers = (company?.troopers || []) as any[];
   const deployedIds = new Set(
     result.troopers.map((trooper) => trooper.trooper),
@@ -1046,14 +1140,18 @@ function DeploymentStep({
               </div>
             );
           })}
-          {result.troopers.length === 0 && (hireSelections || []).length === 0 && (
-            <p className="empty-note">No troopers deployed yet.</p>
-          )}
+          {result.troopers.length === 0 &&
+            (hireSelections || []).length === 0 && (
+              <p className="empty-note">No troopers deployed yet.</p>
+            )}
           {(hireSelections || []).map((sel) => {
             const profileEntry = hireProfiles.get(sel.optionId);
             const isExpanded = expandedHires[sel.id] || false;
             if (profileEntry?.unit) {
-              const selected = getSelectedHireDisplayData(sel, profileEntry.unit);
+              const selected = getSelectedHireDisplayData(
+                sel,
+                profileEntry.unit,
+              );
               if (selected) {
                 return (
                   <article key={sel.id} className="legacy-trooper-card">
@@ -1082,7 +1180,9 @@ function DeploymentStep({
               >
                 <span>
                   <strong>
-                    {profileEntry?.displayName || option?.label || "Hired Trooper"}
+                    {profileEntry?.displayName ||
+                      option?.label ||
+                      "Hired Trooper"}
                   </strong>
                   <small>Temporary Hire · Loading profile...</small>
                 </span>
@@ -1140,7 +1240,9 @@ function InducementsStep({
   const deployedTroopers = result.troopers
     .map((entry) => findTrooper(company, entry.trooper))
     .filter(Boolean);
-  const deployedTrooperIds = new Set(result.troopers.map((entry) => entry.trooper));
+  const deployedTrooperIds = new Set(
+    result.troopers.map((entry) => entry.trooper),
+  );
   const opposingDeployed = opposingResult.troopers
     .map((entry) => findTrooper(opposingCompany, entry.trooper))
     .filter(Boolean);
@@ -1152,7 +1254,10 @@ function InducementsStep({
     if (!option) return false;
 
     if (selection.targetType === "trooper") {
-      return Boolean(selection.targetId) && deployedTrooperIds.has(selection.targetId);
+      return (
+        Boolean(selection.targetId) &&
+        deployedTrooperIds.has(selection.targetId)
+      );
     }
 
     return true;
@@ -1160,7 +1265,8 @@ function InducementsStep({
 
   const spent = normalizedSelections.reduce(
     (total, selection) =>
-      total + Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0),
+      total +
+      Number(INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.cost || 0),
     0,
   );
   const remaining = inducementBudget - spent;
@@ -1196,10 +1302,7 @@ function InducementsStep({
     return remaining >= option.cost;
   }
 
-  function addSelection(
-    option: InducementOption,
-    targetIdOverride?: string,
-  ) {
+  function addSelection(option: InducementOption, targetIdOverride?: string) {
     if (!canAddOption(option)) return;
 
     const targetType = getInducementTargetType(option);
@@ -1264,7 +1367,8 @@ function InducementsStep({
                 <div>
                   <strong>{option.label}</strong>
                   <small>
-                    {INDUCEMENT_CATEGORY_LABEL[option.category]} · {option.cost} Ind
+                    {INDUCEMENT_CATEGORY_LABEL[option.category]} · {option.cost}{" "}
+                    Ind
                   </small>
                 </div>
                 <div className="pairing-shop-option__meta">
@@ -1317,8 +1421,13 @@ function InducementsStep({
             }));
 
             return (
-              <article className="legacy-recruit-card pairing-shop-recruit-card" key={option.id}>
-                {!unit && <p className="empty-note">Loading troop profiles...</p>}
+              <article
+                className="legacy-recruit-card pairing-shop-recruit-card"
+                key={option.id}
+              >
+                {!unit && (
+                  <p className="empty-note">Loading troop profiles...</p>
+                )}
                 {unit && renderableGroups.length === 0 && (
                   <p className="empty-note">
                     No matching profiles found for this inducement.
@@ -1437,7 +1546,9 @@ function InducementsStep({
             {renderShopSection(
               "Company-Wide",
               "Command Tokens benefit the whole company and are not assigned to a trooper.",
-              INDUCEMENT_OPTIONS.filter((option) => option.category === "command"),
+              INDUCEMENT_OPTIONS.filter(
+                (option) => option.category === "command",
+              ),
             )}
             {renderTroopShopSection()}
             {renderShopSection(
@@ -1463,7 +1574,8 @@ function InducementsStep({
                   <div className="pairing-inducement-row__summary">
                     <strong>{option.label}</strong>
                     <small>
-                      {option.cost} Ind · {getInducementTargetLabel(selection.targetType)}
+                      {option.cost} Ind ·{" "}
+                      {getInducementTargetLabel(selection.targetType)}
                     </small>
                   </div>
 
@@ -1491,7 +1603,9 @@ function InducementsStep({
                   ) : selection.targetType === "hire" ? (
                     <div className="pairing-inducement-row__tag">
                       {(() => {
-                        const hireUnit = troopProfiles.get(selection.optionId)?.unit;
+                        const hireUnit = troopProfiles.get(
+                          selection.optionId,
+                        )?.unit;
                         const choices = hireUnit
                           ? getHireProfileChoices(option, hireUnit)
                           : [];
@@ -1535,8 +1649,8 @@ function InducementsStep({
                     .filter((selection) => selection.targetId === entry.trooper)
                     .map(
                       (selection) =>
-                        INDUCEMENT_OPTION_BY_ID.get(selection.optionId)?.label ||
-                        "Unknown",
+                        INDUCEMENT_OPTION_BY_ID.get(selection.optionId)
+                          ?.label || "Unknown",
                     );
                   return (
                     <li
@@ -1583,7 +1697,8 @@ function InducementsStep({
                   const trooper = findTrooper(opposingCompany, entry.trooper);
                   return (
                     <li key={entry.trooper}>
-                      {getTrooperName(trooper)} <span>{getTrooperPoints(trooper)} RN</span>
+                      {getTrooperName(trooper)}{" "}
+                      <span>{getTrooperPoints(trooper)} RN</span>
                     </li>
                   );
                 })}
@@ -1952,7 +2067,8 @@ function MissionStep({
                       trooper,
                       trooperRentals,
                     );
-                    const renderedTrooper = renderCombinedDetails(trooperWithRentals);
+                    const renderedTrooper =
+                      renderCombinedDetails(trooperWithRentals);
 
                     return (
                       <article
@@ -1987,8 +2103,13 @@ function MissionStep({
                       );
                       if (selected) {
                         return (
-                          <article key={trooperId} className="legacy-trooper-card">
-                            <p className="pairing-hire-subtitle">Temporary Hire</p>
+                          <article
+                            key={trooperId}
+                            className="legacy-trooper-card"
+                          >
+                            <p className="pairing-hire-subtitle">
+                              Temporary Hire
+                            </p>
                             <UnitProfileDisplay
                               unit={selected.unit}
                               profileGroups={selected.profileGroups}
@@ -2010,7 +2131,9 @@ function MissionStep({
                     return (
                       <article key={trooperId} className="legacy-trooper-card">
                         <div className="pairing-hire-card__header">
-                          <p className="pairing-hire-subtitle">Temporary Hire</p>
+                          <p className="pairing-hire-subtitle">
+                            Temporary Hire
+                          </p>
                           <strong>
                             {profileEntry?.displayName ||
                               option?.label ||
@@ -2025,7 +2148,8 @@ function MissionStep({
                   {(() => {
                     const commandTokens = selections.filter(
                       (sel) =>
-                        sel.targetType === "company" && sel.optionId === "cmd-token",
+                        sel.targetType === "company" &&
+                        sel.optionId === "cmd-token",
                     ).length;
                     if (!commandTokens) return null;
                     return (
@@ -2106,7 +2230,6 @@ function MissionStep({
             </div>
           </section>
         )}
-
       </div>
 
       <div className="pairing-step-actions">
@@ -2125,17 +2248,388 @@ function MissionStep({
   );
 }
 
+function parseRollRange(value: string): [number, number] | null {
+  const match = String(value || "").match(/^(\d+)(?:-(\d+))?$/);
+  if (!match) return null;
+  const start = Number(match[1]);
+  const end = Number(match[2] || match[1]);
+  return Number.isFinite(start) && Number.isFinite(end) ? [start, end] : null;
+}
+
+function findDowntimeEventForRoll(roll: number) {
+  return DOWNTIME_EVENTS.find((event) => {
+    const range = parseRollRange(event.roll);
+    return range ? roll >= range[0] && roll <= range[1] : false;
+  });
+}
+
+function getRenderedMetadataNames(items: any[] = [], key?: string): string[] {
+  return items.flatMap((item) => {
+    if (!item) return [];
+    const directName = String(item.name || "").trim();
+    if (directName) return [directName];
+    return key
+      ? mapItemData({ ...item, key })
+          .map((entry) => String(entry.name || "").trim())
+          .filter(Boolean)
+      : [];
+  });
+}
+
+function getTrooperSearchStrings(trooper: any): string[] {
+  if (!trooper) return [];
+  const rendered = renderCombinedDetails(trooper);
+  const profile = rendered?.profileGroups?.[0]?.profiles?.[0] || rendered;
+  return [
+    String(rendered?.name || rendered?.isc || ""),
+    ...getRenderedMetadataNames(profile?.skills || [], "skills"),
+    ...getRenderedMetadataNames(profile?.weapons || [], "weapons"),
+    ...getRenderedMetadataNames(
+      profile?.equip || profile?.equips || [],
+      "equips",
+    ),
+    ...getRenderedMetadataNames(
+      profile?.peripheral || profile?.peripherals || [],
+      "peripheral",
+    ),
+  ]
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function getDowntimeRequirementValue(traits: string[]): string | null {
+  const requirementTrait = traits.find((trait) =>
+    trait.startsWith("Requirement ("),
+  );
+  if (!requirementTrait) return null;
+  const match = requirementTrait.match(/^Requirement \((.+)\)$/);
+  return match?.[1]?.trim() || null;
+}
+
+function trooperMatchesDowntimeRequirement(
+  trooper: any,
+  requirement: string | null,
+): boolean {
+  if (!requirement) return true;
+  const haystack = getTrooperSearchStrings(trooper);
+  const target = requirement.trim().toLowerCase();
+  if (target === "hacker") {
+    return haystack.some(
+      (entry) => entry.includes("hacking device") || entry === "hacker",
+    );
+  }
+  if (target === "trinity program") {
+    return haystack.some((entry) => entry.includes("trinity"));
+  }
+  return haystack.some((entry) => entry.includes(target));
+}
+
+function downtimeNeedsParticipant(choiceCheck: string): boolean {
+  return String(choiceCheck || "").trim() !== "—";
+}
+
+function downtimeHasTargetableBenefit(
+  traits: string[],
+  outcome: DowntimeOutcome,
+): boolean {
+  if (!outcome) return false;
+  const passes = outcome === "pass" || outcome === "critical-pass";
+  return traits.some((trait) => {
+    if (trait === "LT" || trait === "Weapon") return passes;
+    if (trait === "XP") return passes;
+    if (trait.startsWith("Skill (")) return passes;
+    return false;
+  });
+}
+
+function summarizeDowntimeEffects(
+  traits: string[],
+  outcome: DowntimeOutcome,
+): string[] {
+  return traits
+    .map((trait) => getDowntimeEffectSummary(trait, outcome))
+    .filter((entry): entry is string => Boolean(entry));
+}
+
+function DowntimeTraitPill({ trait }: { trait: string }) {
+  const tooltip = getDowntimeTraitTooltip(trait);
+
+  return (
+    <span
+      className={
+        tooltip ? "downtime-trait downtime-trait--tip" : "downtime-trait"
+      }
+      tabIndex={tooltip ? 0 : undefined}
+    >
+      {trait}
+      {tooltip && (
+        <span className="trait-tooltip">
+          <strong className="trait-tooltip-title">{trait}</strong>
+          {tooltip.type === "text" ? (
+            <span className="trait-tooltip-body">{tooltip.desc}</span>
+          ) : (
+            <>
+              {tooltip.special && (
+                <span className="trait-tooltip-special">{tooltip.special}</span>
+              )}
+              <span className="trait-tooltip-cols">
+                <span className="trait-tooltip-col">
+                  <span className="trait-tooltip-col-head">Fail</span>
+                  <span className="trait-tooltip-col-val">
+                    {tooltip.fail ?? "-"}
+                  </span>
+                </span>
+                <span className="trait-tooltip-col">
+                  <span className="trait-tooltip-col-head">Pass</span>
+                  <span className="trait-tooltip-col-val">
+                    {tooltip.pass ?? "-"}
+                  </span>
+                </span>
+                <span className="trait-tooltip-col">
+                  <span className="trait-tooltip-col-head">Crit</span>
+                  <span className="trait-tooltip-col-val">
+                    {tooltip.crit ?? "-"}
+                  </span>
+                </span>
+              </span>
+            </>
+          )}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function DowntimeStep({
+  company,
+  opposingCompany,
   result,
   onChange,
   onBack,
   onNext,
 }: {
+  company: LocalCompany | null;
+  opposingCompany: LocalCompany | null;
   result: PairingResult;
   onChange: (result: PairingResult) => void;
   onBack: () => void;
   onNext: () => void;
 }) {
+  const allTroopers = ((company?.troopers || []) as any[]).filter(Boolean);
+  const opposingTroopers = ((opposingCompany?.troopers || []) as any[]).filter(
+    Boolean,
+  );
+  const selectedEvent = getDowntimeEventById(result.downtime.eventId);
+  const selectedChoice = getDowntimeChoiceById(
+    result.downtime.eventId,
+    result.downtime.choiceId,
+  );
+  const activeTraits = getDowntimeActiveTraits(
+    result.downtime.eventId,
+    result.downtime.choiceId,
+  );
+  const participantTraits = activeTraits.filter(isDowntimeParticipantTrait);
+  const resolutionTraits = activeTraits.filter(isDowntimeResolutionTrait);
+  const requirement = getDowntimeRequirementValue(activeTraits);
+  const participantNeeded = downtimeNeedsParticipant(
+    selectedChoice?.check || "",
+  );
+  const captainId = String(findCaptain(company)?.id || "");
+  const mvpId =
+    result.troopers.find((entry) => Boolean(entry.mvp))?.trooper || "";
+  const renownedId = String(
+    [...allTroopers].sort(
+      (a, b) => getTrooperPoints(b) - getTrooperPoints(a),
+    )[0]?.id || "",
+  );
+  const downedIds = new Set(
+    result.troopers
+      .filter((entry) => !entry.alive)
+      .map((entry) => String(entry.trooper || "")),
+  );
+  const eligibleParticipants = allTroopers.filter((trooper) => {
+    const trooperId = String(trooper?.id || "");
+    if (!participantNeeded) return false;
+    if (
+      participantTraits.includes("Captain") &&
+      captainId &&
+      trooperId !== captainId
+    ) {
+      return false;
+    }
+    if (participantTraits.includes("MVP") && mvpId && trooperId !== mvpId) {
+      return false;
+    }
+    if (
+      participantTraits.includes("Renowned") &&
+      renownedId &&
+      trooperId !== renownedId
+    ) {
+      return false;
+    }
+    if (
+      selectedEvent?.id === "taken-hostage" &&
+      downedIds.size > 0 &&
+      !downedIds.has(trooperId)
+    ) {
+      return false;
+    }
+    if (!trooperMatchesDowntimeRequirement(trooper, requirement)) return false;
+    return true;
+  });
+  const downtimeEffects = summarizeDowntimeEffects(
+    resolutionTraits,
+    result.downtime.outcome as DowntimeOutcome,
+  );
+  const selfBenefitNeeded =
+    downtimeHasTargetableBenefit(
+      resolutionTraits,
+      result.downtime.outcome as DowntimeOutcome,
+    ) ||
+    (selectedEvent?.id === "nothing-to-report" &&
+      result.downtime.choiceId === "take-the-quiet");
+  const opponentBenefitNeeded =
+    downtimeHasTargetableBenefit(
+      resolutionTraits,
+      result.downtime.outcome as DowntimeOutcome,
+    ) &&
+    ((activeTraits.includes("Opponent") &&
+      result.downtime.outcome === "failure") ||
+      (activeTraits.includes("Opponent (Mutual)") &&
+        (result.downtime.outcome === "pass" ||
+          result.downtime.outcome === "critical-pass")));
+  const selectedParticipant = allTroopers.find(
+    (trooper) =>
+      String(trooper?.id || "") === result.downtime.participantTrooperId,
+  );
+
+  function updateDowntime(patch: Partial<PairingDowntimeResult>) {
+    onChange({
+      ...result,
+      downtime: {
+        ...result.downtime,
+        ...patch,
+      },
+      submitted: false,
+    });
+  }
+
+  useEffect(() => {
+    if (!participantNeeded) {
+      if (result.downtime.participantTrooperId) {
+        updateDowntime({ participantTrooperId: "" });
+      }
+      return;
+    }
+
+    if (
+      eligibleParticipants.length > 0 &&
+      !eligibleParticipants.some(
+        (trooper) =>
+          String(trooper?.id || "") === result.downtime.participantTrooperId,
+      )
+    ) {
+      updateDowntime({
+        participantTrooperId: String(eligibleParticipants[0]?.id || ""),
+      });
+    }
+  }, [
+    participantNeeded,
+    eligibleParticipants,
+    result.downtime.participantTrooperId,
+  ]);
+
+  useEffect(() => {
+    if (
+      selfBenefitNeeded &&
+      !result.downtime.beneficiaryTrooperId &&
+      (selectedParticipant || allTroopers[0])
+    ) {
+      updateDowntime({
+        beneficiaryTrooperId: String(
+          selectedParticipant?.id || allTroopers[0]?.id || "",
+        ),
+      });
+      return;
+    }
+
+    if (!selfBenefitNeeded && result.downtime.beneficiaryTrooperId) {
+      updateDowntime({ beneficiaryTrooperId: "" });
+    }
+  }, [
+    selfBenefitNeeded,
+    selectedParticipant?.id,
+    allTroopers,
+    result.downtime.beneficiaryTrooperId,
+  ]);
+
+  useEffect(() => {
+    if (
+      opponentBenefitNeeded &&
+      !result.downtime.opponentBeneficiaryTrooperId &&
+      opposingTroopers[0]
+    ) {
+      updateDowntime({
+        opponentBeneficiaryTrooperId: String(opposingTroopers[0]?.id || ""),
+      });
+      return;
+    }
+
+    if (
+      !opponentBenefitNeeded &&
+      result.downtime.opponentBeneficiaryTrooperId
+    ) {
+      updateDowntime({ opponentBeneficiaryTrooperId: "" });
+    }
+  }, [
+    opponentBenefitNeeded,
+    opposingTroopers,
+    result.downtime.opponentBeneficiaryTrooperId,
+  ]);
+
+  function handleRollEvent() {
+    const roll = Math.floor(Math.random() * 20) + 1;
+    const event = findDowntimeEventForRoll(roll);
+    updateDowntime({
+      roll,
+      eventId: event?.id || "",
+      choiceId: "",
+      participantTrooperId: "",
+      beneficiaryTrooperId: "",
+      opponentBeneficiaryTrooperId: "",
+      outcome: "",
+      notes: result.downtime.notes,
+    });
+  }
+
+  function handleRollInputChange(value: string) {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      updateDowntime({
+        roll: null,
+        eventId: "",
+        choiceId: "",
+        participantTrooperId: "",
+        beneficiaryTrooperId: "",
+        opponentBeneficiaryTrooperId: "",
+        outcome: "",
+      });
+      return;
+    }
+
+    const roll = Math.max(1, Math.min(20, Number(trimmed) || 0));
+    const event = findDowntimeEventForRoll(roll);
+    updateDowntime({
+      roll,
+      eventId: event?.id || "",
+      choiceId: "",
+      participantTrooperId: "",
+      beneficiaryTrooperId: "",
+      opponentBeneficiaryTrooperId: "",
+      outcome: "",
+    });
+  }
+
   return (
     <section className="pairing-panel">
       <div className="pairing-mission-header">
@@ -2143,47 +2637,279 @@ function DowntimeStep({
           <span className="panel-kicker">Downtime</span>
           <h2>Resolve Post-Mission Activity</h2>
         </div>
+        <div className="pairing-downtime-roll-controls">
+          <label className="field pairing-downtime-roll-field">
+            <span>Roll</span>
+            <input
+              type="number"
+              min="1"
+              max="20"
+              inputMode="numeric"
+              value={result.downtime.roll ?? ""}
+              onChange={(event) => handleRollInputChange(event.target.value)}
+              placeholder="d20"
+            />
+          </label>
+          <div className="pairing-step-actions pairing-step-actions--flush">
+            <button
+              className="command-button"
+              type="button"
+              onClick={handleRollEvent}
+            >
+              Roll d20 Event
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="pairing-downtime-grid">
-        <label className="field">
-          <span>Downtime Event</span>
-          <select
-            value={result.downtime.event}
-            onChange={(event) =>
-              onChange({
-                ...result,
-                downtime: { ...result.downtime, event: event.target.value },
-                submitted: false,
-              })
-            }
-          >
-            {DOWNTIME_EVENTS.map((option) => (
-              <option value={option} key={option}>
-                {option || "None"}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="field">
-          <span>Downtime Result</span>
-          <select
-            value={result.downtime.result}
-            onChange={(event) =>
-              onChange({
-                ...result,
-                downtime: { ...result.downtime, result: event.target.value },
-                submitted: false,
-              })
-            }
-          >
-            {DOWNTIME_RESULTS.map((option) => (
-              <option value={option} key={option}>
-                {option || "Not rolled"}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="pairing-downtime-layout">
+        <div className="pairing-downtime-main">
+          {selectedEvent && (
+            <section className="pairing-downtime-event-card">
+              <div className="pairing-downtime-event-card__header">
+                <div>
+                  <span className="panel-kicker">Event</span>
+                  <h3>{selectedEvent.event}</h3>
+                </div>
+                <span className="pairing-tag-chip">{selectedEvent.roll}</span>
+              </div>
+              {selectedEvent.traits.length > 0 && (
+                <div
+                  className="downtime-event-traits"
+                  aria-label="Event traits"
+                >
+                  {selectedEvent.traits.map((trait) => (
+                    <DowntimeTraitPill trait={trait} key={trait} />
+                  ))}
+                </div>
+              )}
+
+              <div className="pairing-downtime-choice-list">
+                {selectedEvent.choices.map((choice) => {
+                  const isActive = result.downtime.choiceId === choice.id;
+                  return (
+                    <button
+                      className={`pairing-downtime-choice-card${isActive ? " is-active" : ""}`}
+                      type="button"
+                      key={choice.id}
+                      onClick={() =>
+                        updateDowntime({
+                          choiceId: choice.id,
+                          participantTrooperId: "",
+                          beneficiaryTrooperId: "",
+                          opponentBeneficiaryTrooperId: "",
+                          outcome: "",
+                        })
+                      }
+                    >
+                      <div className="pairing-downtime-choice-card__header">
+                        <strong>{choice.check}</strong>
+                        <span>{choice.text}</span>
+                      </div>
+                      {choice.traits.length > 0 && (
+                        <div
+                          className="downtime-event-traits"
+                          aria-label="Choice traits"
+                        >
+                          {choice.traits.map((trait) => (
+                            <DowntimeTraitPill
+                              trait={trait}
+                              key={`${choice.id}-${trait}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+        </div>
+
+        <div className="pairing-downtime-side">
+          <section className="pairing-force-card">
+            <span className="panel-kicker">Participant</span>
+            <h3>Who resolves this event?</h3>
+            {selectedChoice ? (
+              <>
+                {participantTraits.length > 0 && (
+                  <p className="pairing-downtime-note">
+                    Restricted by: {participantTraits.join(", ")}
+                  </p>
+                )}
+                {requirement && (
+                  <p className="pairing-downtime-note">
+                    Requirement: {requirement}
+                  </p>
+                )}
+                {participantNeeded ? (
+                  eligibleParticipants.length > 0 ? (
+                    <label className="field">
+                      <span>Selected Trooper</span>
+                      <select
+                        value={result.downtime.participantTrooperId}
+                        onChange={(event) =>
+                          updateDowntime({
+                            participantTrooperId: event.target.value,
+                          })
+                        }
+                      >
+                        {eligibleParticipants.map((trooper) => (
+                          <option
+                            value={String(trooper?.id || "")}
+                            key={String(trooper?.id || "")}
+                          >
+                            {getTrooperName(trooper)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  ) : (
+                    <p className="empty-note">
+                      No eligible troopers match this event's participant rules.
+                    </p>
+                  )
+                ) : (
+                  <p className="pairing-downtime-note">
+                    This response does not require a skill check participant.
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="empty-note">Choose a response first.</p>
+            )}
+          </section>
+
+          <section className="pairing-force-card">
+            <span className="panel-kicker">Resolution</span>
+            <h3>Record the outcome</h3>
+            <label className="field">
+              <span>Outcome</span>
+              <select
+                value={result.downtime.outcome}
+                onChange={(event) =>
+                  updateDowntime({
+                    outcome: event.target.value as DowntimeOutcome,
+                  })
+                }
+                disabled={!selectedChoice || selectedChoice.check === "—"}
+              >
+                <option value="">
+                  {selectedChoice?.check === "—"
+                    ? "No roll required"
+                    : "Not rolled"}
+                </option>
+                <option value="failure">Failure</option>
+                <option value="pass">Pass</option>
+                <option value="critical-pass">Critical Pass</option>
+              </select>
+            </label>
+            {activeTraits.includes("P2P") && (
+              <label className="field">
+                <span>CR Spent Before Roll</span>
+                <input
+                  type="number"
+                  min="0"
+                  value={result.downtime.spentCr}
+                  onChange={(event) =>
+                    updateDowntime({
+                      spentCr: Math.max(0, Number(event.target.value) || 0),
+                    })
+                  }
+                />
+              </label>
+            )}
+            {selfBenefitNeeded && allTroopers.length > 0 && (
+              <label className="field">
+                <span>
+                  {selectedEvent?.id === "nothing-to-report" &&
+                  result.downtime.choiceId === "take-the-quiet"
+                    ? "Recovered Trooper"
+                    : "Benefit Recipient"}
+                </span>
+                <select
+                  value={result.downtime.beneficiaryTrooperId}
+                  onChange={(event) =>
+                    updateDowntime({ beneficiaryTrooperId: event.target.value })
+                  }
+                >
+                  {allTroopers.map((trooper) => (
+                    <option
+                      value={String(trooper?.id || "")}
+                      key={String(trooper?.id || "")}
+                    >
+                      {getTrooperName(trooper)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {opponentBenefitNeeded && opposingTroopers.length > 0 && (
+              <label className="field">
+                <span>Opponent Benefit Recipient</span>
+                <select
+                  value={result.downtime.opponentBeneficiaryTrooperId}
+                  onChange={(event) =>
+                    updateDowntime({
+                      opponentBeneficiaryTrooperId: event.target.value,
+                    })
+                  }
+                >
+                  {opposingTroopers.map((trooper) => (
+                    <option
+                      value={String(trooper?.id || "")}
+                      key={String(trooper?.id || "")}
+                    >
+                      {getTrooperName(trooper)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            <label className="field">
+              <span>Resolution Notes</span>
+              <textarea
+                rows={4}
+                value={result.downtime.notes}
+                onChange={(event) =>
+                  updateDowntime({ notes: event.target.value })
+                }
+                placeholder="Track manual effects, rerolls, injuries removed, or opponent picks."
+              />
+            </label>
+          </section>
+
+          <section className="pairing-force-card">
+            <span className="panel-kicker">Effects</span>
+            <h3>Outcome Preview</h3>
+            {resolutionTraits.length > 0 ? (
+              <>
+                <div
+                  className="downtime-event-traits"
+                  aria-label="Effect traits"
+                >
+                  {resolutionTraits.map((trait) => (
+                    <DowntimeTraitPill trait={trait} key={`effect-${trait}`} />
+                  ))}
+                </div>
+                <ul className="pairing-downtime-effect-list">
+                  {downtimeEffects.length > 0 ? (
+                    downtimeEffects.map((entry) => <li key={entry}>{entry}</li>)
+                  ) : (
+                    <li>
+                      No effect applies for the currently selected outcome.
+                    </li>
+                  )}
+                </ul>
+              </>
+            ) : (
+              <p className="empty-note">
+                Select an event response to preview its consequences.
+              </p>
+            )}
+          </section>
+        </div>
       </div>
 
       <div className="pairing-step-actions">
@@ -2200,6 +2926,32 @@ function DowntimeStep({
       </div>
     </section>
   );
+}
+
+function formatDowntimeSummary(
+  result: PairingResult,
+  company: LocalCompany | null,
+) {
+  const event = getDowntimeEventById(result.downtime.eventId);
+  const choice = getDowntimeChoiceById(
+    result.downtime.eventId,
+    result.downtime.choiceId,
+  );
+  const participant = findTrooper(
+    company,
+    result.downtime.participantTrooperId,
+  );
+  const outcome = describeDowntimeOutcomeLabel(
+    result.downtime.outcome as DowntimeOutcome,
+  );
+
+  if (!event) return "Downtime: None";
+
+  const parts = [event.event];
+  if (choice) parts.push(choice.text);
+  if (participant) parts.push(`by ${getTrooperName(participant)}`);
+  if (result.downtime.outcome) parts.push(`(${outcome})`);
+  return `Downtime: ${parts.join(" · ")}`;
 }
 
 function SummaryCard({
@@ -2238,10 +2990,7 @@ function SummaryCard({
           );
         })}
       </div>
-      <p>
-        Downtime: {result.downtime.event || "None"}{" "}
-        {result.downtime.result ? `(${result.downtime.result})` : ""}
-      </p>
+      <p>{formatDowntimeSummary(result, company)}</p>
     </article>
   );
 }
@@ -2352,10 +3101,7 @@ function SharedPairingWorkspace({
       participantId: String(stored.participantId || player.companyFileId),
       op: Number(stored.op || 0),
       won: Boolean(stored.won),
-      downtime: {
-        event: String(stored?.downtime?.event || ""),
-        result: String(stored?.downtime?.result || ""),
-      },
+      downtime: normalizeDowntimeResult(stored?.downtime),
       troopers: Array.isArray(stored.troopers) ? stored.troopers : [],
       submitted: Boolean(stored.submitted || stored.status === "submitted"),
       updatedAt: String(stored.updatedAt || new Date().toISOString()),
@@ -2921,6 +3667,8 @@ function SharedPairingWorkspace({
             )}
             {step === 3 && (
               <DowntimeStep
+                company={activeCompany}
+                opposingCompany={opposingCompany}
                 result={activeResult}
                 onChange={updateActiveDraft}
                 onBack={() => goToStep(2)}
@@ -3206,6 +3954,12 @@ function PairingWorkspace({
       )}
       {step === 2 && (
         <DowntimeStep
+          company={activeCompany}
+          opposingCompany={
+            activeParticipantId === contextState.pairing.player1Id
+              ? companyB
+              : companyA
+          }
           result={activeResult}
           onChange={updateDraft}
           onBack={() => setStep(1)}

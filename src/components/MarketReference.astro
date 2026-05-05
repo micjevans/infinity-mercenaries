@@ -18,6 +18,19 @@ const labels = {
   effect: "Abilities / Equipment",
 };
 
+const marketBackgroundByName: Record<string, string> = {
+  "Base Market": "/images/rules/war-markets/basemarket.jpg",
+  "Number One": "/images/rules/war-markets/pano.jpg",
+  "Jade Temu": "/images/rules/war-markets/yujingtrafficstop.jpeg",
+  "Arachne Req": "/images/rules/war-markets/nomads.jpeg",
+  "Salaam Suuk": "/images/rules/war-markets/haq.webp",
+  "Frontier General": "/images/rules/war-markets/ariadnahero.jpeg",
+  "Alpha Sec": "/images/rules/war-markets/o12.jpg",
+  Greengrocer: "/images/rules/war-markets/tohaahero.jpeg",
+  "Bantai Yamaco": "/images/rules/war-markets/jsa.webp",
+  "Exrah Surplus": "/images/rules/war-markets/combined.webp",
+};
+
 const normalizeText = (value: string): string =>
   value.toLowerCase().replace(/[^a-z0-9+]/g, "");
 
@@ -112,95 +125,111 @@ const enrichSections = (market: WarMarket): EnrichedSection[] =>
 
 <div class="market-reference">
   {
-    markets.map((market) => (
-      <section
-        class:list={[
-          "market-card",
-          `alignment-${market.alignment.toLowerCase()}`,
-        ]}
-        id={market.name.toLowerCase().replaceAll(" ", "-")}
-      >
-        <header>
-          <div>
-            <span>
-              {market.roll ? `Roll ${market.roll}` : "Always Available"}
-            </span>
-            <h2>{market.name}</h2>
-            <p>
-              {[market.faction, market.specialty, market.alignment]
-                .filter(Boolean)
-                .join(" / ")}
-            </p>
-          </div>
-          <strong>{market.alignment}</strong>
-        </header>
+    markets.map((market) => {
+      const marketBackground = marketBackgroundByName[market.name];
 
-        <div class="market-section-grid">
-          {enrichSections(market).map(
-            ({ section, footnotes, itemFootnoteNumbers }) => (
-              <section
-                class:list={[
-                  "market-section",
-                  section.columns.includes("effect") && "wide",
-                ]}
-              >
-                <h3>{section.name}</h3>
-                <div class="market-table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        {section.columns.map((column) => (
-                          <th>{labels[column]}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {section.items.map((item, itemIndex) => (
+      return (
+        <section
+          class:list={[
+            "market-card",
+            `alignment-${market.alignment.toLowerCase()}`,
+          ]}
+          id={market.name.toLowerCase().replaceAll(" ", "-")}
+          data-market-bg={marketBackground ? "true" : undefined}
+          style={
+            marketBackground
+              ? `--market-bg-image: url('${marketBackground}')`
+              : undefined
+          }
+        >
+          <header>
+            <div>
+              <span>
+                {market.roll ? `Roll ${market.roll}` : "Always Available"}
+              </span>
+              <h2>{market.name}</h2>
+              <p>
+                {[market.faction, market.specialty, market.alignment]
+                  .filter(Boolean)
+                  .join(" / ")}
+              </p>
+            </div>
+            <strong>{market.alignment}</strong>
+          </header>
+
+          <div class="market-section-grid">
+            {enrichSections(market).map(
+              ({ section, footnotes, itemFootnoteNumbers }) => (
+                <section
+                  class:list={[
+                    "market-section",
+                    section.columns.includes("effect") && "wide",
+                  ]}
+                >
+                  <div class="market-table-wrap">
+                    <table>
+                      <caption>{section.name}</caption>
+                      <thead>
                         <tr>
                           {section.columns.map((column) => (
-                            <td>
-                              {item[column] ?? "-"}
-                              {column === "name" &&
-                                itemFootnoteNumbers[itemIndex].map(
-                                  (noteNumber) => (
-                                    <sup class="market-footnote-marker">
-                                      {noteNumber}
-                                    </sup>
-                                  ),
-                                )}
-                            </td>
+                            <th>{labels[column]}</th>
                           ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {footnotes.length > 0 && (
-                  <ol
-                    class="market-footnotes"
-                    aria-label={`${market.name} ${section.name} footnotes`}
-                  >
-                    {footnotes.map((footnote) => (
-                      <li>
-                        <sup>{footnote.number}</sup>
-                        <span>{footnote.text}</span>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </section>
-            ),
-          )}
-        </div>
+                      </thead>
+                      <tbody>
+                        {section.items.map((item, itemIndex) => (
+                          <tr>
+                            {section.columns.map((column) => (
+                              <td>
+                                {item[column] ?? "-"}
+                                {column === "name" &&
+                                  itemFootnoteNumbers[itemIndex].map(
+                                    (noteNumber) => (
+                                      <sup class="market-footnote-marker">
+                                        {noteNumber}
+                                      </sup>
+                                    ),
+                                  )}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                      {footnotes.length > 0 && (
+                        <tfoot>
+                          <tr>
+                            <td colspan={String(section.columns.length)}>
+                              <ol
+                                class="market-footnotes"
+                                aria-label={`${market.name} ${section.name} footnotes`}
+                              >
+                                {footnotes.map((footnote) => (
+                                  <li>
+                                    <sup>{footnote.number}</sup>
+                                    <span>{footnote.text}</span>
+                                  </li>
+                                ))}
+                              </ol>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      )}
+                    </table>
+                  </div>
+                </section>
+              ),
+            )}
+          </div>
 
-        {market.notes && market.notes.length > 0 && (
-          <ul class="market-notes">
-            {market.notes.map((note) => (
-              <li>{note}</li>
-            ))}
-          </ul>
-        )}
-      </section>
-    ))
+          {market.notes && market.notes.length > 0 && (
+            <ul class="market-notes">
+              {market.notes.map((note) => (
+                <li>{note}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      );
+    })
   }
 </div>

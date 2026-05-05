@@ -6,13 +6,14 @@ export async function getStaticPaths() {
   const entries = await getCollection("rules");
   return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.mdx?$/, "") },
-    props: { entry }
+    props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const slug = entry.id.replace(/\.mdx?$/, "");
+const contentClass = slug === "war-markets" ? "rules-page-war-markets" : "";
 ---
 
 <RulesShell
@@ -21,6 +22,7 @@ const slug = entry.id.replace(/\.mdx?$/, "");
   section={entry.data.section}
   currentPath={`/rules/${slug}/`}
   headings={headings}
+  contentClass={contentClass}
 >
   <Content />
 </RulesShell>

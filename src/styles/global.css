@@ -728,6 +728,171 @@ h3 {
   margin: 0 auto 6rem;
 }
 
+.rules-content.rules-page-war-markets {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(243, 240, 232, 0.14);
+  border-radius: 1.1rem;
+  padding: clamp(1.1rem, 2.4vw, 1.8rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(56, 183, 164, 0.16), transparent 42%),
+    rgba(14, 15, 13, 0.2);
+}
+
+.rules-content.rules-page-war-markets::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(180deg, rgba(14, 15, 13, 0.1), rgba(14, 15, 13, 0.28));
+  opacity: 1;
+}
+
+.rules-content.rules-page-war-markets::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(56, 183, 164, 0.12), transparent 44%),
+    linear-gradient(180deg, rgba(14, 15, 13, 0.04), rgba(14, 15, 13, 0.24));
+}
+
+.rules-content.rules-page-war-markets .market-card {
+  position: relative;
+  isolation: isolate;
+  background: rgba(14, 15, 13, 0.12);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.14);
+}
+
+.rules-content.rules-page-war-markets .market-card[data-market-bg="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--market-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.92;
+}
+
+.rules-content.rules-page-war-markets .market-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14, 15, 13, 0.34) 0%,
+      rgba(14, 15, 13, 0.1) 28%,
+      rgba(14, 15, 13, 0.1) 72%,
+      rgba(14, 15, 13, 0.34) 100%
+    );
+}
+
+.rules-content.rules-page-war-markets .market-card > header {
+  background:
+    linear-gradient(90deg, rgba(56, 183, 164, 0.08), transparent 68%),
+    rgba(14, 15, 13, 0.68);
+}
+
+.rules-content.rules-page-war-markets .market-section-grid {
+  background: rgba(243, 240, 232, 0.12);
+}
+
+.rules-content.rules-page-war-markets .market-section {
+  padding: 0.5rem;
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.04), transparent 62%),
+    rgba(14, 15, 13, 0.1);
+}
+
+.rules-content.rules-page-war-markets .market-section caption {
+  margin: 0;
+  padding: 0.52rem 0.72rem;
+  border: 1px solid rgba(243, 240, 232, 0.2);
+  border-bottom: 0;
+  background: rgba(14, 15, 13, 0.68);
+}
+
+.rules-content.rules-page-war-markets .market-table-wrap {
+  margin: 0;
+  padding: 0;
+}
+
+.rules-content.rules-page-war-markets .market-section table {
+  border: 1px solid rgba(243, 240, 232, 0.2);
+  border-top: 0;
+  background: rgba(14, 15, 13, 0.18);
+}
+
+.rules-content.rules-page-war-markets .market-section tbody tr {
+  background: rgba(14, 15, 13, 0.74);
+}
+
+.rules-content.rules-page-war-markets .market-section tbody tr:nth-child(even) {
+  background: rgba(14, 15, 13, 0.64);
+}
+
+.rules-content.rules-page-war-markets .market-footnotes {
+  margin: 0;
+  border-top: 1px solid rgba(243, 240, 232, 0.2);
+  background: rgba(14, 15, 13, 0.56);
+}
+
+.rules-content.rules-page-war-markets .market-section tfoot td {
+  border: 1px solid rgba(243, 240, 232, 0.2);
+  border-top: 0;
+}
+
+.rules-content.rules-page-war-markets table:not(.rules-mini-table) {
+  border-color: rgba(243, 240, 232, 0.24);
+  background: rgba(14, 15, 13, 0.08);
+}
+
+.rules-content.rules-page-war-markets th {
+  background: rgba(14, 15, 13, 0.4);
+}
+
+.rules-content.rules-page-war-markets td {
+  background: rgba(14, 15, 13, 0.18);
+}
+
+.rules-content.rules-page-war-markets .market-section th {
+  background: rgba(14, 15, 13, 0.6);
+}
+
+.rules-content.rules-page-war-markets .market-section td {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .rules-content.rules-page-war-markets::before {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .rules-content.rules-page-war-markets {
+    padding: 1rem;
+    border-radius: 0.9rem;
+  }
+
+  .rules-content.rules-page-war-markets::before {
+    opacity: 1;
+  }
+
+  .rules-content.rules-page-war-markets .market-card[data-market-bg="true"]::before {
+    background-position: center 30%;
+    opacity: 0.9;
+  }
+}
+
 .rules-content h2 {
   margin-top: 3rem;
   font-size: clamp(1.7rem, 3vw, 2.4rem);
@@ -804,6 +969,73 @@ h3 {
 .rules-content .rules-example strong {
   color: var(--amber);
   letter-spacing: 0.02em;
+}
+
+.rules-content .rules-section-image {
+  margin: 1.25rem 0 1.6rem;
+  border: 1px solid rgba(243, 240, 232, 0.14);
+  border-radius: 1rem;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(56, 183, 164, 0.12), rgba(14, 15, 13, 0.08)),
+    rgba(243, 240, 232, 0.03);
+  box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, 0.22);
+}
+
+.rules-content .rules-section-image img {
+  width: 100%;
+  max-height: clamp(220px, 42vw, 360px);
+  object-fit: cover;
+  object-position: center 28%;
+}
+
+.rules-content .rules-section-image.rules-section-image-top img {
+  object-position: center top;
+}
+
+.rules-content .rules-media-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: 1.15rem;
+  align-items: start;
+  margin: 1.15rem 0 1.6rem;
+}
+
+.rules-content .rules-media-copy > :last-child {
+  margin-bottom: 0;
+}
+
+.rules-content .rules-media-split .rules-section-image {
+  margin: 0;
+}
+
+.rules-content .rules-media-split.rules-media-split-portrait .rules-media-figure img {
+  max-height: clamp(320px, 52vw, 560px);
+}
+
+@media (max-width: 720px) {
+  .rules-content .rules-media-split {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    margin: 1rem 0 1.35rem;
+  }
+
+  .rules-content .rules-media-split .rules-media-figure {
+    order: -1;
+  }
+
+  .rules-content .rules-media-split.rules-media-split-portrait .rules-media-figure img {
+    max-height: 340px;
+  }
+
+  .rules-content .rules-section-image {
+    margin: 1rem 0 1.35rem;
+    border-radius: 0.8rem;
+  }
+
+  .rules-content .rules-section-image img {
+    max-height: 240px;
+  }
 }
 
 .rules-content hr.rules-callout-break {
@@ -2528,8 +2760,11 @@ table.rules-mini-table {
   grid-column: 1 / -1;
 }
 
-.market-section h3 {
-  margin: 0 0 0.75rem;
+.market-section caption {
+  caption-side: top;
+  margin: 0;
+  padding: 0 0 0.75rem;
+  text-align: left;
   color: var(--amber);
   font-size: 0.78rem;
   font-weight: 900;
@@ -2599,12 +2834,17 @@ table.rules-mini-table {
 }
 
 .market-footnotes {
-  margin: 0.75rem 0 0;
+  margin: 0;
   padding: 0.72rem 0.78rem 0.68rem;
   border-top: 1px solid rgba(242, 169, 59, 0.16);
   background: rgba(255, 255, 255, 0.02);
   list-style: none;
   counter-reset: market-note;
+}
+
+.market-section tfoot td {
+  padding: 0;
+  border: 0;
 }
 
 .market-footnotes li {
@@ -5864,16 +6104,22 @@ details.patch-section[open] > summary {
   box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
 }
 
+.legacy-accordion__header {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(242, 169, 59, 0.3);
+  background: rgba(47, 41, 26, 0.78);
+}
+
 .legacy-accordion__summary {
-  width: 100%;
+  flex: 1;
   min-height: 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   border: 0;
-  border-bottom: 1px solid rgba(242, 169, 59, 0.3);
-  background: rgba(47, 41, 26, 0.78);
+  background: transparent;
   color: var(--text);
   padding: 0.8rem 1rem;
   font: inherit;
@@ -5881,8 +6127,14 @@ details.patch-section[open] > summary {
   cursor: pointer;
 }
 
-.legacy-accordion__title,
-.legacy-accordion__right {
+.legacy-accordion__action {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-left: 1px solid rgba(242, 169, 59, 0.2);
+}
+
+.legacy-accordion__title {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -6122,23 +6374,54 @@ details.patch-section[open] > summary {
   gap: 1rem;
   overflow: auto;
   padding: 1rem;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(51, 199, 188, 0.18), transparent 58%),
+    linear-gradient(140deg, rgba(6, 10, 14, 0.82), rgba(10, 18, 26, 0.72));
+  border: 1px solid rgba(56, 183, 164, 0.18);
 }
 
 .legacy-shop-column,
 .legacy-shop-staging {
+  position: relative;
   min-width: 0;
   border: 1px solid rgba(243, 240, 232, 0.14);
-  background: rgba(14, 15, 13, 0.42);
+  background: rgba(14, 15, 13, 0.5);
   padding: 0.85rem;
+  backdrop-filter: blur(3px);
+}
+
+.legacy-shop-column::before,
+.legacy-shop-staging::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 35%);
+}
+
+.legacy-shop-column--merchant {
+  background:
+    linear-gradient(160deg, rgba(7, 19, 32, 0.88), rgba(8, 11, 16, 0.88)),
+    url("/images/rules/war-markets/basemarket.jpg") center/cover;
+}
+
+.legacy-shop-column--company {
+  background:
+    linear-gradient(160deg, rgba(33, 20, 11, 0.8), rgba(11, 11, 13, 0.86)),
+    url("/images/rules/war-markets/ariadnahero.jpeg") center/cover;
 }
 
 .legacy-shop-column h3,
 .legacy-shop-staging h3 {
   margin: 0 0 0.75rem;
+  position: relative;
+  z-index: 1;
 }
 
 .legacy-shop-group {
   margin-top: 0.8rem;
+  position: relative;
+  z-index: 1;
 }
 
 .legacy-shop-group h4,
@@ -6154,19 +6437,20 @@ details.patch-section[open] > summary {
 .legacy-shop-items,
 .legacy-staged-items {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.55rem;
 }
 
 .legacy-shop-item {
   width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.75rem;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.85rem;
+  align-items: flex-start;
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.04);
+  background: linear-gradient(120deg, rgba(243, 240, 232, 0.06), rgba(243, 240, 232, 0.02));
   color: var(--text);
-  padding: 0.55rem 0.65rem;
+  padding: 0.65rem 0.72rem;
+  border-radius: 0.55rem;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -6175,13 +6459,67 @@ details.patch-section[open] > summary {
 .legacy-shop-item:hover,
 .legacy-shop-item:focus-visible {
   border-color: rgba(242, 169, 59, 0.52);
-  background: rgba(242, 169, 59, 0.09);
+  background: linear-gradient(120deg, rgba(242, 169, 59, 0.16), rgba(242, 169, 59, 0.07));
   outline: none;
 }
 
-.legacy-shop-item strong {
+.legacy-shop-item__body {
+  min-width: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.legacy-shop-item__kicker {
+  color: rgba(195, 241, 233, 0.74);
+  font-size: 0.66rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.legacy-shop-item__title {
+  display: block;
+  color: var(--text-bright);
+  line-height: 1.2;
+}
+
+.legacy-shop-item p {
+  margin: 0;
+  color: rgba(225, 229, 236, 0.92);
+  font-size: 0.78rem;
+}
+
+.legacy-shop-item small {
+  color: rgba(255, 210, 163, 0.92);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.legacy-shop-item__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.legacy-shop-item__chips span {
+  border: 1px solid rgba(56, 183, 164, 0.44);
+  background: rgba(56, 183, 164, 0.12);
+  padding: 0.12rem 0.35rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+}
+
+.legacy-shop-item__price {
   color: var(--amber);
   white-space: nowrap;
+  font-weight: 700;
+  font-size: 0.86rem;
+  padding-top: 0.08rem;
+}
+
+.legacy-shop-balance strong {
+  color: var(--amber);
 }
 
 .legacy-shop-balance {
@@ -7649,8 +7987,21 @@ details.patch-section[open] > summary {
 }
 
 .legacy-perk-tree-editor {
+  --program-bg-1: #0b1114;
+  --program-bg-2: #101a20;
+  --program-accent: #00e5a8;
+  --program-accent-soft: rgba(0, 229, 168, 0.18);
+  --program-signal: #00c2ff;
+  --program-warning: #ffb84d;
   display: grid;
-  gap: 0.85rem;
+  gap: 0.9rem;
+  border: 1px solid rgba(0, 194, 255, 0.24);
+  background:
+    radial-gradient(circle at 20% -10%, rgba(0, 229, 168, 0.12), transparent 42%),
+    radial-gradient(circle at 82% -8%, rgba(0, 194, 255, 0.12), transparent 36%),
+    linear-gradient(155deg, var(--program-bg-1), var(--program-bg-2));
+  padding: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(0, 194, 255, 0.08);
 }
 
 .legacy-perk-toolbar {
@@ -7661,96 +8012,243 @@ details.patch-section[open] > summary {
 }
 
 .legacy-perk-toolbar strong {
-  color: var(--amber);
+  color: var(--program-warning);
 }
 
-.legacy-perk-toolbar select {
-  appearance: none;
-  -webkit-appearance: none;
-  min-height: 2.5rem;
-  border: 1px solid var(--line);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338b7a4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 0.6rem center / 1rem,
-    rgba(14, 15, 13, 0.72);
+.legacy-perk-toolbar__status {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  color: rgba(198, 220, 228, 0.86);
+  font-size: 0.8rem;
+}
+
+.legacy-perk-toolbar__status strong {
+  color: var(--program-accent);
+  font-size: 1rem;
+}
+
+.legacy-perk-selection-view {
+  min-height: 23rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.legacy-perk-program-header h3 {
+  margin: 0.25rem 0;
+  font-size: 1.08rem;
+  color: #dff7ff;
+}
+
+.legacy-perk-program-header p {
+  margin: 0;
+  color: rgba(198, 220, 228, 0.84);
+  font-size: 0.84rem;
+  max-width: 64ch;
+}
+
+.legacy-perk-program-grid {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.legacy-perk-program-card {
+  border: 1px solid rgba(0, 194, 255, 0.28);
+  background: linear-gradient(160deg, rgba(6, 21, 27, 0.9), rgba(11, 16, 20, 0.86));
   color: var(--text);
-  padding: 0.45rem 2.2rem 0.45rem 0.65rem;
-  font: inherit;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+  text-align: left;
   cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
 }
 
-.legacy-perk-toolbar select option {
-  background: #1a1c18;
+.legacy-perk-program-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 229, 168, 0.68);
+  box-shadow: 0 0 0 1px rgba(0, 229, 168, 0.2), 0 8px 24px rgba(0, 0, 0, 0.26);
+}
+
+.legacy-perk-program-card__head {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.legacy-perk-program-icon {
+  width: 1.9rem;
+  height: 1.9rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0, 229, 168, 0.48);
+  background: rgba(0, 229, 168, 0.12);
+}
+
+.legacy-perk-program-card__head strong {
+  display: block;
+  color: #dff7ff;
+}
+
+.legacy-perk-program-card__head small {
+  color: rgba(175, 205, 212, 0.9);
+}
+
+.legacy-perk-program-card p {
+  margin: 0;
+  color: rgba(187, 214, 220, 0.9);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.legacy-perk-program-metrics {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(153, 188, 196, 0.92);
+}
+
+.legacy-perk-program-progress {
+  height: 0.38rem;
+  background: rgba(0, 194, 255, 0.16);
+  overflow: hidden;
+}
+
+.legacy-perk-program-progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--program-accent), var(--program-signal));
+}
+
+.legacy-perk-tree-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legacy-perk-tree-heading__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text);
+}
+
+.legacy-perk-tree-heading__meta strong {
+  color: var(--program-warning);
+}
+
+.legacy-perk-tree-heading__meta small {
+  color: rgba(176, 204, 211, 0.9);
 }
 
 .legacy-perk-grid {
   display: grid;
-  grid-template-columns: 4.75rem repeat(var(--perk-columns), minmax(7.5rem, 1fr));
+  grid-template-columns: 5.25rem repeat(var(--perk-columns), minmax(10rem, 1fr));
   overflow-x: auto;
-  border: 1px solid rgba(242, 169, 59, 0.28);
+  border: 1px solid rgba(0, 194, 255, 0.28);
+  background: rgba(5, 12, 16, 0.6);
 }
 
 .legacy-perk-corner,
 .legacy-perk-roll,
 .legacy-perk-tier,
+.legacy-perk-tier-head,
 .legacy-perk-cell {
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-right: 1px solid rgba(0, 194, 255, 0.14);
+  border-bottom: 1px solid rgba(0, 194, 255, 0.14);
 }
 
 .legacy-perk-corner,
 .legacy-perk-roll,
-.legacy-perk-tier {
+.legacy-perk-tier,
+.legacy-perk-tier-head {
   display: grid;
   place-items: center;
-  background: rgba(47, 41, 26, 0.72);
-  color: var(--amber);
+  background:
+    linear-gradient(145deg, rgba(7, 25, 32, 0.92), rgba(11, 19, 25, 0.9)),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 194, 255, 0.03) 0,
+      rgba(0, 194, 255, 0.03) 5px,
+      transparent 5px,
+      transparent 10px
+    );
+  color: #d6f7ff;
   padding: 0.55rem;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 900;
-}
-
-.legacy-perk-tier span {
-  display: block;
-  color: var(--teal);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
+.legacy-perk-tier-head span,
+.legacy-perk-tier span {
+  display: block;
+  color: var(--program-accent);
+  font-size: 0.64rem;
+  letter-spacing: 0.09em;
+}
+
 .legacy-perk-cell {
-  min-height: 5.5rem;
+  min-height: 5.6rem;
   display: grid;
   gap: 0.4rem;
   align-content: start;
-  background: rgba(243, 240, 232, 0.025);
+  background: rgba(8, 18, 23, 0.54);
   padding: 0.45rem;
 }
 
 .legacy-perk-node {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.24rem;
   min-height: 4.3rem;
-  border: 1px solid rgba(56, 183, 164, 0.55);
-  background: rgba(56, 183, 164, 0.12);
+  border: 1px solid rgba(0, 194, 255, 0.42);
+  background: linear-gradient(160deg, rgba(0, 194, 255, 0.1), rgba(0, 229, 168, 0.07));
   color: var(--text);
-  padding: 0.45rem;
+  padding: 0.5rem;
   font: inherit;
   text-align: left;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.legacy-perk-node::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(0, 229, 168, 0.14) 52%, transparent 74%);
+  transform: translateX(-125%);
+  transition: transform 220ms ease;
+}
+
+.legacy-perk-node:hover::after {
+  transform: translateX(125%);
 }
 
 .legacy-perk-node.is-selected {
-  border-color: rgba(242, 169, 59, 0.75);
-  background: rgba(242, 169, 59, 0.18);
+  border-color: rgba(0, 229, 168, 0.82);
+  background: linear-gradient(160deg, rgba(0, 229, 168, 0.2), rgba(0, 194, 255, 0.16));
+  box-shadow: inset 0 0 0 1px rgba(0, 229, 168, 0.2), 0 0 14px rgba(0, 229, 168, 0.2);
 }
 
 .legacy-perk-node.is-locked {
   opacity: 0.5;
+  filter: saturate(0.6);
+}
+
+.legacy-perk-node strong {
+  color: #e4fbff;
+  font-size: 0.8rem;
 }
 
 .legacy-perk-node small,
 .legacy-perk-node em {
-  color: var(--muted);
+  color: rgba(168, 201, 208, 0.95);
   font-size: 0.72rem;
 }
 
@@ -8231,6 +8729,109 @@ details.patch-section[open] > summary {
   margin: 0.35rem 0 0;
 }
 
+.pairing-downtime-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.95fr);
+  gap: 1rem;
+}
+
+.pairing-downtime-main,
+.pairing-downtime-side {
+  display: grid;
+  gap: 1rem;
+}
+
+.pairing-downtime-event-card {
+  border: 1px solid rgba(242, 169, 59, 0.24);
+  background:
+    linear-gradient(155deg, rgba(242, 169, 59, 0.08), transparent 42%),
+    rgba(10, 16, 15, 0.8);
+  padding: 1rem;
+}
+
+.pairing-downtime-event-card__header,
+.pairing-downtime-choice-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.pairing-downtime-event-card__header h3 {
+  margin: 0.2rem 0 0;
+}
+
+.pairing-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.pairing-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8rem;
+  border: 1px solid rgba(56, 183, 164, 0.34);
+  background: rgba(56, 183, 164, 0.08);
+  color: var(--teal);
+  padding: 0.15rem 0.55rem;
+  font-size: 0.73rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pairing-downtime-choice-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.pairing-downtime-choice-card {
+  width: 100%;
+  border: 1px solid rgba(243, 240, 232, 0.12);
+  background: rgba(243, 240, 232, 0.04);
+  color: var(--text);
+  padding: 0.85rem;
+  text-align: left;
+  font: inherit;
+}
+
+.pairing-downtime-choice-card:hover,
+.pairing-downtime-choice-card:focus-visible,
+.pairing-downtime-choice-card.is-active {
+  border-color: rgba(56, 183, 164, 0.56);
+  background: rgba(56, 183, 164, 0.1);
+  outline: none;
+}
+
+.pairing-downtime-choice-card__header strong {
+  color: var(--amber);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pairing-downtime-choice-card__header span {
+  flex: 1;
+}
+
+.pairing-downtime-note {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+}
+
+.pairing-downtime-effect-list {
+  margin: 0.85rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--text);
+}
+
+.pairing-downtime-effect-list li + li {
+  margin-top: 0.4rem;
+}
+
 .pairing-panel,
 .pairing-summary-card {
   border: 1px solid rgba(242, 169, 59, 0.3);
@@ -8318,6 +8919,21 @@ button.pairing-trooper-row:focus-visible {
   gap: 1rem;
   align-items: end;
   margin-bottom: 1rem;
+}
+
+.pairing-downtime-roll-controls {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.pairing-downtime-roll-field {
+  margin-top: 0;
+  min-width: 6.5rem;
+}
+
+.pairing-downtime-roll-field input {
+  width: 100%;
 }
 
 .pairing-score-controls {
@@ -8702,6 +9318,7 @@ button.pairing-trooper-row:focus-visible {
   .pairing-step-grid,
   .pairing-summary-grid,
   .pairing-downtime-grid,
+  .pairing-downtime-layout,
   .pairing-rule-grid,
   .pairing-force-grid,
   .company-index-item,
@@ -8760,6 +9377,20 @@ button.pairing-trooper-row:focus-visible {
   .legacy-perk-toolbar,
   .legacy-specops-configurator__header {
     display: grid;
+  }
+
+  .legacy-perk-radar {
+    width: min(18rem, 88vw);
+    height: min(18rem, 88vw);
+  }
+
+  .legacy-perk-tree-heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .legacy-perk-tree-heading .command-button {
+    width: 100%;
   }
 
   .legacy-company-header .icon-button,

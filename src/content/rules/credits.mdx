@@ -7,6 +7,9 @@ status: "review"
 updated: "2026-04-30"
 ---
 
+import ReferenceLinkCallout from "../../components/ReferenceLinkCallout.astro";
+import WarningCallout from "../../components/WarningCallout.astro";
+
 ## Credits
 
 ### Micjevans
@@ -37,7 +40,17 @@ Contributor to the Mercenaries project, rules, and art. Sneaky Snake always has 
 
 Developer and distributor of Infinity The Game. Mercenaries literally would not exist without the unique and wonderful rules they have created.
 
-> We are **not** officially sanctioned by or representative of Corvus Belli. This project is being developed independently of Corvus Belli.
+<ReferenceLinkCallout
+	title="Corvus Belli"
+	href="https://corvusbelli.com/en"
+	linkLabel="Visit Corvus Belli"
+>
+	<p>Visit the official Corvus Belli site for Infinity news, releases, and publisher information.</p>
+</ReferenceLinkCallout>
+
+<WarningCallout title="Unofficial Project">
+	This project is <strong>not</strong> officially sanctioned by or representative of Corvus Belli. Infinity: Mercenaries is being developed independently.
+</WarningCallout>
 
 ## Infinity Artists & Acknowledgement of AI Usage
 
