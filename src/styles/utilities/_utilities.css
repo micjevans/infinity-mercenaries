@@ -1,0 +1,50 @@
+/* Utility and override classes extracted from global.css */
+
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.text-center {
+  text-align: center !important;
+}
+.text-right {
+  text-align: right !important;
+}
+.text-left {
+  text-align: left !important;
+}
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+.text-nowrap {
+  white-space: nowrap !important;
+}
+.no-select {
+  user-select: none !important;
+}
+.pointer {
+  cursor: pointer !important;
+}
+.hide,
+.hidden {
+  display: none !important;
+}
+.show,
+.visible {
+  display: block !important;
+}

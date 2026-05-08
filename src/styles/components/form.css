@@ -1,0 +1,297 @@
+/* Form styles extracted from legacy.css */
+
+.legacy-field {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.legacy-field > span {
+  color: var(--amber);
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.legacy-field input,
+.legacy-field select,
+.legacy-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(14, 15, 13, 0.72);
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+}
+
+.legacy-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338b7a4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.legacy-field select option {
+  background: #1a1c18;
+}
+
+.legacy-field input,
+.legacy-field select {
+  min-height: 2.75rem;
+}
+
+.legacy-field textarea {
+  resize: vertical;
+}
+
+.legacy-field small {
+  color: var(--subtle);
+}
+
+/* Custom select and sponsor form/card styles migrated from legacy.css. */
+
+/* Custom select dropdown */
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-trigger {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(56, 183, 164, 0.32);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.07), transparent 55%),
+    rgba(14, 15, 13, 0.88);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.custom-select-trigger:hover {
+  border-color: rgba(56, 183, 164, 0.6);
+}
+
+.custom-select-trigger:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.custom-select-trigger svg {
+  flex-shrink: 0;
+  color: var(--teal);
+  transition: transform 0.18s ease;
+}
+
+.custom-select.is-open .custom-select-trigger {
+  border-color: var(--teal);
+  border-bottom: none;
+  padding-bottom: calc(0.35rem + 1px);
+}
+
+.custom-select.is-open .custom-select-trigger svg {
+  transform: rotate(180deg);
+}
+
+.custom-select .custom-select-menu {
+  display: none;
+  position: absolute;
+  z-index: 200;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--teal);
+  border-top: none;
+  background: #141612;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+.custom-select.is-open .custom-select-menu {
+  display: block;
+  animation: custom-select-slide-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.custom-select.is-closing .custom-select-menu {
+  display: block;
+  animation: custom-select-slide-out 0.15s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes custom-select-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0% 0);
+  }
+}
+
+@keyframes custom-select-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0% 0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+.custom-select .custom-select-option {
+  padding: 0.45rem 0.8rem 0.45rem 1.1rem;
+  margin: 0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--muted);
+  list-style: none;
+  transition: background 0.1s, color 0.1s;
+}
+
+.custom-select .custom-select-option:hover {
+  background: rgba(56, 183, 164, 0.1);
+  color: var(--text);
+}
+
+.custom-select .custom-select-option.is-selected {
+  color: var(--teal);
+  background: rgba(56, 183, 164, 0.08);
+  font-weight: 600;
+}
+
+.sponsor-pair {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sponsor-pair-cards {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.sponsor-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(242, 169, 59, 0.28);
+  background:
+    linear-gradient(180deg, rgba(242, 169, 59, 0.06), transparent 26%),
+    #141612;
+}
+
+.sponsor-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--sponsor-pair-accent, var(--teal));
+}
+
+.sponsor-card-header {
+  margin-bottom: 0.9rem;
+}
+
+.sponsor-card-header > span {
+  display: inline-block;
+  margin-bottom: 0.22rem;
+  color: var(--teal);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sponsor-card-header h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.sponsor-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.sponsor-card-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.4rem;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid rgba(243, 240, 232, 0.2);
+  font-size: 0.65rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sponsor-card-tag.tone-faction {
+  border-color: rgba(56, 183, 164, 0.34);
+  background: rgba(56, 183, 164, 0.12);
+  color: var(--teal);
+}
+
+.sponsor-card-tag.tone-program {
+  border-color: rgba(216, 76, 62, 0.34);
+  background: rgba(216, 76, 62, 0.12);
+  color: #f4a199;
+}
+
+.sponsor-card-header p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.sponsor-card section {
+  margin: 0.7rem 0;
+}
+
+.sponsor-card section h4 {
+  margin: 0 0 0.35rem;
+}
+
+.sponsor-card .rules-table-card {
+  margin: 0.85rem 0;
+}
+
+.sponsor-card ul {
+  margin: 0.45rem 0 0;
+}
+
+@media (max-width: 980px) {
+  .sponsor-pair-cards {
+    gap: 0.85rem;
+  }
+
+  .sponsor-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

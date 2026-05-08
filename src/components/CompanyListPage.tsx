@@ -14,6 +14,7 @@ import {
   type AppDataCompanyReference,
 } from "../lib/google-drive-adapter";
 import { AppIcon } from "./AppIcon";
+import styles from "./CompanyListPage.module.css";
 
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -182,18 +183,18 @@ export default function CompanyListPage() {
 
   return (
     <section
-      className="company-manager company-list-page"
+      className={`${styles.companyManager} ${styles.companyListPage}`}
       aria-label="Company list"
     >
-      <div className="company-manager__masthead">
+      <div className={styles.companyManagerMasthead}>
         <p className="eyebrow">Company Command</p>
-        <h1>Companies</h1>
+        <h1 className={styles.companyManagerMastheadH1}>Companies</h1>
         <p>Manage your saved companies and open each roster workspace.</p>
       </div>
 
-      <div className="event-list-toolbar">
+      <div className={styles.eventListToolbar}>
         <a
-          className="command-button command-button--primary"
+          className={`${styles.commandButton} ${styles.commandButtonPrimary}`}
           href="/companies/create/"
         >
           <AppIcon name="add" size={16} />
@@ -201,18 +202,20 @@ export default function CompanyListPage() {
         </a>
       </div>
 
-      <section className="company-section-card company-index-card">
-        <div className="section-heading-row">
+      <section
+        className={`${styles.companySectionCard} ${styles.companyIndexCard}`}
+      >
+        <div className={styles.sectionHeadingRow}>
           <div>
-            <span className="panel-kicker">Saved Companies</span>
+            <span className={styles.panelKicker}>Saved Companies</span>
             <h2>Company List</h2>
           </div>
-          <span className="company-count">
+          <span className={styles.companyCount}>
             {filteredCompanies.length + filteredDriveCompanies.length}
           </span>
         </div>
 
-        <label className="field">
+        <label className={styles.field}>
           <span>Search</span>
           <input
             value={searchTerm}
@@ -221,11 +224,11 @@ export default function CompanyListPage() {
           />
         </label>
 
-        <div className="company-card-list">
+        <div className={styles.companyCardList}>
           {filteredCompanies.map((company) => (
-            <article className="company-index-item" key={company.id}>
+            <article className={styles.companyIndexItem} key={company.id}>
               <a href={getCompanyHref(company.id)}>
-                <span className="panel-kicker">
+                <span className={styles.panelKicker}>
                   {company.sectorial1?.name || "No sectorial selected"}
                 </span>
                 <h3>{company.name}</h3>
@@ -236,7 +239,7 @@ export default function CompanyListPage() {
                 {company.eventName && <p>Linked event: {company.eventName}</p>}
               </a>
               <button
-                className="command-button command-button--danger"
+                className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                 type="button"
                 onClick={() => handleDeleteCompany(company.id)}
               >
@@ -248,12 +251,12 @@ export default function CompanyListPage() {
 
           {filteredDriveCompanies.map((company) => (
             <article
-              className="company-index-item"
+              className={styles.companyIndexItem}
               key={`drive-${company.fileId}`}
             >
               {brokenFileIds.has(company.fileId) ? (
                 <div>
-                  <span className="panel-kicker">
+                  <span className={styles.panelKicker}>
                     Drive-backed (Broken Link)
                   </span>
                   <h3>{company.name}</h3>
@@ -271,7 +274,7 @@ export default function CompanyListPage() {
                     `/view?id=${encodeURIComponent(company.fileId)}`
                   }
                 >
-                  <span className="panel-kicker">Drive-backed</span>
+                  <span className={styles.panelKicker}>Drive-backed</span>
                   <h3>{company.name}</h3>
                   <p>
                     Shared company file. Updated {formatDate(company.updatedAt)}
@@ -284,7 +287,7 @@ export default function CompanyListPage() {
               )}
               {brokenFileIds.has(company.fileId) ? (
                 <button
-                  className="command-button command-button--danger"
+                  className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                   type="button"
                   disabled={deletingFileIds.has(company.fileId)}
                   onClick={() =>
@@ -302,7 +305,7 @@ export default function CompanyListPage() {
               ) : (
                 <>
                   <a
-                    className="command-button"
+                    className={styles.commandButton}
                     href={
                       company.shareLink ||
                       `/view?id=${encodeURIComponent(company.fileId)}`
@@ -311,7 +314,7 @@ export default function CompanyListPage() {
                     Open
                   </a>
                   <button
-                    className="command-button command-button--danger"
+                    className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                     type="button"
                     disabled={deletingFileIds.has(company.fileId)}
                     onClick={() =>
@@ -330,7 +333,7 @@ export default function CompanyListPage() {
 
           {filteredCompanies.length === 0 &&
             filteredDriveCompanies.length === 0 && (
-              <p className="empty-note">No companies found.</p>
+              <p className={styles.emptyNote}>No companies found.</p>
             )}
         </div>
       </section>

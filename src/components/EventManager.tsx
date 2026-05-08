@@ -38,6 +38,7 @@ import {
   type LocalCompany,
 } from "../lib/mercs/companyStore";
 import { AppIcon } from "./AppIcon";
+import styles from "./EventManager.module.css";
 
 type EventManagerProps = {
   mode: "list" | "detail";
@@ -428,9 +429,12 @@ function EventListView() {
   }
 
   return (
-    <section className="company-manager event-manager" aria-label="Events">
-      <div className="company-manager__masthead">
-        <p className="eyebrow">Organizer Tools</p>
+    <section
+      className={`${styles.eventManager} ${styles.companyManager}`}
+      aria-label="Events"
+    >
+      <div className={styles.companyManagerMasthead}>
+        <p className={styles.panelKicker}>Organizer Tools</p>
         <h1>Events</h1>
         <p>
           Manage your event list, open an event workspace, and run rounds and
@@ -438,9 +442,9 @@ function EventListView() {
         </p>
       </div>
 
-      <div className="event-list-toolbar">
+      <div className={styles.eventListToolbar}>
         <button
-          className="command-button command-button--primary"
+          className={`${styles.commandButton} ${styles.commandButtonPrimary}`}
           type="button"
           disabled={!signedIn}
           onClick={() => {
@@ -452,22 +456,24 @@ function EventListView() {
       </div>
 
       {!signedIn && (
-        <p className="legacy-empty-note">
+        <p className={styles.legacyEmptyNote}>
           Sign in with Google to create events. Event creation needs Drive
           permissions to create and share event files.
         </p>
       )}
 
-      <section className="company-section-card event-index-card">
-        <div className="section-heading-row">
+      <section
+        className={`${styles.companySectionCard} ${styles.eventIndexCard}`}
+      >
+        <div className={styles.sectionHeadingRow}>
           <div>
-            <span className="panel-kicker">Saved Events</span>
+            <span className={styles.panelKicker}>Saved Events</span>
             <h2>Event List</h2>
           </div>
-          <span className="company-count">{events.length}</span>
+          <span className={styles.companyCount}>{events.length}</span>
         </div>
 
-        <label className="field">
+        <label className={styles.field}>
           <span>Search</span>
           <input
             value={searchTerm}
@@ -476,23 +482,23 @@ function EventListView() {
           />
         </label>
 
-        <div className="event-card-list">
+        <div className={styles.eventCardList}>
           {filteredEvents.map((event) => (
-            <article className="event-index-item" key={event.id}>
+            <article className={styles.eventIndexItem} key={event.id}>
               <a href={eventHref(event.id)}>
-                <span className="panel-kicker">
+                <span className={styles.panelKicker}>
                   {event.location || "Location TBD"}
                 </span>
                 <h3>{event.name}</h3>
                 <p>{event.description || "No description yet."}</p>
-                <div className="event-mini-stats">
+                <div className={styles.eventMiniStats}>
                   <span>{formatDate(event.startDate)}</span>
                   <span>{event.participants.length} players</span>
                   <span>{event.rounds.length} rounds</span>
                 </div>
               </a>
               <button
-                className="command-button command-button--danger"
+                className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                 type="button"
                 onClick={() => handleDelete(event.id)}
               >
@@ -502,15 +508,18 @@ function EventListView() {
             </article>
           ))}
           {filteredDriveEvents.map((event) => (
-            <article className="event-index-item" key={`drive-${event.fileId}`}>
+            <article
+              className={styles.eventIndexItem}
+              key={`drive-${event.fileId}`}
+            >
               {brokenEventFileIds.has(event.fileId) ? (
                 <div>
-                  <span className="panel-kicker">
+                  <span className={styles.panelKicker}>
                     Drive-backed (Broken Link)
                   </span>
                   <h3>{event.name}</h3>
                   <p>File not found. Event organizer may have deleted it.</p>
-                  <div className="event-mini-stats">
+                  <div className={styles.eventMiniStats}>
                     <span>Broken link</span>
                   </div>
                 </div>
@@ -532,7 +541,7 @@ function EventListView() {
               )}
               {brokenEventFileIds.has(event.fileId) ? (
                 <button
-                  className="command-button command-button--danger"
+                  className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                   type="button"
                   disabled={deletingEventFileIds.has(event.fileId)}
                   onClick={() =>
@@ -547,13 +556,13 @@ function EventListView() {
               ) : (
                 <>
                   <a
-                    className="command-button"
+                    className={styles.commandButton}
                     href={driveEventHref(event.fileId)}
                   >
                     Open
                   </a>
                   <button
-                    className="command-button command-button--danger"
+                    className={`${styles.commandButton} ${styles.commandButtonDanger}`}
                     type="button"
                     disabled={deletingEventFileIds.has(event.fileId)}
                     onClick={() =>
@@ -570,7 +579,7 @@ function EventListView() {
             </article>
           ))}
           {filteredEvents.length === 0 && filteredDriveEvents.length === 0 && (
-            <p className="empty-note">
+            <p className={styles.emptyNote}>
               No events yet. Create one to get started.
             </p>
           )}

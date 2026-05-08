@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Style Guide"
+  description="Internal reference for shared Infinity: Mercenaries UI primitives."
+>
+  <section class="page-hero compact styleguide-hero">
+    <p class="eyebrow">Interface reference</p>
+    <h1>Control Panel Kit</h1>
+    <p>
+      A compact reference for the shared sci-fi UI primitives used across the
+      rules, company, event, and pairing workflows.
+    </p>
+  </section>
+
+  <section class="section styleguide-grid" aria-label="Shared UI examples">
+    <article class="holo-frame styleguide-panel">
+      <div class="panel-inner">
+        <p class="eyebrow">Buttons</p>
+        <div class="hero-actions">
+          <a class="button primary" href="/rules/">Primary</a>
+          <a class="button secondary" href="/contracts/">Secondary</a>
+          <button class="command-button" type="button">Command</button>
+          <button class="command-button command-button--danger" type="button">
+            Danger
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="rule-card">
+      <header>
+        <span>Card</span>
+        <strong>Reference Panel</strong>
+      </header>
+      <div class="rule-card-body">
+        <p>
+          Shared card treatments should read like instrument modules: compact,
+          high contrast, and easy to scan.
+        </p>
+      </div>
+    </article>
+
+    <article class="rules-table-card">
+      <header>
+        <span>Table</span>
+        <strong>Signal Matrix</strong>
+      </header>
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Signal</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ready</td>
+            <td>Green</td>
+            <td>Deploy</td>
+          </tr>
+          <tr>
+            <td>Warning</td>
+            <td>Amber</td>
+            <td>Review</td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="holo-frame styleguide-panel">
+      <div class="panel-inner">
+        <p class="eyebrow">Form</p>
+        <label class="field">
+          <span>Callsign</span>
+          <input type="text" value="Dossier-17" />
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <select>
+            <option>Active</option>
+            <option>Standby</option>
+          </select>
+        </label>
+      </div>
+    </article>
+  </section>
+
+  <style>
+    .styleguide-hero {
+      padding-bottom: 1rem;
+    }
+
+    .styleguide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      padding-top: 2rem;
+    }
+
+    .styleguide-panel {
+      min-height: 100%;
+    }
+
+    .styleguide-panel .field {
+      display: grid;
+      gap: 0.35rem;
+      margin-top: 1rem;
+    }
+
+    .styleguide-panel .field span {
+      color: var(--arwes-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 760px) {
+      .styleguide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

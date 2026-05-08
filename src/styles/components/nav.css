@@ -1,0 +1,29 @@
+/* Nav styles extracted from legacy.css */
+
+.legacy-tabs {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 1px solid rgba(243, 240, 232, 0.08);
+  background:
+    linear-gradient(90deg, rgba(56, 183, 164, 0.06), transparent 64%),
+    rgba(14, 15, 13, 0.7);
+}
+
+.legacy-tabs button {
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.42);
+  color: var(--muted);
+  padding: 0.55rem 0.8rem;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.legacy-tabs button.is-active {
+  border-color: rgba(56, 183, 164, 0.55);
+  background: rgba(56, 183, 164, 0.16);
+  color: var(--teal);
+}

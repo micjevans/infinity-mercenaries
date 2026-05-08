@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const rules = (await getCollection("rules")).sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
 );
 ---
 
@@ -11,7 +11,7 @@ const rules = (await getCollection("rules")).sort(
   title="Rules"
   description="Rules index for the Infinity: Mercenaries campaign framework."
 >
-  <section class="page-hero compact">
+  <section class="page-hero compact" data-reveal>
     <p class="eyebrow">Rules reference</p>
     <h1>Mercenaries Field Manual</h1>
     <p>
@@ -20,18 +20,28 @@ const rules = (await getCollection("rules")).sort(
     </p>
   </section>
 
-  <section class="index-list" aria-label="Rules sections">
-    {rules.map((rule) => (
-      <a href={`/rules/${rule.id.replace(/\.mdx?$/, "")}/`}>
-        <span>{rule.data.section ?? "Rules"}</span>
-        <strong>{rule.data.title}</strong>
-        <p>{rule.data.description}</p>
-      </a>
-    ))}
+  <section
+    class="index-list"
+    aria-label="Rules sections"
+    data-reveal
+    data-stagger
+  >
+    {
+      rules.map((rule) => (
+        <a href={`/rules/${rule.id.replace(/\.mdx?$/, "")}/`}>
+          <span>{rule.data.section ?? "Rules"}</span>
+          <strong>{rule.data.title}</strong>
+          <p>{rule.data.description}</p>
+        </a>
+      ))
+    }
     <a href="/rules/npcs/">
       <span>Reference</span>
       <strong>NPC Profiles</strong>
-      <p>Scalable NPC profiles, priorities, weapons, and traits imported from the NPC sheet.</p>
+      <p>
+        Scalable NPC profiles, priorities, weapons, and traits imported from the
+        NPC sheet.
+      </p>
     </a>
   </section>
 </BaseLayout>

@@ -1,0 +1,23 @@
+/* Shared grid helpers. */
+
+.event-list-layout {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.42fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.event-list-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem;
+}
+
+.legacy-editor-header {
+  display: grid;
+  grid-template-columns: auto minmax(7rem, 0.35fr) minmax(9rem, 0.45fr) minmax(10rem, 1fr);
+  gap: 1rem;
+  align-items: end;
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid var(--line);
+}

@@ -1,0 +1,94 @@
+/* Extracted from global.css for CaptainCreatorStep and related subcomponents */
+
+.legacy-specops-configurator {
+  /* ...styles from .legacy-specops-configurator... */
+}
+.legacy-specops-configurator__header {
+  /* ...styles from .legacy-specops-configurator__header... */
+}
+.legacy-specops-configurator__header h3,
+.legacy-specops-configurator__header p {
+  /* ... */
+}
+.legacy-specops-configurator__header strong {
+  /* ... */
+}
+.legacy-specops-card {
+  /* ...styles from .legacy-specops-card... */
+}
+.legacy-specops-card h4 {
+  /* ... */
+}
+.legacy-specops-card__summary {
+  /* ...styles from .legacy-specops-card__summary... */
+}
+.legacy-specops-attributes {
+  /* ...styles from .legacy-specops-attributes... */
+}
+.legacy-specops-attributes > div {
+  /* ... */
+}
+.legacy-specops-attributes > div > span {
+  /* ... */
+}
+.legacy-specops-attributes > div > div {
+  /* ... */
+}
+.legacy-specops-attributes button {
+  /* ... */
+}
+.legacy-specops-attributes button.is-selected {
+  /* ... */
+}
+.legacy-specops-attributes button strong,
+.legacy-specops-attributes button small {
+  /* ... */
+}
+.legacy-specops-attributes button small {
+  /* ... */
+}
+.legacy-specops-items {
+  /* ...styles from .legacy-specops-items... */
+}
+.legacy-specops-items label {
+  /* ... */
+}
+.legacy-specops-items label.is-selected {
+  /* ... */
+}
+.legacy-specops-items strong {
+  /* ... */
+}
+.legacy-specops-actions {
+  /* ...styles from .legacy-specops-actions... */
+}
+.legacy-specops-actions .command-button--primary {
+  /* ... */
+}
+.legacy-specops-note {
+  /* ...styles from .legacy-specops-note... */
+}
+.legacy-empty-note {
+  /* ...styles from .legacy-empty-note... */
+}
+.legacy-recruit-card {
+  /* ...styles from .legacy-recruit-card... */
+}
+.legacy-recruit-tools {
+  /* ...styles from .legacy-recruit-tools... */
+}
+.legacy-recruit-results {
+  /* ...styles from .legacy-recruit-results... */
+}
+.is-selected {
+  /* ...styles from .is-selected... */
+}
+.command-button {
+  /* ...styles from .command-button... */
+}
+.command-button--primary {
+  /* ...styles from .command-button--primary... */
+}
+.panel-kicker {
+  /* ...styles from .panel-kicker... */
+}

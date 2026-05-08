@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, Fragment } from "react";
+import styles from "./CompanyManager.module.css";
 import type React from "react";
 import {
   deleteLocalCompany,
@@ -115,26 +116,30 @@ function LegacyAccordion({
 }) {
   return (
     <section
-      className={`legacy-accordion${expanded ? " is-expanded" : ""}`}
+      className={[styles.legacyAccordion, expanded && styles.isExpanded]
+        .filter(Boolean)
+        .join(" ")}
       id={id}
     >
-      <div className="legacy-accordion__header">
+      <div className={styles.legacyAccordionHeader}>
         <button
-          className="legacy-accordion__summary"
+          className={styles.legacyAccordionSummary}
           type="button"
           onClick={onToggle}
         >
-          <span className="legacy-accordion__title">
-            <span className="legacy-accordion__icon" aria-hidden="true">
+          <span className={styles.legacyAccordionTitle}>
+            <span className={styles.legacyAccordionIcon} aria-hidden="true">
               {icon}
             </span>
             {title}
           </span>
           <AppIcon name={expanded ? "up" : "down"} size={17} />
         </button>
-        {action && <div className="legacy-accordion__action">{action}</div>}
+        {action && <div className={styles.legacyAccordionAction}>{action}</div>}
       </div>
-      {expanded && <div className="legacy-accordion__details">{children}</div>}
+      {expanded && (
+        <div className={styles.legacyAccordionDetails}>{children}</div>
+      )}
     </section>
   );
 }
@@ -149,10 +154,10 @@ function Field({
   hint?: string;
 }) {
   return (
-    <label className="legacy-field">
-      <span>{label}</span>
+    <label className={styles.legacyField}>
+      <span className={styles.legacyFieldSpan}>{label}</span>
       {children}
-      {hint && <small>{hint}</small>}
+      {hint && <small className={styles.legacyFieldSmall}>{hint}</small>}
     </label>
   );
 }
@@ -178,12 +183,14 @@ function DashboardCard({
   hint?: string;
 }) {
   return (
-    <div className="legacy-dashboard-card">
-      <span aria-hidden="true">{icon}</span>
+    <div className={styles.legacyDashboardCard}>
+      <span className={styles.legacyDashboardCardSpan} aria-hidden="true">
+        {icon}
+      </span>
       <div>
-        <small>{label}</small>
-        <strong>{value}</strong>
-        {hint && <em>{hint}</em>}
+        <small className={styles.legacyDashboardCardSmall}>{label}</small>
+        <strong className={styles.legacyDashboardCardStrong}>{value}</strong>
+        {hint && <em className={styles.legacyDashboardCardEm}>{hint}</em>}
       </div>
     </div>
   );
@@ -203,11 +210,11 @@ function TrooperCard({
 
   const trooperActions = (
     <>
-      <button className="command-button" type="button" onClick={onEdit}>
+      <button className={styles.commandButton} type="button" onClick={onEdit}>
         Edit Trooper
       </button>
       <button
-        className="command-button command-button--danger"
+        className={`${styles.commandButton} ${styles.commandButtonDanger}`}
         type="button"
         onClick={onDelete}
       >
@@ -219,7 +226,12 @@ function TrooperCard({
 
   return (
     <article
-      className={`legacy-trooper-card${trooper.captain ? " is-captain" : ""}`}
+      className={[
+        styles.legacyTrooperCard,
+        trooper.captain && styles.legacyTrooperCardIsCaptain,
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <UnitProfileDisplay
         unit={renderedTrooper}
@@ -636,20 +648,22 @@ function EditTrooperDialog({
 
   return (
     <div
-      className="legacy-modal"
+      className={styles.legacyModal}
       role="dialog"
       aria-modal="true"
       aria-label="Edit trooper"
     >
-      <div className="legacy-modal__panel legacy-modal__panel--edit">
-        <header className="legacy-modal__header">
-          <div className="legacy-editor-intro">
-            <span className="panel-kicker">Trooper File</span>
+      <div
+        className={`${styles.legacyModalPanel} ${styles.legacyModalPanelEdit}`}
+      >
+        <header className={styles.legacyModalHeader}>
+          <div className={styles.legacyEditorIntro}>
+            <span className={styles.panelKicker}>Trooper File</span>
             <h2>{trooper.name || trooper.isc || "Trooper"}</h2>
             <p>Adjust XP, perk points, and loadout.</p>
           </div>
           <button
-            className="icon-button"
+            className={styles.iconButton}
             type="button"
             onClick={onClose}
             aria-label="Close"
@@ -658,8 +672,8 @@ function EditTrooperDialog({
           </button>
         </header>
 
-        <div className="legacy-editor-header">
-          <div className="legacy-level-chip">Level {level}</div>
+        <div className={styles.legacyEditorHeader}>
+          <div className={styles.legacyLevelChip}>Level {level}</div>
           <Field label="XP">
             <input
               type="number"
@@ -686,16 +700,16 @@ function EditTrooperDialog({
               }
             />
           </Field>
-          <div className="legacy-xp-progress" aria-live="polite">
-            <div className="legacy-xp-progress__meta">
-              <span className="panel-kicker">Level Progress</span>
+          <div className={styles.legacyXpProgress} aria-live="polite">
+            <div className={styles.legacyXpProgressMeta}>
+              <span className={styles.panelKicker}>Level Progress</span>
               <strong>{Math.round(progress)}%</strong>
               <small>
                 {xpToNextLevel} XP to Level {level + 1}
               </small>
             </div>
             <div
-              className="legacy-xp-bar"
+              className={styles.legacyXpBar}
               title={`${xpToNextLevel} XP needed for next level`}
             >
               <span style={{ width: `${progress}%` }} />
@@ -703,7 +717,7 @@ function EditTrooperDialog({
           </div>
         </div>
 
-        <div className="legacy-tabs" role="tablist">
+        <div className={styles.legacyTabs} role="tablist">
           <button
             className={selectedTab === "equipment" ? "is-active" : ""}
             type="button"
@@ -720,11 +734,11 @@ function EditTrooperDialog({
           </button>
         </div>
 
-        <div className="legacy-editor-body">
+        <div className={styles.legacyEditorBody}>
           {selectedTab === "equipment" ? (
-            <div className="legacy-paperdoll-editor">
+            <div className={styles.legacyPaperdollEditor}>
               <section
-                className="legacy-paperdoll-stage"
+                className={styles.legacyPaperdollStage}
                 aria-label="Equipment slots"
               >
                 <img src={silhouetteImage} alt="" aria-hidden="true" />
@@ -735,7 +749,14 @@ function EditTrooperDialog({
                     | undefined;
                   return (
                     <button
-                      className={`legacy-paperdoll-slot legacy-paperdoll-slot--${slot}${selectedSlot === slot ? " is-selected" : ""}${equipped ? " is-equipped" : ""}`}
+                      className={[
+                        styles[`legacyPaperdollSlot`],
+                        styles[`legacyPaperdollSlot--${slot}`],
+                        selectedSlot === slot && styles.isSelected,
+                        equipped && styles.isEquipped,
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                       key={slot}
                       type="button"
                       onClick={() => setSelectedSlot(slot)}
@@ -749,9 +770,9 @@ function EditTrooperDialog({
                 })}
               </section>
 
-              <aside className="legacy-slot-editor">
+              <aside className={styles.legacySlotEditor}>
                 <header>
-                  <span className="panel-kicker">Selected Slot</span>
+                  <span className={styles.panelKicker}>Selected Slot</span>
                   <h3>{getShopSlotLabel(selectedSlot)}</h3>
                   <p>
                     {selectedEquippedItem
@@ -761,13 +782,13 @@ function EditTrooperDialog({
                 </header>
 
                 <div
-                  className="legacy-slot-tabs"
+                  className={styles.legacySlotTabs}
                   role="list"
                   aria-label="Equipment slots"
                 >
                   {EQUIPMENT_SLOTS.map((slot) => (
                     <button
-                      className={selectedSlot === slot ? "is-active" : ""}
+                      className={selectedSlot === slot ? styles.isActive : ""}
                       key={slot}
                       type="button"
                       onClick={() => setSelectedSlot(slot)}
@@ -779,7 +800,7 @@ function EditTrooperDialog({
 
                 {selectedEquippedItem && (
                   <button
-                    className="legacy-slot-unequip"
+                    className={styles.legacySlotUnequip}
                     type="button"
                     onClick={() => handleEquipmentChange(selectedSlot, "")}
                   >
@@ -787,11 +808,11 @@ function EditTrooperDialog({
                   </button>
                 )}
 
-                <div className="legacy-slot-inventory">
+                <div className={styles.legacySlotInventory}>
                   <h4>Available Items</h4>
                   {selectedSlotItems.map((item) => (
                     <button
-                      className="legacy-slot-item"
+                      className={styles.legacySlotItem}
                       type="button"
                       key={String(item.uuid || item.id)}
                       onClick={() =>
@@ -805,7 +826,9 @@ function EditTrooperDialog({
                     </button>
                   ))}
                   {selectedSlotItems.length === 0 && (
-                    <p className="empty-note">No stored items fit this slot.</p>
+                    <p className={styles.emptyNote}>
+                      No stored items fit this slot.
+                    </p>
                   )}
                 </div>
               </aside>
@@ -815,12 +838,16 @@ function EditTrooperDialog({
           )}
         </div>
 
-        <footer className="legacy-modal__actions">
-          <button className="command-button" type="button" onClick={onClose}>
+        <footer className={styles.legacyModalActions}>
+          <button
+            className={styles.commandButton}
+            type="button"
+            onClick={onClose}
+          >
             Cancel
           </button>
           <button
-            className="command-button command-button--primary"
+            className={`${styles.commandButton} ${styles.commandButtonPrimary}`}
             type="button"
             onClick={() => {
               const cleanedTrooper = { ...trooper };
@@ -916,15 +943,17 @@ function ShopExchangeDialog({
 
   return (
     <div
-      className="legacy-modal"
+      className={styles.legacyModal}
       role="dialog"
       aria-modal="true"
       aria-label="Shop and inventory"
     >
-      <div className="legacy-modal__panel legacy-modal__panel--shop">
-        <header className="legacy-modal__header">
+      <div
+        className={`${styles.legacyModalPanel} ${styles.legacyModalPanelShop}`}
+      >
+        <header className={styles.legacyModalHeader}>
           <div>
-            <span className="panel-kicker">Static Market</span>
+            <span className={styles.panelKicker}>Static Market</span>
             <h2>Shop & Inventory</h2>
             <p>
               Buy from the base market, sell company inventory, and confirm the
@@ -932,7 +961,7 @@ function ShopExchangeDialog({
             </p>
           </div>
           <button
-            className="icon-button"
+            className={styles.iconButton}
             type="button"
             onClick={onClose}
             aria-label="Close"
@@ -941,7 +970,7 @@ function ShopExchangeDialog({
           </button>
         </header>
 
-        <div className="legacy-shop-layout">
+        <div className={styles.legacyShopLayout}>
           <ShopInventoryColumn
             title="Company Items"
             items={availableCompanyItems}
@@ -950,29 +979,31 @@ function ShopExchangeDialog({
             variant="company"
           />
 
-          <section className="legacy-shop-staging">
+          <section className={styles.legacyShopStaging}>
             <h3>Staged Exchange</h3>
-            <div className="legacy-shop-balance">
+            <div className={styles.legacyShopBalance}>
               <span>Current</span>
               <strong>{companyCredits} CR</strong>
               <span>Net</span>
               <strong
-                className={netExchange < 0 ? "is-negative" : "is-positive"}
+                className={
+                  netExchange < 0 ? styles.isNegative : styles.isPositive
+                }
               >
                 {netExchange > 0 ? `+${netExchange}` : netExchange} CR
               </strong>
               <span>After</span>
-              <strong className={insufficientFunds ? "is-negative" : ""}>
+              <strong className={insufficientFunds ? styles.isNegative : ""}>
                 {nextCredits} CR
               </strong>
             </div>
             {insufficientFunds && (
-              <p className="legacy-shop-warning">
+              <p className={styles.legacyShopWarning}>
                 Insufficient credits for this exchange.
               </p>
             )}
 
-            <div className="legacy-staged-grid">
+            <div className={styles.legacyStagedGrid}>
               <StagedItems
                 title="Selling"
                 items={stagedCompany}
@@ -1045,12 +1076,12 @@ function ShopInventoryColumn({
       className={`legacy-shop-column${variant ? ` legacy-shop-column--${variant}` : ""}`}
     >
       <h3>{title}</h3>
-      {items.length === 0 && <p className="empty-note">{emptyText}</p>}
+      {items.length === 0 && <p className={styles.emptyNote}>{emptyText}</p>}
       {slots.map((slot) =>
         grouped[slot]?.length ? (
-          <div className="legacy-shop-group" key={`${title}-${slot}`}>
+          <div className={styles.legacyShopGroup} key={`${title}-${slot}`}>
             <h4>{getShopSlotLabel(slot)}</h4>
-            <div className="legacy-shop-items">
+            <div className={styles.legacyShopItems}>
               {grouped[slot].map((item) => (
                 <ShopItemButton
                   item={item}
@@ -1076,7 +1107,7 @@ function StagedItems({
   onItemClick: (item: MetadataItem) => void;
 }) {
   return (
-    <div className="legacy-staged-items">
+    <div className={styles.legacyStagedItems}>
       <h4>{title}</h4>
       {items.map((item) => (
         <ShopItemButton
@@ -1085,7 +1116,9 @@ function StagedItems({
           onClick={onItemClick}
         />
       ))}
-      {items.length === 0 && <p className="empty-note">Nothing staged.</p>}
+      {items.length === 0 && (
+        <p className={styles.emptyNote}>Nothing staged.</p>
+      )}
     </div>
   );
 }
@@ -1100,26 +1133,28 @@ function ShopItemButton({
   const visual = getShopItemVisualMeta(item);
   return (
     <button
-      className="legacy-shop-item"
+      className={styles.legacyShopItem}
       type="button"
       onClick={() => onClick(item)}
     >
-      <div className="legacy-shop-item__body">
-        <span className="legacy-shop-item__kicker">{visual.kicker}</span>
-        <strong className="legacy-shop-item__title">
+      <div className={styles.legacyShopItemBody}>
+        <span className={styles.legacyShopItemKicker}>{visual.kicker}</span>
+        <strong className={styles.legacyShopItemTitle}>
           {getInventoryItemName(item)}
         </strong>
         {visual.detail && <p>{visual.detail}</p>}
         {visual.note && <small>{visual.note}</small>}
         {visual.chips.length > 0 && (
-          <div className="legacy-shop-item__chips">
+          <div className={styles.legacyShopItemChips}>
             {visual.chips.map((chip) => (
               <span key={`${String(item.id)}-${chip}`}>{chip}</span>
             ))}
           </div>
         )}
       </div>
-      <span className="legacy-shop-item__price">{Number(item.cr || 0)} CR</span>
+      <span className={styles.legacyShopItemPrice}>
+        {Number(item.cr || 0)} CR
+      </span>
     </button>
   );
 }
@@ -1798,9 +1833,11 @@ export default function CompanyManager() {
 
   if (isLoading) {
     return (
-      <section className="company-manager legacy-company-page">
-        <div className="company-empty-state">
-          <span className="panel-kicker">Loading</span>
+      <section
+        className={`${styles.companyManager} ${styles.legacyCompanyPage}`}
+      >
+        <div className={styles.companyEmptyState}>
+          <span className={styles.panelKicker}>Loading</span>
           <h1>Opening Company...</h1>
         </div>
       </section>
@@ -1814,9 +1851,11 @@ export default function CompanyManager() {
         : null;
 
     return (
-      <section className="company-manager legacy-company-page">
-        <div className="company-empty-state">
-          <span className="panel-kicker">No Company Selected</span>
+      <section
+        className={`${styles.companyManager} ${styles.legacyCompanyPage}`}
+      >
+        <div className={styles.companyEmptyState}>
+          <span className={styles.panelKicker}>No Company Selected</span>
           <h1>Open a Company</h1>
           <p>
             {requestedFileId
@@ -1824,7 +1863,7 @@ export default function CompanyManager() {
               : "This page needs a company id from the company list."}
           </p>
           <a
-            className="command-button command-button--primary"
+            className={`${styles.commandButton} ${styles.commandButtonPrimary}`}
             href="/companies/"
           >
             Back to Companies
@@ -1836,22 +1875,22 @@ export default function CompanyManager() {
 
   return (
     <section
-      className="company-manager legacy-company-page"
+      className={`${styles.companyManager} ${styles.legacyCompanyPage}`}
       aria-label="Company manager"
     >
-      <div className="legacy-company-header">
+      <div className={styles.legacyCompanyHeader}>
         <a
-          className="icon-button legacy-back-button"
+          className={`${styles.iconButton} ${styles.legacyBackButton}`}
           href="/companies/"
           aria-label="Back to companies"
         >
           <AppIcon name="back" />
         </a>
-        <div className="legacy-company-title-block">
-          <span className="panel-kicker">Company Dossier</span>
+        <div className={styles.legacyCompanyTitleBlock}>
+          <span className={styles.panelKicker}>Company Dossier</span>
           <h1>{company.name || "Company"}</h1>
-          <div className="legacy-company-meta">
-            <span className="legacy-storage-chip">
+          <div className={styles.legacyCompanyMeta}>
+            <span className={styles.legacyStorageChip}>
               {isCompanyDriveBacked(company)
                 ? "Drive-backed Company"
                 : "Local Company"}
@@ -1860,9 +1899,9 @@ export default function CompanyManager() {
             <span>{totalRenown} renown</span>
           </div>
         </div>
-        <div className="legacy-company-actions">
+        <div className={styles.legacyCompanyActions}>
           <button
-            className="command-button command-button--primary"
+            className={`${styles.commandButton} ${styles.commandButtonPrimary}`}
             type="button"
             onClick={() => saveCompany()}
             disabled={!isModified}
@@ -1884,13 +1923,15 @@ export default function CompanyManager() {
           }))
         }
       >
-        <div className="legacy-info-grid">
-          <section className="legacy-info-panel legacy-info-panel--identity">
+        <div className={styles.legacyInfoGrid}>
+          <section
+            className={`${styles.legacyInfoPanel} ${styles.legacyInfoPanelIdentity}`}
+          >
             <header>
               <span>Identity</span>
               <strong>Company Record</strong>
             </header>
-            <div className="legacy-form-grid">
+            <div className={styles.legacyFormGrid}>
               <Field label="Company Name">
                 <input
                   value={company.name || ""}
@@ -1930,12 +1971,12 @@ export default function CompanyManager() {
             </Field>
           </section>
 
-          <section className="legacy-info-panel">
+          <section className={styles.legacyInfoPanel}>
             <header>
               <span>Contacts</span>
               <strong>Sectorials</strong>
             </header>
-            <div className="legacy-form-grid">
+            <div className={styles.legacyFormGrid}>
               <Field label="Sectorial 1">
                 {canEditSectorials ? (
                   <select
@@ -1963,7 +2004,7 @@ export default function CompanyManager() {
                     ))}
                   </select>
                 ) : (
-                  <div className="legacy-faction-static">
+                  <div className={styles.legacyFactionStatic}>
                     {company.sectorial1 ? (
                       <FactionOption faction={company.sectorial1} />
                     ) : (
@@ -1998,7 +2039,7 @@ export default function CompanyManager() {
                     ))}
                   </select>
                 ) : (
-                  <div className="legacy-faction-static">
+                  <div className={styles.legacyFactionStatic}>
                     {company.sectorial2 ? (
                       <FactionOption faction={company.sectorial2} />
                     ) : (
@@ -2009,7 +2050,7 @@ export default function CompanyManager() {
               </Field>
             </div>
             {!canEditSectorials && (
-              <p className="legacy-alert">
+              <p className={styles.legacyAlert}>
                 Sectorials are locked after the first trooper joins the company.
               </p>
             )}
@@ -2029,7 +2070,7 @@ export default function CompanyManager() {
           }))
         }
       >
-        <div className="legacy-dashboard-grid">
+        <div className={styles.legacyDashboardGrid}>
           <DashboardCard
             label="Credits"
             icon="CR"
@@ -2067,13 +2108,13 @@ export default function CompanyManager() {
             hint="Current roster"
           />
         </div>
-        <div className="legacy-operation-strip">
+        <div className={styles.legacyOperationStrip}>
           <div>
-            <span className="panel-kicker">Inventory</span>
+            <span className={styles.panelKicker}>Inventory</span>
             <strong>{(company.inventory || []).length} stored items</strong>
           </div>
           <button
-            className="command-button"
+            className={styles.commandButton}
             type="button"
             onClick={() => setShopOpen(true)}
           >
@@ -2095,7 +2136,7 @@ export default function CompanyManager() {
         }
         action={
           <button
-            className="command-button command-button--small"
+            className={`${styles.commandButton} ${styles.commandButtonSmall}`}
             type="button"
             onClick={(event) => {
               event.stopPropagation();
@@ -2106,7 +2147,7 @@ export default function CompanyManager() {
           </button>
         }
       >
-        <div className="legacy-trooper-list">
+        <div className={styles.legacyTrooperList}>
           {troopers.map((trooper) => (
             <TrooperCard
               key={trooper.id}
@@ -2116,7 +2157,7 @@ export default function CompanyManager() {
             />
           ))}
           {troopers.length === 0 && (
-            <p className="empty-note">
+            <p className={styles.emptyNote}>
               No troopers found. Add a captain to get started.
             </p>
           )}

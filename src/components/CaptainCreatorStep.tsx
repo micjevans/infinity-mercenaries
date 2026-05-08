@@ -30,6 +30,7 @@ import type {
   Unit,
 } from "../lib/mercs/types";
 import { AppIcon } from "./AppIcon";
+import styles from "./CaptainCreatorStep.module.css";
 import { UnitProfileDisplay } from "./UnifiedProfileCard";
 
 // ── Shared types ──────────────────────────────────────────────────────────────
@@ -66,9 +67,9 @@ export function SpecOpsItemSection({
 }) {
   const [expanded, setExpanded] = useState(false);
   return (
-    <section className="legacy-specops-card">
+    <section className={styles["legacy-specops-card"]}>
       <button
-        className="legacy-specops-card__summary"
+        className={styles["legacy-specops-card__summary"]}
         type="button"
         onClick={() => setExpanded((v) => !v)}
       >
@@ -76,14 +77,14 @@ export function SpecOpsItemSection({
         <AppIcon name={expanded ? "up" : "down"} size={17} />
       </button>
       {expanded && (
-        <div className="legacy-specops-items">
+        <div className={styles["legacy-specops-items"]}>
           {items.map((item, index) => {
             const selected = selectedItems.some(
               (s) => JSON.stringify(s) === JSON.stringify(item),
             );
             return (
               <label
-                className={selected ? "is-selected" : ""}
+                className={selected ? styles["is-selected"] : undefined}
                 key={`${title}-${index}-${item.id}`}
               >
                 <input
@@ -97,7 +98,9 @@ export function SpecOpsItemSection({
             );
           })}
           {items.length === 0 && (
-            <p className="empty-note">No {title.toLowerCase()} available.</p>
+            <p className={styles["legacy-empty-note"]}>
+              No {title.toLowerCase()} available.
+            </p>
           )}
         </div>
       )}
@@ -186,10 +189,10 @@ export function SpecOpsConfigurator({
   }
 
   return (
-    <div className="legacy-specops-configurator">
-      <div className="legacy-specops-configurator__header">
+    <div className={styles["legacy-specops-configurator"]}>
+      <div className={styles["legacy-specops-configurator__header"]}>
         <div>
-          <span className="panel-kicker">Spec-Ops Configuration</span>
+          <span className={styles["panel-kicker"]}>Spec-Ops Configuration</span>
           <h3>{configuredTrooper.isc}</h3>
           <p>
             Spend the Captain's remaining Spec-Ops XP before adding them to the
@@ -210,7 +213,7 @@ export function SpecOpsConfigurator({
       {useDefaultAttributeChart ? (
         <section className="legacy-specops-card">
           <h4>Default Attribute Chart</h4>
-          <p className="legacy-specops-note">
+          <p className={styles["legacy-specops-note"]}>
             Use this fallback chart when the Captain is not already an Infinity
             Spec-Ops profile, or when the chosen sectorials do not provide a
             Spec-Ops chart.
@@ -274,12 +277,16 @@ export function SpecOpsConfigurator({
         onToggle={(item) => handleItemToggle(item, "equips")}
       />
 
-      <footer className="legacy-specops-actions">
-        <button className="command-button" type="button" onClick={onBack}>
+      <footer className={styles["legacy-specops-actions"]}>
+        <button
+          className={styles["command-button"]}
+          type="button"
+          onClick={onBack}
+        >
           Back to Profiles
         </button>
         <button
-          className="command-button command-button--primary"
+          className={`${styles["command-button"]} ${styles["command-button--primary"]}`}
           type="button"
           onClick={() => onConfirm(flattenTrooperForRoster(configuredTrooper))}
         >
@@ -310,7 +317,7 @@ export function RecruitableUnit({
   );
 
   return (
-    <article className="legacy-recruit-card">
+    <article className={styles["legacy-recruit-card"]}>
       <UnitProfileDisplay
         unit={unit}
         profileGroups={renderableGroups}
@@ -321,12 +328,12 @@ export function RecruitableUnit({
         onToggle={() => setExpanded((v) => !v)}
       >
         {expanded && renderableGroups.length === 0 && (
-          <p className="legacy-empty-note">
+          <p className={styles["legacy-empty-note"]}>
             No valid profiles are available for this recruitment filter.
           </p>
         )}
         {expanded && isCreatingCaptain && specops && (
-          <p className="legacy-specops-note">
+          <p className={styles["legacy-specops-note"]}>
             Spec-Ops pools loaded: {specops.weapons.length} weapons,{" "}
             {specops.skills.length} skills, {specops.equip.length} equipment
             items.

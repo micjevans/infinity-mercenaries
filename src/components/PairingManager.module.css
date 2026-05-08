@@ -1,0 +1,212 @@
+/* PairingManager component-specific styles migrated from global/component/layout CSS */
+
+.pairingTrooperList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.pairingTrooperRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.22);
+}
+.pairingTrooperRowHire {
+  background: rgba(56, 183, 164, 0.07);
+}
+.pairingHireSubtitle {
+  color: var(--amber);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.pairingHireCardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.pairingPanel {
+  padding: 2rem 0;
+}
+.sectionHeadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.pairingStepActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.pairingStepActionsFlush {
+  margin-top: 0;
+}
+.pairingRuleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.pairingShopSection {
+  margin-bottom: 2rem;
+}
+.pairingShopOptionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.pairingShopOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.22);
+  border-radius: 0.5rem;
+}
+.pairingShopOptionMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pairingShopProfileList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.pairingRecruitCard {
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.44);
+  padding: 1rem;
+}
+.pairingInducementToolbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.eventMiniStats {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.1rem;
+}
+.pairingShopGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.pairingInducementList {
+  margin-bottom: 2rem;
+}
+.pairingInducementRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.22);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.pairingInducementRowSummary {
+  flex: 1;
+}
+.pairingInducementRowTag {
+  color: var(--teal);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.pairingForceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.pairingForceCard {
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.44);
+  padding: 1rem;
+}
+.pairingForceItemWithNote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.pairingMissionHeader {
+  margin-bottom: 2rem;
+}
+.pairingMissionTabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.pairingMissionTabBody {
+  margin-bottom: 2rem;
+}
+.pairingScoreControls {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.pairingTableWrap {
+  overflow-x: auto;
+}
+.pairingPerformanceTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.pairingPerformanceTable th,
+.pairingPerformanceTable td {
+  border: 1px solid var(--line);
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+}
+.pairingTableTrooper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pairingInducementInline {
+  color: var(--amber);
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
+.pairingPlayingStack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.pairingPlayingAccordion {
+  margin-bottom: 1.5rem;
+}
+.pairingPlayingAccordionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.pairingHireCard {
+  border: 1px solid var(--teal);
+  background: rgba(56, 183, 164, 0.07);
+  padding: 1rem;
+}
+.pairingHireCardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.isOverBudget {
+  color: var(--red);
+  font-weight: 700;
+}

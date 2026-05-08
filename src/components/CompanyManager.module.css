@@ -1,0 +1,556 @@
+/* Ensure all legacy/global class stubs are present for migration. Add missing stubs if needed. */
+/* (No-op if already present.) */
+/* CompanyManager component-specific styles migrated from global/component/layout CSS */
+
+.companyManager {
+  width: min(100% - 1rem, 96rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 2vw, 1.5rem) 0 4rem;
+}
+
+.legacyCompanyPage {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.companyEmptyState {
+  min-height: 26rem;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.8rem;
+  padding: 2rem;
+  border: 1px solid rgba(242, 169, 59, 0.32);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 45%),
+    rgba(23, 25, 22, 0.88);
+  text-align: center;
+  clip-path: var(--hud-angle);
+}
+
+.companyEmptyState h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+.companyEmptyState p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.panelKicker {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.legacyCompanyHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 8rem;
+  padding: clamp(1rem, 2vw, 1.4rem);
+  border: 1px solid rgba(242, 169, 59, 0.28);
+  background:
+    radial-gradient(circle at 72% 0%, rgba(242, 169, 59, 0.14), transparent 22rem),
+    linear-gradient(90deg, rgba(56, 183, 164, 0.12), transparent 48%),
+    rgba(7, 16, 15, 0.86);
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.22);
+  clip-path: var(--hud-angle);
+}
+
+.legacyCompanyTitleBlock {
+  min-width: 0;
+}
+
+.legacyCompanyTitleBlock h1 {
+  margin: 0.1rem 0 0;
+  max-width: none;
+  overflow-wrap: anywhere;
+  font-size: clamp(2.1rem, 5vw, 4.8rem);
+  line-height: 0.95;
+}
+
+.legacyCompanyMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+.legacyCompanyMeta span,
+.legacyStorageChip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  border: 1px solid rgba(71, 221, 228, 0.24);
+  background: rgba(56, 183, 164, 0.08);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.legacyStorageChip {
+  border-color: rgba(242, 169, 59, 0.38);
+  background: rgba(242, 169, 59, 0.08);
+  color: var(--amber);
+}
+
+.legacyCompanyActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.iconButton {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(71, 221, 228, 0.38);
+  background: rgba(56, 183, 164, 0.08);
+  color: var(--teal);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  border-color: rgba(71, 221, 228, 0.68);
+  background: rgba(56, 183, 164, 0.16);
+  outline: none;
+}
+
+.legacyBackButton {
+  align-self: start;
+}
+
+.commandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.45rem;
+  border: 1px solid rgba(71, 221, 228, 0.34);
+  background: rgba(56, 183, 164, 0.08);
+  color: var(--teal);
+  padding: 0.55rem 0.85rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.commandButton:hover,
+.commandButton:focus-visible {
+  border-color: rgba(71, 221, 228, 0.62);
+  background: rgba(56, 183, 164, 0.16);
+  outline: none;
+}
+
+.commandButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.commandButtonPrimary {
+  border-color: rgba(242, 169, 59, 0.72);
+  background: var(--amber);
+  color: #17120a;
+}
+
+.commandButtonDanger {
+  border-color: rgba(216, 76, 62, 0.58);
+  background: rgba(216, 76, 62, 0.08);
+  color: #ff9187;
+}
+
+.commandButtonSmall {
+  min-height: 2.15rem;
+  padding: 0.38rem 0.65rem;
+  font-size: 0.78rem;
+}
+
+.legacyAccordion {
+  margin-top: 1rem;
+  border: 1px solid rgba(242, 169, 59, 0.32);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.07), transparent 42%),
+    rgba(23, 25, 22, 0.9);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
+}
+
+.legacyAccordion.isExpanded {
+  border-color: rgba(242, 169, 59, 0.48);
+}
+
+.legacyAccordionHeader {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(242, 169, 59, 0.3);
+  background: rgba(47, 41, 26, 0.78);
+}
+.legacyAccordionSummary {
+  flex: 1;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  padding: 0.8rem 1rem;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.legacyAccordionAction {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-left: 1px solid rgba(242, 169, 59, 0.2);
+}
+.legacyAccordionTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.legacyAccordionIcon {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(56, 183, 164, 0.5);
+  color: var(--teal);
+}
+
+.legacyAccordionDetails {
+  padding: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.legacyField {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.legacyFieldSpan {
+  color: var(--amber);
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.legacyFieldInput {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(14, 15, 13, 0.72);
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  min-height: 2.75rem;
+}
+
+.legacyField :global(input),
+.legacyField :global(select),
+.legacyField :global(textarea) {
+  width: 100%;
+  min-height: 2.55rem;
+  border: 1px solid rgba(71, 221, 228, 0.24);
+  border-radius: 0;
+  background: rgba(4, 12, 11, 0.76);
+  color: var(--text);
+  padding: 0.58rem 0.7rem;
+  font: inherit;
+}
+
+.legacyField :global(textarea) {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.legacyField :global(select) {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.35rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338b7a4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
+}
+
+.legacyField :global(input:focus),
+.legacyField :global(select:focus),
+.legacyField :global(textarea:focus) {
+  border-color: var(--teal);
+  outline: 2px solid rgba(56, 183, 164, 0.16);
+}
+
+.legacyFieldSmall {
+  color: var(--subtle);
+}
+
+.legacyInfoPanel {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(71, 221, 228, 0.16);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 52%),
+    rgba(4, 12, 11, 0.58);
+}
+
+.legacyInfoPanel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(71, 221, 228, 0.12);
+}
+
+.legacyInfoPanel header span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.legacyInfoPanel header strong {
+  color: var(--text);
+}
+
+.legacyInfoPanelIdentity {
+  border-color: rgba(242, 169, 59, 0.22);
+}
+
+.legacyFactionStatic {
+  min-height: 2.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid rgba(71, 221, 228, 0.18);
+  background: rgba(4, 12, 11, 0.58);
+  padding: 0.55rem 0.7rem;
+  color: var(--muted);
+}
+
+.legacyFactionStatic img {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.legacyAlert {
+  margin: 1rem 0 0;
+  border: 1px solid rgba(242, 169, 59, 0.34);
+  background: rgba(242, 169, 59, 0.08);
+  padding: 0.7rem 0.85rem;
+  color: var(--amber);
+}
+
+.legacyDashboardCard {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 5rem;
+  border: 1px solid var(--line);
+  background: rgba(14, 15, 13, 0.42);
+  padding: 0.85rem;
+}
+
+.legacyDashboardCard input {
+  width: min(100%, 8rem);
+  min-height: 1.85rem;
+  border: 1px solid rgba(71, 221, 228, 0.24);
+  background: rgba(4, 12, 11, 0.7);
+  color: var(--amber);
+  padding: 0.25rem 0.4rem;
+  font: inherit;
+  font-weight: 900;
+}
+
+.legacyDashboardCardSpan {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(242, 169, 59, 0.42);
+  color: var(--amber);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+.legacyDashboardCardSmall {
+  display: block;
+  color: var(--subtle);
+}
+.legacyDashboardCardStrong {
+  display: block;
+  color: var(--amber);
+  font-size: 1.35rem;
+}
+.legacyDashboardCardEm {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--subtle);
+  font-size: 0.75rem;
+  font-style: normal;
+}
+.legacyDashboardCardInput {
+  max-width: 7rem;
+  margin-top: 0.2rem;
+  color: var(--amber);
+  font-weight: 900;
+}
+
+.legacyTrooperCard {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(243, 240, 232, 0.13);
+  background:
+    linear-gradient(90deg, rgba(56, 183, 164, 0.08), transparent 58%),
+    rgba(14, 15, 13, 0.44);
+}
+
+.legacyTrooperCardIsCaptain {
+  border-color: rgba(242, 169, 59, 0.55);
+}
+
+.legacyInfoGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+.legacyFormGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+.legacyDashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.legacyOperationStrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(71, 221, 228, 0.16);
+  background: rgba(4, 12, 11, 0.5);
+}
+
+.legacyOperationStrip strong {
+  display: block;
+  color: var(--text);
+}
+
+.legacyTrooperList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.emptyNote {
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed rgba(71, 221, 228, 0.2);
+  color: var(--muted);
+}
+
+.legacyShopLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.82fr) minmax(0, 1fr);
+  gap: 1rem;
+  overflow: auto;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(51, 199, 188, 0.18), transparent 58%),
+    linear-gradient(140deg, rgba(6, 10, 14, 0.82), rgba(10, 18, 26, 0.72));
+  border: 1px solid rgba(56, 183, 164, 0.18);
+}
+.legacyTrooperSummary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.legacyEditorHeader {
+  display: grid;
+  grid-template-columns: auto minmax(7rem, 0.35fr) minmax(9rem, 0.45fr) minmax(10rem, 1fr);
+  gap: 1rem;
+  align-items: end;
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 980px) {
+  .legacyCompanyHeader,
+  .legacyInfoGrid,
+  .legacyFormGrid,
+  .legacyDashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .legacyCompanyActions {
+    justify-content: stretch;
+  }
+
+  .legacyCompanyActions .commandButton {
+    width: 100%;
+  }
+
+  .legacyOperationStrip {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .companyManager {
+    width: min(100% - 0.75rem, 96rem);
+    padding-top: 0.75rem;
+  }
+
+  .legacyCompanyHeader {
+    grid-template-columns: auto 1fr;
+  }
+
+  .legacyCompanyActions {
+    grid-column: 1 / -1;
+  }
+
+  .legacyAccordionHeader {
+    flex-direction: column;
+  }
+
+  .legacyAccordionAction {
+    justify-content: stretch;
+    border-left: 0;
+    border-top: 1px solid rgba(242, 169, 59, 0.2);
+  }
+
+  .legacyAccordionAction .commandButton {
+    width: 100%;
+  }
+}

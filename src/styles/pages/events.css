@@ -1,0 +1,308 @@
+
+
+/* Event list, event manager, and event creation UI. */
+
+.event-form,
+.event-tool-panel {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.event-manager textarea,
+.event-manager select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(14, 15, 13, 0.72);
+  color: var(--text);
+  font: inherit;
+}
+
+.event-manager textarea {
+  min-height: 7rem;
+  padding: 0.75rem;
+  resize: vertical;
+}
+
+.event-manager select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 2.75rem;
+  padding: 0.65rem 2.4rem 0.65rem 0.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338b7a4' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.event-manager select option {
+  background: #1a1c18;
+}
+
+.event-manager textarea:focus,
+.event-manager select:focus {
+  border-color: var(--teal);
+  outline: 2px solid rgba(56, 183, 164, 0.16);
+}
+
+.event-form-grid,
+.event-register-grid,
+.event-tools-grid,
+.event-overview-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.event-form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.event-form-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.event-create-wizard .company-wizard__masthead {
+  margin-bottom: 0.75rem;
+}
+
+.event-create-wizard .company-wizard__masthead h2 {
+  margin: 0.35rem 0 0;
+  font-size: 1.5rem;
+}
+
+.event-create-wizard .company-wizard__panel h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.event-create-wizard .company-wizard__panel > p {
+  margin: 0.45rem 0 0.9rem;
+  color: var(--muted);
+}
+
+.event-wizard-note {
+  margin-bottom: 0.8rem;
+}
+
+.event-cr-suggestions {
+  border: 1px solid rgba(56, 183, 164, 0.32);
+  background: rgba(56, 183, 164, 0.08);
+  padding: 0.85rem;
+}
+
+.event-cr-suggestions ul {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.event-cr-suggestions li {
+  color: var(--text);
+}
+
+.wizard-actions-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 0.9rem;
+}
+
+.event-wizard-file-note {
+  margin: 0.7rem 0;
+  color: var(--muted);
+}
+
+.event-wizard-file-note a {
+  color: var(--teal);
+}
+
+.event-wizard-warning {
+  border: 1px solid rgba(242, 169, 59, 0.42);
+  background: rgba(242, 169, 59, 0.12);
+  color: var(--text);
+  padding: 0.75rem 0.8rem;
+}
+
+.event-register-grid {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.event-tools-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.event-overview-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 1rem 0;
+}
+
+.event-overview-grid > div,
+.event-tool-panel {
+  border: 1px solid rgba(243, 240, 232, 0.12);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 56%),
+    rgba(14, 15, 13, 0.46);
+  padding: 0.9rem;
+}
+
+.event-overview-grid strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--text);
+  font-size: 1.35rem;
+}
+
+.event-card-list,
+.event-participant-list,
+.event-round-list,
+.event-pairing-list {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.event-index-item,
+.event-participant-row,
+.event-round-card,
+.event-pairing-row {
+  border: 1px solid rgba(242, 169, 59, 0.26);
+  background:
+    linear-gradient(90deg, rgba(56, 183, 164, 0.08), rgba(14, 15, 13, 0.12)),
+    rgba(14, 15, 13, 0.45);
+}
+
+.event-index-item,
+.event-participant-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem;
+}
+
+.event-participant-row {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.event-index-item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.event-index-item h3,
+.event-participant-row h3,
+.event-round-card h3 {
+  margin: 0.15rem 0 0;
+  font-size: 1.2rem;
+}
+
+.event-index-item p,
+.event-round-card p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.event-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+}
+
+.event-mini-stats span,
+.event-status {
+  border: 1px solid rgba(56, 183, 164, 0.34);
+  background: rgba(56, 183, 164, 0.08);
+  padding: 0.25rem 0.45rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.event-detail-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.event-detail-header h1 {
+  max-width: none;
+  margin-bottom: 0.6rem;
+  font-size: clamp(3.2rem, 8vw, 6rem);
+}
+
+.event-workspace-card {
+  margin-top: 1rem;
+}
+
+.event-round-card {
+  overflow: hidden;
+}
+
+.event-round-card > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.event-round-card > .event-mini-stats,
+.event-round-card > .event-pairing-list {
+  padding: 0 0.95rem;
+}
+
+.event-round-card > .event-pairing-list {
+  padding-bottom: 0.95rem;
+}
+
+.event-status {
+  align-self: start;
+  white-space: nowrap;
+}
+
+.event-status--active {
+  border-color: rgba(242, 169, 59, 0.56);
+  background: rgba(242, 169, 59, 0.12);
+  color: var(--amber);
+}
+
+.event-status--complete {
+  border-color: rgba(56, 183, 164, 0.56);
+  background: rgba(56, 183, 164, 0.12);
+  color: var(--teal);
+}
+
+.event-status--scheduled {
+  border-color: rgba(189, 174, 214, 0.5);
+  background: rgba(189, 174, 214, 0.12);
+  color: var(--lilac-soft);
+}
+
+.event-pairing-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, auto) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+}
+
+.event-pairing-row div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.event-pairing-row span,
+.event-pairing-row small {
+  color: var(--muted);
+}
+

@@ -1,0 +1,10 @@
+/* Badge styles extracted from legacy.css */
+
+.legacy-level-badge,
+.legacy-trooper-type {
+  border: 1px solid rgba(56, 183, 164, 0.5);
+  color: var(--teal);
+  padding: 0.25rem 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+}

@@ -1,3 +1,4 @@
+import styles from "./GoogleAuthButton.module.css";
 import React, { useEffect, useState } from "react";
 import {
   initializeGAPIClient,
@@ -100,14 +101,14 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
   if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID") return null;
 
   return (
-    <div className="google-auth-button">
+    <div className={styles.googleAuthButton}>
       {signedIn ? (
-        <div className="auth-menu">
-          {userName && <span className="user-name">{userName}</span>}
+        <div className={styles.authMenu}>
+          {userName && <span className={styles.userName}>{userName}</span>}
           <button
             onClick={handleSignOut}
             disabled={loading}
-            className="logout-btn"
+            className={styles.logoutBtn}
             title="Sign out of Google"
           >
             {loading ? "Signing out..." : "Sign Out"}
@@ -117,13 +118,13 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
         <button
           onClick={handleSignIn}
           disabled={loading || !ready}
-          className="login-btn"
+          className={styles.loginBtn}
           title="Sign in with Google to save data to your Drive"
         >
           {loading ? "Signing in..." : "Sign In with Google"}
         </button>
       )}
-      {error && <div className="auth-error">{error}</div>}
+      {error && <div className={styles.authError}>{error}</div>}
     </div>
   );
 }

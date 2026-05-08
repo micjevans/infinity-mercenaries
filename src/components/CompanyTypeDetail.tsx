@@ -1,3 +1,4 @@
+import styles from "./CompanyTypeDetail.module.css";
 /**
  * React equivalent of the CompanyTypeCard + CompanyTypeSection Astro components.
  * Uses the exact same CSS classes so it renders identically to the rules page.
@@ -25,11 +26,17 @@ function TypeSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className={`company-type-section tone-${tone}`}>
+    <section
+      className={`${styles.companyTypeSection} ${styles[`tone${capitalize(tone)}`]}`}
+    >
       <h3>{title}</h3>
       <div>{children}</div>
     </section>
   );
+
+  function capitalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 }
 
 export type CompanyTypeVariant =
@@ -48,7 +55,7 @@ export function CompanyTypeDetail({
   const iconPath = ICON_PATHS[variant] ?? "";
 
   const icon = (
-    <span className="company-type-icon" aria-hidden="true">
+    <span className={styles.companyTypeIcon} aria-hidden="true">
       <svg
         viewBox="0 0 24 24"
         aria-hidden="true"
@@ -58,7 +65,9 @@ export function CompanyTypeDetail({
   );
 
   return (
-    <section className={`company-type-card variant-${variant}`}>
+    <section
+      className={`${styles.companyTypeCard} ${styles[`variant${capitalize(variant)}`]}`}
+    >
       {icon}
       {variant === "standard" && <StandardDetail />}
       {variant === "cohesive" && <CohesiveDetail />}
@@ -74,7 +83,7 @@ function StandardDetail() {
   return (
     <>
       <h2>Standard Company</h2>
-      <p className="company-type-tagline">
+      <p className={styles.companyTypeTagline}>
         The flexible all-rounder — maximum faction freedom with no tradeoffs.
       </p>
       <TypeSection title="Setup" tone="setup">
@@ -97,7 +106,7 @@ function CohesiveDetail() {
   return (
     <>
       <h2>Cohesive Company</h2>
-      <p className="company-type-tagline">
+      <p className={styles.companyTypeTagline}>
         An elite synchronized unit built around a single fireteam's deep
         synergy.
       </p>
@@ -148,7 +157,7 @@ function LeaderDetail() {
   return (
     <>
       <h2>Inspiring Leader</h2>
-      <p className="company-type-tagline">
+      <p className={styles.companyTypeTagline}>
         One exceptional Captain leading a crew of irregulars from across the
         Human Sphere.
       </p>
@@ -176,7 +185,7 @@ function AirborneDetail() {
   return (
     <>
       <h2>Airborne Company</h2>
-      <p className="company-type-tagline">
+      <p className={styles.companyTypeTagline}>
         A hard-insertion force built entirely around Airborne Deployment.
       </p>
       <TypeSection title="Setup" tone="setup">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AppIcon } from "./AppIcon";
+import styles from "./CreateEventWizard.module.css";
 import {
   createEventRegistrationForm,
   createSharedFile,
@@ -287,49 +288,45 @@ export default function CreateEventWizard() {
       return;
     }
 
+    const timestamp = new Date().toISOString();
+    const roundCount = details.rounds ? Number(details.rounds) : undefined;
+    const maxPlayers = details.maxPlayers
+      ? Number(details.maxPlayers)
+      : undefined;
+    const registrationForm = registrationTemplate;
+
+    const startingCr = Number(details.startingCr);
+
+    const eventPayload = {
+      schemaVersion: 1,
+      kind: "infinity-mercenaries-event",
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      organizer: {
+        name: getCurrentUserName() || "Organizer",
+      },
+      event: {
+        name: details.name.trim(),
+        description: details.description.trim() || "",
+        location: details.location.trim() || "",
+        maxPlayers: Number.isFinite(maxPlayers as number)
+          ? maxPlayers
+          : undefined,
+        startDate: toIsoDate(details.startDate),
+        endDate: toIsoDate(details.endDate),
+        rounds: Number.isFinite(roundCount as number) ? roundCount : undefined,
+        startingCr,
+        rules: {
+          allEnabled: true,
+          note: "All rules are currently enabled. Organizer restrictions will be configurable in a future update.",
+        },
+      },
+      registrationForm,
+      participants: [],
+      registeredCompanies: [],
+    };
+
     try {
-      setLoading(true);
-      setError(null);
-
-      const timestamp = new Date().toISOString();
-      const startingCr = Number(details.startingCr);
-      const roundCount = details.rounds ? Number(details.rounds) : undefined;
-      const maxPlayers = details.maxPlayers
-        ? Number(details.maxPlayers)
-        : undefined;
-      const registrationForm = registrationTemplate;
-
-      const eventPayload = {
-        schemaVersion: 1,
-        kind: "infinity-mercenaries-event",
-        createdAt: timestamp,
-        updatedAt: timestamp,
-        organizer: {
-          name: getCurrentUserName() || "Organizer",
-        },
-        event: {
-          name: details.name.trim(),
-          description: details.description.trim() || "",
-          location: details.location.trim() || "",
-          maxPlayers: Number.isFinite(maxPlayers as number)
-            ? maxPlayers
-            : undefined,
-          startDate: toIsoDate(details.startDate),
-          endDate: toIsoDate(details.endDate),
-          rounds: Number.isFinite(roundCount as number)
-            ? roundCount
-            : undefined,
-          startingCr,
-          rules: {
-            allEnabled: true,
-            note: "All rules are currently enabled. Organizer restrictions will be configurable in a future update.",
-          },
-        },
-        registrationForm,
-        participants: [],
-        registeredCompanies: [],
-      };
-
       const fileName = `mercs-event-${makeSlug(details.name)}-${Date.now()}.json`;
       const folders = await getOrCreateOrganizerFolders();
       const fileId = await createSharedFile(

@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import "../../../styles/global.css";
+import "../../../styles/index.css";
 
 export async function getStaticPaths() {
   const entries = await getCollection("contracts");
@@ -48,11 +48,11 @@ const section = entry?.data?.contractType ?? "Contract";
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="theme-control-panel">
     <main class="contract-embed">
       <section class="page-hero compact markdown-hero">
         <p class="eyebrow">{section}</p>

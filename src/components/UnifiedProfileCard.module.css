@@ -1,0 +1,512 @@
+/* Unified profile card HUD styling. */
+
+.legacyProfileStack {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.legacyProfileGroup {
+  overflow: hidden;
+  border: 1px solid rgba(71, 221, 228, 0.22);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 44%),
+    rgba(4, 12, 11, 0.72);
+}
+
+.legacyProfileSheet {
+  display: grid;
+  gap: 0;
+}
+
+.legacyProfileSheetHeader {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+  border: 0;
+  border-bottom: 1px solid rgba(71, 221, 228, 0.18);
+  background:
+    linear-gradient(90deg, rgba(242, 169, 59, 0.14), transparent 34%),
+    rgba(7, 18, 16, 0.9);
+  color: var(--text);
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+.legacyProfileSheetHeader.isCollapsible {
+  cursor: pointer;
+}
+
+.legacyProfileSheetHeader:hover,
+.legacyProfileSheetHeader:focus-visible {
+  outline: none;
+  background:
+    linear-gradient(90deg, rgba(242, 169, 59, 0.18), transparent 38%),
+    rgba(8, 25, 23, 0.96);
+}
+
+.legacyProfileHeadLeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.legacyProfileHeadLogo {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+  border-radius: 999px;
+  filter: drop-shadow(0 0 0.35rem rgba(242, 169, 59, 0.32));
+}
+
+.legacyProfileHeadOrders {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.legacyProfileCategory {
+  display: block;
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.legacyProfileSheetHeader h4 {
+  margin: 0.1rem 0 0;
+  color: var(--text);
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  line-height: 1.05;
+}
+
+.legacyProfileHeadMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  justify-self: end;
+}
+
+.legacyProfileHeadChips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.legacyProfileChip,
+.legacyProfileChipLevel,
+.legacyProfileChipSwc,
+.legacyProfileChipType {
+  min-width: 3rem;
+  display: grid;
+  gap: 0.05rem;
+  border: 1px solid rgba(71, 221, 228, 0.22);
+  background: rgba(56, 183, 164, 0.08);
+  padding: 0.28rem 0.45rem;
+  text-align: center;
+}
+
+.legacyProfileChipLevel,
+.legacyProfileChipSwc {
+  border-color: rgba(242, 169, 59, 0.38);
+  background: rgba(242, 169, 59, 0.09);
+}
+
+.legacyProfileChip small,
+.legacyProfileChipLevel small,
+.legacyProfileChipSwc small,
+.legacyProfileChipType small {
+  color: var(--subtle);
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.legacyProfileChip b,
+.legacyProfileChipLevel b,
+.legacyProfileChipSwc b,
+.legacyProfileChipType b {
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.1;
+}
+
+.legacyProfileChipLevel b,
+.legacyProfileChipSwc b {
+  color: var(--amber);
+}
+
+.legacyProfileChevron {
+  color: var(--teal);
+  font-size: 0.8rem;
+}
+
+.legacyUnitStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+  gap: 1px;
+  border-bottom: 1px solid rgba(71, 221, 228, 0.16);
+  background: rgba(71, 221, 228, 0.16);
+}
+
+.legacyUnitStats div {
+  min-height: 3.8rem;
+  display: grid;
+  place-items: center;
+  gap: 0.12rem;
+  background:
+    linear-gradient(180deg, rgba(56, 183, 164, 0.08), transparent),
+    rgba(5, 13, 12, 0.92);
+  padding: 0.45rem 0.35rem;
+}
+
+.legacyUnitStats span {
+  color: var(--subtle);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+}
+
+.legacyUnitStats strong {
+  color: var(--text);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1;
+}
+
+.legacyProfileDetails {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.legacyDetailLine {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  align-items: start;
+}
+
+.legacyDetailLine strong {
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.legacyDetailLine span {
+  min-width: 0;
+  color: var(--text);
+}
+
+:global(.profile-item-link) {
+  color: var(--amber);
+  text-decoration-color: rgba(242, 169, 59, 0.45);
+  text-underline-offset: 0.16em;
+}
+
+:global(.profile-item-link:hover),
+:global(.profile-item-link:focus-visible) {
+  color: #ffd17a;
+  text-decoration-color: currentColor;
+}
+
+.legacyOptionHeader {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 4rem 4rem;
+  gap: 0.65rem;
+  align-items: center;
+  border-top: 1px solid rgba(71, 221, 228, 0.16);
+  border-bottom: 1px solid rgba(71, 221, 228, 0.16);
+  background: rgba(47, 41, 26, 0.56);
+  padding: 0.45rem 0.8rem;
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.legacyOptionHeaderAction {
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+}
+
+.legacyOptionRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 4rem 4rem;
+  gap: 0.65rem;
+  align-items: center;
+  border: 0;
+  border-bottom: 1px solid rgba(71, 221, 228, 0.12);
+  background: rgba(5, 13, 12, 0.64);
+  color: var(--text);
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+}
+
+.legacyOptionRow:hover,
+.legacyOptionRow:focus-visible {
+  background: rgba(56, 183, 164, 0.1);
+  outline: none;
+}
+
+.legacyOptionRowAction {
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+}
+
+.legacyOptionRowNameOnly {
+  font-weight: 700;
+}
+
+.legacyOptionOrders {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legacyOptionBody {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.legacyOptionBody strong {
+  line-height: 1.2;
+}
+
+.legacyOptionSkills {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.legacyOptionDetailLine,
+:global(.legacy-option-detail-line) {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.legacyOptionDetailLine em,
+:global(.legacy-option-detail-line) em {
+  color: var(--teal);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.legacyOptionSwc,
+.legacyOptionPoints,
+.legacyOptionAction {
+  justify-self: end;
+  color: var(--amber);
+  font-weight: 900;
+}
+
+.legacyWeaponProfiles {
+  margin: 0;
+  border-top: 1px solid rgba(71, 221, 228, 0.18);
+}
+
+.legacyWeaponProfiles summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  background:
+    linear-gradient(90deg, rgba(56, 183, 164, 0.13), transparent 48%),
+    rgba(7, 20, 18, 0.86);
+  padding: 0.8rem 1rem;
+  color: var(--text);
+  font-weight: 900;
+  list-style: none;
+}
+
+.legacyWeaponProfiles summary::-webkit-details-marker {
+  display: none;
+}
+
+.legacyWeaponProfiles summary::before {
+  content: ">";
+  color: var(--teal);
+  font-family: var(--font-mono);
+}
+
+.legacyWeaponProfiles[open] summary::before {
+  content: "v";
+}
+
+.legacyWeaponProfiles summary small {
+  min-width: 1.7rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(71, 221, 228, 0.28);
+  color: var(--teal);
+  font-size: 0.72rem;
+}
+
+.legacyWeaponProfilesList {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.legacyWeaponProfileCard {
+  overflow: hidden;
+  border: 1px solid rgba(71, 221, 228, 0.18);
+  background: rgba(4, 12, 11, 0.66);
+}
+
+.legacyWeaponProfileCard h5 {
+  margin: 0;
+  border-bottom: 1px solid rgba(71, 221, 228, 0.14);
+  background: rgba(56, 183, 164, 0.07);
+  padding: 0.65rem 0.8rem;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.legacyWeaponProfileTableWrap {
+  overflow-x: auto;
+}
+
+.legacyWeaponProfileTable {
+  width: 100%;
+  min-width: 56rem;
+  border-collapse: collapse;
+}
+
+.legacyWeaponProfileTable th,
+.legacyWeaponProfileTable td {
+  border: 1px solid rgba(71, 221, 228, 0.13);
+  padding: 0.55rem 0.6rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.legacyWeaponProfileTable th {
+  background: rgba(47, 41, 26, 0.48);
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legacyWeaponProfileTable td {
+  background: rgba(5, 13, 12, 0.54);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.legacyWeaponModeCell {
+  min-width: 10rem;
+  color: var(--text);
+  font-weight: 850;
+  text-align: left;
+}
+
+.legacyWeaponRangeGridCell {
+  min-width: 16rem;
+}
+
+.legacyWeaponRangeGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(2rem, 1fr));
+  gap: 0.22rem;
+}
+
+.legacyWeaponRangeMod {
+  display: grid;
+  place-items: center;
+  gap: 0.12rem;
+  min-height: 2.4rem;
+  border: 1px solid rgba(71, 221, 228, 0.13);
+  background: rgba(56, 183, 164, 0.05);
+  font-size: 0.78rem;
+}
+
+.legacyWeaponRangeMod small {
+  color: var(--subtle);
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.legacyWeaponRangeMod b {
+  color: var(--text);
+  line-height: 1;
+}
+
+.legacyWeaponRangeMod:global(.is-plus-6),
+.legacyWeaponRangeMod:global(.is-plus-3) {
+  border-color: rgba(141, 255, 207, 0.28);
+  background: rgba(141, 255, 207, 0.08);
+}
+
+.legacyWeaponRangeMod:global(.is-plus-6) b,
+.legacyWeaponRangeMod:global(.is-plus-3) b {
+  color: var(--hud-green);
+}
+
+.legacyWeaponRangeMod:global(.is-minus-6),
+.legacyWeaponRangeMod:global(.is-minus-3) {
+  border-color: rgba(255, 107, 95, 0.26);
+  background: rgba(255, 107, 95, 0.07);
+}
+
+.legacyWeaponRangeMod:global(.is-minus-6) b,
+.legacyWeaponRangeMod:global(.is-minus-3) b {
+  color: var(--hud-red);
+}
+
+.legacyWeaponRangeMod:global(.is-zero) b {
+  color: var(--muted);
+}
+
+.legacyWeaponTraitsCell {
+  min-width: 14rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-align: left;
+}
+
+@media (max-width: 760px) {
+  .legacyProfileSheetHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .legacyProfileHeadMeta {
+    justify-self: stretch;
+  }
+
+  .legacyProfileHeadChips {
+    justify-content: flex-start;
+  }
+
+  .legacyDetailLine {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .legacyOptionHeader,
+  .legacyOptionRow,
+  .legacyOptionHeaderAction,
+  .legacyOptionRowAction {
+    grid-template-columns: 1fr;
+  }
+
+  .legacyOptionOrders,
+  .legacyOptionSwc,
+  .legacyOptionPoints,
+  .legacyOptionAction {
+    justify-self: start;
+  }
+}

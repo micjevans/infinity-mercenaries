@@ -1,0 +1,46 @@
+/* Theme variables and color tokens for Infinity: Mercenaries control panel theme. */
+:root {
+  color-scheme: dark;
+  --bg: #090c0b;
+  --bg-soft: #101412;
+  --panel: #161b19;
+  --panel-strong: #1e2520;
+  --text: #e8f0ee;
+  --muted: #8fa89f;
+  --subtle: #4d6059;
+  --line: rgba(71, 221, 228, 0.12);
+  --amber: #d6ff3f;
+  --amber-deep: #7ea81f;
+  --teal: #38b7a4;
+  --lilac: #bdaed6;
+  --lilac-soft: #d7cee8;
+  --lilac-mid: #b39acb;
+  --lilac-deep: #7f689f;
+  --red: #d84c3e;
+  --arwes-cyan: #47dde4;
+  --arwes-cyan-bright: #00f0ff;
+  --arwes-cyan-dim: rgba(0, 240, 255, 0.12);
+  --arwes-cyan-soft: rgba(71, 221, 228, 0.2);
+  --arwes-amber: #d6ff3f;
+  --arwes-lime: #d6ff3f;
+  --arwes-ink: #05100e;
+  --hud-green: #8dffcf;
+  --hud-red: #ff6b5f;
+  /* Glass / glow tokens */
+  --glass-bg: rgba(5, 16, 14, 0.6);
+  --glass-border: rgba(71, 221, 228, 0.18);
+  --glow-cyan: 0 0 18px rgba(71, 221, 228, 0.12);
+  --glow-amber: 0 0 18px rgba(255, 191, 102, 0.16);
+  --surface-0: rgba(3, 10, 10, 0.92);
+  --surface-1: rgba(6, 22, 21, 0.78);
+  --surface-2: rgba(10, 34, 32, 0.72);
+  --hud-line: rgba(71, 221, 228, 0.22);
+  --hud-line-strong: rgba(71, 221, 228, 0.56);
+  --hud-angle: polygon(0.75rem 0, 100% 0, 100% calc(100% - 0.75rem), calc(100% - 0.75rem) 100%, 0 100%, 0 0.75rem);
+  --font-ui: "Exo 2", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Orbitron", "Exo 2", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Share Tech Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  --max: 1180px;
+  --header-height: 72px;
+  font-family: var(--font-ui);
+}

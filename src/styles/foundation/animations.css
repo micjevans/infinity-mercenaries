@@ -1,0 +1,43 @@
+/* Keyframes and reusable animations for Infinity: Mercenaries */
+@keyframes shimmer-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 240% 50%;
+  }
+}
+
+@keyframes title-float {
+  0%, 100% {
+    transform: translateY(0);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px);
+    filter: hue-rotate(6deg);
+  }
+}
+
+@keyframes copy-pulse {
+  0%, 100% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes typing-reveal {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes typing-caret {
+  0%, 49% {
+    border-right-color: rgba(71, 221, 228, 0.95);
+  }
+  50%, 100% {
+    border-right-color: transparent;
+  }
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import styles from "./UnifiedProfileCard.module.css";
 import type React from "react";
 import {
   infinityMetadata,
@@ -303,7 +304,7 @@ export function ProfileDetailLine({
 }) {
   if (!children) return null;
   return (
-    <p className="legacy-detail-line">
+    <p className={styles.legacyDetailLine}>
       <strong>{label}</strong>
       <span {...valueProps}>{children}</span>
     </p>
@@ -340,7 +341,7 @@ export function ProfileStats({
 }) {
   const stats = showAva ? [...STAT_KEYS, "ava" as const] : STAT_KEYS;
   return (
-    <div className="legacy-unit-stats">
+    <div className={styles.legacyUnitStats}>
       {stats.map((stat) => (
         <div key={stat}>
           <span>{stat === "move" ? "MOV" : stat.toUpperCase()}</span>
@@ -377,19 +378,25 @@ export function ProfileOptionRow({
   );
   return (
     <button
-      className={`legacy-option-row${hasDetails ? "" : " legacy-option-row--name-only"}${hideSwcPts ? " legacy-option-row--action" : ""}`}
+      className={[
+        styles.legacyOptionRow,
+        !hasDetails && styles.legacyOptionRowNameOnly,
+        hideSwcPts && styles.legacyOptionRowAction,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       type="button"
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
     >
-      <span className="legacy-option-orders">
+      <span className={styles.legacyOptionOrders}>
         {renderOrderIcons(option.orders)}
       </span>
-      <span className="legacy-option-body">
+      <span className={styles.legacyOptionBody}>
         <strong>
           {String(option.name || "Profile")}
           {(option.skills || []).length > 0 && (
-            <span className="legacy-option-skills">
+            <span className={styles.legacyOptionSkills}>
               {" "}
               (
               <MetadataItemList
@@ -402,7 +409,7 @@ export function ProfileOptionRow({
           )}
         </strong>
         {(option.weapons || []).length > 0 && (
-          <span className="legacy-option-detail-line">
+          <span className={styles.legacyOptionDetailLine}>
             <em>Weapons: </em>
             <MetadataItemList
               list={option.weapons}
@@ -433,11 +440,15 @@ export function ProfileOptionRow({
         )}
       </span>
       {hideSwcPts ? (
-        <span className="legacy-option-action">{actionLabel || "Select"}</span>
+        <span className={styles.legacyOptionAction}>
+          {actionLabel || "Select"}
+        </span>
       ) : (
         <>
-          <span className="legacy-option-swc">{String(option.swc ?? "-")}</span>
-          <span className="legacy-option-points">
+          <span className={styles.legacyOptionSwc}>
+            {String(option.swc ?? "-")}
+          </span>
+          <span className={styles.legacyOptionPoints}>
             {String(option.points ?? "-")}
           </span>
         </>
@@ -692,10 +703,10 @@ export function UnitProfileDisplay({
   if (!groupsToRender.length) return null;
 
   return (
-    <div className="legacy-profile-stack">
+    <div className={styles.legacyProfileStack}>
       {groupsToRender.map((group, groupIndex) => (
         <section
-          className="legacy-profile-group"
+          className={styles.legacyProfileGroup}
           key={`${unit.isc || "unit"}-${groupIndex}`}
         >
           {(() => {
@@ -709,7 +720,7 @@ export function UnitProfileDisplay({
               | undefined;
             return (group.profiles || []).map((profile, profileIndex) => (
               <div
-                className="legacy-profile-sheet"
+                className={styles.legacyProfileSheet}
                 key={`${unit.isc || "unit"}-${groupIndex}-${profileIndex}`}
               >
                 {(() => {
@@ -728,11 +739,10 @@ export function UnitProfileDisplay({
                   );
 
                   const headerClasses = [
-                    "legacy-profile-sheet__header",
-                    headerSummary || (unit as any).resume?.logo
-                      ? "has-summary"
-                      : "",
-                    collapsible ? "is-collapsible" : "",
+                    styles.legacyProfileSheetHeader,
+                    (headerSummary || (unit as any).resume?.logo) &&
+                      styles.hasSummary,
+                    collapsible && styles.isCollapsible,
                   ]
                     .filter(Boolean)
                     .join(" ");
@@ -752,10 +762,10 @@ export function UnitProfileDisplay({
                       {...(headerProps as any)}
                     >
                       {((unit as any).resume?.logo || headerSummary) && (
-                        <div className="legacy-profile-head-leading">
+                        <div className={styles.legacyProfileHeadLeading}>
                           {(unit as any).resume?.logo && (
                             <img
-                              className="legacy-profile-head-logo"
+                              className={styles.legacyProfileHeadLogo}
                               src={(unit as any).resume.logo}
                               alt=""
                               aria-hidden="true"
@@ -763,7 +773,7 @@ export function UnitProfileDisplay({
                           )}
                           {headerSummary && (
                             <div
-                              className="legacy-profile-head-orders"
+                              className={styles.legacyProfileHeadOrders}
                               aria-label="Orders"
                             >
                               {renderOrderIcons(headerSummary.orders)}
@@ -772,32 +782,32 @@ export function UnitProfileDisplay({
                         </div>
                       )}
                       <div>
-                        <span className="legacy-profile-category">
+                        <span className={styles.legacyProfileCategory}>
                           {categoryText}
                         </span>
                         <h4>{String(profile.name || unit.isc || "Profile")}</h4>
                       </div>
-                      <div className="legacy-profile-head-meta">
-                        <div className="legacy-profile-head-chips">
+                      <div className={styles.legacyProfileHeadMeta}>
+                        <div className={styles.legacyProfileHeadChips}>
                           {headerSummary?.level !== undefined && (
-                            <span className="legacy-profile-chip legacy-profile-chip--level">
+                            <span className={styles.legacyProfileChipLevel}>
                               <small>LVL</small>
                               <b>{headerSummary.level}</b>
                             </span>
                           )}
                           {headerSummary && (
                             <>
-                              <span className="legacy-profile-chip legacy-profile-chip--swc">
+                              <span className={styles.legacyProfileChipSwc}>
                                 <small>SWC</small>
                                 <b>{headerSummary.swc ?? "-"}</b>
                               </span>
-                              <span className="legacy-profile-chip">
+                              <span className={styles.legacyProfileChip}>
                                 <small>PTS</small>
                                 <b>{headerSummary.points ?? "-"}</b>
                               </span>
                             </>
                           )}
-                          <span className="legacy-profile-chip legacy-profile-chip--type">
+                          <span className={styles.legacyProfileChipType}>
                             <small>Type</small>
                             <b>{troopType}</b>
                           </span>
@@ -805,7 +815,7 @@ export function UnitProfileDisplay({
                         </div>
                         {collapsible && (
                           <span
-                            className="legacy-profile-chevron"
+                            className={styles.legacyProfileChevron}
                             aria-hidden="true"
                           >
                             {expanded ? "▲" : "▼"}
@@ -822,7 +832,7 @@ export function UnitProfileDisplay({
                       showAva={showAva}
                       npcDataAttrs={npcDataAttrs}
                     />
-                    <div className="legacy-profile-details">
+                    <div className={styles.legacyProfileDetails}>
                       <ProfileItemLine
                         label="Skills"
                         list={profile.skills}
@@ -852,7 +862,12 @@ export function UnitProfileDisplay({
           {(!collapsible || expanded) && (group.options || []).length > 0 && (
             <>
               <div
-                className={`legacy-option-header${hideOptionSwcPts ? " legacy-option-header--action" : ""}`}
+                className={[
+                  styles.legacyOptionHeader,
+                  hideOptionSwcPts && styles.legacyOptionHeaderAction,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
                 <span aria-hidden="true" />
                 <span>Name</span>
@@ -875,20 +890,20 @@ export function UnitProfileDisplay({
         </section>
       ))}
       {(!collapsible || expanded) && weaponProfileGroups.length > 0 && (
-        <details className="legacy-weapon-profiles">
+        <details className={styles.legacyWeaponProfiles}>
           <summary>
             Weapon Profiles
             <small>{weaponProfileGroups.length}</small>
           </summary>
-          <div className="legacy-weapon-profiles__list">
+          <div className={styles.legacyWeaponProfilesList}>
             {weaponProfileGroups.map((weaponGroup) => (
               <article
                 key={weaponGroup.key}
-                className="legacy-weapon-profile-card"
+                className={styles.legacyWeaponProfileCard}
               >
                 <h5>{weaponGroup.name}</h5>
-                <div className="legacy-weapon-profile-table-wrap">
-                  <table className="legacy-weapon-profile-table">
+                <div className={styles.legacyWeaponProfileTableWrap}>
+                  <table className={styles.legacyWeaponProfileTable}>
                     <thead>
                       <tr>
                         <th>Mode</th>
@@ -908,7 +923,7 @@ export function UnitProfileDisplay({
                           <tr
                             key={`${weaponGroup.key}-${row.mode}-${rowIndex}`}
                           >
-                            <td className="legacy-weapon-mode-cell">
+                            <td className={styles.legacyWeaponModeCell}>
                               {row.mode}
                             </td>
                             <td>{row.damage}</td>
@@ -916,12 +931,17 @@ export function UnitProfileDisplay({
                             <td>{row.ammunition}</td>
                             <td>{row.saving}</td>
                             <td>{row.savingNum}</td>
-                            <td className="legacy-weapon-range-grid-cell">
-                              <div className="legacy-weapon-range-grid">
+                            <td className={styles.legacyWeaponRangeGridCell}>
+                              <div className={styles.legacyWeaponRangeGrid}>
                                 {rangeLabels.map((label, index) => (
                                   <span
                                     key={`${weaponGroup.key}-${rowIndex}-${label}`}
-                                    className={`legacy-weapon-range-mod ${getRangeModClass(rangeMods[index] || "")}`.trim()}
+                                    className={[
+                                      styles.legacyWeaponRangeMod,
+                                      getRangeModClass(rangeMods[index] || ""),
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" ")}
                                   >
                                     <small>{label}</small>
                                     <b>{rangeMods[index] || "-"}</b>
@@ -929,7 +949,7 @@ export function UnitProfileDisplay({
                                 ))}
                               </div>
                             </td>
-                            <td className="legacy-weapon-traits-cell">
+                            <td className={styles.legacyWeaponTraitsCell}>
                               {row.properties.length
                                 ? row.properties.join(", ")
                                 : "-"}

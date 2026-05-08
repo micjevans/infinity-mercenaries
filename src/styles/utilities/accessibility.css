@@ -1,0 +1,33 @@
+/* Accessibility utility classes */
+.u-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 10000;
+  transform: translateY(-180%);
+  border: 1px solid rgba(71, 221, 228, 0.62);
+  background: rgba(4, 15, 15, 0.94);
+  color: var(--text);
+  padding: 0.65rem 0.85rem;
+  font-weight: 850;
+  text-decoration: none;
+  transition: transform 0.16s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid rgba(255, 191, 102, 0.72);
+  outline-offset: 2px;
+}

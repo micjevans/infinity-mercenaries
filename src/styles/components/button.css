@@ -1,0 +1,73 @@
+/* Button styles extracted from legacy.css */
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--glass-border);
+  text-decoration: none;
+  font-weight: 800;
+  transition:
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.button.primary {
+  border-color: rgba(242, 169, 59, 0.8);
+  background: var(--amber);
+  color: #17120a;
+}
+
+.button.primary:hover,
+.button.primary:focus-visible {
+  background: #f5c346;
+  box-shadow: 0 0 18px rgba(242, 169, 59, 0.3);
+  transform: translateY(-1px);
+}
+
+.button.secondary {
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text);
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible {
+  border-color: rgba(71, 221, 228, 0.5);
+  box-shadow: 0 0 14px rgba(71, 221, 228, 0.12);
+  color: var(--arwes-cyan);
+  transform: translateY(-1px);
+}
+
+.icon-button {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(242, 169, 59, 0.5);
+  background: rgba(242, 169, 59, 0.08);
+  color: var(--amber);
+  font: inherit;
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.icon-button svg,
+.command-button svg {
+  flex: 0 0 auto;
+  stroke: currentColor;
+}

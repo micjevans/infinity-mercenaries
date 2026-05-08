@@ -1,0 +1,7 @@
+/* Text utility classes */
+.u-text-muted {
+  color: var(--muted) !important;
+}
+.u-text-accent {
+  color: var(--amber) !important;
+}

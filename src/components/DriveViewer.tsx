@@ -1,3 +1,4 @@
+import styles from "./DriveViewer.module.css";
 import React, { useState, useEffect } from "react";
 import {
   isSignedIn as getIsSignedIn,
@@ -64,8 +65,8 @@ export default function DriveViewer() {
 
   if (!fileId) {
     return (
-      <div className="viewer-state">
-        <p className="error-message">
+      <div className={styles.viewerState}>
+        <p className={styles.errorMessage}>
           No file ID in the URL. Make sure you used the full share link.
         </p>
       </div>
@@ -74,8 +75,8 @@ export default function DriveViewer() {
 
   if (!signedIn) {
     return (
-      <div className="viewer-state">
-        <p className="info-message">
+      <div className={styles.viewerState}>
+        <p className={styles.infoMessage}>
           Sign in with Google using the button in the nav bar to view this
           shared data.
         </p>
@@ -85,16 +86,16 @@ export default function DriveViewer() {
 
   if (loading) {
     return (
-      <div className="viewer-state">
-        <p className="info-message">Loading shared data...</p>
+      <div className={styles.viewerState}>
+        <p className={styles.infoMessage}>Loading shared data...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="viewer-state">
-        <p className="error-message">{error}</p>
+      <div className={styles.viewerState}>
+        <p className={styles.errorMessage}>{error}</p>
       </div>
     );
   }
@@ -114,24 +115,24 @@ export default function DriveViewer() {
       );
     }
     return (
-      <div className="viewer-state">
-        <p className="info-message">Redirecting to company editor...</p>
+      <div className={styles.viewerState}>
+        <p className={styles.infoMessage}>Redirecting to company editor...</p>
       </div>
     );
   }
 
   return (
-    <div className="viewer-content">
-      <div className="form-section">
+    <div className={styles.viewerContent}>
+      <div className={styles.formSection}>
         <h2>{isEventFile ? "Event Viewer" : "Shared Data"}</h2>
         {data.lastUpdated && (
-          <p className="viewer-meta">
+          <p className={styles.viewerMeta}>
             Last updated: {new Date(data.lastUpdated).toLocaleString()}
           </p>
         )}
         {isEventFile && (
           <>
-            <div className="data-display">
+            <div className={styles.dataDisplay}>
               <p>
                 <strong>Event Name:</strong>{" "}
                 {data?.event?.name || "Unnamed event"}
@@ -148,7 +149,7 @@ export default function DriveViewer() {
                 </p>
               )}
             </div>
-            <div className="data-display">
+            <div className={styles.dataDisplay}>
               <p>
                 <strong>Event Workspace</strong>
               </p>
@@ -158,7 +159,7 @@ export default function DriveViewer() {
               </p>
               {fileId && (
                 <a
-                  className="primary-btn"
+                  className={styles.primaryBtn}
                   href={`/events/manage/?fileId=${encodeURIComponent(fileId)}`}
                 >
                   Open Event Workspace
@@ -168,7 +169,7 @@ export default function DriveViewer() {
           </>
         )}
         {testData ? (
-          <div className="data-display">
+          <div className={styles.dataDisplay}>
             <p>
               <strong>Test Name:</strong> {testData.testName}
             </p>
@@ -185,7 +186,7 @@ export default function DriveViewer() {
           </div>
         ) : (
           !isEventFile && (
-            <div className="data-display">
+            <div className={styles.dataDisplay}>
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </div>
           )

@@ -1,0 +1,80 @@
+/* Panel styles extracted from legacy.css */
+
+.legacy-info-panel {
+  min-width: 0;
+  border: 1px solid rgba(243, 240, 232, 0.12);
+  background:
+    linear-gradient(135deg, rgba(56, 183, 164, 0.06), transparent 42%),
+    rgba(14, 15, 13, 0.38);
+  padding: 0.95rem;
+}
+
+.legacy-info-panel--identity {
+  border-color: rgba(56, 183, 164, 0.26);
+}
+
+.legacy-info-panel header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+}
+
+.legacy-info-panel header span {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.legacy-info-panel header strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.pairing-rule-grid,
+.pairing-force-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.pairing-rule-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pairing-force-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pairing-rule-grid article,
+.pairing-force-card {
+  border: 1px solid rgba(56, 183, 164, 0.26);
+  background: rgba(12, 33, 28, 0.45);
+  padding: 0.8rem;
+}
+
+.pairing-rule-grid span {
+  color: var(--teal);
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pairing-rule-grid strong {
+  color: var(--amber);
+  display: block;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  margin-top: 0.25rem;
+}
+
+.pairing-rule-grid p {
+  color: var(--muted);
+  margin: 0.35rem 0 0;
+}

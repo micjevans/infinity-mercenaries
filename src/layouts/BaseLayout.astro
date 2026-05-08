@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import "../styles/index.css";
 import GoogleAuthButton from "../components/GoogleAuthButton";
 
 interface Props {
@@ -19,6 +19,72 @@ const pageTitle =
 
 const googleClientId =
   import.meta.env.PUBLIC_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID";
+
+const navItems = [
+  { href: "/rules/", label: "Rules" },
+  { href: "/contracts/", label: "Contracts" },
+  { href: "/companies/", label: "Companies" },
+  { href: "/events/", label: "Events" },
+  { href: "/#campaign", label: "Campaign" },
+  { href: "/#tutorial", label: "Tutorial" },
+  { href: "/#resources", label: "Resources" },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isCurrentNav(href: string) {
+  if (href.includes("#")) return false;
+  return currentPath === href || currentPath.startsWith(href);
+}
+
+const backplaneTraces = [
+  ["trace-a", "M-40 120 H250 L310 180 H760 L830 112 H1260 L1320 172 H1640"],
+  ["trace-b", "M40 330 H420 L510 250 H900 L970 320 H1430"],
+  ["trace-c", "M-20 540 H280 L365 455 H610 L690 535 H1040 L1120 455 H1620"],
+  ["trace-d", "M120 760 H510 L590 840 H880 L980 735 H1510"],
+  ["trace-e", "M-30 990 H220 L295 1065 H760 L830 990 H1240 L1300 1050 H1620"],
+  ["trace-f", "M80 1290 H430 L520 1200 H800 L890 1290 H1460"],
+  ["trace-g", "M-20 1640 H335 L405 1570 H710 L790 1640 H1150 L1240 1540 H1640"],
+  ["trace-h", "M180 1980 H540 L625 1890 H1020 L1090 1970 H1490"],
+  ["trace-i", "M1280 80 V310 L1210 380 V670 L1295 750 V990"],
+  ["trace-j", "M1040 0 V210 L970 280 V520 L1040 590 V900"],
+  ["trace-k", "M360 115 V390 L285 465 V680 L365 760 V1120"],
+  ["trace-l", "M710 705 V940 L640 1010 V1260 L720 1340 V1710"],
+];
+
+const backplaneNodes = [
+  [250, 120, 2.4],
+  [760, 180, 2.4],
+  [1260, 112, 2.4],
+  [420, 330, 2.2],
+  [970, 320, 2.2],
+  [280, 540, 2.2],
+  [1040, 535, 2.2],
+  [510, 760, 2.5],
+  [980, 735, 2.5],
+  [220, 990, 2.2],
+  [760, 1065, 2.2],
+  [1240, 990, 2.2],
+  [430, 1290, 2.4],
+  [890, 1290, 2.4],
+  [335, 1640, 2.2],
+  [1150, 1640, 2.2],
+  [540, 1980, 2.4],
+  [1090, 1970, 2.4],
+];
+
+const backplanePackets = [
+  ["trace-a", 3.2, "7.8s", "-1.2s"],
+  ["trace-b", 2.8, "9.2s", "-4.1s"],
+  ["trace-d", 3, "8.4s", "-2.6s"],
+  ["trace-f", 2.6, "10.6s", "-5.4s"],
+  ["trace-g", 3.1, "11.4s", "-7.6s"],
+  ["trace-i", 2.6, "8.8s", "-3.3s"],
+  ["trace-j", 2.8, "9.8s", "-6.2s"],
+  ["trace-l", 2.7, "10.2s", "-8s"],
+];
+
+const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
 ---
 
 <!doctype html>
@@ -33,15 +99,55 @@ const googleClientId =
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>{pageTitle}</title>
   </head>
-  <body>
+  <body class="theme-control-panel">
     <a class="skip-link" href="#main">Skip to content</a>
+    <div class="mainframe-backplane" aria-hidden="true">
+      {
+        backplaneTiles.map((tile) => (
+          <svg
+            class="backplane-tile"
+            viewBox="0 0 1600 2200"
+            preserveAspectRatio="xMidYMin slice"
+          >
+            <defs>
+              <filter id={`trace-glow-${tile}`}>
+                <feGaussianBlur stdDeviation="2.4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <g class="backplane-grid">
+              {backplaneTraces.map(([id, d]) => (
+                <path id={`${id}-${tile}`} d={d} />
+              ))}
+            </g>
+            <g class="backplane-nodes">
+              {backplaneNodes.map(([cx, cy, r]) => (
+                <circle cx={cx} cy={cy} r={r} />
+              ))}
+            </g>
+            <g class="backplane-packets" filter={`url(#trace-glow-${tile})`}>
+              {backplanePackets.map(([traceId, r, dur, begin]) => (
+                <circle r={r}>
+                  <animateMotion dur={dur} repeatCount="indefinite" begin={begin}>
+                    <mpath href={`#${traceId}-${tile}`} />
+                  </animateMotion>
+                </circle>
+              ))}
+            </g>
+          </svg>
+        ))
+      }
+    </div>
     <header class="site-header">
       <nav class="site-nav" aria-label="Main navigation">
         <a class="brand" href="/">
@@ -54,13 +160,17 @@ const googleClientId =
           <span>Infinity: Mercenaries</span>
         </a>
         <div class="nav-links">
-          <a href="/rules/">Rules</a>
-          <a href="/contracts/">Contracts</a>
-          <a href="/companies/">Companies</a>
-          <a href="/events/">Events</a>
-          <a href="/#campaign">Campaign</a>
-          <a href="/#tutorial">Tutorial</a>
-          <a href="/#resources">Resources</a>
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class:list={{ "is-current": isCurrentNav(item.href) }}
+                aria-current={isCurrentNav(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
           <a
             href="https://discord.gg/QJyzrQZGvG"
             target="_blank"
@@ -85,5 +195,291 @@ const googleClientId =
         Unofficial fan project. Infinity is owned by Corvus Belli.
       </p>
     </footer>
+
+    <script>
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed", "is-booted");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -6% 0px" },
+      );
+
+      const bootFrameSelector = [
+        ".holo-frame",
+        ".glass-panel",
+        ".button",
+        ".command-button",
+        ".icon-button",
+        ".custom-select-trigger",
+        ".login-btn",
+        ".logout-btn",
+        ".index-list a",
+        ".feature-band article",
+        ".resource-links a",
+        ".rules-table-card",
+        ".procedure-card",
+        ".reference-link-callout",
+        ".rules-example-callout",
+        ".warning-callout",
+        ".market-card",
+        ".perk-card",
+        ".downtime-event-card",
+        ".downtime-choice-card",
+        ".company-type-card",
+        ".company-type-section",
+        ".npc-profile-card",
+        ".rule-card",
+        ".sponsor-card",
+        ".terminal-panel",
+        ".video-panel",
+        ".resource-group",
+        ".company-section-card",
+        ".company-roster-panel",
+        ".company-detail-panel",
+        ".company-empty-state",
+        ".company-wizard__panel",
+        ".event-tool-panel",
+        ".event-round-card",
+        ".pairing-downtime-event-card",
+        ".legacy-modal__panel",
+      ].join(",");
+
+      const bootTextSelector = [
+        "main h1",
+        "main h2",
+        "main h3",
+        "main h4",
+        "main h5",
+        "main h6",
+        "main p",
+        "main li",
+        "main dt",
+        "main dd",
+        "main figcaption",
+        "main blockquote",
+        "main .eyebrow",
+        "main .kicker",
+      ].join(",");
+
+      function hasReadableText(element) {
+        return Boolean(element.textContent && element.textContent.trim());
+      }
+
+      function isTypeableText(element) {
+        if (!hasReadableText(element)) return false;
+        if (
+          element.closest(
+            [
+              "a",
+              "button",
+              "input",
+              "select",
+              "textarea",
+              "summary",
+              "label",
+              "table",
+              ".site-header",
+              ".site-footer",
+              ".rules-sidebar-inner",
+              ".resource-links",
+              ".signal-strip",
+              ".button",
+              ".command-button",
+              ".icon-button",
+              ".login-btn",
+              ".logout-btn",
+              ".panel-kicker",
+              ".company-count",
+              ".legacy-level-badge",
+              ".legacy-trooper-type",
+            ].join(","),
+          )
+        ) {
+          return false;
+        }
+        return true;
+      }
+
+      function bootKeyFor(attribute) {
+        return attribute
+          .replace(/^data-/, "boot-")
+          .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
+          .concat("Prepared");
+      }
+
+      function installBootOutline(element) {
+        if (element.querySelector(":scope > .boot-outline")) return;
+        const outline = document.createElement("span");
+        outline.className = "boot-outline";
+        outline.setAttribute("aria-hidden", "true");
+        element.append(outline);
+      }
+
+      function collectTextNodes(element) {
+        const walker = document.createTreeWalker(
+          element,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode(node) {
+              if (!node.nodeValue || !node.nodeValue.trim()) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              const parent = node.parentElement;
+              if (
+                parent?.closest(
+                  "script,style,svg,.boot-outline,[aria-hidden='true']",
+                )
+              ) {
+                return NodeFilter.FILTER_REJECT;
+              }
+              return NodeFilter.FILTER_ACCEPT;
+            },
+          },
+        );
+        const nodes = [];
+        while (walker.nextNode()) {
+          nodes.push(walker.currentNode);
+        }
+        return nodes;
+      }
+
+      function typeElement(element) {
+        if (prefersReducedMotion || element.dataset.bootTyped === "true") return;
+        const textNodes = collectTextNodes(element);
+        if (!textNodes.length) return;
+
+        element.dataset.bootTyped = "true";
+        element.classList.add("is-typing");
+        const originals = textNodes.map((node) => node.nodeValue || "");
+        const totalCharacters = originals.reduce(
+          (total, text) => total + text.length,
+          0,
+        );
+        if (!totalCharacters) return;
+
+        textNodes.forEach((node) => {
+          node.nodeValue = "";
+        });
+
+        const charactersPerTick = Math.max(
+          1,
+          Math.ceil(totalCharacters / (element.matches("h1,h2,h3") ? 32 : 52)),
+        );
+        let visibleCharacters = 0;
+        const tick = () => {
+          visibleCharacters += charactersPerTick;
+          let remaining = visibleCharacters;
+          textNodes.forEach((node, index) => {
+            const original = originals[index];
+            const count = Math.max(0, Math.min(original.length, remaining));
+            node.nodeValue = original.slice(0, count);
+            remaining -= original.length;
+          });
+          if (visibleCharacters < totalCharacters) {
+            window.setTimeout(tick, 16);
+          } else {
+            element.classList.remove("is-typing");
+            element.classList.add("is-typed");
+          }
+        };
+
+        window.setTimeout(
+          tick,
+          60 + Number(element.style.getPropertyValue("--boot-order") || 0) * 28,
+        );
+      }
+
+      function prepareBootElement(element, attribute, index) {
+        if (!(element instanceof HTMLElement)) return;
+        const bootKey = bootKeyFor(attribute);
+        if (element.dataset[bootKey] === "true") return;
+        if (element.closest("[aria-hidden='true']")) return;
+        element.dataset[bootKey] = "true";
+        element.setAttribute(attribute, "");
+        element.style.setProperty(
+          "--boot-order",
+          String(Math.min(index, 18)),
+        );
+        if (attribute === "data-boot-frame") {
+          installBootOutline(element);
+        }
+        if (prefersReducedMotion) {
+          element.classList.add("revealed", "is-booted");
+          return;
+        }
+        revealObserver.observe(element);
+      }
+
+      function collectMatches(scope, selector) {
+        const matches = [];
+        if (scope instanceof HTMLElement && scope.matches(selector)) {
+          matches.push(scope);
+        }
+        matches.push(...Array.from(scope.querySelectorAll(selector)));
+        return matches;
+      }
+
+      function prepareBootSequence(root = document) {
+        const scope =
+          root instanceof HTMLElement || root instanceof Document
+            ? root
+            : document;
+
+        collectMatches(scope, bootFrameSelector).forEach(
+          (element, index) => prepareBootElement(element, "data-boot-frame", index),
+        );
+
+        collectMatches(scope, bootTextSelector)
+          .filter(isTypeableText)
+          .forEach((element, index) =>
+            prepareBootElement(element, "data-boot-text", index),
+          );
+
+        collectMatches(scope, "[data-reveal], [data-stagger]").forEach(
+          (element, index) => prepareBootElement(element, "data-reveal", index),
+        );
+      }
+
+      prepareBootSequence();
+
+      document.addEventListener(
+        "animationstart",
+        (event) => {
+          const element = event.target;
+          if (
+            element instanceof HTMLElement &&
+            element.matches("[data-boot-text]") &&
+            event.animationName === "boot-text-ready"
+          ) {
+            typeElement(element);
+          }
+        },
+        true,
+      );
+
+      const bootMutationObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node instanceof HTMLElement) {
+              prepareBootSequence(node);
+            }
+          });
+        });
+      });
+
+      bootMutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    </script>
   </body>
 </html>

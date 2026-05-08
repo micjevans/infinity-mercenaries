@@ -1351,17 +1351,16 @@ function InducementsStep({
     options: InducementOption[],
   ) {
     return (
-      <article className="pairing-shop-section">
+      <article className={styles.pairingShopSection}>
         <header>
           <span className="panel-kicker">{title}</span>
           <p>{description}</p>
         </header>
-        <div className="pairing-shop-option-list">
+        <div className={styles.pairingShopOptionList}>
           {options.map((option) => {
             const count = countByOption[option.id] || 0;
             const canAdd = canAddOption(option);
             const maxText = option.maxCount ? ` / ${option.maxCount}` : "";
-
             return (
               <div className="pairing-shop-option" key={option.id}>
                 <div>
@@ -1386,90 +1385,6 @@ function InducementsStep({
                   </button>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </article>
-    );
-  }
-
-  function renderTroopShopSection() {
-    return (
-      <article className="pairing-shop-section">
-        <header>
-          <span className="panel-kicker">Temporary Troops</span>
-          <p>
-            Choose a profile/loadout and buy it directly from the profile row.
-          </p>
-        </header>
-        <div className="pairing-shop-profile-list">
-          {troopOptions.map((option) => {
-            const count = countByOption[option.id] || 0;
-            const canAdd = canAddOption(option);
-            const maxText = option.maxCount ? ` / ${option.maxCount}` : "";
-            const unit = troopProfiles.get(option.id)?.unit;
-            const renderableGroups = unit
-              ? getRenderableHireProfileGroups(option, unit)
-              : [];
-            const buyEnabled = canAdd && bothDeployed && hasBudget;
-            const displayGroups = renderableGroups.map((group: any) => ({
-              ...group,
-              options: (group.options || []).map((profileOption: any) => ({
-                ...profileOption,
-                disabled: !buyEnabled,
-              })),
-            }));
-
-            return (
-              <article
-                className="legacy-recruit-card pairing-shop-recruit-card"
-                key={option.id}
-              >
-                {!unit && (
-                  <p className="empty-note">Loading troop profiles...</p>
-                )}
-                {unit && renderableGroups.length === 0 && (
-                  <p className="empty-note">
-                    No matching profiles found for this inducement.
-                  </p>
-                )}
-                {unit && renderableGroups.length > 0 && (
-                  <UnitProfileDisplay
-                    unit={unit}
-                    profileGroups={displayGroups}
-                    showAva
-                    hideOptionSwcPts
-                    optionActionLabel="Buy"
-                    extraHeadChips={
-                      <>
-                        <span className="legacy-profile-chip legacy-profile-chip--ind">
-                          <small>Cost</small>
-                          <b>{option.cost} Ind</b>
-                        </span>
-                        <span className="legacy-profile-chip legacy-profile-chip--ind">
-                          <small>Bought</small>
-                          <b>
-                            {count}
-                            {maxText}
-                          </b>
-                        </span>
-                      </>
-                    }
-                    optionClick={(group, profileOption) => {
-                      if (!buyEnabled) return;
-                      const targetId = resolveHireTargetIdFromSelection(
-                        option,
-                        unit,
-                        group,
-                        profileOption,
-                      );
-                      if (!targetId) return;
-                      addSelection(option, targetId);
-                    }}
-                    collapsible={false}
-                  />
-                )}
-              </article>
             );
           })}
         </div>

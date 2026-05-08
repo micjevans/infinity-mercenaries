@@ -1,0 +1,41 @@
+/* Base element styles for Infinity: Mercenaries */
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(180deg, rgba(5, 16, 14, 0) 0, var(--bg) 800px),
+    radial-gradient(ellipse at 80% 5%, rgba(71, 221, 228, 0.09), transparent 36rem),
+    radial-gradient(ellipse at 15% 90%, rgba(56, 183, 164, 0.06), transparent 28rem),
+    var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--font-ui);
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+}

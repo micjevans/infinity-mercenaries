@@ -1,0 +1,247 @@
+/* CompanyListPage component-specific styles migrated from global/page CSS */
+
+.companyListPage {
+  --company-list-max: 42rem;
+}
+
+.companyManager {
+  width: min(100% - 2rem, var(--company-list-max));
+  margin: 0 auto;
+  padding: clamp(3rem, 10vw, 4.6rem) 0 5rem;
+}
+
+.companyManagerMasthead {
+  max-width: none;
+  margin-bottom: 1.2rem;
+}
+
+.companyManagerMastheadH1 {
+  max-width: none;
+  margin: 0.25rem 0 0.8rem;
+  color: var(--arwes-cyan-bright);
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  line-height: 1.1;
+}
+
+.companyManagerMasthead p:not(:global(.eyebrow)) {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.eventListToolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.75rem;
+}
+
+.companySectionCard {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  background:
+    linear-gradient(135deg, rgba(0, 240, 255, 0.075), transparent 40%),
+    rgba(2, 17, 17, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(213, 255, 255, 0.035),
+    0 1.25rem 3rem rgba(0, 0, 0, 0.2);
+  clip-path: var(--hud-angle);
+}
+
+.companySectionCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(71, 221, 228, 0.1);
+  clip-path: inherit;
+}
+
+.companyIndexCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionHeadingRow h2 {
+  margin: 0;
+  color: rgba(230, 255, 255, 0.94);
+  font-size: clamp(1.2rem, 2.8vw, 1.65rem);
+  line-height: 1.1;
+}
+
+.panelKicker {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--arwes-cyan-bright);
+  font-size: 0.73rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.companyCount {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(56, 183, 164, 0.5);
+  background: rgba(0, 240, 255, 0.08);
+  color: var(--arwes-cyan-bright);
+  font-weight: 900;
+}
+
+.companyCardList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.companyIndexItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 5rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(0, 240, 255, 0.13);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.055), transparent 55%),
+    rgba(2, 13, 13, 0.52);
+}
+
+.companyIndexItem > a,
+.companyIndexItem > div {
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.companyIndexItem h3 {
+  margin: 0.12rem 0 0;
+  color: var(--text);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.05;
+}
+
+.companyIndexItem p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.companyIndexItem:hover,
+.companyIndexItem:focus-within {
+  border-color: rgba(0, 240, 255, 0.34);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.085), transparent 58%),
+    rgba(3, 20, 20, 0.64);
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field span {
+  color: var(--arwes-lime);
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.field input {
+  width: 100%;
+  min-height: 2.65rem;
+  border: 1px solid rgba(0, 240, 255, 0.18);
+  border-radius: 0;
+  background: rgba(4, 12, 11, 0.76);
+  color: var(--text);
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+}
+
+.field input:focus {
+  border-color: var(--arwes-cyan-bright);
+  outline: 2px solid rgba(0, 240, 255, 0.12);
+}
+
+.commandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  border: 1px solid rgba(0, 240, 255, 0.24);
+  background: rgba(0, 240, 255, 0.055);
+  color: var(--arwes-cyan-bright);
+  padding: 0.55rem 0.85rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.commandButton:hover,
+.commandButton:focus-visible {
+  border-color: rgba(0, 240, 255, 0.48);
+  background: rgba(0, 240, 255, 0.095);
+  outline: none;
+}
+
+.commandButtonPrimary {
+  border-color: rgba(214, 255, 63, 0.42);
+  background: rgba(214, 255, 63, 0.08);
+  color: var(--arwes-lime);
+}
+
+.commandButtonDanger {
+  border-color: rgba(216, 76, 62, 0.58);
+  background: rgba(216, 76, 62, 0.08);
+  color: #ff9187;
+}
+
+.emptyNote {
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed rgba(71, 221, 228, 0.22);
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .companyManager {
+    width: min(100% - 1rem, var(--company-list-max));
+    padding: 2.25rem 0 3.5rem;
+  }
+
+  .companyManagerMastheadH1 {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .eventListToolbar {
+    justify-content: stretch;
+  }
+
+  .eventListToolbar .commandButton {
+    width: 100%;
+  }
+
+  .sectionHeadingRow {
+    align-items: flex-start;
+  }
+
+  .companyIndexItem {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}

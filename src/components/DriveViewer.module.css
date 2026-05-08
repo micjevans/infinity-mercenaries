@@ -1,0 +1,50 @@
+.viewer-state {
+  padding: 2rem;
+  text-align: center;
+}
+.viewer-content {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.form-section {
+  margin-bottom: 2rem;
+}
+.viewer-meta {
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+.data-display {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f7f7fa;
+  border-radius: 0.5rem;
+  text-align: left;
+}
+.primary-btn {
+  display: inline-block;
+  background: var(--color-primary, #0077b6);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+.primary-btn:hover {
+  background: #005f8a;
+}
+.info-message {
+  color: #0077b6;
+  font-size: 1.1rem;
+}
+.error-message {
+  color: #c00;
+  font-size: 1.1rem;
+}
