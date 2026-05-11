@@ -1,5 +1,5 @@
 import styles from "./GoogleAuthButton.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   initializeGAPIClient,
   initializeTokenClient,
@@ -23,6 +23,8 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   // Initialize gapi client and GIS token client once both scripts have loaded
   useEffect(() => {
@@ -82,6 +84,30 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
     };
   }, [clientId]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
   const handleSignIn = () => {
     setError(null);
     setLoading(true);
@@ -90,6 +116,7 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
   };
 
   const handleSignOut = () => {
+    setMenuOpen(false);
     setLoading(true);
     revokeAccessToken(() => {
       setSignedIn(false);
@@ -101,27 +128,57 @@ export default function GoogleAuthButton({ clientId }: GoogleAuthButtonProps) {
   if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID") return null;
 
   return (
-    <div className={styles.googleAuthButton}>
+    <div className={`${styles.googleAuthButton} google-auth-button`}>
       {signedIn ? (
-        <div className={styles.authMenu}>
-          {userName && <span className={styles.userName}>{userName}</span>}
+        <div
+          ref={menuRef}
+          className={`${styles.authMenu} auth-menu`}
+          data-open={menuOpen ? "true" : "false"}
+        >
           <button
-            onClick={handleSignOut}
-            disabled={loading}
-            className={styles.logoutBtn}
-            title="Sign out of Google"
+            type="button"
+            className={styles.authStatusTrigger}
+            title={userName ? `Drive linked: ${userName}` : "Drive linked"}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
           >
-            {loading ? "Signing out..." : "Sign Out"}
+            <span className={styles.statusDot} aria-hidden="true" />
+            <span className={styles.statusLabel}>Drive linked</span>
+            <span className={styles.menuChevron} aria-hidden="true" />
           </button>
+          <div className={styles.authDropdown} role="menu">
+            <a
+              href="#"
+              role="menuitem"
+              aria-disabled="true"
+              onClick={(event) => event.preventDefault()}
+            >
+              <span>Profile</span>
+              <small>{userName || "Coming soon"}</small>
+            </a>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleSignOut}
+              disabled={loading}
+              title="Sign out of Google"
+            >
+              {loading ? "Disconnecting" : "Sign out"}
+            </button>
+          </div>
         </div>
       ) : (
         <button
           onClick={handleSignIn}
           disabled={loading || !ready}
-          className={styles.loginBtn}
+          className={`${styles.loginBtn} login-btn`}
           title="Sign in with Google to save data to your Drive"
         >
-          {loading ? "Signing in..." : "Sign In with Google"}
+          <span className={styles.statusDot} aria-hidden="true" />
+          <span>
+            {loading ? "Connecting" : ready ? "Cloud sync" : "Auth link"}
+          </span>
         </button>
       )}
       {error && <div className={styles.authError}>{error}</div>}

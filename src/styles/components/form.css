@@ -7,7 +7,7 @@
 }
 
 .legacy-field > span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -197,9 +197,9 @@
   position: relative;
   overflow: hidden;
   padding: 1rem 1.1rem;
-  border: 1px solid rgba(242, 169, 59, 0.28);
+  border: 1px solid rgba(214, 255, 63, 0.28);
   background:
-    linear-gradient(180deg, rgba(242, 169, 59, 0.06), transparent 26%),
+    linear-gradient(180deg, rgba(214, 255, 63, 0.06), transparent 26%),
     #141612;
 }
 
@@ -244,7 +244,7 @@
   align-items: center;
   min-height: 1.4rem;
   padding: 0.12rem 0.45rem;
-  border: 1px solid rgba(243, 240, 232, 0.2);
+  border: 1px solid rgba(0, 240, 255, 0.2);
   font-size: 0.65rem;
   font-weight: 850;
   letter-spacing: 0.08em;

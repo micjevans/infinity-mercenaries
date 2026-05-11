@@ -14,16 +14,16 @@
 }
 
 .companyEmptyState {
+  position: relative;
+  isolation: isolate;
   min-height: 26rem;
   display: grid;
   align-content: center;
   justify-items: center;
   gap: 0.8rem;
   padding: 2rem;
-  border: 1px solid rgba(242, 169, 59, 0.32);
-  background:
-    linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 45%),
-    rgba(23, 25, 22, 0.88);
+  border: 1px solid transparent;
+  background: rgba(0, 240, 255, 0.24);
   text-align: center;
   clip-path: var(--hud-angle);
 }
@@ -51,19 +51,58 @@
 }
 
 .legacyCompanyHeader {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 1rem;
   min-height: 8rem;
   padding: clamp(1rem, 2vw, 1.4rem);
-  border: 1px solid rgba(242, 169, 59, 0.28);
-  background:
-    radial-gradient(circle at 72% 0%, rgba(242, 169, 59, 0.14), transparent 22rem),
-    linear-gradient(90deg, rgba(56, 183, 164, 0.12), transparent 48%),
-    rgba(7, 16, 15, 0.86);
+  border: 1px solid transparent;
+  background: rgba(0, 240, 255, 0.24);
   box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.22);
   clip-path: var(--hud-angle);
+}
+
+.companyEmptyState,
+.legacyCompanyHeader {
+  position: relative;
+  border-color: transparent;
+  --company-panel-line: rgba(0, 240, 255, 0.24);
+  --company-panel-chamfer: 0.75rem;
+}
+
+.companyEmptyState::before,
+.legacyCompanyHeader::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  display: block !important;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 72% 0%, rgba(0, 240, 255, 0.12), transparent 22rem),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent 48%),
+    rgba(7, 16, 15, 0.86);
+  clip-path: var(--hud-angle);
+}
+
+.companyEmptyState::before {
+  background:
+    linear-gradient(135deg, rgba(0, 240, 255, 0.08), transparent 45%),
+    rgba(2, 15, 15, 0.86);
+}
+
+.companyEmptyState > *,
+.legacyCompanyHeader > * {
+  position: relative;
+  z-index: 1;
+}
+
+.companyEmptyState::after,
+.legacyCompanyHeader::after {
+  display: none !important;
 }
 
 .legacyCompanyTitleBlock {
@@ -99,9 +138,9 @@
 }
 
 .legacyStorageChip {
-  border-color: rgba(242, 169, 59, 0.38);
-  background: rgba(242, 169, 59, 0.08);
-  color: var(--amber);
+  border-color: rgba(214, 255, 63, 0.36);
+  background: rgba(214, 255, 63, 0.07);
+  color: var(--arwes-lime);
 }
 
 .legacyCompanyActions {
@@ -163,9 +202,10 @@
 }
 
 .commandButtonPrimary {
-  border-color: rgba(242, 169, 59, 0.72);
-  background: var(--amber);
-  color: #17120a;
+  border-color: rgba(214, 255, 63, 0.7);
+  background:
+    linear-gradient(90deg, rgba(214, 255, 63, 0.82), rgba(0, 240, 255, 0.18));
+  color: #03100f;
 }
 
 .commandButtonDanger {
@@ -182,22 +222,24 @@
 
 .legacyAccordion {
   margin-top: 1rem;
-  border: 1px solid rgba(242, 169, 59, 0.32);
+  border: 1px solid rgba(0, 240, 255, 0.22);
   background:
-    linear-gradient(135deg, rgba(56, 183, 164, 0.07), transparent 42%),
-    rgba(23, 25, 22, 0.9);
+    linear-gradient(135deg, rgba(0, 240, 255, 0.075), transparent 42%),
+    rgba(2, 15, 15, 0.86);
   box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.2);
 }
 
 .legacyAccordion.isExpanded {
-  border-color: rgba(242, 169, 59, 0.48);
+  border-color: rgba(0, 240, 255, 0.42);
 }
 
 .legacyAccordionHeader {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid rgba(242, 169, 59, 0.3);
-  background: rgba(47, 41, 26, 0.78);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent 66%),
+    rgba(1, 12, 12, 0.72);
 }
 .legacyAccordionSummary {
   flex: 1;
@@ -218,7 +260,7 @@
   display: flex;
   align-items: center;
   padding: 0.4rem 0.75rem;
-  border-left: 1px solid rgba(242, 169, 59, 0.2);
+  border-left: 1px solid rgba(0, 240, 255, 0.16);
 }
 .legacyAccordionTitle {
   display: inline-flex;
@@ -247,7 +289,7 @@
   margin-top: 1rem;
 }
 .legacyFieldSpan {
-  color: var(--amber);
+  color: var(--arwes-cyan);
   font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -334,7 +376,7 @@
 }
 
 .legacyInfoPanelIdentity {
-  border-color: rgba(242, 169, 59, 0.22);
+  border-color: rgba(214, 255, 63, 0.24);
 }
 
 .legacyFactionStatic {
@@ -356,10 +398,10 @@
 
 .legacyAlert {
   margin: 1rem 0 0;
-  border: 1px solid rgba(242, 169, 59, 0.34);
-  background: rgba(242, 169, 59, 0.08);
+  border: 1px solid rgba(214, 255, 63, 0.3);
+  background: rgba(214, 255, 63, 0.06);
   padding: 0.7rem 0.85rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .legacyDashboardCard {
@@ -377,7 +419,7 @@
   min-height: 1.85rem;
   border: 1px solid rgba(71, 221, 228, 0.24);
   background: rgba(4, 12, 11, 0.7);
-  color: var(--amber);
+  color: var(--arwes-cyan-bright);
   padding: 0.25rem 0.4rem;
   font: inherit;
   font-weight: 900;
@@ -388,8 +430,8 @@
   min-height: 2.25rem;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(242, 169, 59, 0.42);
-  color: var(--amber);
+  border: 1px solid rgba(0, 240, 255, 0.34);
+  color: var(--arwes-cyan-bright);
   font-size: 0.8rem;
   font-weight: 900;
 }
@@ -399,7 +441,7 @@
 }
 .legacyDashboardCardStrong {
   display: block;
-  color: var(--amber);
+  color: var(--arwes-cyan-bright);
   font-size: 1.35rem;
 }
 .legacyDashboardCardEm {
@@ -412,21 +454,21 @@
 .legacyDashboardCardInput {
   max-width: 7rem;
   margin-top: 0.2rem;
-  color: var(--amber);
+  color: var(--arwes-cyan-bright);
   font-weight: 900;
 }
 
 .legacyTrooperCard {
   width: 100%;
   min-width: 0;
-  border: 1px solid rgba(243, 240, 232, 0.13);
+  border: 1px solid rgba(0, 240, 255, 0.14);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.08), transparent 58%),
     rgba(14, 15, 13, 0.44);
 }
 
 .legacyTrooperCardIsCaptain {
-  border-color: rgba(242, 169, 59, 0.55);
+  border-color: rgba(214, 255, 63, 0.38);
 }
 
 .legacyInfoGrid {
@@ -547,7 +589,7 @@
   .legacyAccordionAction {
     justify-content: stretch;
     border-left: 0;
-    border-top: 1px solid rgba(242, 169, 59, 0.2);
+    border-top: 1px solid rgba(0, 240, 255, 0.16);
   }
 
   .legacyAccordionAction .commandButton {

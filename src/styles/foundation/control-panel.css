@@ -189,6 +189,54 @@ body::after {
   }
 }
 
+@keyframes boot-image-materialize {
+  0% {
+    opacity: 0;
+    clip-path: inset(12% 6% 12% 6%);
+    image-rendering: pixelated;
+    filter:
+      blur(9px)
+      contrast(1.85)
+      saturate(0.38)
+      brightness(1.35);
+    transform: translateY(0.45rem) scale(1.025);
+  }
+  18% {
+    opacity: 0.42;
+    clip-path: inset(8% 4% 8% 4%);
+    filter:
+      blur(6px)
+      contrast(1.72)
+      saturate(0.52)
+      brightness(1.28);
+  }
+  36% {
+    opacity: 0.72;
+    clip-path: inset(4% 2% 4% 2%);
+    filter:
+      blur(3.5px)
+      contrast(1.48)
+      saturate(0.7)
+      brightness(1.18);
+  }
+  58% {
+    opacity: 0.9;
+    clip-path: inset(1% 0.5% 1% 0.5%);
+    filter:
+      blur(1.2px)
+      contrast(1.18)
+      saturate(0.92)
+      brightness(1.08);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0);
+    image-rendering: auto;
+    filter: none;
+    transform: none;
+  }
+}
+
 /* --- Glass panel utility --- */
 .glass-panel {
   background: var(--glass-bg);
@@ -224,6 +272,64 @@ body::after {
 }
 
 /* --- Entry animation system --- */
+.theme-control-panel.is-boot-preparing main :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  dt,
+  dd,
+  figcaption,
+  blockquote,
+  .eyebrow,
+  .kicker,
+  .holo-frame,
+  .glass-panel,
+  .button,
+  .command-button,
+  .icon-button,
+  .custom-select-trigger,
+  .index-list a,
+  .feature-band article,
+  .resource-links a,
+  .rules-table-card,
+  .procedure-card,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout,
+  .market-card,
+  .perk-card,
+  .downtime-event-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .company-type-section,
+  .npc-profile-card,
+  .rule-card,
+  .sponsor-card,
+  .terminal-panel,
+  .video-panel,
+  .resource-group,
+  .company-section-card,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-round-card,
+  .pairing-downtime-event-card,
+  .legacy-modal__panel
+) {
+  opacity: 0;
+}
+
+.theme-control-panel.is-boot-preparing main img:not([aria-hidden="true"]) {
+  opacity: 0;
+}
+
 [data-reveal],
 [data-boot-frame] {
   opacity: 0;
@@ -289,6 +395,18 @@ body::after {
   background: currentColor;
   box-shadow: 0 0 0.55rem rgba(0, 240, 255, 0.5);
   animation: boot-caret-blink 0.68s steps(1, end) infinite;
+}
+
+[data-boot-image] {
+  opacity: 0;
+  transform-origin: center;
+  will-change: opacity, clip-path, filter, transform;
+}
+
+[data-boot-image].is-booted {
+  animation:
+    boot-image-materialize 0.52s steps(5, jump-none)
+    calc(90ms + (var(--boot-order, 0) * 42ms)) both;
 }
 
 .boot-outline {
@@ -386,10 +504,12 @@ body::after {
   [data-reveal],
   [data-stagger] > *,
   [data-boot-frame],
-  [data-boot-text] {
+  [data-boot-text],
+  [data-boot-image] {
     opacity: 1;
     transform: none;
     filter: none;
+    clip-path: none;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     transition: none;
@@ -574,8 +694,6 @@ body::after {
   .reference-link-callout,
   .market-card,
   .perk-card,
-  .downtime-event-card,
-  .downtime-choice-card,
   .company-type-card,
   .npc-profile-card,
   .rule-card,
@@ -587,14 +705,14 @@ body::after {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(to right, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) left 0 top 0 / 1.2rem 1px no-repeat,
-    linear-gradient(to bottom, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) left 0 top 0 / 1px 1.2rem no-repeat,
-    linear-gradient(to left, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) right 0 top 0 / 1.2rem 1px no-repeat,
-    linear-gradient(to bottom, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) right 0 top 0 / 1px 1.2rem no-repeat,
-    linear-gradient(to right, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) left 0 bottom 0 / 1.2rem 1px no-repeat,
-    linear-gradient(to top, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) left 0 bottom 0 / 1px 1.2rem no-repeat,
-    linear-gradient(to left, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) right 0 bottom 0 / 1.2rem 1px no-repeat,
-    linear-gradient(to top, rgba(71, 221, 228, 0.68), rgba(71, 221, 228, 0.68)) right 0 bottom 0 / 1px 1.2rem no-repeat;
+    linear-gradient(to right, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) left 0 top 0 / 1.2rem 2px no-repeat,
+    linear-gradient(to bottom, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) left 0 top 0 / 2px 1.2rem no-repeat,
+    linear-gradient(to left, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) right 0 top 0 / 1.2rem 2px no-repeat,
+    linear-gradient(to bottom, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) right 0 top 0 / 2px 1.2rem no-repeat,
+    linear-gradient(to right, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) left 0 bottom 0 / 1.2rem 2px no-repeat,
+    linear-gradient(to top, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) left 0 bottom 0 / 2px 1.2rem no-repeat,
+    linear-gradient(to left, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) right 0 bottom 0 / 1.2rem 2px no-repeat,
+    linear-gradient(to top, rgba(71, 221, 228, 0.78), rgba(71, 221, 228, 0.78)) right 0 bottom 0 / 2px 1.2rem no-repeat;
   opacity: 0.62;
   z-index: 1;
 }
@@ -894,8 +1012,8 @@ body::after {
   background:
     linear-gradient(rgba(71, 221, 228, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(71, 221, 228, 0.04) 1px, transparent 1px),
-    linear-gradient(rgba(255, 191, 102, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 191, 102, 0.026) 1px, transparent 1px);
+    linear-gradient(rgba(214, 255, 63, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214, 255, 63, 0.026) 1px, transparent 1px);
   background-size: 3rem 3rem, 3rem 3rem, 12rem 12rem, 12rem 12rem;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 78%);
   opacity: 0.75;
@@ -920,14 +1038,14 @@ body::after {
 .theme-control-panel {
   background:
     radial-gradient(circle at 16% 0%, rgba(71, 221, 228, 0.14), transparent 28rem),
-    radial-gradient(circle at 86% 18%, rgba(255, 191, 102, 0.08), transparent 24rem),
+    radial-gradient(circle at 86% 18%, rgba(214, 255, 63, 0.08), transparent 24rem),
     linear-gradient(180deg, #050a0a 0%, var(--bg) 42rem, #050807 100%);
 }
 
 .theme-control-panel .site-header {
   border-bottom-color: rgba(71, 221, 228, 0.34);
   background:
-    linear-gradient(90deg, rgba(71, 221, 228, 0.12), transparent 22%, transparent 78%, rgba(255, 191, 102, 0.08)),
+    linear-gradient(90deg, rgba(71, 221, 228, 0.12), transparent 22%, transparent 78%, rgba(214, 255, 63, 0.08)),
     rgba(3, 10, 10, 0.86);
 }
 
@@ -939,7 +1057,7 @@ body::after {
   pointer-events: none;
   background:
     linear-gradient(90deg, transparent, rgba(71, 221, 228, 0.9), transparent),
-    linear-gradient(90deg, transparent 0 8%, rgba(255, 191, 102, 0.9) 8% 11%, transparent 11% 100%);
+    linear-gradient(90deg, transparent 0 8%, rgba(214, 255, 63, 0.9) 8% 11%, transparent 11% 100%);
   box-shadow: 0 0 18px rgba(71, 221, 228, 0.35);
 }
 
@@ -1012,14 +1130,14 @@ body::after {
 
 .theme-control-panel .button.primary,
 .theme-control-panel .command-button--primary {
-  border-color: rgba(255, 191, 102, 0.88);
+  border-color: rgba(214, 255, 63, 0.88);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 38%),
-    linear-gradient(90deg, var(--amber), var(--arwes-amber));
+    linear-gradient(90deg, var(--arwes-lime), var(--arwes-lime));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 0 20px rgba(255, 191, 102, 0.18);
-  color: #120d05;
+    0 0 20px rgba(214, 255, 63, 0.18);
+  color: #03100f;
 }
 
 .theme-control-panel .button.secondary,
@@ -1075,19 +1193,21 @@ body::after {
   .reference-link-callout,
   .market-card,
   .perk-card,
-  .downtime-event-card,
-  .downtime-choice-card,
   .company-type-card,
   .npc-profile-card,
   .rule-card,
   .sponsor-card,
   .resource-group
 ) {
+  --hud-frame-corner: var(--hud-line-strong);
+  --hud-frame-corner-length: 1.5rem;
+  --hud-frame-corner-stroke: 2px;
+  --hud-frame-chamfer: 0.75rem;
   clip-path: var(--hud-angle);
-  border-color: rgba(71, 221, 228, 0.34);
+  border-color: transparent;
   background:
     linear-gradient(150deg, rgba(71, 221, 228, 0.13), transparent 34%),
-    linear-gradient(310deg, rgba(255, 191, 102, 0.055), transparent 42%),
+    linear-gradient(310deg, rgba(214, 255, 63, 0.055), transparent 42%),
     rgba(4, 15, 15, 0.82);
 }
 
@@ -1107,14 +1227,16 @@ body::after {
   .legacy-info-panel,
   .legacy-dashboard-card,
   .legacy-modal__panel,
+  .legacy-shop-column,
+  .legacy-shop-staging,
   .legacy-profile-sheet,
+  .pairing-downtime-event-card,
+  .pairing-shop-recruit-card,
   .rules-table-card,
   .procedure-card,
   .reference-link-callout,
   .market-card,
   .perk-card,
-  .downtime-event-card,
-  .downtime-choice-card,
   .company-type-card,
   .npc-profile-card,
   .rule-card,
@@ -1127,11 +1249,13 @@ body::after {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(to right, var(--hud-line-strong), var(--hud-line-strong)) left 0 top 0 / 1.5rem 1px no-repeat,
-    linear-gradient(to bottom, var(--hud-line-strong), var(--hud-line-strong)) left 0 top 0 / 1px 1.5rem no-repeat,
-    linear-gradient(to left, var(--hud-line-strong), var(--hud-line-strong)) right 0 bottom 0 / 1.5rem 1px no-repeat,
-    linear-gradient(to top, var(--hud-line-strong), var(--hud-line-strong)) right 0 bottom 0 / 1px 1.5rem no-repeat;
-  opacity: 0.72;
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--hud-frame-corner) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) left 0 top 0 / var(--hud-frame-chamfer) var(--hud-frame-chamfer) no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--hud-frame-corner) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) right 0 bottom 0 / var(--hud-frame-chamfer) var(--hud-frame-chamfer) no-repeat,
+    linear-gradient(to right, var(--hud-frame-corner), var(--hud-frame-corner)) left calc(var(--hud-frame-chamfer) - 1px) top 0 / calc(var(--hud-frame-corner-length) + 1px) var(--hud-frame-corner-stroke) no-repeat,
+    linear-gradient(to bottom, var(--hud-frame-corner), var(--hud-frame-corner)) left 0 top calc(var(--hud-frame-chamfer) - 1px) / var(--hud-frame-corner-stroke) calc(var(--hud-frame-corner-length) + 1px) no-repeat,
+    linear-gradient(to left, var(--hud-frame-corner), var(--hud-frame-corner)) right calc(var(--hud-frame-chamfer) - 1px) bottom 0 / calc(var(--hud-frame-corner-length) + 1px) var(--hud-frame-corner-stroke) no-repeat,
+    linear-gradient(to top, var(--hud-frame-corner), var(--hud-frame-corner)) right 0 bottom calc(var(--hud-frame-chamfer) - 1px) / var(--hud-frame-corner-stroke) calc(var(--hud-frame-corner-length) + 1px) no-repeat;
+  opacity: 0.84;
 }
 
 .theme-control-panel :where(
@@ -1386,7 +1510,7 @@ body::after {
 .theme-control-panel .site-header {
   border-bottom: 1px solid rgba(71, 221, 228, 0.32);
   background:
-    linear-gradient(90deg, rgba(71, 221, 228, 0.1), transparent 18%, transparent 80%, rgba(242, 169, 59, 0.07)),
+    linear-gradient(90deg, rgba(71, 221, 228, 0.1), transparent 18%, transparent 80%, rgba(214, 255, 63, 0.07)),
     linear-gradient(180deg, rgba(9, 24, 22, 0.96), rgba(3, 9, 9, 0.9));
   box-shadow:
     inset 0 -1px 0 rgba(213, 255, 255, 0.06),
@@ -1396,11 +1520,11 @@ body::after {
 .theme-control-panel .site-header::before {
   height: 3px;
   background:
-    linear-gradient(90deg, transparent 0 9%, rgba(242, 169, 59, 0.95) 9% 12.5%, transparent 12.5% 100%),
+    linear-gradient(90deg, transparent 0 9%, rgba(214, 255, 63, 0.95) 9% 12.5%, transparent 12.5% 100%),
     linear-gradient(90deg, rgba(71, 221, 228, 0), rgba(71, 221, 228, 0.92), rgba(71, 221, 228, 0));
   box-shadow:
     0 0 18px rgba(71, 221, 228, 0.38),
-    0 0 4px rgba(242, 169, 59, 0.35);
+    0 0 4px rgba(214, 255, 63, 0.35);
 }
 
 .theme-control-panel .site-header::after {
@@ -1465,7 +1589,7 @@ body::after {
   width: 3.25rem;
   height: 2rem;
   filter:
-    drop-shadow(0 0 0.55rem rgba(242, 169, 59, 0.42))
+    drop-shadow(0 0 0.55rem rgba(214, 255, 63, 0.42))
     drop-shadow(0 0 0.35rem rgba(71, 221, 228, 0.2));
 }
 
@@ -1485,7 +1609,7 @@ body::after {
   padding: 0.28rem;
   border: 1px solid rgba(71, 221, 228, 0.18);
   background:
-    linear-gradient(90deg, rgba(71, 221, 228, 0.08), transparent 28%, transparent 72%, rgba(242, 169, 59, 0.045)),
+    linear-gradient(90deg, rgba(71, 221, 228, 0.08), transparent 28%, transparent 72%, rgba(214, 255, 63, 0.045)),
     rgba(3, 12, 11, 0.42);
   box-shadow: inset 0 0 0 1px rgba(71, 221, 228, 0.045);
 }
@@ -1497,8 +1621,8 @@ body::after {
   top: -1px;
   width: 1.35rem;
   height: 1px;
-  background: var(--amber);
-  box-shadow: 0 0 10px rgba(242, 169, 59, 0.34);
+  background: var(--arwes-lime);
+  box-shadow: 0 0 10px rgba(214, 255, 63, 0.34);
 }
 
 .theme-control-panel .nav-links::before {
@@ -1578,8 +1702,8 @@ body::after {
   width: 0.26rem;
   height: 0.26rem;
   margin-left: 0.45rem;
-  background: var(--amber);
-  box-shadow: 0 0 8px rgba(242, 169, 59, 0.45);
+  background: var(--arwes-lime);
+  box-shadow: 0 0 8px rgba(214, 255, 63, 0.45);
 }
 
 @media (max-width: 980px) {
@@ -1979,16 +2103,18 @@ body::after {
 ) {
   position: relative;
   overflow: hidden;
-  border-color: var(--frame-border);
+  border-color: transparent;
   background:
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1px 1rem no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--frame-corner) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) left 0 top 0 / 0.35rem 0.35rem no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--frame-corner) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) right 0 bottom 0 / 0.35rem 0.35rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left calc(0.35rem - 1px) top 0 / calc(1rem + 1px) 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top calc(0.35rem - 1px) / 2px calc(1rem + 1px) no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right calc(0.35rem - 1px) bottom 0 / calc(1rem + 1px) 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom calc(0.35rem - 1px) / 2px calc(1rem + 1px) no-repeat,
     radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.08), transparent 11rem),
     linear-gradient(135deg, var(--frame-bg-hi), transparent 44%),
     var(--frame-bg);
@@ -2022,16 +2148,18 @@ body::after {
   .npc-profile-card,
   .resource-group
 ):hover {
-  border-color: rgba(0, 240, 255, 0.3);
+  border-color: transparent;
   background:
-    linear-gradient(to right, var(--arwes-lime), var(--arwes-lime)) left 0 top 0 / 1.15rem 1px no-repeat,
-    linear-gradient(to bottom, var(--arwes-lime), var(--arwes-lime)) left 0 top 0 / 1px 1.15rem no-repeat,
-    linear-gradient(to left, var(--arwes-lime), var(--arwes-lime)) right 0 top 0 / 1.15rem 1px no-repeat,
-    linear-gradient(to bottom, var(--arwes-lime), var(--arwes-lime)) right 0 top 0 / 1px 1.15rem no-repeat,
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1px 1rem no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--arwes-lime) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) left 0 top 0 / 0.35rem 0.35rem no-repeat,
+    linear-gradient(135deg, transparent calc(50% - 1px), var(--frame-corner) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) right 0 bottom 0 / 0.35rem 0.35rem no-repeat,
+    linear-gradient(to right, var(--arwes-lime), var(--arwes-lime)) left calc(0.35rem - 1px) top 0 / calc(1.15rem + 1px) 2px no-repeat,
+    linear-gradient(to bottom, var(--arwes-lime), var(--arwes-lime)) left 0 top calc(0.35rem - 1px) / 2px calc(1.15rem + 1px) no-repeat,
+    linear-gradient(to left, var(--arwes-lime), var(--arwes-lime)) right 0 top 0 / 1.15rem 2px no-repeat,
+    linear-gradient(to bottom, var(--arwes-lime), var(--arwes-lime)) right 0 top 0 / 2px 1.15rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right calc(0.35rem - 1px) bottom 0 / calc(1rem + 1px) 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom calc(0.35rem - 1px) / 2px calc(1rem + 1px) no-repeat,
     radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.1), transparent 11rem),
     linear-gradient(135deg, rgba(0, 240, 255, 0.09), transparent 44%),
     rgba(3, 21, 21, 0.58);
@@ -2126,8 +2254,8 @@ body::after {
   line-height: 1.5;
 }
 
-.theme-control-panel .index-list[data-reveal],
-.theme-control-panel .index-list[data-stagger] > * {
+.theme-control-panel .index-list[data-reveal].revealed,
+.theme-control-panel .index-list[data-stagger].revealed > * {
   opacity: 1;
   transform: none;
 }
@@ -2141,14 +2269,14 @@ body::after {
   min-height: 13.5rem;
   border: 1px solid var(--frame-border);
   background:
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1px 1rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 2px 1rem no-repeat,
     radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.08), transparent 11rem),
     linear-gradient(135deg, var(--frame-bg-hi), transparent 44%),
     var(--frame-bg);
@@ -2169,14 +2297,14 @@ body::after {
 .theme-control-panel .command-button--primary {
   border-color: rgba(214, 255, 63, 0.72);
   background:
-    linear-gradient(to right, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 top 0 / 1rem 1px no-repeat,
-    linear-gradient(to bottom, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 top 0 / 1px 1rem no-repeat,
-    linear-gradient(to right, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 bottom 0 / 1px 1rem no-repeat,
-    linear-gradient(to left, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 bottom 0 / 1rem 1px no-repeat,
-    linear-gradient(to top, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 bottom 0 / 1px 1rem no-repeat,
+    linear-gradient(to right, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to right, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) left 0 bottom 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, rgba(230, 255, 110, 0.95), rgba(230, 255, 110, 0.95)) right 0 bottom 0 / 2px 1rem no-repeat,
     linear-gradient(90deg, rgba(214, 255, 63, 0.94), rgba(174, 255, 88, 0.84));
   color: #03100f;
   box-shadow:
@@ -2192,14 +2320,14 @@ body::after {
 .theme-control-panel .arwes-index-sections__links a {
   border-color: var(--frame-border);
   background:
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 0.85rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1px 0.85rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 0.85rem 1px no-repeat,
-    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 1px 0.85rem no-repeat,
-    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 0.85rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 1px 0.85rem no-repeat,
-    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 0.85rem 1px no-repeat,
-    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1px 0.85rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 0.85rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 2px 0.85rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 0.85rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) right 0 top 0 / 2px 0.85rem no-repeat,
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 0.85rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) left 0 bottom 0 / 2px 0.85rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 0.85rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 2px 0.85rem no-repeat,
     linear-gradient(135deg, rgba(0, 240, 255, 0.075), transparent 52%),
     rgba(2, 17, 17, 0.58);
   color: rgba(206, 253, 255, 0.94);
@@ -2347,36 +2475,18 @@ body::after {
   position: absolute;
   z-index: 0;
   background:
-    linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(0, 240, 255, 0.13) calc(100% - 1px) 100%),
-    linear-gradient(180deg, transparent 0 calc(100% - 1px), rgba(0, 240, 255, 0.11) calc(100% - 1px) 100%),
-    linear-gradient(90deg, transparent 0 46%, rgba(0, 240, 255, 0.16) 46% 47%, transparent 47% 100%),
-    linear-gradient(180deg, transparent 0 54%, rgba(0, 240, 255, 0.12) 54% 55%, transparent 55% 100%),
-    radial-gradient(circle, rgba(0, 240, 255, 0.46) 0 1px, transparent 1.8px),
-    radial-gradient(circle, rgba(214, 255, 63, 0.32) 0 1px, transparent 1.8px),
-    radial-gradient(ellipse at 34% 24%, rgba(0, 240, 255, 0.13), transparent 32rem),
-    radial-gradient(ellipse at 64% 68%, rgba(0, 240, 255, 0.08), transparent 30rem);
+    radial-gradient(ellipse at 34% 24%, rgba(0, 240, 255, 0.1), transparent 32rem),
+    radial-gradient(ellipse at 64% 68%, rgba(0, 240, 255, 0.055), transparent 30rem);
   background-size:
-    5.5rem 5.5rem,
-    5.5rem 5.5rem,
-    22rem 14rem,
-    18rem 18rem,
-    11rem 7rem,
-    17rem 13rem,
     100% 100%,
     100% 100%;
   background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    1.4rem 1.2rem,
-    8rem 5rem,
     0 0,
     0 0;
   mask-image:
     linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 96%),
     radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95), transparent 78%);
-  opacity: 0.64;
+  opacity: 0.46;
   animation: none;
 }
 
@@ -2403,7 +2513,7 @@ body::after {
   min-height: 100%;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.72;
+  opacity: 0.58;
   mix-blend-mode: screen;
 }
 
@@ -2420,39 +2530,77 @@ body::after {
 }
 
 .mainframe-backplane .backplane-tile:nth-child(2n) {
-  transform: scaleX(-1);
-  opacity: 0.72;
+  opacity: 0.46;
 }
 
 .mainframe-backplane .backplane-tile:nth-child(3n) {
-  opacity: 0.62;
+  opacity: 0.4;
+}
+
+.backplane-mesh line {
+  stroke: rgba(0, 240, 255, 0.075);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.backplane-mesh line:nth-child(5n) {
+  stroke: rgba(0, 240, 255, 0.105);
+}
+
+.backplane-mesh circle {
+  fill: rgba(0, 240, 255, 0.24);
 }
 
 .backplane-grid path {
   fill: none;
-  stroke: rgba(0, 240, 255, 0.22);
+  stroke: transparent;
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 
 .backplane-grid path:nth-child(2n) {
-  stroke: rgba(0, 240, 255, 0.14);
+  stroke: transparent;
 }
 
 .backplane-grid path:nth-child(3n) {
-  stroke: rgba(214, 255, 63, 0.1);
+  stroke: transparent;
+}
+
+.backplane-signal-traces path {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.38);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: 0;
+  filter:
+    drop-shadow(0 0 0.18rem rgba(0, 240, 255, 0.36))
+    drop-shadow(0 0 0.55rem rgba(0, 240, 255, 0.16));
+}
+
+.backplane-signal-traces path:nth-child(2n) {
+  stroke: rgba(214, 255, 63, 0.32);
+  stroke-dasharray: 12 88;
+  filter:
+    drop-shadow(0 0 0.16rem rgba(214, 255, 63, 0.26))
+    drop-shadow(0 0 0.44rem rgba(0, 240, 255, 0.12));
+}
+
+.backplane-signal-traces path:nth-child(3n) {
+  stroke-dasharray: 16 84;
 }
 
 .backplane-nodes circle {
-  fill: rgba(0, 240, 255, 0.48);
-  filter: drop-shadow(0 0 0.35rem rgba(0, 240, 255, 0.28));
+  fill: rgba(0, 240, 255, 0.38);
+  filter: drop-shadow(0 0 0.28rem rgba(0, 240, 255, 0.24));
   animation: node-breathe 5.5s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 
 .backplane-nodes circle:nth-child(3n) {
-  fill: rgba(214, 255, 63, 0.46);
+  fill: rgba(214, 255, 63, 0.34);
   animation-delay: -2s;
 }
 
@@ -2468,8 +2616,1029 @@ body::after {
     drop-shadow(0 0 0.8rem rgba(0, 240, 255, 0.38));
 }
 
-.backplane-packets circle:nth-child(2n) {
+.backplane-packets .backplane-packet-lead {
+  fill: rgba(218, 255, 96, 0.96);
+  opacity: 0.92;
+  filter:
+    drop-shadow(0 0 0.18rem rgba(218, 255, 96, 0.72))
+    drop-shadow(0 0 0.62rem rgba(0, 240, 255, 0.34));
+}
+
+.backplane-packets circle:not(.backplane-packet-lead):nth-child(2n) {
   fill: var(--arwes-lime);
+}
+
+/* ============================================================
+   WARM COLOR QUARANTINE
+   Keep lime as a small signal accent, and remove legacy brown
+   panels from contracts, company, events, and pairing surfaces.
+   ============================================================ */
+
+.theme-control-panel :where(
+  .roll-table,
+  .end-mission-card,
+  .rule-card,
+  .trait-group,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-section-card,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-overview-grid > div,
+  .event-index-item,
+  .event-participant-row,
+  .event-round-card,
+  .event-pairing-row,
+  .pairing-panel,
+  .pairing-summary-card,
+  .pairing-downtime-event-card,
+  .pairing-downtime-choice-card,
+  .pairing-playing-accordion,
+  .pairing-shop-section,
+  .pairing-shop-option,
+  .pairing-inducement-row,
+  [class*="companySectionCard"],
+  [class*="companyEmptyState"],
+  [class*="legacyCompanyHeader"],
+  [class*="legacyAccordion"],
+  [class*="legacyInfoPanel"],
+  [class*="legacyAlert"],
+  [class*="legacyDashboardCard"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyProfileGroup"],
+  [class*="legacyProfileSheet"],
+  [class*="eventIndexItem"]
+) {
+  border-color: rgba(0, 240, 255, 0.24);
+  background:
+    linear-gradient(to right, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 1rem 2px no-repeat,
+    linear-gradient(to bottom, var(--frame-corner), var(--frame-corner)) left 0 top 0 / 2px 1rem no-repeat,
+    linear-gradient(to left, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 1rem 2px no-repeat,
+    linear-gradient(to top, var(--frame-corner), var(--frame-corner)) right 0 bottom 0 / 2px 1rem no-repeat,
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.08), transparent 12rem),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.07), transparent 46%),
+    rgba(2, 15, 15, 0.72);
+}
+
+.theme-control-panel :where(
+  .roll-table header,
+  .end-mission-card header,
+  .rule-card header,
+  .trait-group > header,
+  .event-round-card > header,
+  .pairing-performance-table th,
+  .pairing-playing-accordion > summary,
+  [class*="legacyAccordionHeader"],
+  [class*="legacyProfileSheetHeader"],
+  [class*="legacyOptionHeader"],
+  [class*="legacyWeaponProfileTable"] th,
+  [class*="legacyWeaponProfileCard"] h5
+) {
+  border-color: rgba(0, 240, 255, 0.18);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent 66%),
+    rgba(1, 12, 12, 0.66);
+  color: rgba(230, 255, 255, 0.92);
+}
+
+.theme-control-panel :where(
+  .roll-table header span,
+  .end-mission-card header span,
+  .rule-card header span,
+  .trait-group > header span,
+  .event-status,
+  .pairing-player-switch span,
+  .pairing-panel h2 small,
+  .pairing-hire-subtitle,
+  .pairing-inducement-inline,
+  [class*="field"] > span,
+  [class*="legacyFieldSpan"],
+  [class*="legacyProfileCategory"],
+  [class*="legacyInfoPanel"] header span,
+  [class*="panelKicker"]
+) {
+  color: var(--arwes-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.22);
+}
+
+.theme-control-panel :where(
+  .roll-table header p,
+  .roll-table-roll,
+  .objective-points,
+  .event-status--active,
+  .pairing-downtime-choice-card__header strong,
+  .pairing-force-card li span,
+  .pairing-performance-table .numeric,
+  .pairing-shop-option__meta span,
+  .legacy-profile-chip--ind b,
+  [class*="legacyStorageChip"],
+  [class*="legacyProfileChipLevel"],
+  [class*="legacyProfileChipSwc"],
+  [class*="legacyDashboardCardSpan"],
+  [class*="legacyDashboardCardStrong"],
+  [class*="legacyDashboardCardInput"],
+  [class*="legacyOptionSwc"],
+  [class*="legacyOptionPoints"],
+  [class*="legacyOptionAction"]
+) {
+  border-color: rgba(214, 255, 63, 0.38);
+  background:
+    linear-gradient(135deg, rgba(214, 255, 63, 0.1), transparent 58%),
+    rgba(7, 20, 17, 0.68);
+  color: var(--arwes-lime);
+}
+
+.theme-control-panel :where(
+  .roll-table-rows article,
+  .end-condition-list article,
+  .objective-list article,
+  .objective-group,
+  .pairing-summary-list div,
+  .pairing-force-card li,
+  .pairing-playing-accordion > summary,
+  [class*="legacyAccordionAction"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyOptionRow"],
+  [class*="legacyWeaponProfiles"],
+  [class*="legacyWeaponProfileTable"] th,
+  [class*="legacyWeaponProfileTable"] td
+) {
+  border-color: rgba(0, 240, 255, 0.12);
+}
+
+.theme-control-panel :where(
+  .company-list-item,
+  .company-trooper-row,
+  .recruitment-card,
+  .pairing-player-switch button,
+  .pairing-stepper button,
+  .pairing-trooper-row,
+  .pairing-playing-card--fallback,
+  [class*="legacyOptionRow"],
+  [class*="legacyWeaponProfileTable"] td,
+  [class*="legacyWeaponRangeMod"]
+) {
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.045), transparent 66%),
+    rgba(3, 14, 14, 0.66);
+}
+
+.theme-control-panel :where(
+  .company-trooper-row.is-captain,
+  .recruitment-status.is-loading,
+  [class*="legacyTrooperCardIsCaptain"],
+  [class*="legacyInfoPanelIdentity"]
+) {
+  border-color: rgba(214, 255, 63, 0.34);
+  background:
+    linear-gradient(90deg, rgba(214, 255, 63, 0.06), rgba(0, 240, 255, 0.045)),
+    rgba(3, 14, 14, 0.72);
+}
+
+.theme-control-panel :where(
+  .button.primary,
+  .command-button--primary,
+  .company-manager .command-button--primary,
+  [class*="commandButtonPrimary"]
+) {
+  border-color: rgba(214, 255, 63, 0.64);
+  background:
+    linear-gradient(to right, rgba(214, 255, 63, 0.9), rgba(214, 255, 63, 0.9)) left 0 top 0 / 0.95rem 1px no-repeat,
+    linear-gradient(to bottom, rgba(214, 255, 63, 0.9), rgba(214, 255, 63, 0.9)) left 0 top 0 / 1px 0.95rem no-repeat,
+    linear-gradient(90deg, rgba(214, 255, 63, 0.82), rgba(0, 240, 255, 0.18));
+  color: #03100f;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 1rem rgba(214, 255, 63, 0.14);
+}
+
+.theme-control-panel :where(
+  [class*="legacyProfileHeadLogo"],
+  .footer-brand img
+) {
+  filter: drop-shadow(0 0 0.45rem rgba(0, 240, 255, 0.28));
+}
+
+.theme-control-panel :where(
+  .profile-item-link,
+  [class*="legacyDetailLine"] strong,
+  [class*="legacyProfileChipLevel"] b,
+  [class*="legacyProfileChipSwc"] b
+) {
+  color: var(--arwes-cyan-bright);
+  text-decoration-color: rgba(0, 240, 255, 0.42);
+}
+
+/* ============================================================
+   ARWES RESTRAINT PASS
+   Quieter document frames, line navigation, and lighter content primitives.
+   ============================================================ */
+
+.theme-control-panel .site-header {
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.08), transparent 18%, transparent 82%, rgba(0, 240, 255, 0.05)),
+    rgba(1, 9, 9, 0.78);
+  box-shadow:
+    inset 0 -1px 0 rgba(0, 240, 255, 0.22),
+    0 0.75rem 2rem rgba(0, 0, 0, 0.24);
+}
+
+.theme-control-panel .site-nav {
+  min-height: calc(var(--header-height) - 0.35rem);
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.theme-control-panel .brand {
+  min-height: calc(var(--header-height) - 0.35rem);
+  padding-right: clamp(1rem, 2vw, 2.25rem);
+  border-right: 1px solid rgba(0, 240, 255, 0.13);
+}
+
+.theme-control-panel .brand span {
+  color: rgba(230, 255, 255, 0.94);
+  text-shadow: 0 0 0.65rem rgba(0, 240, 255, 0.18);
+}
+
+.theme-control-panel .nav-links {
+  gap: clamp(0.5rem, 1vw, 0.85rem);
+}
+
+.theme-control-panel .nav-links a {
+  position: relative;
+  min-height: 2.2rem;
+  border: 0;
+  background: transparent;
+  clip-path: none;
+  box-shadow: none;
+  color: rgba(159, 197, 193, 0.86);
+  padding: 0.45rem 0.12rem;
+  text-shadow: 0 0 1px currentColor;
+}
+
+.theme-control-panel .nav-links a::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.theme-control-panel .nav-links a:hover,
+.theme-control-panel .nav-links a:focus-visible {
+  border-color: transparent;
+  background: transparent;
+  color: var(--arwes-cyan-bright);
+  text-shadow: 0 0 0.85rem rgba(0, 240, 255, 0.42);
+}
+
+.theme-control-panel .nav-links a:hover::before,
+.theme-control-panel .nav-links a:focus-visible::before,
+.theme-control-panel .nav-links a.is-current::before {
+  opacity: 0.85;
+  transform: scaleX(1);
+}
+
+.theme-control-panel .nav-links a.is-current {
+  color: var(--arwes-lime);
+}
+
+.theme-control-panel .nav-links .nav-discord-link {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0.25rem;
+  color: rgba(121, 242, 242, 0.82);
+  opacity: 0.86;
+}
+
+.theme-control-panel .nav-links .nav-discord-link svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition:
+    color 0.18s ease,
+    filter 0.18s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.theme-control-panel .nav-links .nav-discord-link::after {
+  content: none;
+  display: none;
+}
+
+.theme-control-panel .nav-links .nav-discord-link:hover,
+.theme-control-panel .nav-links .nav-discord-link:focus-visible {
+  color: var(--arwes-cyan-bright);
+  opacity: 1;
+}
+
+.theme-control-panel .nav-links .nav-discord-link:hover svg,
+.theme-control-panel .nav-links .nav-discord-link:focus-visible svg {
+  filter: drop-shadow(0 0 0.45rem rgba(0, 240, 255, 0.52));
+  transform: translateY(-1px);
+}
+
+.theme-control-panel :where(.rules-main, .rules-content) {
+  position: relative;
+  isolation: isolate;
+}
+
+.theme-control-panel .rules-main {
+  border-inline-color: rgba(0, 240, 255, 0.055);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08), transparent 30rem),
+    linear-gradient(180deg, rgba(0, 240, 255, 0.045), rgba(0, 0, 0, 0) 22rem);
+}
+
+.theme-control-panel .rules-main::before {
+  content: "";
+  position: absolute;
+  inset: clamp(1.25rem, 2vw, 2rem) clamp(0.6rem, 1.8vw, 1.4rem) auto;
+  height: calc(100% - clamp(2.5rem, 4vw, 4rem));
+  max-height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  clip-path: polygon(0 1rem, 1rem 0, calc(100% - 1rem) 0, 100% 1rem, 100% calc(100% - 1rem), calc(100% - 1rem) 100%, 1rem 100%, 0 calc(100% - 1rem));
+  background:
+    linear-gradient(135deg, rgba(0, 240, 255, 0.18), transparent 18rem),
+    rgba(0, 25, 25, 0.09);
+  border: 1px solid rgba(0, 240, 255, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 240, 255, 0.035),
+    0 1.5rem 5rem rgba(0, 0, 0, 0.12);
+}
+
+.theme-control-panel .rules-content {
+  max-width: 56rem;
+}
+
+.theme-control-panel .rules-shell .page-hero.compact h1 {
+  max-width: 58rem;
+  font-size: clamp(2.6rem, 5vw, 4.35rem);
+  letter-spacing: 0.035em;
+  text-shadow: 0 0 1.2rem rgba(0, 240, 255, 0.2);
+}
+
+.theme-control-panel :where(
+  main blockquote,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout
+) {
+  overflow: hidden;
+  border: 0;
+  border-left: 2px solid rgba(0, 240, 255, 0.72);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.12), rgba(0, 240, 255, 0.035) 58%, transparent),
+    rgba(2, 14, 14, 0.48);
+  box-shadow: none;
+  clip-path: polygon(0 0, calc(100% - 0.75rem) 0, 100% 0.75rem, 100% calc(100% - 0.75rem), calc(100% - 0.75rem) 100%, 0 100%);
+}
+
+.theme-control-panel :where(
+  main blockquote,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout
+)::after {
+  display: none;
+}
+
+.theme-control-panel :where(.warning-callout) {
+  border-left-color: rgba(214, 255, 63, 0.74);
+  background:
+    linear-gradient(90deg, rgba(214, 255, 63, 0.11), rgba(0, 240, 255, 0.035) 58%, transparent),
+    rgba(2, 14, 14, 0.48);
+}
+
+.theme-control-panel :where(
+  .rules-table-card table,
+  .rules-content table:not(.rules-mini-table),
+  [class*="legacyWeaponProfileTable"],
+  .pairing-performance-table
+) {
+  border-collapse: separate;
+  border-spacing: 0.25rem;
+  background: transparent;
+}
+
+.theme-control-panel :where(
+  .rules-table-card thead th,
+  .rules-content table:not(.rules-mini-table) th,
+  [class*="legacyWeaponProfileTable"] th,
+  .pairing-performance-table th
+) {
+  border: 0;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.46);
+  background:
+    linear-gradient(0deg, rgba(0, 240, 255, 0.12), rgba(0, 240, 255, 0.035));
+  color: rgba(187, 246, 246, 0.86);
+  text-shadow: 0 0 0.55rem rgba(0, 240, 255, 0.18);
+}
+
+.theme-control-panel :where(
+  .rules-table-card tbody tr,
+  .rules-content table:not(.rules-mini-table) tbody tr,
+  [class*="legacyWeaponProfileTable"] tbody tr,
+  .pairing-performance-table tbody tr
+) {
+  background: transparent;
+}
+
+.theme-control-panel :where(
+  .rules-table-card th,
+  .rules-table-card td,
+  .rules-content table:not(.rules-mini-table) th,
+  .rules-content table:not(.rules-mini-table) td,
+  [class*="legacyWeaponProfileTable"] th,
+  [class*="legacyWeaponProfileTable"] td,
+  .pairing-performance-table th,
+  .pairing-performance-table td
+) {
+  border: 0;
+  background-color: rgba(0, 240, 255, 0.035);
+}
+
+.theme-control-panel :where(
+  .rules-table-card tbody tr:hover th,
+  .rules-table-card tbody tr:hover td,
+  .rules-content table:not(.rules-mini-table) tbody tr:hover th,
+  .rules-content table:not(.rules-mini-table) tbody tr:hover td,
+  [class*="legacyWeaponProfileTable"] tbody tr:hover th,
+  [class*="legacyWeaponProfileTable"] tbody tr:hover td,
+  .pairing-performance-table tbody tr:hover th,
+  .pairing-performance-table tbody tr:hover td
+) {
+  background-color: rgba(0, 240, 255, 0.095);
+}
+
+.theme-control-panel :where(
+  .rules-table-card,
+  .rule-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .resource-group
+) {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 240, 255, 0.035),
+    0 1rem 2.4rem rgba(0, 0, 0, 0.18);
+}
+
+.theme-control-panel :where(
+  .rules-table-card,
+  .rule-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .resource-group
+):hover {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.12), transparent 12rem),
+    linear-gradient(135deg, var(--frame-bg-hi), transparent 44%),
+    var(--frame-bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 240, 255, 0.06),
+    0 1rem 2.8rem rgba(0, 0, 0, 0.2),
+    0 0 2rem rgba(0, 240, 255, 0.055);
+}
+
+/* ============================================================
+   FRAME RESTRAINT
+   Dense operational readouts should feel instrumented, not framed.
+   Keep strong corner ticks for major panels/cards only.
+   ============================================================ */
+
+.theme-control-panel :where(
+  .legacy-dashboard-card,
+  [class*="legacyDashboardCard"],
+  .legacy-info-panel,
+  [class*="legacyInfoPanel"]
+) {
+  --frame-corner: transparent;
+  --hud-frame-corner: transparent;
+  overflow: visible;
+  border-color: rgba(0, 240, 255, 0.12);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04), transparent 70%),
+    rgba(2, 15, 15, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(0, 240, 255, 0.018);
+  clip-path: none;
+}
+
+.theme-control-panel :where(
+  .legacy-dashboard-card,
+  [class*="legacyDashboardCard"],
+  .legacy-info-panel,
+  [class*="legacyInfoPanel"]
+)::after,
+.theme-control-panel :where(
+  .legacy-dashboard-card,
+  [class*="legacyDashboardCard"],
+  .legacy-info-panel,
+  [class*="legacyInfoPanel"]
+) > .boot-outline {
+  display: none;
+}
+
+.theme-control-panel :where(
+  .legacy-dashboard-card > span,
+  .legacy-dashboard-card strong,
+  .legacy-dashboard-card input,
+  [class*="legacyDashboardCardSpan"],
+  [class*="legacyDashboardCardStrong"],
+  [class*="legacyDashboardCardInput"]
+) {
+  clip-path: none;
+  border-color: rgba(0, 240, 255, 0.18);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.045), transparent 68%),
+    rgba(0, 0, 0, 0.16);
+  box-shadow: none;
+}
+
+.theme-control-panel :where(
+  .legacy-dashboard-card strong,
+  [class*="legacyDashboardCardStrong"]
+) {
+  background: transparent;
+}
+
+.theme-control-panel :where(
+  .legacy-dashboard-card input,
+  [class*="legacyDashboardCardInput"]
+) {
+  border-bottom-color: rgba(0, 240, 255, 0.3);
+  background:
+    linear-gradient(to right, rgba(0, 240, 255, 0.34), rgba(0, 240, 255, 0.34)) left 100% / 100% 1px no-repeat,
+    rgba(0, 0, 0, 0.16);
+}
+
+/* ============================================================
+   NO CORNER TICKS
+   Temporary global removal of highlighted HUD corner strokes.
+   ============================================================ */
+
+.theme-control-panel {
+  --frame-corner: transparent;
+  --hud-frame-corner: transparent;
+}
+
+.theme-control-panel .boot-outline {
+  display: none;
+}
+
+.theme-control-panel :where(
+  .holo-frame,
+  .glass-panel,
+  .button,
+  .command-button,
+  .icon-button,
+  .custom-select-trigger,
+  .index-list a,
+  .feature-band article,
+  .resource-links a,
+  .arwes-index-sections__links a,
+  .arwes-landing-hq__card,
+  .arwes-landing-hq__signal,
+  .arwes-index-sections__manual,
+  .arwes-index-sections__tutorial-copy,
+  .arwes-index-sections__tutorial-video,
+  .arwes-index-sections__resource-group,
+  .arwes-index-sections__footer-signal,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-section-card,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-overview-grid > div,
+  .event-index-item,
+  .event-participant-row,
+  .event-round-card,
+  .event-pairing-row,
+  .legacy-accordion,
+  .legacy-info-panel,
+  .legacy-dashboard-card,
+  .legacy-modal__panel,
+  .legacy-profile-sheet,
+  .pairing-panel,
+  .pairing-force-card,
+  .pairing-summary-card,
+  .pairing-playing-card,
+  .pairing-downtime-event-card,
+  .pairing-downtime-choice-card,
+  .rules-table-card,
+  .procedure-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .loot-weapon-card,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout,
+  .market-card,
+  .perk-card,
+  .downtime-event-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .company-type-section,
+  .npc-profile-card,
+  .rule-card,
+  .sponsor-card,
+  .resource-group,
+  .terminal-panel,
+  .video-panel,
+  [class*="companySectionCard"],
+  [class*="companyEmptyState"],
+  [class*="legacyCompanyHeader"],
+  [class*="legacyAccordion"],
+  [class*="legacyInfoPanel"],
+  [class*="legacyAlert"],
+  [class*="legacyDashboardCard"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyProfileGroup"],
+  [class*="legacyProfileSheet"],
+  [class*="eventIndexItem"]
+)::after {
+  display: none;
+}
+
+.theme-control-panel :where(
+  .button,
+  .command-button,
+  .icon-button,
+  .custom-select-trigger,
+  .resource-links a,
+  .arwes-index-sections__links a,
+  .index-list a,
+  .feature-band article,
+  .arwes-landing-hq__card,
+  .arwes-landing-hq__signal,
+  .arwes-index-sections__manual,
+  .arwes-index-sections__tutorial-copy,
+  .arwes-index-sections__tutorial-video,
+  .arwes-index-sections__resource-group,
+  .arwes-index-sections__footer-signal,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-section-card,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-overview-grid > div,
+  .event-index-item,
+  .event-participant-row,
+  .event-round-card,
+  .event-pairing-row,
+  .legacy-accordion,
+  .legacy-info-panel,
+  .legacy-dashboard-card,
+  .legacy-modal__panel,
+  .legacy-profile-sheet,
+  .pairing-panel,
+  .pairing-force-card,
+  .pairing-summary-card,
+  .pairing-playing-card,
+  .pairing-downtime-event-card,
+  .pairing-downtime-choice-card,
+  .rules-table-card,
+  .procedure-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .loot-weapon-card,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout,
+  .market-card,
+  .perk-card,
+  .downtime-event-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .company-type-section,
+  .npc-profile-card,
+  .rule-card,
+  .sponsor-card,
+  .resource-group,
+  .terminal-panel,
+  .video-panel,
+  [class*="companySectionCard"],
+  [class*="companyEmptyState"],
+  [class*="legacyCompanyHeader"],
+  [class*="legacyAccordion"],
+  [class*="legacyInfoPanel"],
+  [class*="legacyAlert"],
+  [class*="legacyDashboardCard"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyProfileGroup"],
+  [class*="legacyProfileSheet"],
+  [class*="eventIndexItem"]
+) {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.08), transparent 12rem),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.06), transparent 46%),
+    rgba(2, 15, 15, 0.58);
+}
+
+.theme-control-panel :where(
+  .button,
+  .command-button,
+  .icon-button,
+  .index-list a,
+  .feature-band article,
+  .company-section-card,
+  .event-index-item,
+  .pairing-force-card,
+  .rules-table-card,
+  .procedure-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .loot-weapon-card,
+  .rule-card,
+  .perk-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .npc-profile-card,
+  .resource-group
+):hover {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.11), transparent 12rem),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.085), transparent 46%),
+    rgba(3, 21, 21, 0.62);
+}
+
+.theme-control-panel :where(
+  .button.primary,
+  .command-button--primary,
+  .company-manager .command-button--primary,
+  [class*="commandButtonPrimary"]
+) {
+  background: linear-gradient(90deg, rgba(214, 255, 63, 0.82), rgba(0, 240, 255, 0.18));
+}
+
+.theme-control-panel :where(
+  .button,
+  .command-button,
+  .icon-button,
+  .custom-select-trigger,
+  .resource-links a,
+  .arwes-index-sections__links a,
+  .index-list a,
+  .feature-band article,
+  .arwes-landing-hq__card,
+  .arwes-landing-hq__signal,
+  .arwes-index-sections__manual,
+  .arwes-index-sections__tutorial-copy,
+  .arwes-index-sections__tutorial-video,
+  .arwes-index-sections__resource-group,
+  .arwes-index-sections__footer-signal,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-section-card,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-overview-grid > div,
+  .event-index-item,
+  .event-participant-row,
+  .event-round-card,
+  .event-pairing-row,
+  .legacy-accordion,
+  .legacy-info-panel,
+  .legacy-dashboard-card,
+  .legacy-modal__panel,
+  .legacy-profile-sheet,
+  .pairing-panel,
+  .pairing-force-card,
+  .pairing-summary-card,
+  .pairing-playing-card,
+  .pairing-downtime-event-card,
+  .pairing-downtime-choice-card,
+  .rules-table-card,
+  .procedure-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .loot-weapon-card,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout,
+  .market-card,
+  .perk-card,
+  .downtime-event-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .company-type-section,
+  .npc-profile-card,
+  .rule-card,
+  .sponsor-card,
+  .resource-group,
+  .terminal-panel,
+  .video-panel,
+  [class*="companySectionCard"],
+  [class*="companyEmptyState"],
+  [class*="legacyCompanyHeader"],
+  [class*="legacyAccordion"],
+  [class*="legacyInfoPanel"],
+  [class*="legacyAlert"],
+  [class*="legacyDashboardCard"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyProfileGroup"],
+  [class*="legacyProfileSheet"],
+  [class*="eventIndexItem"]
+) {
+  position: relative;
+  border-color: transparent !important;
+}
+
+.theme-control-panel :where(
+  .button,
+  .command-button,
+  .icon-button,
+  .custom-select-trigger,
+  .resource-links a,
+  .arwes-index-sections__links a,
+  .index-list a,
+  .feature-band article,
+  .arwes-landing-hq__card,
+  .arwes-landing-hq__signal,
+  .arwes-index-sections__manual,
+  .arwes-index-sections__tutorial-copy,
+  .arwes-index-sections__tutorial-video,
+  .arwes-index-sections__resource-group,
+  .arwes-index-sections__footer-signal,
+  .company-roster-panel,
+  .company-detail-panel,
+  .company-section-card,
+  .company-empty-state,
+  .company-wizard__panel,
+  .event-tool-panel,
+  .event-overview-grid > div,
+  .event-index-item,
+  .event-participant-row,
+  .event-round-card,
+  .event-pairing-row,
+  .legacy-accordion,
+  .legacy-info-panel,
+  .legacy-dashboard-card,
+  .legacy-modal__panel,
+  .legacy-profile-sheet,
+  .pairing-panel,
+  .pairing-force-card,
+  .pairing-summary-card,
+  .pairing-playing-card,
+  .pairing-downtime-event-card,
+  .pairing-downtime-choice-card,
+  .rules-table-card,
+  .procedure-card,
+  .contract-skill-card,
+  .objective-card,
+  .end-mission-card,
+  .scenario-object-card,
+  .deployment-map,
+  .loot-weapon-card,
+  .reference-link-callout,
+  .rules-example-callout,
+  .warning-callout,
+  .market-card,
+  .perk-card,
+  .downtime-event-card,
+  .downtime-choice-card,
+  .company-type-card,
+  .company-type-section,
+  .npc-profile-card,
+  .rule-card,
+  .sponsor-card,
+  .resource-group,
+  .terminal-panel,
+  .video-panel,
+  [class*="companySectionCard"],
+  [class*="companyEmptyState"],
+  [class*="legacyCompanyHeader"],
+  [class*="legacyAccordion"],
+  [class*="legacyInfoPanel"],
+  [class*="legacyAlert"],
+  [class*="legacyDashboardCard"],
+  [class*="legacyTrooperCard"],
+  [class*="legacyProfileGroup"],
+  [class*="legacyProfileSheet"],
+  [class*="eventIndexItem"]
+)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: block !important;
+  pointer-events: none;
+  z-index: 3;
+  padding: 1px;
+  background: rgba(0, 240, 255, 0.2);
+  clip-path: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.theme-control-panel :where(
+  .button:hover,
+  .button:focus-visible,
+  .command-button:hover,
+  .command-button:focus-visible,
+  .icon-button:hover,
+  .icon-button:focus-visible,
+  .index-list a:hover,
+  .index-list a:focus-visible,
+  .feature-band article:hover,
+  .company-section-card:hover,
+  .event-index-item:hover,
+  .pairing-force-card:hover,
+  .rules-table-card:hover,
+  .procedure-card:hover,
+  .contract-skill-card:hover,
+  .objective-card:hover,
+  .end-mission-card:hover,
+  .scenario-object-card:hover,
+  .deployment-map:hover,
+  .loot-weapon-card:hover,
+  .rule-card:hover,
+  .perk-card:hover,
+  .downtime-choice-card:hover,
+  .company-type-card:hover,
+  .npc-profile-card:hover,
+  .resource-group:hover
+)::after {
+  background: rgba(0, 240, 255, 0.32);
+}
+
+.theme-control-panel .index-list a {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: transparent !important;
+  background: rgba(0, 240, 255, 0.2);
+  box-shadow: var(--frame-shadow);
+  clip-path: var(--hud-angle);
+}
+
+.theme-control-panel .index-list a::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.08), transparent 11rem),
+    linear-gradient(135deg, var(--frame-bg-hi), transparent 44%),
+    var(--frame-bg);
+  clip-path: var(--hud-angle);
+}
+
+.theme-control-panel .index-list a::after {
+  display: none !important;
+}
+
+.theme-control-panel .index-list a > * {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-control-panel .index-list a:hover,
+.theme-control-panel .index-list a:focus-visible {
+  background: rgba(0, 240, 255, 0.32);
+}
+
+.theme-control-panel .index-list a:hover::before,
+.theme-control-panel .index-list a:focus-visible::before {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 240, 255, 0.11), transparent 11rem),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.09), transparent 44%),
+    rgba(3, 21, 21, 0.58);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -2,7 +2,7 @@
 
 .legacy-info-panel {
   min-width: 0;
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.06), transparent 42%),
     rgba(14, 15, 13, 0.38);
@@ -19,7 +19,7 @@
   gap: 1rem;
   align-items: baseline;
   padding-bottom: 0.7rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 .legacy-info-panel header span {
@@ -67,7 +67,7 @@
 }
 
 .pairing-rule-grid strong {
-  color: var(--amber);
+  color: var(--arwes-lime);
   display: block;
   font-size: 1.45rem;
   line-height: 1.1;

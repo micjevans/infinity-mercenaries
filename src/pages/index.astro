@@ -118,7 +118,67 @@ const primaryLinks = [
         aria-hidden="true"
       />
       <p class="landing-console__kicker">Mercnet campaign node</p>
-      <h1>Infinity: Mercenaries</h1>
+      <h1 class="landing-console__title">
+        <span class="sr-only">Infinity: Mercenaries</span>
+        <svg
+          class="landing-console__wordmark"
+          viewBox="0 0 1120 245"
+          role="img"
+          aria-label="Infinity: Mercenaries"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <defs>
+            <linearGradient id="landing-wordmark-fill" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f7ffff" />
+              <stop offset="48%" stop-color="#d6ffff" />
+              <stop offset="100%" stop-color="#8ff8ff" />
+            </linearGradient>
+            <linearGradient id="landing-wordmark-scan" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00f0ff" stop-opacity="0" />
+              <stop offset="48%" stop-color="#00f0ff" stop-opacity="0.65" />
+              <stop offset="100%" stop-color="#d6ff3f" stop-opacity="0" />
+            </linearGradient>
+            <filter id="landing-wordmark-glow" x="-10%" y="-30%" width="120%" height="160%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="softGlow" />
+              <feColorMatrix
+                in="softGlow"
+                type="matrix"
+                values="0 0 0 0 0  0 0 0 0 0.95  0 0 0 0 1  0 0 0 0.9 0"
+                result="cyanGlow"
+              />
+              <feMerge>
+                <feMergeNode in="cyanGlow" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <pattern id="landing-wordmark-lines" width="1" height="12" patternUnits="userSpaceOnUse">
+              <rect width="1" height="1" y="0" fill="#00f0ff" opacity="0.32" />
+            </pattern>
+          </defs>
+          <g filter="url(#landing-wordmark-glow)">
+            <text class="landing-console__wordmark-shadow" x="560" y="92" text-anchor="middle">
+              INFINITY:
+            </text>
+            <text class="landing-console__wordmark-shadow" x="560" y="205" text-anchor="middle">
+              MERCENARIES
+            </text>
+            <text class="landing-console__wordmark-main" x="560" y="88" text-anchor="middle">
+              INFINITY:
+            </text>
+            <text class="landing-console__wordmark-main" x="560" y="201" text-anchor="middle">
+              MERCENARIES
+            </text>
+            <text class="landing-console__wordmark-line" x="560" y="88" text-anchor="middle">
+              INFINITY:
+            </text>
+            <text class="landing-console__wordmark-line" x="560" y="201" text-anchor="middle">
+              MERCENARIES
+            </text>
+          </g>
+          <path class="landing-console__wordmark-rule" d="M118 118 H440 M680 118 H1002" />
+          <path class="landing-console__wordmark-scan" d="M145 229 H975" />
+        </svg>
+      </h1>
       <p class="landing-console__tagline">
         Persistent companies. Dangerous contracts. Consequences that survive the mission.
       </p>

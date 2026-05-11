@@ -24,15 +24,15 @@
 }
 
 .button.primary {
-  border-color: rgba(242, 169, 59, 0.8);
-  background: var(--amber);
-  color: #17120a;
+  border-color: rgba(214, 255, 63, 0.8);
+  background: var(--arwes-lime);
+  color: #03100f;
 }
 
 .button.primary:hover,
 .button.primary:focus-visible {
   background: #f5c346;
-  box-shadow: 0 0 18px rgba(242, 169, 59, 0.3);
+  box-shadow: 0 0 18px rgba(214, 255, 63, 0.3);
   transform: translateY(-1px);
 }
 
@@ -56,9 +56,9 @@
   height: 2.75rem;
   display: inline-grid;
   place-items: center;
-  border: 1px solid rgba(242, 169, 59, 0.5);
-  background: rgba(242, 169, 59, 0.08);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.5);
+  background: rgba(214, 255, 63, 0.08);
+  color: var(--arwes-lime);
   font: inherit;
   font-size: 1.4rem;
   font-weight: 900;

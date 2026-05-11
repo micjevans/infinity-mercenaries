@@ -28,6 +28,6 @@
 
 .skip-link:focus {
   transform: translateY(0);
-  outline: 2px solid rgba(255, 191, 102, 0.72);
+  outline: 2px solid rgba(214, 255, 63, 0.72);
   outline-offset: 2px;
 }

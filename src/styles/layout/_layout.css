@@ -37,7 +37,7 @@
   width: 3.8rem;
   height: 2.25rem;
   object-fit: contain;
-  filter: drop-shadow(0 0 0.65rem rgba(242, 169, 59, 0.42));
+  filter: drop-shadow(0 0 0.65rem rgba(214, 255, 63, 0.42));
 }
 
 .nav-links {

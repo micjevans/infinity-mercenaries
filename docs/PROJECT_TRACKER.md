@@ -41,6 +41,40 @@ Use this as a temporary map; update as team members onboard.
 
 ## Change Log
 
+- 2026-05-10: Removed the experimental landing hero artwork layer while keeping the custom SVG wordmark and title-screen composition.
+- 2026-05-10: Tuned the landing hero artwork to render more clearly with a transparency vignette and lighter scanline/overlay treatment instead of heavy cyan blend filtering.
+- 2026-05-10: Reworked the landing entry screen with a blended coolmixedheroes visual layer and a custom SVG wordmark treatment so the first viewport feels closer to an ARWES-style sci-fi title screen.
+- 2026-05-10: Moved rules/contracts index grid cards onto the clipped backplate frame pattern so their chamfered borders match the fixed company and event list shells.
+- 2026-05-10: Replaced company and event list chamfer outlines with clipped backplate frames so diagonal edges render as real continuous borders instead of pseudo-outline artifacts.
+- 2026-05-10: Reworked company chamfer frames from clipped rectangular masks to explicit edge gradients so the diagonal cuts draw at the same strength as the straight edges.
+- 2026-05-10: Hardened company page chamfer outlines at the CSS module level so native clipped borders no longer fade out on diagonal edges.
+- 2026-05-10: Replaced clipped-panel native borders with a subtle masked outline layer so chamfered edges render with the same opacity as straight frame edges without bringing back highlighted corner ticks.
+- 2026-05-10: Added a global no-corner-ticks pass that disables bright HUD corner strokes and boot corner outlines across shared panels, cards, buttons, and legacy module surfaces while preserving glass fills and borders.
+- 2026-05-10: Added a frame restraint pass that removes heavy HUD corner ticks from dense dashboard/readout elements while preserving stronger framing for major panels and cards.
+- 2026-05-10: Consolidated the signed-in header auth area into one Drive-linked status trigger with a compact profile/sign-out dropdown, keeping the command rail lighter and less button-heavy.
+- 2026-05-10: Slimmed the header auth controls into one-line sync/status actions and removed the Discord icon's external-link marker so the header reads as one consistent command rail.
+- 2026-05-10: Simplified the global header navigation to core app routes and converted the Discord link into an ARWES-style icon-only social control using the reference SVG path.
+- 2026-05-10: Removed duplicate legacy corner overlays and transparentized clipped borders on shared HUD cards so downtime/rules frames no longer show offset double chamfers.
+- 2026-05-10: Tightened HUD chamfer corner joins by overlapping diagonal and straight frame strokes so top-left and bottom-right corners render as continuous lines without faint stepped gaps.
+- 2026-05-10: Added an ARWES restraint pass with line-driven header navigation, a quieter rules/contracts document frame, rail-style callouts, lighter separated table rows, and subtler localized panel illumination.
+- 2026-05-10: Strengthened HUD frame corner rendering by replacing faint 1px split-corner gradients with joined 2px corner strokes and explicit chamfer diagonals across cards, panels, CTAs, and event module frames.
+- 2026-05-10: Removed remaining legacy warm color literals from CSS modules and shared styles, retheming company manager accordions, unit profile accordions, event tools, and pairing surfaces to cyan HUD panels with lime signal accents.
+- 2026-05-10: Added a warm-color quarantine pass that rethemes twist tables, company legacy panels/profile sheets, event cards, and pairing surfaces away from brown/amber panels into cyan HUD frames with lime signal accents.
+- 2026-05-10: Added a shared boot image materialization animation so visible page images reveal from noisy blurred fragments into crisp artwork while preserving decorative/header logos.
+- 2026-05-09: Restyled the Google auth header control into compact sci-fi command/status chips with Drive-linked state, leading status light, matching nav hover motion, and corrected CSS module class bindings.
+- 2026-05-09: Fixed rules/contracts index grid flash by scoping the index-list opacity override to revealed lists instead of forcing them visible before boot animations attach.
+- 2026-05-09: Added a first-paint boot preparation state so animated page content starts transparent before JavaScript attaches boot attributes, preventing the brief pre-animation flash.
+- 2026-05-09: Reserved measured text dimensions during typewriter boot animations so content remains invisible-but-present and avoids layout jumping while it types in.
+- 2026-05-09: Matched each leading backplane packet offset to its route's animated trace length so the front marker lines up with short and long signal dashes.
+- 2026-05-09: Added a smaller leading packet to each animated backplane signal so the glowing trace has a visible front marker while preserving the normalized trace speed.
+- 2026-05-09: Nudged animated backplane trace travel closer to packet speed so the glowing pre-line no longer pulls ahead on wider screens.
+- 2026-05-09: Removed non-scaling stroke behavior from animated backplane signal dashes so dash length scales with the SVG path and stays synchronized with packets on larger screens.
+- 2026-05-09: Tuned backplane signal dash offset speed after visual review so the tracing line stays closer to packet movement without outrunning it across long routes.
+- 2026-05-09: Synchronized backplane signal dash speed with packet motion by matching dash pattern totals and dash offset travel to the normalized motion path length.
+- 2026-05-09: Changed animated backplane routes into short glowing signal dashes synchronized with packets so paths appear just ahead of movement and disappear after the packet passes.
+- 2026-05-09: Rebuilt the animated backplane grid inside the SVG so dots align to circuit corners, packet paths travel from off-canvas to off-canvas, and trace routes mostly follow horizontal/vertical grid lines with occasional diagonal reroutes.
+- 2026-05-09: Reduced animated backplane clutter by simplifying circuit paths, aligning node dots to the route grid, removing mirrored trace overlap, and quieting the landing orbital/grid substrate while preserving packet motion.
+- 2026-05-09: Redesigned the landing page into a simple ARWES-inspired entry console with centered brand signal, primary navigation links, restrained orbital/nebula motion, and a compact resource dock.
 - 2026-05-08: Converted the PCB backplane from one document-stretched SVG into repeated fixed-height SVG tiles with unique motion paths so long pages keep crisp circuit proportions instead of scaling vertically.
 - 2026-05-08: Narrowed boot frame construction to intentional framed controls/cards instead of layout wrappers or generic box/panel classes, slowed the draw effect, and made the temporary construction outline fade out after completing.
 - 2026-05-08: Refined component boot motion with real fast typewriter text for normal page copy/titles, skipped button/dedicated-box text, and added top-left outline draw construction for buttons and panels.

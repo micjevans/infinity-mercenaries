@@ -15,7 +15,7 @@
   max-height: min(88vh, 56rem);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
-  border: 1px solid rgba(242, 169, 59, 0.42);
+  border: 1px solid rgba(214, 255, 63, 0.42);
   background: #11130f;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.45);
 }

@@ -33,7 +33,7 @@
 .pairing-player-switch button,
 .pairing-stepper button {
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.035);
+  background: rgba(0, 240, 255, 0.035);
   color: var(--muted);
   padding: 0.7rem 0.85rem;
   font: inherit;
@@ -96,9 +96,9 @@
 }
 
 .pairing-downtime-event-card {
-  border: 1px solid rgba(242, 169, 59, 0.24);
+  border: 1px solid rgba(214, 255, 63, 0.24);
   background:
-    linear-gradient(155deg, rgba(242, 169, 59, 0.08), transparent 42%),
+    linear-gradient(155deg, rgba(214, 255, 63, 0.08), transparent 42%),
     rgba(10, 16, 15, 0.8);
   padding: 1rem;
 }
@@ -144,8 +144,8 @@
 
 .pairing-downtime-choice-card {
   width: 100%;
-  border: 1px solid rgba(243, 240, 232, 0.12);
-  background: rgba(243, 240, 232, 0.04);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  background: rgba(0, 240, 255, 0.04);
   color: var(--text);
   padding: 0.85rem;
   text-align: left;
@@ -161,7 +161,7 @@
 }
 
 .pairing-downtime-choice-card__header strong {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -188,7 +188,7 @@
 
 .pairing-panel,
 .pairing-summary-card {
-  border: 1px solid rgba(242, 169, 59, 0.3);
+  border: 1px solid rgba(214, 255, 63, 0.3);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 52%),
     rgba(23, 25, 22, 0.88);
@@ -220,8 +220,8 @@
   grid-template-columns: 2.4rem minmax(0, 1fr) auto;
   gap: 0.75rem;
   align-items: center;
-  border: 1px solid rgba(243, 240, 232, 0.11);
-  background: rgba(243, 240, 232, 0.04);
+  border: 1px solid rgba(0, 240, 255, 0.11);
+  background: rgba(0, 240, 255, 0.04);
   color: var(--text);
   padding: 0.65rem;
   font: inherit;
@@ -335,8 +335,8 @@ button.pairing-trooper-row:focus-visible {
 }
 
 .pairing-performance-table th {
-  background: rgba(47, 41, 26, 0.82);
-  color: var(--amber);
+  background: rgba(1, 12, 12, 0.82);
+  color: var(--arwes-lime);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -375,7 +375,7 @@ button.pairing-trooper-row:focus-visible {
   display: flex;
   justify-content: space-between;
   gap: 0.75rem;
-  border-top: 1px solid rgba(243, 240, 232, 0.08);
+  border-top: 1px solid rgba(0, 240, 255, 0.08);
   padding-top: 0.45rem;
 }
 
@@ -400,7 +400,7 @@ button.pairing-trooper-row:focus-visible {
   display: flex;
   justify-content: space-between;
   gap: 0.75rem;
-  border-top: 1px solid rgba(243, 240, 232, 0.08);
+  border-top: 1px solid rgba(0, 240, 255, 0.08);
   color: var(--muted);
   padding-top: 0.35rem;
 }
@@ -424,7 +424,7 @@ button.pairing-trooper-row:focus-visible {
 }
 
 .pairing-force-card li span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 850;
   white-space: nowrap;
 }
@@ -452,14 +452,14 @@ button.pairing-trooper-row:focus-visible {
 
 .pairing-playing-accordion {
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.03);
+  background: rgba(0, 240, 255, 0.03);
 }
 
 .pairing-playing-accordion > summary {
   list-style: none;
   cursor: pointer;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 .pairing-playing-accordion > summary::-webkit-details-marker {
@@ -501,7 +501,7 @@ button.pairing-trooper-row:focus-visible {
 
 .pairing-playing-card--fallback p {
   margin: 0;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 850;
 }
 
@@ -570,8 +570,8 @@ button.pairing-trooper-row:focus-visible {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.65rem;
   align-items: center;
-  border: 1px solid rgba(243, 240, 232, 0.1);
-  background: rgba(243, 240, 232, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  background: rgba(0, 240, 255, 0.03);
   padding: 0.55rem;
 }
 
@@ -586,7 +586,7 @@ button.pairing-trooper-row:focus-visible {
 }
 
 .legacy-profile-chip--ind b {
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .pairing-hire-subtitle {
@@ -617,7 +617,7 @@ button.pairing-trooper-row:focus-visible {
 }
 
 .pairing-shop-option__meta span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 850;
   min-width: 2.8rem;
   text-align: right;
@@ -638,8 +638,8 @@ button.pairing-trooper-row:focus-visible {
   grid-template-columns: minmax(0, 1fr) minmax(13rem, 1fr) auto;
   gap: 0.6rem;
   align-items: center;
-  border: 1px solid rgba(243, 240, 232, 0.1);
-  background: rgba(243, 240, 232, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  background: rgba(0, 240, 255, 0.03);
   padding: 0.6rem;
 }
 
@@ -828,7 +828,7 @@ button.pairing-trooper-row:focus-visible {
   width: 3.4rem;
   height: 2rem;
   object-fit: contain;
-  filter: drop-shadow(0 0 0.45rem rgba(242, 169, 59, 0.34));
+  filter: drop-shadow(0 0 0.45rem rgba(214, 255, 63, 0.34));
 }
 
 .legal-note {
@@ -919,7 +919,7 @@ button.pairing-trooper-row:focus-visible {
   }
 
   .rules-toc {
-    border-top: 1px solid rgba(243, 240, 232, 0.08);
+    border-top: 1px solid rgba(0, 240, 255, 0.08);
   }
 
   .rules-toc nav {
@@ -947,7 +947,7 @@ button.pairing-trooper-row:focus-visible {
     display: block;
     width: 100%;
     border: none;
-    border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.1);
     background: rgba(14, 15, 13, 0.92);
     backdrop-filter: blur(18px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
@@ -969,7 +969,7 @@ button.pairing-trooper-row:focus-visible {
     gap: 0.35rem;
     cursor: pointer;
     padding: 0.62rem 0.8rem;
-    color: var(--amber);
+    color: var(--arwes-lime);
     font-size: 0.72rem;
     font-weight: 900;
     letter-spacing: 0.1em;
@@ -997,7 +997,7 @@ button.pairing-trooper-row:focus-visible {
   }
 
   .rules-mobile-toc[open] > summary {
-    border-bottom: 1px solid rgba(243, 240, 232, 0.12);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.12);
   }
 
   .rules-mobile-toc[open] > summary .summary-icon {
@@ -1011,7 +1011,7 @@ button.pairing-trooper-row:focus-visible {
     overflow: auto;
     padding: 0.5rem 0.8rem 0.75rem;
     scrollbar-width: thin;
-    scrollbar-color: rgba(242, 169, 59, 0.38) transparent;
+    scrollbar-color: rgba(214, 255, 63, 0.38) transparent;
   }
 
   .rules-mobile-toc a {
@@ -1148,7 +1148,7 @@ button.pairing-trooper-row:focus-visible {
     justify-content: space-between;
     padding: 0.75rem 0.85rem;
     border-right: 0;
-    border-bottom: 1px solid rgba(242, 169, 59, 0.22);
+    border-bottom: 1px solid rgba(214, 255, 63, 0.22);
     font-size: 1.2rem;
   }
 

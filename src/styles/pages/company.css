@@ -38,7 +38,7 @@
 .company-detail-panel,
 .company-section-card,
 .company-empty-state {
-  border: 1px solid rgba(242, 169, 59, 0.32);
+  border: 1px solid rgba(214, 255, 63, 0.32);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 45%),
     rgba(23, 25, 22, 0.88);
@@ -107,7 +107,7 @@
 }
 
 .company-manager .field span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -165,9 +165,9 @@
   justify-content: center;
   gap: 0.4rem;
   min-height: 2.55rem;
-  border: 1px solid rgba(242, 169, 59, 0.55);
-  background: rgba(242, 169, 59, 0.08);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.55);
+  background: rgba(214, 255, 63, 0.08);
+  color: var(--arwes-lime);
   padding: 0.55rem 0.85rem;
   font: inherit;
   font-weight: 850;
@@ -177,7 +177,7 @@
 
 .company-manager .command-button:hover,
 .company-manager .command-button:focus-visible {
-  background: rgba(242, 169, 59, 0.16);
+  background: rgba(214, 255, 63, 0.16);
   outline: none;
 }
 
@@ -189,13 +189,13 @@
 .company-manager .command-button--primary {
   width: 100%;
   margin-top: 0.8rem;
-  background: var(--amber);
-  color: #18130c;
+  background: var(--arwes-lime);
+  color: #03100f;
 }
 
 .company-manager .command-button--primary:hover,
 .company-manager .command-button--primary:focus-visible {
-  background: #ffc15f;
+  background: var(--arwes-lime);
 }
 
 .company-manager .command-button--danger {
@@ -217,7 +217,7 @@
 .company-list-item {
   min-height: 4.2rem;
   border: 1px solid transparent;
-  background: rgba(243, 240, 232, 0.035);
+  background: rgba(0, 240, 255, 0.035);
   color: var(--text);
   padding: 0.7rem 0.8rem;
   text-align: left;
@@ -296,7 +296,7 @@
 
 .company-stat-grid strong {
   margin-top: 0.25rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 1.8rem;
   line-height: 1;
 }
@@ -369,7 +369,7 @@
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 0.9rem;
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.08), rgba(14, 15, 13, 0.18)),
     rgba(14, 15, 13, 0.38);
@@ -377,9 +377,9 @@
 }
 
 .company-trooper-row.is-captain {
-  border-color: rgba(242, 169, 59, 0.55);
+  border-color: rgba(214, 255, 63, 0.55);
   background:
-    linear-gradient(90deg, rgba(242, 169, 59, 0.13), rgba(56, 183, 164, 0.06)),
+    linear-gradient(90deg, rgba(214, 255, 63, 0.13), rgba(56, 183, 164, 0.06)),
     rgba(14, 15, 13, 0.46);
 }
 
@@ -428,9 +428,9 @@
 }
 
 .recruitment-status.is-loading {
-  border-color: rgba(242, 169, 59, 0.45);
-  background: rgba(242, 169, 59, 0.08);
-  color: var(--amber);
+  border-color: rgba(214, 255, 63, 0.45);
+  background: rgba(214, 255, 63, 0.08);
+  color: var(--arwes-lime);
 }
 
 .recruitment-status.is-error {
@@ -486,7 +486,7 @@
   align-items: start;
   padding-bottom: 1.5rem;
   margin-bottom: 2.25rem;
-  border-bottom: 1px solid rgba(242, 169, 59, 0.2);
+  border-bottom: 1px solid rgba(214, 255, 63, 0.2);
 }
 
 .company-wizard__masthead h1 {
@@ -529,7 +529,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: rgba(243, 240, 232, 0.1);
+  background: rgba(0, 240, 255, 0.1);
   z-index: 0;
 }
 
@@ -561,7 +561,7 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  border: 1.5px solid rgba(243, 240, 232, 0.18);
+  border: 1.5px solid rgba(0, 240, 255, 0.18);
   background: var(--bg);
   font-size: 0.75rem;
   font-weight: 700;
@@ -599,7 +599,7 @@
 
 .company-wizard__panel {
   padding: 1.75rem;
-  border: 1px solid rgba(242, 169, 59, 0.18);
+  border: 1px solid rgba(214, 255, 63, 0.18);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.05), transparent 50%),
     rgba(20, 22, 18, 0.76);
@@ -626,7 +626,7 @@
 .company-wizard__type-detail {
   margin-top: 1.75rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(243, 240, 232, 0.1);
+  border-top: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 .company-wizard__type-card {
@@ -638,7 +638,7 @@
   gap: 0.45rem;
   /* extra right padding reserves space for the corner icon */
   padding: 1.1rem 3.25rem 1.1rem 1.25rem;
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background: rgba(14, 15, 13, 0.54);
   color: inherit;
   text-align: left;
@@ -649,7 +649,7 @@
 }
 
 /* Per-variant accent colours */
-.company-wizard__type-card.variant-cohesive  { --card-accent: var(--amber); }
+.company-wizard__type-card.variant-cohesive  { --card-accent: var(--arwes-lime); }
 .company-wizard__type-card.variant-leader    { --card-accent: #d6d0c2; }
 .company-wizard__type-card.variant-airborne  { --card-accent: #6fb2dc; }
 .company-wizard__type-card.variant-tag       { --card-accent: var(--red); }
@@ -808,7 +808,7 @@
 
 .faction-selector__option:hover,
 .faction-selector__option.is-selected {
-  background: rgba(243, 240, 232, 0.08);
+  background: rgba(0, 240, 255, 0.08);
 }
 
 .company-wizard__panel--captain {
@@ -869,7 +869,7 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(243, 240, 232, 0.1);
+  border-top: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 /* Override the full-width primary style inherited from .company-manager */
@@ -925,7 +925,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 1rem;
   align-items: center;
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.08), rgba(14, 15, 13, 0.16)),
     rgba(14, 15, 13, 0.36);
@@ -962,7 +962,7 @@
   border: 1px solid rgba(56, 183, 164, 0.28);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.12), transparent 52%),
-    linear-gradient(90deg, rgba(242, 169, 59, 0.1), transparent 36%),
+    linear-gradient(90deg, rgba(214, 255, 63, 0.1), transparent 36%),
     rgba(14, 15, 13, 0.54);
   box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.24);
 }
@@ -998,7 +998,7 @@
   min-height: 1.7rem;
   display: inline-flex;
   align-items: center;
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background: rgba(14, 15, 13, 0.42);
   padding: 0.2rem 0.5rem;
 }
@@ -1010,7 +1010,7 @@
 
 .legacy-back-button {
   align-self: center;
-  background: rgba(242, 169, 59, 0.13);
+  background: rgba(214, 255, 63, 0.13);
 }
 
 .legacy-accordion__summary svg,
@@ -1037,7 +1037,7 @@
 
 .legacy-accordion {
   margin-top: 1rem;
-  border: 1px solid rgba(242, 169, 59, 0.32);
+  border: 1px solid rgba(214, 255, 63, 0.32);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.07), transparent 42%),
     rgba(23, 25, 22, 0.9);
@@ -1047,8 +1047,8 @@
 .legacy-accordion__header {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid rgba(242, 169, 59, 0.3);
-  background: rgba(47, 41, 26, 0.78);
+  border-bottom: 1px solid rgba(214, 255, 63, 0.3);
+  background: rgba(1, 12, 12, 0.78);
 }
 
 .legacy-accordion__summary {
@@ -1071,7 +1071,7 @@
   display: flex;
   align-items: center;
   padding: 0.4rem 0.75rem;
-  border-left: 1px solid rgba(242, 169, 59, 0.2);
+  border-left: 1px solid rgba(214, 255, 63, 0.2);
 }
 
 .legacy-accordion__title {
@@ -1189,7 +1189,7 @@
 .legacy-shop-staging {
   position: relative;
   min-width: 0;
-  border: 1px solid rgba(243, 240, 232, 0.14);
+  border: 1px solid rgba(0, 240, 255, 0.14);
   background: rgba(14, 15, 13, 0.5);
   padding: 0.85rem;
   backdrop-filter: blur(3px);
@@ -1252,7 +1252,7 @@
   gap: 0.85rem;
   align-items: flex-start;
   border: 1px solid var(--line);
-  background: linear-gradient(120deg, rgba(243, 240, 232, 0.06), rgba(243, 240, 232, 0.02));
+  background: linear-gradient(120deg, rgba(0, 240, 255, 0.06), rgba(0, 240, 255, 0.02));
   color: var(--text);
   padding: 0.65rem 0.72rem;
   border-radius: 0.55rem;
@@ -1263,8 +1263,8 @@
 
 .legacy-shop-item:hover,
 .legacy-shop-item:focus-visible {
-  border-color: rgba(242, 169, 59, 0.52);
-  background: linear-gradient(120deg, rgba(242, 169, 59, 0.16), rgba(242, 169, 59, 0.07));
+  border-color: rgba(214, 255, 63, 0.52);
+  background: linear-gradient(120deg, rgba(214, 255, 63, 0.16), rgba(214, 255, 63, 0.07));
   outline: none;
 }
 
@@ -1316,7 +1316,7 @@
 }
 
 .legacy-shop-item__price {
-  color: var(--amber);
+  color: var(--arwes-lime);
   white-space: nowrap;
   font-weight: 700;
   font-size: 0.86rem;
@@ -1324,7 +1324,7 @@
 }
 
 .legacy-shop-balance strong {
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .legacy-shop-balance {
@@ -1370,7 +1370,7 @@
 
 .legacy-trooper-card,
 .legacy-recruit-card {
-  border: 1px solid rgba(243, 240, 232, 0.13);
+  border: 1px solid rgba(0, 240, 255, 0.13);
   background: rgba(14, 15, 13, 0.44);
 }
 
@@ -1383,7 +1383,7 @@
 }
 
 .legacy-trooper-card.is-captain {
-  border-color: rgba(242, 169, 59, 0.55);
+  border-color: rgba(214, 255, 63, 0.55);
 }
 
 .legacy-trooper-summary,
@@ -1394,7 +1394,7 @@
   gap: 0.75rem;
   align-items: center;
   border: 0;
-  background: linear-gradient(90deg, rgba(56, 183, 164, 0.11), rgba(242, 169, 59, 0.05));
+  background: linear-gradient(90deg, rgba(56, 183, 164, 0.11), rgba(214, 255, 63, 0.05));
   color: var(--text);
   padding: 0.75rem;
   font: inherit;
@@ -1408,14 +1408,14 @@
 
 .legacy-modal__panel--recruit .legacy-recruit-summary {
   background:
-    linear-gradient(90deg, rgba(56, 183, 164, 0.12), rgba(242, 169, 59, 0.05)),
+    linear-gradient(90deg, rgba(56, 183, 164, 0.12), rgba(214, 255, 63, 0.05)),
     rgba(14, 15, 13, 0.7);
 }
 
 .legacy-modal__panel--recruit .legacy-recruit-summary:hover,
 .legacy-modal__panel--recruit .legacy-recruit-summary:focus-visible {
   background:
-    linear-gradient(90deg, rgba(56, 183, 164, 0.18), rgba(242, 169, 59, 0.08)),
+    linear-gradient(90deg, rgba(56, 183, 164, 0.18), rgba(214, 255, 63, 0.08)),
     rgba(14, 15, 13, 0.82);
   outline: none;
 }
@@ -1437,9 +1437,9 @@
   gap: 0.75rem;
   min-height: max-content;
   overflow: visible;
-  border-top: 1px solid rgba(242, 169, 59, 0.22);
+  border-top: 1px solid rgba(214, 255, 63, 0.22);
   background:
-    linear-gradient(180deg, rgba(242, 169, 59, 0.045), transparent 28%),
+    linear-gradient(180deg, rgba(214, 255, 63, 0.045), transparent 28%),
     rgba(10, 12, 10, 0.42);
 }
 
@@ -1453,9 +1453,9 @@
 /* Each profile group looks like an npc-profile-card */
 .legacy-profile-group {
   overflow: hidden;
-  border: 1px solid rgba(242, 169, 59, 0.32);
+  border: 1px solid rgba(214, 255, 63, 0.32);
   background:
-    linear-gradient(180deg, rgba(242, 169, 59, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(214, 255, 63, 0.08), transparent 28%),
     #141612;
 }
 
@@ -1466,8 +1466,8 @@
   gap: 1rem;
   align-items: center;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(242, 169, 59, 0.2);
-  background: rgba(243, 240, 232, 0.035);
+  border-bottom: 1px solid rgba(214, 255, 63, 0.2);
+  background: rgba(0, 240, 255, 0.035);
 }
 
 .legacy-profile-sheet__header.is-collapsible {
@@ -1481,7 +1481,7 @@
 
 .legacy-profile-sheet__header.is-collapsible:hover,
 .legacy-profile-sheet__header.is-collapsible:focus-visible {
-  background: rgba(243, 240, 232, 0.065);
+  background: rgba(0, 240, 255, 0.065);
   outline: none;
 }
 
@@ -1517,7 +1517,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.16rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .legacy-profile-head-orders img {
@@ -1562,9 +1562,9 @@
   gap: 0.26rem;
   min-height: 1.45rem;
   padding: 0.2rem 0.42rem;
-  border: 1px solid rgba(242, 169, 59, 0.34);
-  background: rgba(242, 169, 59, 0.1);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.34);
+  background: rgba(214, 255, 63, 0.1);
+  color: var(--arwes-lime);
   font-size: 0.66rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1603,7 +1603,7 @@
   display: grid;
   grid-template-columns: repeat(9, minmax(0, 1fr));
   margin: 0;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
   overflow-x: auto;
 }
 
@@ -1611,7 +1611,7 @@
   display: grid;
   place-items: center;
   min-height: 4rem;
-  border-right: 1px solid rgba(243, 240, 232, 0.1);
+  border-right: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 .legacy-unit-stats div:last-child {
@@ -1619,7 +1619,7 @@
 }
 
 .legacy-unit-stats span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.7rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1638,7 +1638,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  background: rgba(243, 240, 232, 0.1);
+  background: rgba(0, 240, 255, 0.1);
 }
 
 .legacy-detail-line {
@@ -1653,7 +1653,7 @@
 .legacy-detail-line strong {
   display: block;
   margin-bottom: 0.35rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -1667,9 +1667,9 @@
 }
 
 .profile-item-link {
-  color: var(--amber);
+  color: var(--arwes-lime);
   text-decoration: underline;
-  text-decoration-color: rgba(242, 169, 59, 0.45);
+  text-decoration-color: rgba(214, 255, 63, 0.45);
   text-underline-offset: 0.14em;
 }
 
@@ -1682,7 +1682,7 @@
 
 /* In recruit/add-trooper modal: dark treatment */
 .legacy-modal__panel--recruit .legacy-option-row {
-  background: rgba(243, 240, 232, 0.05);
+  background: rgba(0, 240, 255, 0.05);
   color: var(--text);
 }
 
@@ -1695,7 +1695,7 @@
 
 /* In the captain wizard step: dark treatment */
 .company-wizard__panel--captain .legacy-option-row {
-  background: rgba(243, 240, 232, 0.05);
+  background: rgba(0, 240, 255, 0.05);
   color: var(--text);
 }
 
@@ -1708,12 +1708,12 @@
 
 /* In the trooper card on company manager: dark treatment */
 .legacy-trooper-details .legacy-option-row {
-  background: rgba(243, 240, 232, 0.05);
+  background: rgba(0, 240, 255, 0.05);
   color: var(--text);
 }
 
 .pairing-shop-recruit-card .legacy-option-row {
-  background: rgba(243, 240, 232, 0.05);
+  background: rgba(0, 240, 255, 0.05);
   color: var(--text);
 }
 
@@ -1743,7 +1743,7 @@
 .legacy-modal__panel--recruit .legacy-option-orders,
 .company-wizard__panel--captain .legacy-option-orders,
 .legacy-trooper-details .legacy-option-orders {
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 /* Option body: name + detail sub-grid */
@@ -1778,7 +1778,7 @@
 
 .legacy-option-detail-line em {
   font-style: normal;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 800;
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -1792,12 +1792,12 @@
   place-items: start end;
   font-size: 1.03rem;
   line-height: 1.15;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 900;
 }
 
 .legacy-weapon-profiles {
-  border-top: 1px solid rgba(242, 169, 59, 0.2);
+  border-top: 1px solid rgba(214, 255, 63, 0.2);
   background:
     linear-gradient(180deg, rgba(56, 183, 164, 0.04), transparent 65%),
     rgba(14, 15, 13, 0.45);
@@ -1811,7 +1811,7 @@
   justify-content: space-between;
   gap: 0.6rem;
   padding: 0.8rem 1rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.84rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1829,8 +1829,8 @@
   min-width: 1.4rem;
   height: 1.4rem;
   padding: 0 0.35rem;
-  border: 1px solid rgba(242, 169, 59, 0.4);
-  background: rgba(242, 169, 59, 0.1);
+  border: 1px solid rgba(214, 255, 63, 0.4);
+  background: rgba(214, 255, 63, 0.1);
   color: var(--text);
   font-size: 0.72rem;
 }
@@ -1842,14 +1842,14 @@
 }
 
 .legacy-weapon-profile-card {
-  border: 1px solid rgba(243, 240, 232, 0.12);
-  background: rgba(243, 240, 232, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  background: rgba(0, 240, 255, 0.03);
 }
 
 .legacy-weapon-profile-card h5 {
   margin: 0;
   padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
   color: var(--text);
   font-size: 0.92rem;
   font-weight: 900;
@@ -1868,7 +1868,7 @@
 
 .legacy-weapon-profile-table th,
 .legacy-weapon-profile-table td {
-  border-top: 1px solid rgba(243, 240, 232, 0.08);
+  border-top: 1px solid rgba(0, 240, 255, 0.08);
   padding: 0.5rem 0.55rem;
   font-size: 0.8rem;
   vertical-align: middle;
@@ -1925,15 +1925,15 @@
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0;
-  border: 1px solid rgba(243, 240, 232, 0.16);
+  border: 1px solid rgba(0, 240, 255, 0.16);
 }
 
 .legacy-weapon-range-mod {
   display: grid;
   place-items: center;
   gap: 0.12rem;
-  border-right: 1px solid rgba(243, 240, 232, 0.16);
-  background: rgba(243, 240, 232, 0.05);
+  border-right: 1px solid rgba(0, 240, 255, 0.16);
+  background: rgba(0, 240, 255, 0.05);
   min-height: 2.2rem;
   color: var(--text);
 }
@@ -1958,7 +1958,7 @@
 }
 
 .legacy-weapon-range-mod.is-minus-3 {
-  background: rgba(242, 169, 59, 0.3);
+  background: rgba(214, 255, 63, 0.3);
 }
 
 .legacy-weapon-range-mod.is-zero {
@@ -2086,8 +2086,8 @@
 
 .legacy-modal__panel--recruit .legacy-modal__tools {
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.08);
-  background: rgba(243, 240, 232, 0.025);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.08);
+  background: rgba(0, 240, 255, 0.025);
 }
 
 .legacy-unit-picker {
@@ -2147,10 +2147,10 @@
 .legacy-modal__panel--edit .legacy-modal__header {
   align-items: flex-start;
   padding: 0.95rem 1rem 1rem;
-  border-bottom-color: rgba(242, 169, 59, 0.22);
+  border-bottom-color: rgba(214, 255, 63, 0.22);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.07), transparent 58%),
-    linear-gradient(180deg, rgba(242, 169, 59, 0.06), transparent 80%),
+    linear-gradient(180deg, rgba(214, 255, 63, 0.06), transparent 80%),
     rgba(10, 12, 10, 0.66);
 }
 
@@ -2187,9 +2187,9 @@
   min-height: 2.75rem;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(242, 169, 59, 0.48);
-  background: rgba(242, 169, 59, 0.1);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.48);
+  background: rgba(214, 255, 63, 0.1);
+  color: var(--arwes-lime);
   padding: 0.45rem 0.75rem;
   font-weight: 900;
   font-size: 1.06rem;
@@ -2217,7 +2217,7 @@
 
 .legacy-xp-progress__meta strong {
   justify-self: end;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 1.05rem;
   font-weight: 900;
   line-height: 1;
@@ -2235,14 +2235,14 @@
   overflow: hidden;
   border: 1px solid rgba(56, 183, 164, 0.42);
   background:
-    linear-gradient(180deg, rgba(243, 240, 232, 0.03), rgba(14, 15, 13, 0.08)),
+    linear-gradient(180deg, rgba(0, 240, 255, 0.03), rgba(14, 15, 13, 0.08)),
     rgba(14, 15, 13, 0.72);
 }
 
 .legacy-xp-bar span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--teal), var(--amber));
+  background: linear-gradient(90deg, var(--teal), var(--arwes-lime));
   box-shadow: 0 0 0.7rem rgba(56, 183, 164, 0.38);
 }
 
@@ -2266,7 +2266,7 @@
   border: 1px solid rgba(56, 183, 164, 0.2);
   background:
     radial-gradient(circle at 50% 28%, rgba(56, 183, 164, 0.14), transparent 24rem),
-    linear-gradient(180deg, rgba(243, 240, 232, 0.035), rgba(14, 15, 13, 0.1)),
+    linear-gradient(180deg, rgba(0, 240, 255, 0.035), rgba(14, 15, 13, 0.1)),
     rgba(14, 15, 13, 0.46);
 }
 
@@ -2294,9 +2294,9 @@
   justify-items: center;
   min-width: 5.4rem;
   min-height: 4.4rem;
-  border: 1px dashed rgba(243, 240, 232, 0.35);
+  border: 1px dashed rgba(0, 240, 255, 0.35);
   background:
-    linear-gradient(135deg, rgba(243, 240, 232, 0.12), rgba(243, 240, 232, 0.04)),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(0, 240, 255, 0.04)),
     rgba(22, 24, 20, 0.68);
   color: var(--text);
   padding: 0.55rem;
@@ -2324,10 +2324,10 @@
 .legacy-paperdoll-slot:hover,
 .legacy-paperdoll-slot:focus-visible,
 .legacy-paperdoll-slot.is-selected {
-  border-color: rgba(242, 169, 59, 0.78);
+  border-color: rgba(214, 255, 63, 0.78);
   border-style: solid;
   background:
-    linear-gradient(135deg, rgba(242, 169, 59, 0.2), rgba(56, 183, 164, 0.08)),
+    linear-gradient(135deg, rgba(214, 255, 63, 0.2), rgba(56, 183, 164, 0.08)),
     rgba(22, 24, 20, 0.88);
   outline: none;
 }
@@ -2386,7 +2386,7 @@
   display: grid;
   grid-template-rows: auto auto auto minmax(0, 1fr);
   gap: 0.85rem;
-  border: 1px solid rgba(242, 169, 59, 0.26);
+  border: 1px solid rgba(214, 255, 63, 0.26);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 52%),
     rgba(14, 15, 13, 0.56);
@@ -2395,7 +2395,7 @@
 
 .legacy-slot-editor header {
   padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.1);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
 }
 
 .legacy-slot-editor h3,
@@ -2422,7 +2422,7 @@
 .legacy-slot-unequip,
 .legacy-slot-item {
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.035);
+  background: rgba(0, 240, 255, 0.035);
   color: var(--text);
   padding: 0.55rem 0.65rem;
   font: inherit;
@@ -2462,7 +2462,7 @@
 
 .legacy-slot-inventory h4 {
   margin: 0 0 0.2rem;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -2477,8 +2477,8 @@
 
 .legacy-slot-item:hover,
 .legacy-slot-item:focus-visible {
-  border-color: rgba(242, 169, 59, 0.56);
-  background: rgba(242, 169, 59, 0.1);
+  border-color: rgba(214, 255, 63, 0.56);
+  background: rgba(214, 255, 63, 0.1);
   outline: none;
 }
 
@@ -2538,15 +2538,15 @@
   min-width: 5rem;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(242, 169, 59, 0.48);
-  background: rgba(242, 169, 59, 0.1);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.48);
+  background: rgba(214, 255, 63, 0.1);
+  color: var(--arwes-lime);
   padding: 0.55rem 0.75rem;
   font-size: 1.25rem;
 }
 
 .legacy-specops-card {
-  border: 1px solid rgba(242, 169, 59, 0.24);
+  border: 1px solid rgba(214, 255, 63, 0.24);
   background: rgba(14, 15, 13, 0.44);
 }
 
@@ -2562,7 +2562,7 @@
   justify-content: space-between;
   gap: 1rem;
   border: 0;
-  background: rgba(47, 41, 26, 0.72);
+  background: rgba(1, 12, 12, 0.72);
   color: var(--text);
   padding: 0.75rem;
   font: inherit;
@@ -2583,7 +2583,7 @@
 }
 
 .legacy-specops-attributes > div > span {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -2598,7 +2598,7 @@
 .legacy-specops-attributes button {
   min-width: 3.5rem;
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.035);
+  background: rgba(0, 240, 255, 0.035);
   color: var(--text);
   padding: 0.4rem;
   font: inherit;
@@ -2632,7 +2632,7 @@
   gap: 0.65rem;
   align-items: center;
   border: 1px solid var(--line);
-  background: rgba(243, 240, 232, 0.035);
+  background: rgba(0, 240, 255, 0.035);
   padding: 0.55rem 0.65rem;
 }
 
@@ -2642,7 +2642,7 @@
 }
 
 .legacy-specops-items strong {
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .legacy-specops-actions {

@@ -25,9 +25,6 @@ const navItems = [
   { href: "/contracts/", label: "Contracts" },
   { href: "/companies/", label: "Companies" },
   { href: "/events/", label: "Events" },
-  { href: "/#campaign", label: "Campaign" },
-  { href: "/#tutorial", label: "Tutorial" },
-  { href: "/#resources", label: "Resources" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -38,51 +35,85 @@ function isCurrentNav(href: string) {
 }
 
 const backplaneTraces = [
-  ["trace-a", "M-40 120 H250 L310 180 H760 L830 112 H1260 L1320 172 H1640"],
-  ["trace-b", "M40 330 H420 L510 250 H900 L970 320 H1430"],
-  ["trace-c", "M-20 540 H280 L365 455 H610 L690 535 H1040 L1120 455 H1620"],
-  ["trace-d", "M120 760 H510 L590 840 H880 L980 735 H1510"],
-  ["trace-e", "M-30 990 H220 L295 1065 H760 L830 990 H1240 L1300 1050 H1620"],
-  ["trace-f", "M80 1290 H430 L520 1200 H800 L890 1290 H1460"],
-  ["trace-g", "M-20 1640 H335 L405 1570 H710 L790 1640 H1150 L1240 1540 H1640"],
-  ["trace-h", "M180 1980 H540 L625 1890 H1020 L1090 1970 H1490"],
-  ["trace-i", "M1280 80 V310 L1210 380 V670 L1295 750 V990"],
-  ["trace-j", "M1040 0 V210 L970 280 V520 L1040 590 V900"],
-  ["trace-k", "M360 115 V390 L285 465 V680 L365 760 V1120"],
-  ["trace-l", "M710 705 V940 L640 1010 V1260 L720 1340 V1710"],
+  ["trace-a", "M-160 160 H320 L480 320 H960 L1120 160 H1760"],
+  ["trace-b", "M1760 480 H1280 L1120 640 H640 L480 480 H-160"],
+  ["trace-c", "M-160 800 H160 L320 960 H800 L960 800 H1760"],
+  ["trace-d", "M1760 1120 H1440 L1280 1280 H640 L480 1120 H-160"],
+  ["trace-e", "M-160 1600 H320 L480 1760 H960 L1120 1600 H1760"],
+  ["trace-f", "M1280 -160 V320 L1120 480 V960 L1280 1120 V2360"],
+  ["trace-g", "M800 -160 V160 L640 320 V800 L800 960 V2360"],
+  ["trace-h", "M320 -160 V640 L160 800 V1280 L320 1440 V2360"],
 ];
 
 const backplaneNodes = [
-  [250, 120, 2.4],
-  [760, 180, 2.4],
-  [1260, 112, 2.4],
-  [420, 330, 2.2],
-  [970, 320, 2.2],
-  [280, 540, 2.2],
-  [1040, 535, 2.2],
-  [510, 760, 2.5],
-  [980, 735, 2.5],
-  [220, 990, 2.2],
-  [760, 1065, 2.2],
-  [1240, 990, 2.2],
-  [430, 1290, 2.4],
-  [890, 1290, 2.4],
-  [335, 1640, 2.2],
-  [1150, 1640, 2.2],
-  [540, 1980, 2.4],
-  [1090, 1970, 2.4],
+  [320, 160, 2.2],
+  [480, 320, 2.2],
+  [960, 320, 2.2],
+  [1120, 160, 2.4],
+  [480, 560, 2.2],
+  [640, 640, 2.2],
+  [1120, 640, 2.2],
+  [1280, 480, 2.3],
+  [160, 800, 2.2],
+  [320, 960, 2.3],
+  [800, 960, 2.2],
+  [960, 800, 2.3],
+  [480, 1120, 2.2],
+  [640, 1280, 2.2],
+  [1280, 1280, 2.2],
+  [1440, 1120, 2.3],
+  [320, 1600, 2.2],
+  [480, 1760, 2.2],
+  [960, 1760, 2.2],
+  [1120, 1600, 2.3],
+  [1280, 320, 2.2],
+  [1120, 480, 2.2],
+  [1280, 800, 2.2],
+  [1280, 1120, 2.3],
+  [800, 160, 2.2],
+  [640, 320, 2.2],
+  [800, 800, 2.2],
+  [800, 960, 2.3],
+  [320, 640, 2.2],
+  [160, 800, 2.2],
+  [320, 1440, 2.3],
 ];
 
 const backplanePackets = [
-  ["trace-a", 3.2, "7.8s", "-1.2s"],
-  ["trace-b", 2.8, "9.2s", "-4.1s"],
-  ["trace-d", 3, "8.4s", "-2.6s"],
-  ["trace-f", 2.6, "10.6s", "-5.4s"],
-  ["trace-g", 3.1, "11.4s", "-7.6s"],
-  ["trace-i", 2.6, "8.8s", "-3.3s"],
-  ["trace-j", 2.8, "9.8s", "-6.2s"],
-  ["trace-l", 2.7, "10.2s", "-8s"],
+  ["trace-a", 3.1, "8.4s", "-1.2s"],
+  ["trace-b", 2.8, "10.2s", "-4.1s"],
+  ["trace-d", 3, "9.4s", "-2.6s"],
+  ["trace-e", 2.8, "11.8s", "-7.4s"],
+  ["trace-f", 2.7, "9.8s", "-3.3s"],
+  ["trace-g", 2.7, "10.8s", "-6.2s"],
 ];
+
+const tracePathById = new Map(backplaneTraces.map(([id, d]) => [id, d]));
+
+function toSeconds(value: string | number) {
+  return Number(String(value).replace("s", ""));
+}
+
+function offsetSignalBegin(
+  begin: string | number,
+  dur: string | number,
+  ratio: number,
+) {
+  return `${toSeconds(begin) - toSeconds(dur) * ratio}s`;
+}
+
+function signalTraceRatio(index: number) {
+  const childIndex = index + 1;
+  if (childIndex % 3 === 0) return 0.16;
+  if (childIndex % 2 === 0) return 0.12;
+  return 0.14;
+}
+
+const backplaneGridX = Array.from({ length: 11 }, (_, index) => index * 160);
+const backplaneGridY = Array.from({ length: 15 }, (_, index) => index * 160);
+const backplaneGridDots = backplaneGridY.flatMap((cy) =>
+  backplaneGridX.map((cx) => [cx, cy]),
+);
 
 const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
 ---
@@ -106,7 +137,7 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>{pageTitle}</title>
   </head>
-  <body class="theme-control-panel">
+  <body class="theme-control-panel is-boot-preparing">
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="mainframe-backplane" aria-hidden="true">
       {
@@ -126,6 +157,17 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
               </filter>
             </defs>
             <g class="backplane-grid">
+              <g class="backplane-mesh">
+                {backplaneGridX.map((x) => (
+                  <line x1={x} y1="-160" x2={x} y2="2360" />
+                ))}
+                {backplaneGridY.map((y) => (
+                  <line x1="-160" y1={y} x2="1760" y2={y} />
+                ))}
+                {backplaneGridDots.map(([cx, cy]) => (
+                  <circle cx={cx} cy={cy} r="1.15" />
+                ))}
+              </g>
               {backplaneTraces.map(([id, d]) => (
                 <path id={`${id}-${tile}`} d={d} />
               ))}
@@ -135,10 +177,46 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
                 <circle cx={cx} cy={cy} r={r} />
               ))}
             </g>
+            <g
+              class="backplane-signal-traces"
+              filter={`url(#trace-glow-${tile})`}
+            >
+              {backplanePackets.map(([traceId, , dur, begin]) => (
+                <path d={tracePathById.get(traceId)} pathLength="100">
+                  <animate
+                    attributeName="stroke-dashoffset"
+                    from="0"
+                    to="-100"
+                    dur={dur}
+                    begin={begin}
+                    repeatCount="indefinite"
+                  />
+                </path>
+              ))}
+            </g>
             <g class="backplane-packets" filter={`url(#trace-glow-${tile})`}>
+              {backplanePackets.map(([traceId, , dur, begin], index) => (
+                <circle class="backplane-packet-lead" r="2.1">
+                  <animateMotion
+                    dur={dur}
+                    repeatCount="indefinite"
+                    begin={offsetSignalBegin(
+                      begin,
+                      dur,
+                      signalTraceRatio(index),
+                    )}
+                  >
+                    <mpath href={`#${traceId}-${tile}`} />
+                  </animateMotion>
+                </circle>
+              ))}
               {backplanePackets.map(([traceId, r, dur, begin]) => (
                 <circle r={r}>
-                  <animateMotion dur={dur} repeatCount="indefinite" begin={begin}>
+                  <animateMotion
+                    dur={dur}
+                    repeatCount="indefinite"
+                    begin={begin}
+                  >
                     <mpath href={`#${traceId}-${tile}`} />
                   </animateMotion>
                 </circle>
@@ -172,10 +250,43 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
             ))
           }
           <a
+            class="nav-discord-link"
             href="https://discord.gg/QJyzrQZGvG"
             target="_blank"
-            rel="noreferrer">Discord</a
+            rel="noreferrer"
+            aria-label="Join the Infinity: Mercenaries Discord"
+            title="Join Discord"
           >
+            <svg
+              width="1.5em"
+              height="1.5em"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M5.5 16c5 2.5 8 2.5 13 0M15.5 17.5l1 2s4.171-1.328 5.5-3.5c0-1 .53-8.147-3-10.5-1.5-1-4-1.5-4-1.5l-1 2h-2"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M8.528 17.5l-1 2s-4.171-1.328-5.5-3.5c0-1-.53-8.147 3-10.5 1.5-1 4-1.5 4-1.5l1 2h2"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M8.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2zM15.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2z"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </a>
           <GoogleAuthButton client:load clientId={googleClientId} />
         </div>
       </nav>
@@ -270,6 +381,11 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
         "main .kicker",
       ].join(",");
 
+      const bootImageSelector = [
+        "main img:not([aria-hidden='true'])",
+        "main picture:not([aria-hidden='true']) img:not([aria-hidden='true'])",
+      ].join(",");
+
       function hasReadableText(element) {
         return Boolean(element.textContent && element.textContent.trim());
       }
@@ -353,12 +469,20 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
       }
 
       function typeElement(element) {
-        if (prefersReducedMotion || element.dataset.bootTyped === "true") return;
+        if (prefersReducedMotion || element.dataset.bootTyped === "true")
+          return;
         const textNodes = collectTextNodes(element);
         if (!textNodes.length) return;
 
         element.dataset.bootTyped = "true";
         element.classList.add("is-typing");
+        const reservedRect = element.getBoundingClientRect();
+        if (reservedRect.height > 0) {
+          element.style.minHeight = `${reservedRect.height}px`;
+        }
+        if (reservedRect.width > 0) {
+          element.style.minWidth = `${reservedRect.width}px`;
+        }
         const originals = textNodes.map((node) => node.nodeValue || "");
         const totalCharacters = originals.reduce(
           (total, text) => total + text.length,
@@ -389,6 +513,8 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
           } else {
             element.classList.remove("is-typing");
             element.classList.add("is-typed");
+            element.style.minHeight = "";
+            element.style.minWidth = "";
           }
         };
 
@@ -405,10 +531,7 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
         if (element.closest("[aria-hidden='true']")) return;
         element.dataset[bootKey] = "true";
         element.setAttribute(attribute, "");
-        element.style.setProperty(
-          "--boot-order",
-          String(Math.min(index, 18)),
-        );
+        element.style.setProperty("--boot-order", String(Math.min(index, 18)));
         if (attribute === "data-boot-frame") {
           installBootOutline(element);
         }
@@ -434,8 +557,8 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
             ? root
             : document;
 
-        collectMatches(scope, bootFrameSelector).forEach(
-          (element, index) => prepareBootElement(element, "data-boot-frame", index),
+        collectMatches(scope, bootFrameSelector).forEach((element, index) =>
+          prepareBootElement(element, "data-boot-frame", index),
         );
 
         collectMatches(scope, bootTextSelector)
@@ -444,12 +567,17 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
             prepareBootElement(element, "data-boot-text", index),
           );
 
+        collectMatches(scope, bootImageSelector).forEach((element, index) =>
+          prepareBootElement(element, "data-boot-image", index),
+        );
+
         collectMatches(scope, "[data-reveal], [data-stagger]").forEach(
           (element, index) => prepareBootElement(element, "data-reveal", index),
         );
       }
 
       prepareBootSequence();
+      document.body.classList.remove("is-boot-preparing");
 
       document.addEventListener(
         "animationstart",

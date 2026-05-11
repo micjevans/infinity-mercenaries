@@ -18,7 +18,7 @@
   background: rgba(56, 183, 164, 0.07);
 }
 .pairingHireSubtitle {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
@@ -178,7 +178,7 @@
   gap: 0.5rem;
 }
 .pairingInducementInline {
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 0.85rem;
   margin-left: 0.5rem;
 }

@@ -41,11 +41,8 @@
   isolation: isolate;
   overflow: hidden;
   margin-top: 1rem;
-  border: 1px solid rgba(71, 221, 228, 0.34);
-  background:
-    linear-gradient(150deg, rgba(71, 221, 228, 0.13), transparent 34%),
-    linear-gradient(310deg, rgba(255, 191, 102, 0.055), transparent 42%),
-    rgba(4, 15, 15, 0.82);
+  border: 1px solid transparent;
+  background: rgba(71, 221, 228, 0.34);
   box-shadow:
     inset 0 1px 0 rgba(213, 255, 255, 0.08),
     0 14px 34px rgba(0, 0, 0, 0.32),
@@ -53,18 +50,26 @@
   clip-path: var(--hud-angle);
 }
 
-.companySectionCard::after {
+.companySectionCard::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 1;
+  inset: 1px;
+  z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(to right, var(--hud-line-strong), var(--hud-line-strong)) left 0 top 0 / 1.5rem 1px no-repeat,
-    linear-gradient(to bottom, var(--hud-line-strong), var(--hud-line-strong)) left 0 top 0 / 1px 1.5rem no-repeat,
-    linear-gradient(to left, var(--hud-line-strong), var(--hud-line-strong)) right 0 bottom 0 / 1.5rem 1px no-repeat,
-    linear-gradient(to top, var(--hud-line-strong), var(--hud-line-strong)) right 0 bottom 0 / 1px 1.5rem no-repeat;
-  opacity: 0.72;
+    linear-gradient(150deg, rgba(71, 221, 228, 0.13), transparent 34%),
+    linear-gradient(310deg, rgba(0, 240, 255, 0.045), transparent 42%),
+    rgba(4, 15, 15, 0.82);
+  clip-path: var(--hud-angle);
+}
+
+.companySectionCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.companySectionCard::after {
+  display: none !important;
 }
 
 .eventIndexCard {
@@ -123,7 +128,7 @@
 }
 
 .field span {
-  color: var(--amber);
+  color: var(--arwes-cyan);
   font-size: 0.75rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -248,14 +253,14 @@
 }
 
 .commandButtonPrimary {
-  border-color: rgba(255, 191, 102, 0.88);
+  border-color: rgba(214, 255, 63, 0.72);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 38%),
-    linear-gradient(90deg, var(--amber), var(--arwes-amber));
-  color: #120d05;
+    linear-gradient(90deg, rgba(214, 255, 63, 0.82), rgba(0, 240, 255, 0.18));
+  color: #03100f;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 0 20px rgba(255, 191, 102, 0.18);
+    0 0 20px rgba(214, 255, 63, 0.16);
 }
 
 .commandButtonDanger {
@@ -275,12 +280,12 @@
 }
 
 .legacyEmptyNote {
-  border: 1px solid rgba(255, 191, 102, 0.34);
+  border: 1px solid rgba(0, 240, 255, 0.24);
   background:
-    linear-gradient(90deg, rgba(255, 191, 102, 0.1), transparent 68%),
-    rgba(18, 13, 5, 0.46);
+    linear-gradient(90deg, rgba(0, 240, 255, 0.08), transparent 68%),
+    rgba(3, 14, 14, 0.56);
   padding: 0.75rem 0.85rem;
-  color: rgba(255, 226, 184, 0.9);
+  color: rgba(206, 253, 255, 0.9);
 }
 
 @media (max-width: 760px) {

@@ -119,8 +119,8 @@
 }
 
 .event-wizard-warning {
-  border: 1px solid rgba(242, 169, 59, 0.42);
-  background: rgba(242, 169, 59, 0.12);
+  border: 1px solid rgba(214, 255, 63, 0.42);
+  background: rgba(214, 255, 63, 0.12);
   color: var(--text);
   padding: 0.75rem 0.8rem;
 }
@@ -143,7 +143,7 @@
 
 .event-overview-grid > div,
 .event-tool-panel {
-  border: 1px solid rgba(243, 240, 232, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.08), transparent 56%),
     rgba(14, 15, 13, 0.46);
@@ -170,7 +170,7 @@
 .event-participant-row,
 .event-round-card,
 .event-pairing-row {
-  border: 1px solid rgba(242, 169, 59, 0.26);
+  border: 1px solid rgba(214, 255, 63, 0.26);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.08), rgba(14, 15, 13, 0.12)),
     rgba(14, 15, 13, 0.45);
@@ -269,9 +269,9 @@
 }
 
 .event-status--active {
-  border-color: rgba(242, 169, 59, 0.56);
-  background: rgba(242, 169, 59, 0.12);
-  color: var(--amber);
+  border-color: rgba(214, 255, 63, 0.56);
+  background: rgba(214, 255, 63, 0.12);
+  color: var(--arwes-lime);
 }
 
 .event-status--complete {

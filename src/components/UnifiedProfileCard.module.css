@@ -28,7 +28,7 @@
   border: 0;
   border-bottom: 1px solid rgba(71, 221, 228, 0.18);
   background:
-    linear-gradient(90deg, rgba(242, 169, 59, 0.14), transparent 34%),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.11), transparent 46%),
     rgba(7, 18, 16, 0.9);
   color: var(--text);
   padding: 0.8rem 1rem;
@@ -43,7 +43,7 @@
 .legacyProfileSheetHeader:focus-visible {
   outline: none;
   background:
-    linear-gradient(90deg, rgba(242, 169, 59, 0.18), transparent 38%),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.15), transparent 52%),
     rgba(8, 25, 23, 0.96);
 }
 
@@ -58,7 +58,7 @@
   height: 2.25rem;
   object-fit: contain;
   border-radius: 999px;
-  filter: drop-shadow(0 0 0.35rem rgba(242, 169, 59, 0.32));
+  filter: drop-shadow(0 0 0.35rem rgba(0, 240, 255, 0.3));
 }
 
 .legacyProfileHeadOrders {
@@ -113,8 +113,8 @@
 
 .legacyProfileChipLevel,
 .legacyProfileChipSwc {
-  border-color: rgba(242, 169, 59, 0.38);
-  background: rgba(242, 169, 59, 0.09);
+  border-color: rgba(214, 255, 63, 0.34);
+  background: rgba(214, 255, 63, 0.07);
 }
 
 .legacyProfileChip small,
@@ -140,7 +140,7 @@
 
 .legacyProfileChipLevel b,
 .legacyProfileChipSwc b {
-  color: var(--amber);
+  color: var(--arwes-lime);
 }
 
 .legacyProfileChevron {
@@ -195,7 +195,7 @@
 }
 
 .legacyDetailLine strong {
-  color: var(--amber);
+  color: var(--arwes-cyan);
   font-size: 0.72rem;
   font-weight: 850;
   letter-spacing: 0.09em;
@@ -208,14 +208,14 @@
 }
 
 :global(.profile-item-link) {
-  color: var(--amber);
-  text-decoration-color: rgba(242, 169, 59, 0.45);
+  color: var(--arwes-cyan-bright);
+  text-decoration-color: rgba(0, 240, 255, 0.42);
   text-underline-offset: 0.16em;
 }
 
 :global(.profile-item-link:hover),
 :global(.profile-item-link:focus-visible) {
-  color: #ffd17a;
+  color: var(--arwes-lime);
   text-decoration-color: currentColor;
 }
 
@@ -226,9 +226,11 @@
   align-items: center;
   border-top: 1px solid rgba(71, 221, 228, 0.16);
   border-bottom: 1px solid rgba(71, 221, 228, 0.16);
-  background: rgba(47, 41, 26, 0.56);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent 66%),
+    rgba(1, 12, 12, 0.68);
   padding: 0.45rem 0.8rem;
-  color: var(--amber);
+  color: var(--arwes-cyan);
   font-size: 0.72rem;
   font-weight: 850;
   letter-spacing: 0.09em;
@@ -305,7 +307,7 @@
 .legacyOptionPoints,
 .legacyOptionAction {
   justify-self: end;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-weight: 900;
 }
 
@@ -393,8 +395,10 @@
 }
 
 .legacyWeaponProfileTable th {
-  background: rgba(47, 41, 26, 0.48);
-  color: var(--amber);
+  background:
+    linear-gradient(90deg, rgba(0, 240, 255, 0.09), transparent 64%),
+    rgba(1, 12, 12, 0.68);
+  color: var(--arwes-cyan);
   font-size: 0.72rem;
   font-weight: 850;
   letter-spacing: 0.08em;

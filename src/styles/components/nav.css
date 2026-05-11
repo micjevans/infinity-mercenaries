@@ -6,7 +6,7 @@
   display: flex;
   gap: 0.5rem;
   padding: 1rem 1rem 0.75rem;
-  border-bottom: 1px solid rgba(243, 240, 232, 0.08);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.08);
   background:
     linear-gradient(90deg, rgba(56, 183, 164, 0.06), transparent 64%),
     rgba(14, 15, 13, 0.7);

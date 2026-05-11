@@ -15,8 +15,8 @@
   min-height: 2.25rem;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(242, 169, 59, 0.42);
-  color: var(--amber);
+  border: 1px solid rgba(214, 255, 63, 0.42);
+  color: var(--arwes-lime);
   font-size: 0.8rem;
   font-weight: 900;
 }
@@ -28,7 +28,7 @@
 
 .legacy-dashboard-card strong {
   display: block;
-  color: var(--amber);
+  color: var(--arwes-lime);
   font-size: 1.35rem;
 }
 
@@ -48,7 +48,7 @@
   border: 1px solid var(--line);
   border-radius: 0;
   background: rgba(14, 15, 13, 0.72);
-  color: var(--amber);
+  color: var(--arwes-lime);
   padding: 0.65rem 0.75rem;
   font: inherit;
   font-weight: 900;
