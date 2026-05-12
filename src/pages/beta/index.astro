@@ -1,0 +1,646 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HologramWheel from "../../components/HologramWheel.astro";
+
+const primaryLinks = [
+  {
+    title: "Rules",
+    href: "/beta/rules/",
+    label: "Field Manual",
+    description:
+      "Browse campaign procedures, downtime systems, company rules, rewards, markets, and reference material.",
+  },
+  {
+    title: "Contracts",
+    href: "/beta/contracts/",
+    label: "Mission Archive",
+    description:
+      "Select a scenario contract and open its full briefing, objectives, deployment, twists, and rewards.",
+  },
+  {
+    title: "Companies",
+    href: "/companies/",
+    label: "Company Command",
+    description:
+      "Create, manage, and synchronize mercenary companies, rosters, credits, equipment, and progression.",
+  },
+  {
+    title: "Events",
+    href: "/events/",
+    label: "Organizer Tools",
+    description:
+      "Run events, manage saved event files, build rounds, and coordinate pairings for league play.",
+  },
+];
+
+const rules = await getCollection("rules");
+const ruleItems = rules
+  .filter((rule) => !rule.id.startsWith("npcs"))
+  .map((rule) => {
+    const slug = rule.id.replace(/\.mdx?$/, "");
+
+    return {
+      href: `/rules/${slug}/`,
+      type: rule.data.section ?? "Rule",
+      title: rule.data.title,
+      description: rule.data.description ?? "Open this field manual entry.",
+    };
+  });
+
+const contracts = await getCollection("contracts");
+const contractItems = contracts.map((contract) => {
+  const slug = contract.id.replace(/\.mdx?$/, "");
+
+  return {
+    href: `/contracts/${slug}/`,
+    type: contract.data.contractType ?? "Contract",
+    title: contract.data.title,
+    description: contract.data.description,
+  };
+});
+---
+
+<BaseLayout
+  title="Infinity: Mercenaries"
+  description="A narrative mercenary campaign framework for Infinity N5."
+  hideHeader
+  hideFooter
+>
+  <section
+    class="landing-console"
+    id="campaign"
+    aria-label="Infinity Mercenaries entry console"
+  >
+    <div class="landing-console__nebula" aria-hidden="true"></div>
+    <div class="landing-console__orbital" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="landing-console__center">
+      <h1 class="sr-only">Infinity: Mercenaries</h1>
+
+      <nav
+        class="landing-console__nav-wheel"
+        aria-label="Mercnet navigation console"
+        data-landing-nav
+      >
+        <div class="landing-console__primary-wheel" data-landing-primary-wheel>
+          <HologramWheel
+            items={primaryLinks}
+            idPrefix="landing-holo"
+            ariaLabel="Primary section selector wheel"
+            centerImageSrc="/images/m2-logo.png"
+            centerImageAlt="Infinity: Mercenaries"
+            orbitText=""
+            behavior="select"
+            hideActiveLabel={false}
+          />
+        </div>
+
+        <div
+          class="landing-console__contract-orbit"
+          data-landing-contract-orbit
+          aria-hidden="true"
+        >
+          <HologramWheel
+            items={contractItems}
+            idPrefix="landing-contract-holo"
+            ariaLabel="Contract selector orbit"
+            centerTitle="Contracts"
+            orbitText="CONTRACTS // MISSION ARCHIVE // ROTARY SELECTOR //"
+            behavior="select"
+            showCenter={false}
+          />
+        </div>
+
+        <div
+          class="landing-console__rule-orbit"
+          data-landing-rule-orbit
+          aria-hidden="true"
+        >
+          <HologramWheel
+            items={ruleItems}
+            idPrefix="landing-rule-holo"
+            ariaLabel="Rules selector orbit"
+            centerTitle="Rules"
+            orbitText="RULES // FIELD MANUAL // ROTARY SELECTOR //"
+            behavior="select"
+            showCenter={false}
+          />
+        </div>
+
+        <div
+          class="contract-hologram__signal landing-console__signal"
+          aria-hidden="true"
+          data-landing-signal
+        >
+          <span
+            class="contract-hologram__signal-dot contract-hologram__signal-dot--source"
+          ></span>
+          <span
+            class="contract-hologram__signal-dot contract-hologram__signal-dot--target"
+          ></span>
+          <span
+            class="contract-hologram__signal-segment contract-hologram__signal-segment--down"
+          ></span>
+          <span
+            class="contract-hologram__signal-segment contract-hologram__signal-segment--right"
+          ></span>
+          <span
+            class="contract-hologram__signal-segment contract-hologram__signal-segment--up"
+          ></span>
+        </div>
+
+        <div
+          class="contract-hologram__details landing-console__selection-readout is-revealing"
+          data-landing-readout
+          aria-hidden="true"
+        >
+          <p class="eyebrow" data-landing-readout-kicker data-contract-copy>
+            Mission focus
+          </p>
+          <div class="contract-hologram__readout">
+            <span data-landing-readout-index data-contract-copy>01</span>
+            <div>
+              <p data-landing-readout-type data-contract-copy>
+                {contractItems[0]?.type}
+              </p>
+              <h2 data-landing-readout-title data-contract-copy>
+                {contractItems[0]?.title}
+              </h2>
+            </div>
+          </div>
+          <p data-landing-readout-description data-contract-copy>
+            {contractItems[0]?.description}
+          </p>
+          <a
+            class="command-button command-button--primary"
+            href={contractItems[0]?.href}
+            data-landing-readout-link
+            data-contract-copy
+          >
+            Open Contract
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="landing-console__status" aria-hidden="true">
+      <span>v.n5-campaign</span>
+      <span>Workspace synchronized</span>
+    </div>
+  </section>
+
+  <script>
+    const landingNav = document.querySelector("[data-landing-nav]");
+
+    if (landingNav instanceof HTMLElement) {
+      const primaryWheel = landingNav.querySelector(
+        "[data-landing-primary-wheel]",
+      );
+      const contractOrbit = landingNav.querySelector(
+        "[data-landing-contract-orbit]",
+      );
+      const ruleOrbit = landingNav.querySelector("[data-landing-rule-orbit]");
+      const readout = landingNav.querySelector("[data-landing-readout]");
+      const signal = landingNav.querySelector("[data-landing-signal]");
+      const primaryTrack = primaryWheel?.querySelector(
+        ".contract-hologram__track",
+      );
+      const primaryDisplay = primaryWheel?.querySelector(
+        ".contract-hologram__display",
+      );
+      const primaryRings = primaryWheel?.querySelector(
+        ".contract-hologram__rings svg",
+      );
+      const primaryNodes = Array.from(
+        primaryWheel?.querySelectorAll("[data-contract-node]") ?? [],
+      );
+      const primarySpokes = Array.from(
+        primaryWheel?.querySelectorAll("[data-contract-spoke]") ?? [],
+      );
+      const contractDisplay = contractOrbit?.querySelector(
+        ".contract-hologram__display",
+      );
+      const contractTrack = contractOrbit?.querySelector(
+        ".contract-hologram__track",
+      );
+      const contractNodes = Array.from(
+        contractOrbit?.querySelectorAll("[data-contract-node]") ?? [],
+      );
+      const contractSpokes = Array.from(
+        contractOrbit?.querySelectorAll("[data-contract-spoke]") ?? [],
+      );
+      const ruleDisplay = ruleOrbit?.querySelector(
+        ".contract-hologram__display",
+      );
+      const ruleTrack = ruleOrbit?.querySelector(".contract-hologram__track");
+      const ruleNodes = Array.from(
+        ruleOrbit?.querySelectorAll("[data-contract-node]") ?? [],
+      );
+      const ruleSpokes = Array.from(
+        ruleOrbit?.querySelectorAll("[data-contract-spoke]") ?? [],
+      );
+      const readoutKicker = landingNav.querySelector(
+        "[data-landing-readout-kicker]",
+      );
+      const readoutIndex = landingNav.querySelector(
+        "[data-landing-readout-index]",
+      );
+      const readoutType = landingNav.querySelector(
+        "[data-landing-readout-type]",
+      );
+      const readoutTitle = landingNav.querySelector(
+        "[data-landing-readout-title]",
+      );
+      const readoutDescription = landingNav.querySelector(
+        "[data-landing-readout-description]",
+      );
+      const readoutLink = landingNav.querySelector(
+        "[data-landing-readout-link]",
+      );
+      const primaryStep = 360 / Math.max(primaryNodes.length, 1);
+      const contractStep = 360 / Math.max(contractNodes.length, 1);
+      const ruleStep = 360 / Math.max(ruleNodes.length, 1);
+      let primaryIndex = 0;
+      let contractActiveIndex = 0;
+      let ruleActiveIndex = 0;
+      let primaryBuffer = 0;
+      let primaryReset = 0;
+      let childBuffer = 0;
+      let childReset = 0;
+
+      function normalizeIndex(index, count) {
+        return ((index % count) + count) % count;
+      }
+
+      function setMode(mode) {
+        const isContracts = mode === "contracts";
+        const isRules = mode === "rules";
+        const isPopout = mode === "popout";
+        landingNav.classList.toggle("is-contract-mode", isContracts);
+        landingNav.classList.toggle("is-rule-mode", isRules);
+        landingNav.classList.toggle("is-popout-mode", isPopout);
+        landingNav
+          .closest(".landing-console")
+          ?.classList.toggle(
+            "is-expanded-mode",
+            isContracts || isRules || isPopout,
+          );
+        if (contractOrbit instanceof HTMLElement) {
+          contractOrbit.setAttribute(
+            "aria-hidden",
+            isContracts ? "false" : "true",
+          );
+        }
+        if (ruleOrbit instanceof HTMLElement) {
+          ruleOrbit.setAttribute("aria-hidden", isRules ? "false" : "true");
+        }
+        if (readout instanceof HTMLElement) {
+          readout.setAttribute(
+            "aria-hidden",
+            isContracts || isRules || isPopout ? "false" : "true",
+          );
+        }
+      }
+
+      function updateSignalMetrics(sourceRings) {
+        if (
+          !(sourceRings instanceof SVGSVGElement) ||
+          !(readout instanceof HTMLElement)
+        )
+          return;
+
+        const navRect = landingNav.getBoundingClientRect();
+        const sourceRect = sourceRings.getBoundingClientRect();
+        const detailRect = readout.getBoundingClientRect();
+        const ringRadius =
+          Math.min(sourceRect.width, sourceRect.height) * 0.322;
+        const sourceX = sourceRect.left + sourceRect.width / 2 - navRect.left;
+        const sourceY =
+          sourceRect.top + sourceRect.height / 2 + ringRadius - navRect.top;
+        const panelX = detailRect.left - navRect.left;
+        const panelMidY = detailRect.top + detailRect.height / 2 - navRect.top;
+        const routeY = Math.max(sourceY + 32, panelMidY + 86);
+
+        landingNav.style.setProperty("--signal-source-x", `${sourceX}px`);
+        landingNav.style.setProperty("--signal-source-y", `${sourceY}px`);
+        landingNav.style.setProperty("--signal-route-y", `${routeY}px`);
+        landingNav.style.setProperty("--signal-panel-x", `${panelX}px`);
+        landingNav.style.setProperty("--signal-panel-mid-y", `${panelMidY}px`);
+      }
+
+      function revealReadout(sourceRings) {
+        if (readout instanceof HTMLElement) {
+          readout.classList.remove("is-revealing");
+        }
+        signal?.classList.remove("is-routing");
+
+        window.requestAnimationFrame(() => {
+          updateSignalMetrics(sourceRings);
+          signal?.classList.add("is-routing");
+          if (readout instanceof HTMLElement) {
+            readout.classList.add("is-revealing");
+          }
+        });
+      }
+
+      function setReadout({
+        kicker,
+        index,
+        type,
+        title,
+        description,
+        href,
+        action,
+      }) {
+        if (readoutKicker) readoutKicker.textContent = kicker;
+        if (readoutIndex) readoutIndex.textContent = index;
+        if (readoutType) readoutType.textContent = type;
+        if (readoutTitle) readoutTitle.textContent = title;
+        if (readoutDescription) readoutDescription.textContent = description;
+        if (readoutLink instanceof HTMLAnchorElement) {
+          readoutLink.href = href;
+          readoutLink.textContent = action;
+        }
+      }
+
+      function updatePrimary(index, options = { reveal: true }) {
+        primaryIndex = normalizeIndex(index, primaryNodes.length);
+        const activeNode = primaryNodes[primaryIndex];
+        const title = activeNode?.getAttribute("data-title") || "";
+        const isContracts = title === "Contracts";
+        const isRules = title === "Rules";
+
+        if (primaryTrack instanceof HTMLElement) {
+          primaryTrack.style.setProperty(
+            "--wheel-rotation",
+            `${-primaryIndex * primaryStep}deg`,
+          );
+        }
+
+        primaryNodes.forEach((node, nodeIndex) => {
+          const isActive = nodeIndex === primaryIndex;
+          node.classList.toggle("is-active", isActive);
+          node.setAttribute("aria-selected", isActive ? "true" : "false");
+          node.setAttribute("tabindex", isActive ? "0" : "-1");
+        });
+
+        primarySpokes.forEach((spoke, spokeIndex) => {
+          spoke.classList.toggle("is-active", spokeIndex === primaryIndex);
+        });
+
+        if (isContracts) {
+          setMode("contracts");
+          updateContract(contractActiveIndex, options);
+          return;
+        }
+        if (isRules) {
+          setMode("rules");
+          updateRule(ruleActiveIndex, options);
+          return;
+        }
+
+        setMode("popout");
+        setReadout({
+          kicker: activeNode?.getAttribute("data-type") || "Navigation node",
+          index: String(primaryIndex + 1).padStart(2, "0"),
+          type: activeNode?.getAttribute("data-type") || "Mercnet channel",
+          title,
+          description: activeNode?.getAttribute("data-description") || "",
+          href: activeNode?.getAttribute("data-href") || "#",
+          action: `Open ${title}`,
+        });
+        if (options.reveal) revealReadout(primaryRings);
+      }
+
+      function updateChildWheel({ index, nodes, spokes, track, step }) {
+        const activeIndex = normalizeIndex(index, nodes.length);
+
+        if (track instanceof HTMLElement) {
+          track.style.setProperty(
+            "--wheel-rotation",
+            `${-activeIndex * step}deg`,
+          );
+        }
+
+        nodes.forEach((node, nodeIndex) => {
+          const isActive = nodeIndex === activeIndex;
+          node.classList.toggle("is-active", isActive);
+          node.setAttribute("aria-selected", isActive ? "true" : "false");
+          node.setAttribute("tabindex", isActive ? "0" : "-1");
+        });
+
+        spokes.forEach((spoke, spokeIndex) => {
+          spoke.classList.toggle("is-active", spokeIndex === activeIndex);
+        });
+
+        return activeIndex;
+      }
+
+      function updateContract(index, options = { reveal: true }) {
+        contractActiveIndex = normalizeIndex(index, contractNodes.length);
+
+        contractActiveIndex = updateChildWheel({
+          index,
+          nodes: contractNodes,
+          spokes: contractSpokes,
+          track: contractTrack,
+          step: contractStep,
+        });
+
+        const activeNode = contractNodes[contractActiveIndex];
+        if (!(activeNode instanceof Element)) return;
+
+        setReadout({
+          kicker: "Mission focus",
+          index: String(contractActiveIndex + 1).padStart(2, "0"),
+          type: activeNode.getAttribute("data-type") || "Contract",
+          title: activeNode.getAttribute("data-title") || "",
+          description: activeNode.getAttribute("data-description") || "",
+          href: activeNode.getAttribute("data-href") || "#",
+          action: "Open Contract",
+        });
+        if (options.reveal) {
+          revealReadout(
+            contractOrbit?.querySelector(".contract-hologram__rings svg"),
+          );
+        }
+      }
+
+      function updateRule(index, options = { reveal: true }) {
+        ruleActiveIndex = updateChildWheel({
+          index,
+          nodes: ruleNodes,
+          spokes: ruleSpokes,
+          track: ruleTrack,
+          step: ruleStep,
+        });
+
+        const activeNode = ruleNodes[ruleActiveIndex];
+        if (!(activeNode instanceof Element)) return;
+
+        setReadout({
+          kicker: "Field manual",
+          index: String(ruleActiveIndex + 1).padStart(2, "0"),
+          type: activeNode.getAttribute("data-type") || "Rule",
+          title: activeNode.getAttribute("data-title") || "",
+          description: activeNode.getAttribute("data-description") || "",
+          href: activeNode.getAttribute("data-href") || "#",
+          action: "Open Rule",
+        });
+        if (options.reveal) {
+          revealReadout(
+            ruleOrbit?.querySelector(".contract-hologram__rings svg"),
+          );
+        }
+      }
+
+      primaryNodes.forEach((node, index) => {
+        node.addEventListener("click", () => {
+          updatePrimary(index);
+        });
+      });
+
+      contractNodes.forEach((node, index) => {
+        node.addEventListener("click", () => {
+          updateContract(index);
+        });
+      });
+
+      ruleNodes.forEach((node, index) => {
+        node.addEventListener("click", () => {
+          updateRule(index);
+        });
+      });
+
+      function handleWheel(event, updater, getIndex) {
+        if (!(event instanceof WheelEvent)) return;
+        event.preventDefault();
+        window.clearTimeout(childReset);
+        childBuffer += event.deltaY;
+
+        if (Math.abs(childBuffer) > 42) {
+          updater(getIndex() + Math.sign(childBuffer));
+          childBuffer = 0;
+        }
+
+        childReset = window.setTimeout(() => {
+          childBuffer = 0;
+        }, 160);
+      }
+
+      primaryDisplay?.addEventListener(
+        "wheel",
+        (event) => {
+          if (!(event instanceof WheelEvent)) return;
+          event.preventDefault();
+          window.clearTimeout(primaryReset);
+          primaryBuffer += event.deltaY;
+
+          if (Math.abs(primaryBuffer) > 42) {
+            updatePrimary(primaryIndex + Math.sign(primaryBuffer));
+            primaryBuffer = 0;
+          }
+
+          primaryReset = window.setTimeout(() => {
+            primaryBuffer = 0;
+          }, 160);
+        },
+        { passive: false },
+      );
+
+      contractDisplay?.addEventListener(
+        "wheel",
+        (event) =>
+          handleWheel(event, updateContract, () => contractActiveIndex),
+        { passive: false },
+      );
+
+      ruleDisplay?.addEventListener(
+        "wheel",
+        (event) => handleWheel(event, updateRule, () => ruleActiveIndex),
+        { passive: false },
+      );
+
+      primaryDisplay?.addEventListener("keydown", (event) => {
+        if (!(event instanceof KeyboardEvent)) return;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          event.preventDefault();
+          updatePrimary(primaryIndex + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          event.preventDefault();
+          updatePrimary(primaryIndex - 1);
+        }
+        if (event.key === "Enter") {
+          const activeNode = primaryNodes[primaryIndex];
+          const href = activeNode?.getAttribute("data-href");
+          const title = activeNode?.getAttribute("data-title");
+          if (href && title !== "Rules" && title !== "Contracts")
+            window.location.href = href;
+        }
+      });
+
+      contractDisplay?.addEventListener("keydown", (event) => {
+        if (!(event instanceof KeyboardEvent)) return;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          event.preventDefault();
+          updateContract(contractActiveIndex + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          event.preventDefault();
+          updateContract(contractActiveIndex - 1);
+        }
+        if (event.key === "Escape") {
+          updatePrimary(primaryIndex);
+        }
+        if (event.key === "Enter") {
+          const href =
+            contractNodes[contractActiveIndex]?.getAttribute("data-href");
+          if (href) window.location.href = href;
+        }
+      });
+
+      ruleDisplay?.addEventListener("keydown", (event) => {
+        if (!(event instanceof KeyboardEvent)) return;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          event.preventDefault();
+          updateRule(ruleActiveIndex + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          event.preventDefault();
+          updateRule(ruleActiveIndex - 1);
+        }
+        if (event.key === "Escape") {
+          updatePrimary(primaryIndex);
+        }
+        if (event.key === "Enter") {
+          const href = ruleNodes[ruleActiveIndex]?.getAttribute("data-href");
+          if (href) window.location.href = href;
+        }
+      });
+
+      updatePrimary(0, { reveal: false });
+      updateRule(0, { reveal: false });
+      updateContract(0, { reveal: false });
+      updatePrimary(0);
+      window.addEventListener("resize", () => {
+        if (landingNav.classList.contains("is-contract-mode")) {
+          updateSignalMetrics(
+            contractOrbit?.querySelector(".contract-hologram__rings svg"),
+          );
+        } else if (landingNav.classList.contains("is-rule-mode")) {
+          updateSignalMetrics(
+            ruleOrbit?.querySelector(".contract-hologram__rings svg"),
+          );
+        } else {
+          updateSignalMetrics(primaryRings);
+        }
+      });
+    }
+  </script>
+</BaseLayout>

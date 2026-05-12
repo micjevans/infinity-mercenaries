@@ -16,10 +16,10 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  min-height: calc(100svh - 4rem);
+  min-height: 100svh;
   place-items: center;
   overflow: hidden;
-  padding: clamp(4rem, 10vh, 7rem) 1rem clamp(3rem, 8vh, 6rem);
+  padding: clamp(2rem, 6vh, 4rem) 1rem;
 }
 
 .landing-console::before,
@@ -102,7 +102,7 @@
   z-index: 1;
   display: grid;
   justify-items: center;
-  gap: clamp(0.55rem, 1.3vw, 0.9rem);
+  gap: 0;
   width: min(100%, 70rem);
   text-align: center;
 }
@@ -202,84 +202,255 @@
 }
 
 .landing-console__links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(0.8rem, 2vw, 1.35rem);
-  margin-top: clamp(0.85rem, 3vh, 1.8rem);
-}
-
-.landing-console__links a {
-  --landing-link-frame: rgba(0, 240, 255, 0.44);
-  --landing-link-chamfer: 0.45rem;
-  --landing-link-stroke: 1.5px;
-  position: relative;
   display: grid;
-  gap: 0.2rem;
-  min-width: 9.5rem;
-  padding: 0.74rem 1rem 0.82rem;
-  color: var(--text);
-  text-decoration: none;
-  background:
-    linear-gradient(to right, var(--arwes-lime), var(--arwes-lime)) right calc(var(--landing-link-chamfer) - 1px) bottom 0 / calc(0.65rem + 1px) 2px no-repeat,
-    linear-gradient(to top, var(--arwes-lime), var(--arwes-lime)) right 0 bottom calc(var(--landing-link-chamfer) - 1px) / 2px calc(0.65rem + 1px) no-repeat,
-    linear-gradient(135deg, transparent calc(50% - 1px), var(--arwes-lime) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) right 0 bottom 0 / var(--landing-link-chamfer) var(--landing-link-chamfer) no-repeat,
-    rgba(0, 240, 255, 0.035);
-  clip-path: polygon(0.45rem 0, 100% 0, 100% calc(100% - 0.45rem), calc(100% - 0.45rem) 100%, 0 100%, 0 0.45rem);
+  grid-template-columns: repeat(2, minmax(12rem, 1fr));
+  gap: clamp(1rem, 1.8vw, 1.4rem);
+  justify-items: stretch;
+  width: min(100%, 58rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
 }
 
-.landing-console__links a::before {
+.landing-console__links a.landing-console__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 7rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: 1.65rem;
+  border-color: rgba(0, 240, 255, 0.18);
+  background: rgba(0, 12, 18, 0.88);
+  box-shadow:
+    inset 0 0 0.65rem rgba(0, 240, 255, 0.08),
+    0 0 1.55rem rgba(0, 240, 255, 0.12);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.landing-console__links a.landing-console__link::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(135deg, transparent calc(50% - 1px), var(--landing-link-frame) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) left 0 top 0 / var(--landing-link-chamfer) var(--landing-link-chamfer) no-repeat,
-    linear-gradient(135deg, transparent calc(50% - 1px), var(--landing-link-frame) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) right 0 bottom 0 / var(--landing-link-chamfer) var(--landing-link-chamfer) no-repeat,
-    linear-gradient(to right, var(--landing-link-frame), var(--landing-link-frame)) left calc(var(--landing-link-chamfer) - 1px) top 0 / calc(100% - var(--landing-link-chamfer) + 1px) var(--landing-link-stroke) no-repeat,
-    linear-gradient(to bottom, var(--landing-link-frame), var(--landing-link-frame)) right 0 top 0 / var(--landing-link-stroke) calc(100% - var(--landing-link-chamfer)) no-repeat,
-    linear-gradient(to left, var(--landing-link-frame), var(--landing-link-frame)) right calc(var(--landing-link-chamfer) - 1px) bottom 0 / calc(100% - var(--landing-link-chamfer) + 1px) var(--landing-link-stroke) no-repeat,
-    linear-gradient(to top, var(--landing-link-frame), var(--landing-link-frame)) left 0 bottom 0 / var(--landing-link-stroke) calc(100% - var(--landing-link-chamfer)) no-repeat;
-  clip-path: polygon(0.45rem 0, 100% 0, 100% calc(100% - 0.45rem), calc(100% - 0.45rem) 100%, 0 100%, 0 0.45rem);
-  content: "";
-  transition:
-    opacity 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0.06)
+  );
+  opacity: 0.12;
+  pointer-events: none;
 }
 
-.landing-console__links a:hover::before,
-.landing-console__links a:focus-visible::before {
-  --landing-link-frame: rgba(213, 255, 94, 0.82);
-  box-shadow:
-    inset 0 0 1.4rem rgba(0, 240, 255, 0.08),
-    0 0 1.4rem rgba(0, 240, 255, 0.16);
-}
-
-.landing-console__links a:focus-visible {
-  outline: 1px solid rgba(213, 255, 94, 0.9);
-  outline-offset: 0.2rem;
-}
-
-.landing-console__links span,
-.landing-console__links strong {
+.landing-console__links a.landing-console__link span,
+.landing-console__links a.landing-console__link strong {
   position: relative;
   z-index: 1;
 }
 
-.landing-console__links span {
-  color: var(--arwes-lime);
+.landing-console__links a.landing-console__link span {
+  color: var(--arwes-cyan);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.landing-console__links strong {
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.landing-console__links a.landing-console__link strong {
+  display: block;
+  color: rgba(213, 255, 255, 0.96);
+  font-size: 1.05rem;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.landing-console__links a.landing-console__link:hover,
+.landing-console__links a.landing-console__link:focus-visible {
+  transform: translateY(-0.15rem);
+  border-color: rgba(0, 240, 255, 0.42);
+  background: rgba(0, 18, 24, 0.92);
+  box-shadow:
+    inset 0 0 0.85rem rgba(0, 240, 255, 0.14),
+    0 0 1.9rem rgba(0, 240, 255, 0.22);
+}
+
+.landing-console__links a.landing-console__link:focus-visible {
+  outline: 2px solid rgba(0, 240, 255, 0.28);
+  outline-offset: 3px;
+}
+
+.landing-console__nav-wheel {
+  position: relative;
+  display: grid;
+  width: min(100%, clamp(26rem, 58vw, 46rem));
+  aspect-ratio: 1;
+  place-items: center;
+  transition:
+    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-console__primary-wheel,
+.landing-console__contract-orbit,
+.landing-console__rule-orbit {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.landing-console__primary-wheel {
+  z-index: 2;
+  inset: 17%;
+  transition:
+    opacity 0.32s ease,
+    filter 0.32s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-console__contract-orbit,
+.landing-console__rule-orbit {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: scale(0.88) rotate(-8deg);
+  transition:
+    opacity 0.42s ease,
+    transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.42s;
+  will-change: opacity, transform;
+}
+
+.landing-console__contract-orbit[aria-hidden="false"],
+.landing-console__rule-orbit[aria-hidden="false"] {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.landing-console__contract-orbit[aria-hidden="true"] .contract-hologram__ring--ghost,
+.landing-console__contract-orbit[aria-hidden="true"] .contract-hologram__ring--outer,
+.landing-console__contract-orbit[aria-hidden="true"] .contract-hologram__ring--mid,
+.landing-console__contract-orbit[aria-hidden="true"] .contract-hologram__arcs path,
+.landing-console__rule-orbit[aria-hidden="true"] .contract-hologram__ring--ghost,
+.landing-console__rule-orbit[aria-hidden="true"] .contract-hologram__ring--outer,
+.landing-console__rule-orbit[aria-hidden="true"] .contract-hologram__ring--mid,
+.landing-console__rule-orbit[aria-hidden="true"] .contract-hologram__arcs path {
+  animation-play-state: paused;
+}
+
+.landing-console__contract-orbit[aria-hidden="true"] .contract-hologram__rings svg,
+.landing-console__rule-orbit[aria-hidden="true"] .contract-hologram__rings svg {
+  filter: none;
+}
+
+.landing-console__nav-wheel .contract-hologram__display {
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.landing-console__nav-wheel .contract-hologram__rings svg,
+.landing-console__nav-wheel .contract-hologram__labels {
+  width: min(100%, 42rem);
+}
+
+.landing-console__primary-wheel .contract-hologram__center-title {
+  font-size: 30px;
+}
+
+.landing-console__primary-wheel .contract-hologram__center-image {
+  filter:
+    drop-shadow(0 0 0.55rem rgba(214, 255, 63, 0.5))
+    drop-shadow(0 0 1.2rem rgba(0, 240, 255, 0.24));
+}
+
+.landing-console__primary-wheel .contract-hologram__label-text {
+  font-size: 12px;
+}
+
+.landing-console__primary-wheel .contract-hologram__spoke {
+  opacity: 0.5;
+}
+
+.landing-console__nav-wheel.is-contract-mode {
+  width: min(100%, clamp(31rem, 68vw, 54rem));
+}
+
+.landing-console__nav-wheel.is-contract-mode,
+.landing-console__nav-wheel.is-rule-mode {
+  width: min(100%, clamp(31rem, 68vw, 54rem));
+  transform: translateX(clamp(-15rem, -16vw, -7rem));
+}
+
+.landing-console__nav-wheel.is-popout-mode {
+  transform: translateX(clamp(-13rem, -14vw, -6rem));
+}
+
+.landing-console__nav-wheel.is-contract-mode .landing-console__primary-wheel,
+.landing-console__nav-wheel.is-rule-mode .landing-console__primary-wheel {
+  opacity: 0.58;
+  filter: brightness(0.75) saturate(0.9);
+  transform: scale(0.74);
+}
+
+.landing-console__nav-wheel.is-contract-mode .landing-console__contract-orbit {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+  transform: scale(1) rotate(0deg);
+}
+
+.landing-console__nav-wheel.is-rule-mode .landing-console__rule-orbit {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+  transform: scale(1) rotate(0deg);
+}
+
+.landing-console__signal {
+  z-index: 2;
+}
+
+.landing-console__selection-readout {
+  --landing-readout-position: translateY(-50%);
+  position: absolute;
+  left: calc(100% + clamp(1.5rem, 4vw, 4rem));
+  top: 50%;
+  z-index: 3;
+  width: min(100%, 31rem);
+  min-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  text-align: left;
+  transform: var(--landing-readout-position) scaleY(0.72);
+  transform-origin: center left;
+  transition:
+    opacity 0.28s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-console__selection-readout > p {
+  margin: 0;
+}
+
+.landing-console__selection-readout .command-button {
+  margin-top: 0.9rem;
+}
+
+.landing-console__nav-wheel.is-contract-mode .landing-console__selection-readout,
+.landing-console__nav-wheel.is-rule-mode .landing-console__selection-readout,
+.landing-console__nav-wheel.is-popout-mode .landing-console__selection-readout {
+  opacity: 1;
+  pointer-events: auto;
+  transform: var(--landing-readout-position) scaleY(1);
+}
+
+.landing-console.is-expanded-mode {
+  padding-right: clamp(19rem, 28vw, 36rem);
 }
 
 .landing-console__status {
@@ -293,86 +464,6 @@
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.landing-dock {
-  width: min(100% - 2rem, var(--max));
-  margin: 0 auto;
-  padding: clamp(4rem, 9vw, 7rem) 0 6rem;
-}
-
-.landing-dock__intro {
-  max-width: 48rem;
-  margin-bottom: 1.5rem;
-}
-
-.landing-dock__intro h2 {
-  margin: 0 0 0.8rem;
-  font-size: clamp(2.3rem, 6vw, 5rem);
-}
-
-.landing-dock__intro p:not(.eyebrow) {
-  color: var(--muted);
-  font-size: 1.08rem;
-}
-
-.landing-dock__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  padding: 1px;
-  background: rgba(0, 240, 255, 0.14);
-}
-
-.landing-dock__group {
-  min-height: 16rem;
-  padding: 1.15rem;
-  background:
-    linear-gradient(150deg, rgba(0, 240, 255, 0.06), transparent 48%),
-    rgba(2, 16, 16, 0.7);
-}
-
-.landing-dock__group--wide {
-  grid-column: 1 / -1;
-}
-
-.landing-dock__links {
-  display: grid;
-  gap: 0.48rem;
-}
-
-.landing-dock__links--columns {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.landing-dock__links a {
-  display: flex;
-  min-height: 2.45rem;
-  align-items: center;
-  padding: 0.5rem 0.65rem;
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  color: var(--muted);
-  text-decoration: none;
-  background: rgba(0, 240, 255, 0.035);
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    background 0.2s ease;
-}
-
-.landing-dock__links a:hover,
-.landing-dock__links a:focus-visible {
-  border-color: rgba(213, 255, 94, 0.58);
-  color: var(--text);
-  background: rgba(213, 255, 94, 0.045);
-  outline: none;
-}
-
-.landing-dock__video iframe {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 1px solid rgba(0, 240, 255, 0.18);
 }
 
 @keyframes landingNebulaDrift {
@@ -415,12 +506,34 @@
     width: min(100%, 45rem);
   }
 
-  .landing-dock__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .landing-console__nav-wheel {
+    width: clamp(18rem, 76vw, 28rem);
   }
 
-  .landing-dock__group--wide {
-    grid-column: 1 / -1;
+  .landing-console__nav-wheel.is-contract-mode,
+  .landing-console__nav-wheel.is-rule-mode,
+  .landing-console__nav-wheel.is-popout-mode {
+    width: min(100%, clamp(31rem, 82vw, 54rem));
+    transform: none;
+  }
+
+  .landing-console__selection-readout {
+    --landing-readout-position: translate(-50%, 0);
+    left: 50%;
+    top: calc(100% - 1.4rem);
+    transform: translate(-50%, -0.7rem) scaleY(0.72);
+    transform-origin: top center;
+  }
+
+  .landing-console__nav-wheel.is-contract-mode .landing-console__selection-readout,
+  .landing-console__nav-wheel.is-rule-mode .landing-console__selection-readout,
+  .landing-console__nav-wheel.is-popout-mode .landing-console__selection-readout {
+    transform: var(--landing-readout-position) scaleY(1);
+  }
+
+  .landing-console.is-expanded-mode {
+    padding-right: 1rem;
+    padding-bottom: clamp(10rem, 18vh, 14rem);
   }
 }
 
@@ -441,19 +554,9 @@
     inset: 14% 4% 12%;
   }
 
-  .landing-console__links,
-  .landing-dock__grid,
-  .landing-dock__links--columns {
-    grid-template-columns: 1fr;
-  }
-
-  .landing-console__links {
-    display: grid;
+  .landing-console__nav-wheel {
     width: min(100%, 20rem);
-  }
-
-  .landing-console__links a {
-    min-width: 0;
+    margin-top: 1.2rem;
   }
 
   .landing-console__status {
@@ -466,10 +569,6 @@
     text-align: center;
   }
 
-  .landing-dock__group,
-  .landing-dock__group--wide {
-    grid-column: auto;
-  }
 }
 
 .arwes-landing-wrap {
@@ -1016,6 +1115,748 @@
   font-size: 0.95rem;
 }
 
+.contract-hologram {
+  --signal-source-x: 34%;
+  --signal-source-y: 68%;
+  --signal-route-y: 77%;
+  --signal-panel-x: 60.5%;
+  --signal-panel-mid-y: 50%;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(20rem, 1fr) minmax(20rem, 0.82fr);
+  gap: clamp(1.6rem, 5vw, 4rem);
+  align-items: center;
+  width: min(100% - 2rem, var(--max));
+  margin: clamp(2.4rem, 7vw, 6rem) auto clamp(3rem, 8vw, 5rem);
+}
+
+.contract-hologram::before {
+  position: absolute;
+  inset: 6% -4% 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 36% 45%, rgba(0, 240, 255, 0.18), transparent 26rem),
+    radial-gradient(ellipse at 72% 60%, rgba(214, 255, 63, 0.055), transparent 22rem);
+  content: "";
+}
+
+.contract-hologram__display {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(33rem, 58vw, 42rem);
+  outline: none;
+}
+
+.contract-hologram__display:focus-visible {
+  filter: drop-shadow(0 0 1.2rem rgba(0, 240, 255, 0.22));
+}
+
+.contract-hologram__rings,
+.contract-hologram__track {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.contract-hologram__rings {
+  pointer-events: none;
+}
+
+.contract-hologram__rings svg {
+  width: min(100%, 42rem);
+  height: auto;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 0.4rem rgba(0, 240, 255, 0.18))
+    drop-shadow(0 0 1rem rgba(0, 240, 255, 0.08));
+}
+
+.contract-hologram__ring {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.2);
+  stroke-width: 1.6;
+}
+
+.contract-hologram__ring--ghost {
+  stroke: rgba(0, 240, 255, 0.08);
+  stroke-dasharray: 2 12;
+  animation: contractHoloSpin 28s linear infinite;
+  transform-origin: 320px 320px;
+}
+
+.contract-hologram__ring--outer {
+  stroke: rgba(0, 240, 255, 0.34);
+  stroke-dasharray: 88 22 16 28;
+  animation: contractHoloSpin 34s linear infinite reverse;
+  transform-origin: 320px 320px;
+}
+
+.contract-hologram__ring--mid {
+  stroke: rgba(214, 255, 63, 0.22);
+  stroke-dasharray: 42 18 8 24;
+  animation: contractHoloSpin 22s linear infinite;
+  transform-origin: 320px 320px;
+}
+
+.contract-hologram__ring--core {
+  stroke: rgba(213, 255, 255, 0.24);
+  stroke-dasharray: 18 12;
+}
+
+.contract-hologram__ticks line {
+  stroke: rgba(0, 240, 255, 0.28);
+  stroke-width: 1;
+}
+
+.contract-hologram__arcs path,
+.contract-hologram__radials path,
+.contract-hologram__reticle path,
+.contract-hologram__reticle circle {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.4);
+  stroke-width: 1.4;
+}
+
+.contract-hologram__arcs path {
+  stroke: rgba(0, 240, 255, 0.7);
+  stroke-width: 3;
+  stroke-dasharray: 84 38;
+  animation: contractHoloDash 5.5s linear infinite;
+}
+
+.contract-hologram__radials {
+  opacity: 0.2;
+}
+
+.contract-hologram__orbit-text {
+  fill: rgba(0, 240, 255, 0.78);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  paint-order: stroke;
+  stroke: rgba(0, 18, 18, 0.64);
+  stroke-width: 2px;
+  text-shadow:
+    0 0 0.3rem rgba(0, 240, 255, 0.5),
+    0 0 0.75rem rgba(0, 240, 255, 0.18);
+  text-transform: uppercase;
+}
+
+.contract-hologram__center-title {
+  fill: rgba(213, 255, 255, 0.9);
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  paint-order: stroke;
+  stroke: rgba(0, 18, 18, 0.82);
+  stroke-width: 3px;
+  text-transform: uppercase;
+}
+
+.contract-hologram__center-image {
+  pointer-events: none;
+}
+
+.contract-hologram__reticle {
+  opacity: 0.72;
+}
+
+.contract-hologram__track {
+  --wheel-radius-inner: clamp(11.4rem, 24vw, 15.6rem);
+  --wheel-radius-outer: clamp(14.8rem, 30vw, 19.2rem);
+  --wheel-spoke-inner: calc(var(--wheel-radius-inner) - 2.2rem);
+  --wheel-spoke-outer: calc(var(--wheel-radius-outer) - 2.4rem);
+}
+
+.contract-hologram__labels {
+  position: absolute;
+  width: min(100%, 42rem);
+  height: auto;
+  overflow: visible;
+  pointer-events: auto;
+  transform: rotate(var(--wheel-rotation));
+  transform-origin: center;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.contract-hologram__label {
+  cursor: pointer;
+  opacity: 0.78;
+  outline: none;
+  transition:
+    opacity 0.24s ease,
+    filter 0.24s ease;
+}
+
+.contract-hologram__label:focus,
+.contract-hologram__label:focus-visible,
+.contract-hologram__label-band,
+.contract-hologram__label-text {
+  outline: none;
+}
+
+.contract-hologram__label-band {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.045);
+  stroke-linecap: butt;
+  stroke-width: 32;
+  pointer-events: stroke;
+}
+
+.contract-hologram__label-text {
+  fill: rgba(0, 240, 255, 0.9);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  paint-order: stroke;
+  stroke: rgba(0, 18, 18, 0.72);
+  stroke-width: 2px;
+  text-shadow:
+    0 0 0.25rem rgba(0, 240, 255, 0.55),
+    0 0 0.6rem rgba(0, 240, 255, 0.18);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.contract-hologram__label-text textPath::selection {
+  background: transparent;
+}
+
+.contract-hologram__label:hover,
+.contract-hologram__label:focus-visible {
+  opacity: 1;
+  outline: none;
+  filter:
+    drop-shadow(0 0 0.32rem rgba(0, 240, 255, 0.34))
+    drop-shadow(0 0 0.75rem rgba(0, 240, 255, 0.18));
+}
+
+.contract-hologram__label.is-active {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 0.35rem rgba(0, 240, 255, 0.36))
+    drop-shadow(0 0 0.8rem rgba(0, 240, 255, 0.26));
+}
+
+.contract-hologram__display--hide-active-label .contract-hologram__label.is-active .contract-hologram__label-band {
+  stroke: transparent;
+}
+
+.contract-hologram__display--hide-active-label .contract-hologram__label.is-active .contract-hologram__label-text {
+  fill: transparent;
+  stroke: transparent;
+  font-size: 11px;
+  text-shadow: none;
+}
+
+.contract-hologram__spokes,
+.contract-hologram__spoke {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+}
+
+.contract-hologram__spokes {
+  inset: 0;
+  left: 0;
+  top: 0;
+}
+
+.contract-hologram__spoke {
+  width: var(--node-spoke);
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 240, 255, 0),
+      rgba(0, 240, 255, 0.12) 20%,
+      rgba(0, 240, 255, 0.34) 74%,
+      rgba(214, 255, 63, 0.22)
+    );
+  opacity: 0.32;
+  transform:
+    translateY(-50%)
+    rotate(calc(var(--node-angle) + var(--wheel-rotation)))
+    translateX(4.85rem);
+  transform-origin: left center;
+  transition:
+    opacity 0.24s ease,
+    filter 0.24s ease,
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.contract-hologram__spoke::before,
+.contract-hologram__spoke::after {
+  position: absolute;
+  top: 50%;
+  border-radius: 999px;
+  content: "";
+  transform: translateY(-50%);
+}
+
+.contract-hologram__spoke::before {
+  left: -0.16rem;
+  width: 0.32rem;
+  height: 0.32rem;
+  background: rgba(0, 240, 255, 0.38);
+  box-shadow: 0 0 0.65rem rgba(0, 240, 255, 0.3);
+}
+
+.contract-hologram__spoke::after {
+  right: -0.08rem;
+  width: 0.34rem;
+  height: 0.34rem;
+  background: rgba(214, 255, 63, 0.46);
+  box-shadow:
+    0 0 0.45rem rgba(214, 255, 63, 0.36),
+    0 0 0.8rem rgba(0, 240, 255, 0.18);
+}
+
+.contract-hologram__spoke.is-active {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 0.35rem rgba(214, 255, 63, 0.35))
+    drop-shadow(0 0 0.8rem rgba(0, 240, 255, 0.28));
+}
+
+.contract-hologram__signal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.contract-hologram__signal-segment,
+.contract-hologram__signal-dot {
+  position: absolute;
+  display: block;
+  background: rgba(0, 240, 255, 0.82);
+  box-shadow:
+    0 0 0.45rem rgba(0, 240, 255, 0.62),
+    0 0 1.2rem rgba(0, 240, 255, 0.2);
+  opacity: 0;
+}
+
+.contract-hologram__signal-segment--down {
+  left: var(--signal-source-x);
+  top: var(--signal-source-y);
+  width: 1px;
+  height: calc(var(--signal-route-y) - var(--signal-source-y));
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.contract-hologram__signal-segment--right {
+  left: var(--signal-source-x);
+  top: var(--signal-route-y);
+  width: calc(var(--signal-panel-x) - var(--signal-source-x));
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.contract-hologram__signal-segment--up {
+  left: var(--signal-panel-x);
+  top: var(--signal-panel-mid-y);
+  width: 1px;
+  height: calc(var(--signal-route-y) - var(--signal-panel-mid-y));
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.contract-hologram__signal.is-routing .contract-hologram__signal-segment--down {
+  animation: contractSignalDown 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.contract-hologram__signal.is-routing .contract-hologram__signal-segment--right {
+  animation: contractSignalRight 0.26s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+}
+
+.contract-hologram__signal.is-routing .contract-hologram__signal-segment--up {
+  animation: contractSignalUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) 0.39s both;
+}
+
+.contract-hologram__signal-dot--source {
+  left: var(--signal-source-x);
+  top: var(--signal-source-y);
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  transform: translate(-50%, -50%) scale(0.4);
+}
+
+.contract-hologram__signal-dot--target {
+  left: var(--signal-panel-x);
+  top: var(--signal-panel-mid-y);
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 999px;
+  background: rgba(213, 255, 94, 0.82);
+  box-shadow:
+    0 0 0.55rem rgba(213, 255, 94, 0.48),
+    0 0 1.15rem rgba(0, 240, 255, 0.22);
+  transform: translate(-50%, -50%) scale(0.4);
+}
+
+.contract-hologram__signal.is-routing .contract-hologram__signal-dot--source {
+  animation: contractSignalPulse 0.24s ease both;
+}
+
+.contract-hologram__signal.is-routing .contract-hologram__signal-dot--target {
+  animation: contractSignalPulse 0.24s ease 0.56s both;
+}
+
+.contract-hologram__details {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  min-height: 22rem;
+  padding: clamp(1.1rem, 2vw, 1.55rem);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  background:
+    radial-gradient(circle at 0% 42%, rgba(0, 240, 255, 0.12), transparent 12rem),
+    linear-gradient(135deg, rgba(0, 240, 255, 0.1), transparent 46%),
+    rgba(2, 15, 15, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(213, 255, 255, 0.04),
+    0 1.2rem 3rem rgba(0, 0, 0, 0.22);
+  clip-path: var(--hud-angle);
+}
+
+.contract-hologram__details.is-revealing {
+  animation: contractPanelMaterialize 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  will-change: opacity, transform;
+}
+
+.contract-hologram__details::before {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 4;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.86), rgba(213, 255, 94, 0.72), rgba(0, 240, 255, 0.56));
+  box-shadow:
+    0 0 0.5rem rgba(0, 240, 255, 0.48),
+    0 0 1.2rem rgba(0, 240, 255, 0.18);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.contract-hologram__details::after {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 4;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.56), rgba(213, 255, 94, 0.72), rgba(0, 240, 255, 0.86));
+  box-shadow:
+    0 0 0.5rem rgba(0, 240, 255, 0.44),
+    0 0 1.2rem rgba(0, 240, 255, 0.16);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.contract-hologram__details.is-revealing::before {
+  animation: contractPanelCurtainTop 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.contract-hologram__details.is-revealing::after {
+  animation: contractPanelCurtainBottom 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.contract-hologram__details [data-contract-copy] {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+.contract-hologram__details.is-revealing [data-contract-copy] {
+  animation: contractTextBoot 0.38s steps(16, end) both;
+}
+
+.contract-hologram__details.is-revealing [data-contract-copy]:nth-child(1) {
+  animation-delay: 1.22s;
+}
+
+.contract-hologram__details.is-revealing .contract-hologram__readout span {
+  animation-delay: 1.28s;
+}
+
+.contract-hologram__details.is-revealing .contract-hologram__readout p {
+  animation-delay: 1.32s;
+}
+
+.contract-hologram__details.is-revealing .contract-hologram__readout h2 {
+  animation-delay: 1.38s;
+}
+
+.contract-hologram__details.is-revealing > p[data-contract-detail-description] {
+  animation-delay: 1.46s;
+}
+
+.contract-hologram__details.is-revealing .command-button {
+  animation-delay: 1.54s;
+}
+
+.contract-hologram__details.is-revealing .contract-hologram__help {
+  animation-delay: 1.6s;
+}
+
+.contract-hologram__readout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  margin: 0.75rem 0 1rem;
+}
+
+.contract-hologram__readout > span {
+  display: grid;
+  width: 3.2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(214, 255, 63, 0.42);
+  color: var(--arwes-lime);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.contract-hologram__readout p {
+  margin: 0 0 0.2rem;
+  color: var(--arwes-cyan-bright);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contract-hologram__readout h2 {
+  margin: 0;
+  color: var(--text);
+  max-width: 100%;
+  font-size: clamp(1.6rem, 3.35vw, 2.9rem);
+  line-height: 1.04;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.contract-hologram__details > p:not(.eyebrow):not(.contract-hologram__help) {
+  color: rgba(213, 255, 255, 0.78);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.contract-hologram__details .command-button {
+  margin-top: 1.4rem;
+}
+
+.contract-hologram__help {
+  margin-top: 1.1rem;
+  color: rgba(143, 168, 159, 0.68);
+  font-size: 0.84rem;
+}
+
+@keyframes contractHoloSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes contractHoloDash {
+  to {
+    stroke-dashoffset: -122;
+  }
+}
+
+@keyframes contractSignalPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+
+  45% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes contractSignalDown {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes contractSignalRight {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes contractSignalUp {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes contractPanelMaterialize {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.94);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scaleY(1.02);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes contractPanelCurtainTop {
+  0% {
+    opacity: 0;
+    top: 50%;
+    transform: scaleX(0);
+  }
+
+  24% {
+    opacity: 1;
+    top: 50%;
+    transform: scaleX(1);
+  }
+
+  72% {
+    opacity: 1;
+    top: 0;
+    transform: scaleX(1);
+  }
+
+  100% {
+    opacity: 0.18;
+    top: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes contractPanelCurtainBottom {
+  0% {
+    opacity: 0;
+    top: 50%;
+    transform: scaleX(0);
+  }
+
+  24% {
+    opacity: 1;
+    top: 50%;
+    transform: scaleX(1);
+  }
+
+  72% {
+    opacity: 1;
+    top: 100%;
+    transform: translateY(-1px) scaleX(1);
+  }
+
+  100% {
+    opacity: 0.18;
+    top: 100%;
+    transform: translateY(-1px) scaleX(1);
+  }
+}
+
+@keyframes contractTextBoot {
+  0% {
+    opacity: 0;
+    transform: translateX(-0.6rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contract-hologram__signal-segment,
+  .contract-hologram__signal-dot,
+  .contract-hologram__details,
+  .contract-hologram__details::before,
+  .contract-hologram__details::after,
+  .contract-hologram__details [data-contract-copy] {
+    animation: none !important;
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+
+  .contract-hologram__details::before {
+    display: none;
+  }
+
+  .contract-hologram__details::after {
+    display: none;
+  }
+}
+
 
 .index-list {
   display: grid;
@@ -1065,5 +1906,79 @@
 .index-list strong {
   display: block;
   font-size: 1.3rem;
+}
+
+@media (max-width: 980px) {
+  .contract-hologram {
+    grid-template-columns: 1fr;
+  }
+
+  .contract-hologram__display {
+    min-height: clamp(26rem, 92vw, 38rem);
+  }
+
+  .contract-hologram__track {
+    --wheel-radius-inner: clamp(9.4rem, 34vw, 13rem);
+    --wheel-radius-outer: clamp(11.8rem, 43vw, 15.6rem);
+  }
+
+  .contract-hologram__signal {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .contract-hologram__label-text {
+    font-size: 9px;
+  }
+}
+
+.landing-console__selection-readout.is-revealing {
+  animation: landingReadoutMaterialize 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.68s both;
+}
+
+@keyframes landingReadoutMaterialize {
+  0% {
+    opacity: 0;
+    transform: var(--landing-readout-position) scaleY(0.02);
+    border-color: rgba(0, 240, 255, 0);
+    background:
+      radial-gradient(circle at 0% 42%, rgba(0, 240, 255, 0), transparent 12rem),
+      linear-gradient(135deg, rgba(0, 240, 255, 0), transparent 46%),
+      rgba(2, 15, 15, 0);
+    box-shadow: none;
+    clip-path: polygon(0 49.5%, 100% 49.5%, 100% 50.5%, 100% 50.5%, 0 50.5%, 0 49.5%);
+    filter: brightness(1.35);
+  }
+
+  36% {
+    opacity: 1;
+    transform: var(--landing-readout-position) scaleY(0.22);
+    border-color: rgba(0, 240, 255, 0.42);
+    background:
+      radial-gradient(circle at 0% 42%, rgba(0, 240, 255, 0.08), transparent 12rem),
+      linear-gradient(135deg, rgba(0, 240, 255, 0.08), transparent 46%),
+      rgba(2, 15, 15, 0.5);
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 240, 255, 0.12),
+      0 0 1.1rem rgba(0, 240, 255, 0.18);
+    clip-path: polygon(0 45%, 100% 45%, 100% 55%, 100% 55%, 0 55%, 0 45%);
+    filter: brightness(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: var(--landing-readout-position) scaleY(1);
+    border-color: rgba(0, 240, 255, 0.22);
+    background:
+      radial-gradient(circle at 0% 42%, rgba(0, 240, 255, 0.12), transparent 12rem),
+      linear-gradient(135deg, rgba(0, 240, 255, 0.1), transparent 46%),
+      rgba(2, 15, 15, 0.9);
+    box-shadow:
+      inset 0 1px 0 rgba(213, 255, 255, 0.04),
+      0 1.2rem 3rem rgba(0, 0, 0, 0.22);
+    clip-path: var(--hud-angle);
+    filter: none;
+  }
 }
 

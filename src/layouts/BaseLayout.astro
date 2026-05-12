@@ -5,11 +5,15 @@ import GoogleAuthButton from "../components/GoogleAuthButton";
 interface Props {
   title?: string;
   description?: string;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
 }
 
 const {
   title = "Infinity: Mercenaries",
   description = "A narrative campaign framework for Infinity N5 mercenary companies.",
+  hideHeader = false,
+  hideFooter = false,
 } = Astro.props;
 
 const pageTitle =
@@ -226,7 +230,7 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
         ))
       }
     </div>
-    <header class="site-header">
+    {!hideHeader && <header class="site-header">
       <nav class="site-nav" aria-label="Main navigation">
         <a class="brand" href="/">
           <img
@@ -290,11 +294,11 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
           <GoogleAuthButton client:load clientId={googleClientId} />
         </div>
       </nav>
-    </header>
+    </header>}
     <main id="main">
       <slot />
     </main>
-    <footer class="site-footer">
+    {!hideFooter && <footer class="site-footer">
       <div>
         <div class="footer-brand">
           <img src="/images/m2-logo.png" alt="" aria-hidden="true" />
@@ -305,7 +309,7 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
       <p class="legal-note">
         Unofficial fan project. Infinity is owned by Corvus Belli.
       </p>
-    </footer>
+    </footer>}
 
     <script>
       const prefersReducedMotion = window.matchMedia(

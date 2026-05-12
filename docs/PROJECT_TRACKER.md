@@ -41,6 +41,33 @@ Use this as a temporary map; update as team members onboard.
 
 ## Change Log
 
+- 2026-05-11: Added the original Orbit pie-menu demo CSS and click handler to `/orbit-test/` so the raw pasted HTML can reveal its option, active, and suboption rings.
+- 2026-05-11: Replaced `/orbit-test/` with the raw Orbit pie-menu example markup plus only a minimal page wrapper and `handleClick` shim to isolate package behavior from custom implementation choices.
+- 2026-05-11: Simplified `/orbit-test/` into a focused Orbit pie-menu baseline with six radial slices, label capsules, a center control, and a linked readout instead of trying to recreate the full contracts selector immediately.
+- 2026-05-11: Rebuilt the `/orbit-test/` prototype around Orbit's documented `bigbang > gravity-spot > orbit-* > satellite/vector/o-arc` hierarchy, removed the invalid direct satellite child that triggered Orbit warning rings, and stabilized sizing with CSS force clamps instead of full-width Orbit resize scaling.
+- 2026-05-11: Installed `@zumer/orbit` and added a standalone `/orbit-test/` prototype that uses Orbit CSS/custom elements for radial contract placement while preserving the existing production wheels.
+- 2026-05-11: Cleaned the landing wheel center down to the Infinity mark only and changed expanded navigation readouts to sit beside the shifted wheel on desktop while retaining the bottom stack on narrow screens.
+- 2026-05-11: Restored the landing selector's routed signal/readout reveal animation, made the main wheel scroll/click/keyboard-rotatable, added a rules orbit, and reused the mission readout panel for Companies and Events popouts.
+- 2026-05-11: Simplified the entry console by hiding the footer, removing the large landing wordmark/subtitle block, and rendering the Infinity mark as the primary wheel's center node.
+- 2026-05-11: Converted the landing page into a headerless Mercnet navigation console where selecting Contracts opens a second concentric contract selector orbit with scroll/keyboard focus and an inline mission readout.
+- 2026-05-11: Extracted the rotary hologram wheel into a reusable Astro component and switched both the contracts selector and landing navigation to share the same generated ring geometry with select/link behavior.
+- 2026-05-11: Simplified the landing page by removing the Open Channels resource hub and replacing the primary section links with a compact holographic navigation wheel.
+- 2026-05-11: Anchored the contracts hologram signal to the measured bottom-center of the wheel and changed the readout reveal into a split-line curtain that opens vertically with the panel frame.
+- 2026-05-11: Rebuilt the contracts hologram connector as bottom-origin CSS trace segments and changed the mission readout reveal to grow from a full-width center scanline into the final panel.
+- 2026-05-11: Simplified the contracts hologram readout animation after visual review by removing internal bracket traces, placing the panel above the connector, and preventing signal lines from crossing the mission copy.
+- 2026-05-11: Fixed the contracts hologram reveal by removing fragmented dashed SVG frame pieces, drawing one solid routed connector, and making the mission panel itself collapse and reform before readout text appears.
+- 2026-05-11: Added a staged contracts hologram selection animation where the signal route draws from the dial, opens the mission readout frame, and boots the readout copy in a fast terminal reveal.
+- 2026-05-11: Replaced the contracts hologram connector bracket with an SVG-routed signal path from the lower dial to the mission readout and reduced readout title sizing so long contract names fit.
+- 2026-05-11: Removed the browser focus outline from contracts hologram SVG labels and rerouted the mission selector connector into a bent trace from the lower dial toward the readout panel.
+- 2026-05-11: Streamlined the contracts index into the hologram-only selector by removing the separate page hero and fallback grid, promoting the inner orbit copy to the page title, and simplifying wheel labels to contract names.
+- 2026-05-11: Made the contracts hologram arc labels the actual selector controls, removed the target-locked readout and selected-label highlight, and moved the connector signal into the layout between the dial and mission readout.
+- 2026-05-11: Brightened contracts hologram arc text to glowing cyan, removed the active contract's duplicate curved label text, and added a signal connector from the dial into the mission selector readout.
+- 2026-05-11: Rebuilt the contracts hologram orbit labels as SVG arc bands with textPath labels so the contract names visibly curve around the circular selector while preserving invisible hit targets for interaction.
+- 2026-05-11: Changed the contracts hologram labels to rotate tangentially with the circular dial so the bottom focused label stays readable while upper labels wrap around the display.
+- 2026-05-11: Softened the contracts hologram orbit labels into lighter terminal slats with wider active labels, reduced truncation, subtler spokes, and less vertical dead space around the selector.
+- 2026-05-11: Refined the contracts hologram selector with alternating inner/outer label bands, radial connector spokes, softer translucent callout tabs, active spoke highlighting, and slight label canting to better integrate options with the circular display.
+- 2026-05-11: Added an experimental contracts hologram wheel with SVG concentric rings, scroll/click/keyboard rotation, active mission readout, and the existing contract grid retained as an archive fallback.
+
 - 2026-05-10: Removed the experimental landing hero artwork layer while keeping the custom SVG wordmark and title-screen composition.
 - 2026-05-10: Tuned the landing hero artwork to render more clearly with a transparency vignette and lighter scanline/overlay treatment instead of heavy cyan blend filtering.
 - 2026-05-10: Reworked the landing entry screen with a blended coolmixedheroes visual layer and a custom SVG wordmark treatment so the first viewport feels closer to an ARWES-style sci-fi title screen.
@@ -62,6 +89,11 @@ Use this as a temporary map; update as team members onboard.
 - 2026-05-10: Added a warm-color quarantine pass that rethemes twist tables, company legacy panels/profile sheets, event cards, and pairing surfaces away from brown/amber panels into cyan HUD frames with lime signal accents.
 - 2026-05-10: Added a shared boot image materialization animation so visible page images reveal from noisy blurred fragments into crisp artwork while preserving decorative/header logos.
 - 2026-05-09: Restyled the Google auth header control into compact sci-fi command/status chips with Drive-linked state, leading status light, matching nav hover motion, and corrected CSS module class bindings.
+- 2026-05-11: Rebuilt `/orbit-test/` as a closer Orbit-package conversion of the original hologram wheel, mapping old SVG rings/text/spokes to `o-arc` curved text, segmented arcs, vectors, satellites, and capsules from the local Orbit docs reference.
+- 2026-05-11: Added a stronger Orbit-package visual pass to `/orbit-test/` with larger radial composition, layered Orbit arcs, tick satellites, a connector beam, and a themed HUD command button.
+- 2026-05-11: Cleaned up `/orbit-test/` visual composition by removing inherited shell styling from the wrapper, tightening the intro copy, scaling the Orbit wheel/readout balance, and quieting the radial accents.
+- 2026-05-11: Fixed the `/orbit-test/` prototype by renaming local classes that accidentally matched Orbit's broad `[class*=orbit-]` selectors, stopping the package from treating wrapper elements as radial orbits.
+- 2026-05-11: Reworked `/orbit-test/` from the raw Orbit pie-menu reference into a basic Mercnet navigation prototype with four selectable arc controls, satellite labels, active wedge feedback, and a linked readout panel.
 - 2026-05-09: Fixed rules/contracts index grid flash by scoping the index-list opacity override to revealed lists instead of forcing them visible before boot animations attach.
 - 2026-05-09: Added a first-paint boot preparation state so animated page content starts transparent before JavaScript attaches boot attributes, preventing the brief pre-animation flash.
 - 2026-05-09: Reserved measured text dimensions during typewriter boot animations so content remains invisible-but-present and avoids layout jumping while it types in.

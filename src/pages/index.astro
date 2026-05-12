@@ -102,7 +102,11 @@ const primaryLinks = [
   title="Infinity: Mercenaries"
   description="A narrative mercenary campaign framework for Infinity N5."
 >
-  <section class="landing-console" id="campaign" aria-label="Infinity Mercenaries entry console">
+  <section
+    class="landing-console"
+    id="campaign"
+    aria-label="Infinity Mercenaries entry console"
+  >
     <div class="landing-console__nebula" aria-hidden="true"></div>
     <div class="landing-console__orbital" aria-hidden="true">
       <span></span>
@@ -128,147 +132,131 @@ const primaryLinks = [
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
-            <linearGradient id="landing-wordmark-fill" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#f7ffff" />
-              <stop offset="48%" stop-color="#d6ffff" />
-              <stop offset="100%" stop-color="#8ff8ff" />
+            <linearGradient
+              id="landing-wordmark-fill"
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="1"
+            >
+              <stop offset="0%" stop-color="#f7ffff"></stop>
+              <stop offset="48%" stop-color="#d6ffff"></stop>
+              <stop offset="100%" stop-color="#8ff8ff"></stop>
             </linearGradient>
-            <linearGradient id="landing-wordmark-scan" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#00f0ff" stop-opacity="0" />
-              <stop offset="48%" stop-color="#00f0ff" stop-opacity="0.65" />
-              <stop offset="100%" stop-color="#d6ff3f" stop-opacity="0" />
+            <linearGradient
+              id="landing-wordmark-scan"
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="0"
+            >
+              <stop offset="0%" stop-color="#00f0ff" stop-opacity="0"></stop>
+              <stop offset="48%" stop-color="#00f0ff" stop-opacity="0.65"
+              ></stop>
+              <stop offset="100%" stop-color="#d6ff3f" stop-opacity="0"></stop>
             </linearGradient>
-            <filter id="landing-wordmark-glow" x="-10%" y="-30%" width="120%" height="160%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="softGlow" />
+            <filter
+              id="landing-wordmark-glow"
+              x="-10%"
+              y="-30%"
+              width="120%"
+              height="160%"
+            >
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="3.5"
+                result="softGlow"></feGaussianBlur>
               <feColorMatrix
                 in="softGlow"
                 type="matrix"
                 values="0 0 0 0 0  0 0 0 0 0.95  0 0 0 0 1  0 0 0 0.9 0"
-                result="cyanGlow"
-              />
+                result="cyanGlow"></feColorMatrix>
               <feMerge>
-                <feMergeNode in="cyanGlow" />
-                <feMergeNode in="SourceGraphic" />
+                <feMergeNode in="cyanGlow"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
               </feMerge>
             </filter>
-            <pattern id="landing-wordmark-lines" width="1" height="12" patternUnits="userSpaceOnUse">
-              <rect width="1" height="1" y="0" fill="#00f0ff" opacity="0.32" />
+            <pattern
+              id="landing-wordmark-lines"
+              width="1"
+              height="12"
+              patternUnits="userSpaceOnUse"
+            >
+              <rect width="1" height="1" y="0" fill="#00f0ff" opacity="0.32"
+              ></rect>
             </pattern>
           </defs>
           <g filter="url(#landing-wordmark-glow)">
-            <text class="landing-console__wordmark-shadow" x="560" y="92" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-shadow"
+              x="560"
+              y="92"
+              text-anchor="middle"
+            >
               INFINITY:
             </text>
-            <text class="landing-console__wordmark-shadow" x="560" y="205" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-shadow"
+              x="560"
+              y="205"
+              text-anchor="middle"
+            >
               MERCENARIES
             </text>
-            <text class="landing-console__wordmark-main" x="560" y="88" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-main"
+              x="560"
+              y="88"
+              text-anchor="middle"
+            >
               INFINITY:
             </text>
-            <text class="landing-console__wordmark-main" x="560" y="201" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-main"
+              x="560"
+              y="201"
+              text-anchor="middle"
+            >
               MERCENARIES
             </text>
-            <text class="landing-console__wordmark-line" x="560" y="88" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-line"
+              x="560"
+              y="88"
+              text-anchor="middle"
+            >
               INFINITY:
             </text>
-            <text class="landing-console__wordmark-line" x="560" y="201" text-anchor="middle">
+            <text
+              class="landing-console__wordmark-line"
+              x="560"
+              y="201"
+              text-anchor="middle"
+            >
               MERCENARIES
             </text>
           </g>
-          <path class="landing-console__wordmark-rule" d="M118 118 H440 M680 118 H1002" />
-          <path class="landing-console__wordmark-scan" d="M145 229 H975" />
+          <path
+            class="landing-console__wordmark-rule"
+            d="M118 118 H440 M680 118 H1002"></path>
+          <path class="landing-console__wordmark-scan" d="M145 229 H975"></path>
         </svg>
       </h1>
       <p class="landing-console__tagline">
-        Persistent companies. Dangerous contracts. Consequences that survive the mission.
+        Persistent companies. Dangerous contracts. Consequences that survive the
+        mission.
       </p>
 
       <nav class="landing-console__links" aria-label="Primary sections">
         {
           primaryLinks.map((link) => (
-            <a href={link.href}>
+            <a href={link.href} class="button secondary landing-console__link">
               <span>{link.label}</span>
               <strong>{link.title}</strong>
             </a>
           ))
         }
       </nav>
-    </div>
-
-    <div class="landing-console__status" aria-hidden="true">
-      <span>v.n5-campaign</span>
-      <span>Workspace synchronized</span>
-    </div>
-  </section>
-
-  <section class="landing-dock" id="resources" aria-labelledby="landing-resources">
-    <div class="landing-dock__intro">
-      <p class="eyebrow">Resource hub</p>
-      <h2 id="landing-resources">Open channels.</h2>
-      <p>
-        The campaign framework is moving into native pages. These links keep the
-        active league, original documents, and external tools close at hand.
-      </p>
-    </div>
-
-    <div class="landing-dock__grid">
-      <article class="landing-dock__group holo-frame">
-        <p class="eyebrow">Core</p>
-        <div class="landing-dock__links">
-          <a href="/rules/">Native Rules</a>
-          <a href="/contracts/">Native Contracts</a>
-          <a href="#tutorial">Tutorial Video</a>
-          <a
-            href="https://discord.gg/QJyzrQZGvG"
-            target="_blank"
-            rel="noreferrer">Discord</a
-          >
-        </div>
-      </article>
-
-      <article class="landing-dock__group holo-frame">
-        <p class="eyebrow">League</p>
-        <div class="landing-dock__links">
-          {
-            leagueLinks.map((link) => (
-              <a href={link.href} target="_blank" rel="noreferrer">
-                {link.title}
-              </a>
-            ))
-          }
-        </div>
-      </article>
-
-      <article class="landing-dock__group holo-frame" id="tutorial">
-        <p class="eyebrow">Primer</p>
-        <div class="landing-dock__video">
-          <iframe
-            src="https://www.youtube.com/embed/XmBbcz1Fp0Y"
-            title="Infinity: Mercenaries tutorial"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
-        </div>
-      </article>
-
-      <article class="landing-dock__group landing-dock__group--wide holo-frame">
-        <p class="eyebrow">Archives</p>
-        <div class="landing-dock__links landing-dock__links--columns">
-          {
-            missionLinks.slice(0, 8).map((link) => (
-              <a href={link.href} target="_blank" rel="noreferrer">
-                {link.title}
-              </a>
-            ))
-          }
-          {
-            toolLinks.map((link) => (
-              <a href={link.href} target="_blank" rel="noreferrer">
-                {link.title}
-              </a>
-            ))
-          }
-        </div>
-      </article>
     </div>
   </section>
 </BaseLayout>
