@@ -1,0 +1,49 @@
+---
+title: "Orbit.resize()"
+# banner: 
+#  content: |
+#    Orbit.resize() has been improved in latest release!
+---
+
+import ZumerPlay from '/src/components/ZumerCode.astro';
+
+
+Orbit provides a Orbit JS class with `resize()` method to allow `.gravity-spot` to adapt its size to a parent element. Check the example below.
+
+
+export const four = `
+<div class="wrapper">
+  <div class="bigbang">
+    <div class="gravity-spot">
+      <div class="orbit-4">
+        <div class="satellite"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+export const fourCSS = `
+.wrapper {
+  border: 1px dotted var(--o-purple);
+  height: 200px;
+  width: 280px;
+  margin: 5px;
+  resize: both;
+  overflow: auto;
+}
+.orbit, [class*='orbit-']{
+  border-color: var(--o-cyan)
+}
+.satellite {
+  border: none;
+  background-color: var(--o-cyan)
+}
+`;
+export const fourJS = `
+Orbit.resize('.wrapper')
+`;
+
+<ZumerPlay name={'four'}   htmlCode={four} cssCode={fourCSS} jsCode={fourJS}  theme={'cyan-theme'} height={'300px'} />
+
+
+

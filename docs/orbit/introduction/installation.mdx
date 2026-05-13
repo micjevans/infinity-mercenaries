@@ -1,0 +1,137 @@
+---
+title: Installation & quick start
+
+---
+import { PackageManagers } from 'starlight-package-managers'
+
+import ZumerPlay from '/src/components/ZumerCode.astro';
+
+Get ready to explore the innovative approach of radial design with Orbit! This guide will help you quickly get started and install everything you need.
+
+## Installation
+
+Orbit comes with just two files: `orbit.css` (or `orbit.min.css`), and `orbit.js` (or `orbit.min.js`).
+
+### Getting the Orbit files:
+
+You have three ways to get **Orbit** files: 
+
+#### 1. Download the Orbit files
+
+- Get the **Orbit CSS file**: [orbit.css](https://unpkg.com/@zumer/orbit@latest/dist/orbit.css) or [orbit.min.css (minified)](https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.css) 
+
+- Get the **Orbit JS file**: [orbit.js](https://unpkg.com/@zumer/orbit@latest/dist/orbit.js) or [orbit.min.js (minified)](https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.js) 
+
+
+#### 2. Use Orbit via CDN (content delivery network)
+
+- For latest version of **Orbit CSS file**: 
+
+  Uncompressed version: [https://unpkg.com/@zumer/orbit@latest/dist/orbit.css](https://unpkg.com/@zumer/orbit@latest/dist/orbit.css)
+
+  Minified version: [https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.css](https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.css)
+
+- For latest version of **Orbit JS file**: 
+
+  Uncompressed version: [https://unpkg.com/@zumer/orbit@latest/dist/orbit.js](https://unpkg.com/@zumer/orbit@latest/dist/orbit.js)
+
+  Minified version: [https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.js](https://unpkg.com/@zumer/orbit@latest/dist/orbit.min.js)
+
+
+#### 3. Install Orbit via a Package Manager
+
+You can also install Orbit using **npm**, **yarn** or **pnpm**:
+
+ <PackageManagers pkg="@zumer/orbit" />
+
+### Setting up Orbit in your project:
+
+After install Orbit, follow this simple steps to get Orbit working.
+
+#### Link Orbit files or CDN in your HTML file:
+
+If you have downloaded them just use `<link> tag ` for the CSS file, and `<script> tag` for the JS file within the `<head>` section:
+
+In case you have downloaded the files:
+
+```html
+<head>
+  <link rel="stylesheet" href="path/to/orbit.css">
+  <script src="path/to/orbit.js"></script>
+</head>
+```
+
+In case you are using CDN:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/@zumer/orbit@latest/dist/orbit.css">
+  <script src="https://unpkg.com/@zumer/orbit@latest/dist/orbit.js"></script>
+</head>
+```
+
+:::tip 
+**Tip for CSS file**: You can use `@import` CSS rule in your `<style> tag` to import the **CSS file**:
+
+Downloaded file:
+```css
+@import url('path/to/orbit.css');
+```
+Or via CDN:
+```css
+@import url('https://unpkg.com/@zumer/orbit@latest/dist/orbit.css');
+```
+:::
+
+## 🚀 Try Orbit now!
+
+Just add `.bigbang` CSS class in a HTML element like `<div>`. Then use `.gravity-spot` class, and within it, add another element with `.orbit` class. Finally, inside `.orbit` element, add radial elements, such us: `.satellite`, `.vector`, `.side`, or `<o-arc>`, `<o-progress>` web components . 
+
+
+### Playground starter example
+
+
+export const bareboneHTML = 
+`<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/@zumer/orbit@latest/dist/orbit.css" />
+    <script crossorigin src="https://unpkg.com/@zumer/orbit@latest/dist/orbit.js"></script>
+    <title>Orbit quick start</title>
+    <style>
+    .satellite {
+      background: var(--o-cyan-light);
+      border: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="bigbang">
+      <div class="gravity-spot">
+        <div class="orbit">
+          <div class="satellite grow-1x at-center"></div>
+        </div>
+        <div class="orbit-2 range-180 from-180">
+          <o-arc shape="circle" class="shrink-50"></o-arc>
+        </div>
+        <div class="orbit-3 range-270 ">
+          <o-arc shape="circle" class="shrink-50"></o-arc>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>`
+
+<ZumerPlay name={'barebone'} htmlCode={bareboneHTML} height={'300px'} theme={'theme-cyan'} frameTemplate='barebone'> </ZumerPlay>
+
+### Orbit and JS frameworks integrations
+
+Orbit can be used in any framework that accepts web-components. Check our [specific section](/orbit-docs/integrations/react) that covers how to use **Orbit** with **Vue**, **React**, and **Svelte**. 
+
+## Next steps
+
+Congratulations! You have successfully integrated Orbit into your project. Now, you can explore more advanced features and customization options. Check out the full documentation for detailed guides and examples. 
+
+Happy coding!
+
