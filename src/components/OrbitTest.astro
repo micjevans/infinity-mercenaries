@@ -1,0 +1,479 @@
+---
+import type { OrbitMeta } from "../lib/orbitTest";
+
+type Props = {
+  orbitRingMeta: OrbitMeta[];
+  gravitySpotSize: number;
+};
+
+const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
+---
+
+<div class="bigbang" style={`width: min(100%, ${gravitySpotSize}px);`}>
+  <div
+    class="gravity-spot"
+    style={`width: ${gravitySpotSize}px; height: ${gravitySpotSize}px;`}
+  >
+    <div class="orbit-0">
+      <div class="satellite at-center">M</div>
+    </div>
+
+    {
+      orbitRingMeta.map((orbit) => (
+        <div
+          data-menu-group={orbit.menuGroup || undefined}
+          class={`orbit-${orbit.orbitNumber} ${orbit.isFiller ? `${orbit.rangeClass} filler` : "range-360"} ${orbit.rotationDirection === "reverse" ? "reverse" : ""} labels${orbit.isTopMenu || orbit.isTitleOrbit ? "" : orbit.menuGroup === "contracts" ? " contracts" : ""} ${orbit.isPairedMenu ? "paired-menu" : ""} ${orbit.isTitleOrbit ? "title-orbit" : ""}`}
+          style={`--o-size-ratio: ${orbit.sizeRatio}; --o-force-ratio: 1; --o-fixed-font-size: ${orbit.fontSize}rem; --o-from: ${orbit.from}; --o-gap: ${orbit.gap};`}
+        >
+          {orbit.contracts.map((label, index) => (
+            <o-arc
+              class={
+                orbit.isFiller
+                  ? `filler-arc ${typeof label === "object" && label.angleClass ? label.angleClass : orbit.angleClass} ${typeof label === "object" && label.sizeRatioClass ? label.sizeRatioClass : ""} ${typeof label === "object" && label.gapClass ? label.gapClass : "gap-10"}`
+                  : orbit.isTitleOrbit
+                    ? "title-arc"
+                    : `button-arc control-${(index % 5) + 1} gap-${orbit.isTopMenu ? 12 : 10}`
+              }
+              text-anchor={orbit.isTitleOrbit ? "start" : "middle"}
+              style="dominant-baseline: middle;"
+            >
+              {orbit.isFiller ? null : label}
+            </o-arc>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const getNumericDegrees = (value) => parseFloat(value) || 0;
+
+  const normalizeAngle = (value) => ((value % 360) + 360) % 360;
+
+  const shortestAngleDelta = (from, to) => {
+    const delta = to - from;
+    return ((delta + 180) % 360) - 180;
+  };
+
+  function updateFlipForOrbit(orbitContainer) {
+    if (!orbitContainer) return;
+
+    const orbitFrom = getNumericDegrees(
+      getComputedStyle(orbitContainer).getPropertyValue("--o-from"),
+    );
+
+    let stackAngle = 0;
+    const arcs = Array.from(orbitContainer.querySelectorAll("o-arc"));
+    arcs.forEach((arc) => {
+      if (arc.classList.contains("title-arc")) {
+        arc.removeAttribute("flip");
+        return;
+      }
+
+      const rawAngle = getComputedStyle(arc).getPropertyValue("--o-angle");
+      const arcAngle = arc.calcularExpresionCSS
+        ? arc.calcularExpresionCSS(rawAngle)
+        : parseFloat(rawAngle) || 0;
+
+      const centerAngle = normalizeAngle(orbitFrom + stackAngle + arcAngle / 2);
+      const isBottomHalf = centerAngle >= 90 && centerAngle <= 270;
+
+      if (isBottomHalf) {
+        arc.setAttribute("flip", "");
+      } else {
+        arc.removeAttribute("flip");
+      }
+
+      stackAngle += arcAngle;
+    });
+  }
+
+  function isArcHitByPoint(arc, x, y) {
+    const svg = arc.shadowRoot?.querySelector("svg");
+    const shape = arc.shadowRoot?.querySelector("#orbitShape");
+    if (!svg || !shape || !svg.getScreenCTM) return false;
+
+    const screenCTM = svg.getScreenCTM();
+    if (!screenCTM) return false;
+
+    const point = svg.createSVGPoint();
+    if (!point) return false;
+    point.x = x;
+    point.y = y;
+    const localPoint = point.matrixTransform(screenCTM.inverse());
+    return shape.isPointInFill(localPoint) || shape.isPointInStroke(localPoint);
+  }
+
+  function findHitArc(x, y) {
+    const arcs = Array.from(document.querySelectorAll("o-arc.button-arc"));
+    let hitArc = null;
+    let hitOrbitNumber = -Infinity;
+
+    arcs.forEach((arc) => {
+      if (!isArcHitByPoint(arc, x, y)) return;
+
+      const orbit = arc.closest(".range-360.labels");
+      if (!orbit) return;
+      const orbitNumber = parseFloat(
+        getComputedStyle(orbit).getPropertyValue("--o-orbit-number") || "0",
+      );
+
+      if (orbitNumber >= hitOrbitNumber) {
+        hitOrbitNumber = orbitNumber;
+        hitArc = arc;
+      }
+    });
+
+    return hitArc;
+  }
+
+  function applyOrbitDelta(orbitContainer, delta) {
+    const currentFrom = normalizeAngle(
+      getNumericDegrees(
+        getComputedStyle(orbitContainer).getPropertyValue("--o-from"),
+      ),
+    );
+    const nextFrom = normalizeAngle(currentFrom + delta);
+    orbitContainer.style.setProperty("--o-from", `${nextFrom}deg`);
+    return nextFrom;
+  }
+
+  function calculateOrbitRotationDelta(orbitContainer, arc) {
+    const orbitStyle = getComputedStyle(orbitContainer);
+    const currentFrom = normalizeAngle(
+      getNumericDegrees(orbitStyle.getPropertyValue("--o-from")),
+    );
+
+    let stackAngle = 0;
+    const arcs = Array.from(orbitContainer.querySelectorAll("o-arc"));
+    for (const currentArc of arcs) {
+      if (currentArc === arc) break;
+      const rawAngle =
+        getComputedStyle(currentArc).getPropertyValue("--o-angle");
+      const arcAngle = currentArc.calcularExpresionCSS
+        ? currentArc.calcularExpresionCSS(rawAngle)
+        : parseFloat(rawAngle) || 0;
+      stackAngle += arcAngle;
+    }
+
+    const rawAngle = getComputedStyle(arc).getPropertyValue("--o-angle");
+    const arcAngle = arc.calcularExpresionCSS
+      ? arc.calcularExpresionCSS(rawAngle)
+      : parseFloat(rawAngle) || 0;
+
+    const arcCenter = normalizeAngle(currentFrom + stackAngle + arcAngle / 2);
+    const delta = shortestAngleDelta(arcCenter, 180);
+    const nextFrom = normalizeAngle(currentFrom + delta);
+
+    return {
+      delta,
+      orbitNumber: parseFloat(
+        orbitStyle.getPropertyValue("--o-orbit-number") || "0",
+      ),
+    };
+  }
+
+  function rotateOrbitGroupToArc(orbitContainer, arc) {
+    const { delta } = calculateOrbitRotationDelta(orbitContainer, arc);
+    const menuGroup = orbitContainer.dataset.menuGroup;
+    const orbitContainers = menuGroup
+      ? Array.from(
+          document.querySelectorAll(`[data-menu-group="${menuGroup}"]`),
+        )
+      : [orbitContainer];
+
+    orbitContainers.forEach((orbit) => applyOrbitDelta(orbit, delta));
+    requestAnimationFrame(() => {
+      orbitContainers.forEach(updateFlipForOrbit);
+      setTimeout(() => orbitContainers.forEach(updateFlipForOrbit), 420);
+    });
+  }
+
+  function clearArcHover() {
+    const arcs = Array.from(
+      document.querySelectorAll("o-arc.button-arc.hovered"),
+    );
+    arcs.forEach((arc) => arc.classList.remove("hovered"));
+  }
+
+  function updateArcHover(x, y) {
+    clearArcHover();
+    const hitArc = findHitArc(x, y);
+    if (hitArc) hitArc.classList.add("hovered");
+  }
+
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      Array.from(document.querySelectorAll(".range-360.labels")).forEach(
+        (orbit) => {
+          updateFlipForOrbit(orbit);
+        },
+      );
+    });
+
+    const gravitySpot = document.querySelector(".gravity-spot");
+    if (!gravitySpot) return;
+
+    gravitySpot.addEventListener("pointermove", (event) => {
+      const pointerEvent = event;
+      updateArcHover(pointerEvent.clientX, pointerEvent.clientY);
+    });
+
+    gravitySpot.addEventListener("pointerleave", clearArcHover);
+
+    gravitySpot.addEventListener("click", (event) => {
+      const mouseEvent = event;
+      const hitArc = findHitArc(mouseEvent.clientX, mouseEvent.clientY);
+      const orbit = hitArc?.closest(".range-360.labels");
+      if (orbit && hitArc) rotateOrbitGroupToArc(orbit, hitArc);
+    });
+
+    Array.from(document.querySelectorAll(".filler")).forEach((orbit) => {
+      const moveFiller = () => {
+        const delay = Math.random() * 2.5 + 0.5;
+        orbit.style.setProperty(
+          "--filler-duration",
+          `${Math.random() * 2.5 + 0.5}s`,
+        );
+        orbit.style.transform = `rotate(${Math.random() * 360}deg)`;
+        window.setTimeout(moveFiller, delay * 1000);
+      };
+      moveFiller();
+    });
+
+    Array.from(document.querySelectorAll(".title-orbit")).forEach((orbit) => {
+      let lastTimestamp = null;
+      let currentFrom = normalizeAngle(
+        getNumericDegrees(getComputedStyle(orbit).getPropertyValue("--o-from")),
+      );
+      const speedDegreesPerSecond = 4;
+
+      const animateTitleOrbit = (timestamp) => {
+        if (lastTimestamp === null) lastTimestamp = timestamp;
+        const delta = (timestamp - lastTimestamp) / 1000;
+        lastTimestamp = timestamp;
+        currentFrom = normalizeAngle(
+          currentFrom + delta * speedDegreesPerSecond,
+        );
+        orbit.style.setProperty("--o-from", `${currentFrom}deg`);
+        updateFlipForOrbit(orbit);
+        requestAnimationFrame(animateTitleOrbit);
+      };
+
+      requestAnimationFrame(animateTitleOrbit);
+    });
+  });
+</script>
+
+<style>
+  :global(:root) {
+    color-scheme: dark;
+    background: #090c0b;
+  }
+
+  :global(body) {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(71, 221, 228, 0.12),
+        transparent 20%
+      ),
+      radial-gradient(
+        circle at 80% 10%,
+        rgba(56, 183, 164, 0.08),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 55% 50%,
+        rgba(38, 232, 255, 0.04),
+        transparent 28%
+      ),
+      #090c0b;
+    color: #d8f8ff;
+    font-family: var(--font-display, Inter, system-ui, sans-serif);
+  }
+
+  .bigbang {
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .gravity-spot {
+    position: relative;
+    width: min(100%, 560px);
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(14, 45, 59, 0.94),
+        rgba(4, 9, 14, 0.98)
+      ),
+      radial-gradient(
+        circle at 25% 20%,
+        rgba(0, 248, 255, 0.12),
+        transparent 26%
+      ),
+      radial-gradient(
+        circle at 80% 10%,
+        rgba(51, 255, 241, 0.08),
+        transparent 22%
+      );
+    border: 1px solid rgba(71, 221, 228, 0.16);
+    box-shadow:
+      inset 0 0 120px rgba(0, 255, 255, 0.08),
+      0 0 60px rgba(58, 231, 255, 0.08);
+  }
+
+  .gravity-spot::before,
+  .gravity-spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .gravity-spot::before {
+    background:
+      radial-gradient(
+        circle at 50% 45%,
+        rgba(0, 255, 255, 0.12),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 35% 40%,
+        rgba(155, 255, 112, 0.08),
+        transparent 30%
+      );
+  }
+
+  .gravity-spot::after {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.02)
+    );
+    mix-blend-mode: screen;
+  }
+
+  .satellite.at-center {
+    width: 5.6rem;
+    height: 5.6rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 25% 20%,
+      rgba(71, 221, 228, 0.16),
+      rgba(8, 18, 26, 0.92)
+    );
+    color: #9efff1;
+    text-shadow: 0 0 0.45rem rgba(158, 255, 241, 0.55);
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px rgba(71, 221, 228, 0.16);
+  }
+
+  .satellite.at-center img {
+    width: 60%;
+    height: auto;
+    display: block;
+  }
+
+  o-arc {
+    --o-fill: rgba(35, 169, 183, 0.14);
+    --o-stroke: rgba(71, 221, 228, 0.72);
+    --o-stroke-width: 0.6;
+    color: #9efff1;
+    font-family: "Orbitron", "Exo 2", ui-sans-serif, system-ui, sans-serif;
+    text-shadow: 0 0 0.35rem rgba(158, 255, 241, 0.32);
+    cursor: pointer;
+    pointer-events: none;
+    transition:
+      transform 420ms ease,
+      filter 180ms ease,
+      --o-fill 180ms ease,
+      --o-stroke 180ms ease;
+    filter: drop-shadow(0 0 18px rgba(71, 221, 228, 0.14));
+  }
+
+  .filler {
+    transform-origin: center center;
+    transition: transform var(--filler-duration, 1s) ease;
+    pointer-events: none;
+  }
+
+  .filler-arc {
+    --o-fill: rgba(var(--o-yellow-light-rgb, 214, 255, 63), 0.12);
+    --o-stroke: rgba(var(--o-yellow-rgb, 214, 255, 63), 0.95);
+    --o-stroke-width: 0.4;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 14px rgba(214, 255, 63, 0.35))
+      drop-shadow(0 0 24px rgba(214, 255, 63, 0.18));
+  }
+
+  .filler-arc.thin {
+    --o-stroke-width: 0.28;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px rgba(214, 255, 63, 0.25))
+      drop-shadow(0 0 16px rgba(214, 255, 63, 0.16));
+  }
+
+  .filler-arc.medium {
+    --o-stroke-width: 0.45;
+    opacity: 0.82;
+    filter: drop-shadow(0 0 12px rgba(214, 255, 63, 0.3))
+      drop-shadow(0 0 20px rgba(214, 255, 63, 0.18));
+  }
+
+  .filler-arc.thick {
+    --o-stroke-width: 0.7;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 18px rgba(214, 255, 63, 0.4))
+      drop-shadow(0 0 26px rgba(214, 255, 63, 0.2));
+  }
+
+  o-arc {
+    stroke-linecap: round;
+    mix-blend-mode: screen;
+  }
+
+  o-arc.button-arc.hovered {
+    --o-fill: rgba(71, 221, 228, 0.24);
+    --o-stroke: rgba(114, 255, 255, 0.9);
+    filter: drop-shadow(0 0 28px rgba(71, 221, 228, 0.32));
+  }
+
+  .contracts {
+    z-index: var(--o-orbit-number);
+    filter: drop-shadow(0 0 14px rgba(67, 215, 252, 0.12));
+  }
+
+  .orbit-0,
+  .orbit-4,
+  .orbit-5,
+  .orbit-8,
+  .orbit-12 {
+    filter: drop-shadow(0 0 16px rgba(43, 206, 255, 0.1));
+  }
+
+  .paired-menu o-arc.button-arc {
+    --o-fill: rgba(214, 255, 63, 0.08);
+    --o-stroke: rgba(214, 255, 63, 0.95);
+    filter: drop-shadow(0 0 14px rgba(214, 255, 63, 0.28));
+  }
+
+  .title-arc {
+    --o-fill: transparent;
+    --o-stroke: transparent;
+    color: rgba(214, 255, 63, 0.95);
+    text-shadow: 0 0 0.2rem rgba(214, 255, 63, 0.55);
+  }
+</style>

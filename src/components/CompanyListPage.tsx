@@ -268,17 +268,11 @@ export default function CompanyListPage() {
                   )}
                 </div>
               ) : (
-                <a
-                  href={
-                    company.shareLink ||
-                    `/view?id=${encodeURIComponent(company.fileId)}`
-                  }
-                >
+                <a href={`/view?id=${encodeURIComponent(company.fileId)}`}>
                   <span className={styles.panelKicker}>Drive-backed</span>
                   <h3>{company.name}</h3>
                   <p>
-                    Shared company file. Updated {formatDate(company.updatedAt)}
-                    .
+                    Shared company file. Updated {formatDate(company.updatedAt)}.
                   </p>
                   {company.eventName && (
                     <p>Linked event: {company.eventName}</p>
@@ -306,10 +300,7 @@ export default function CompanyListPage() {
                 <>
                   <a
                     className={styles.commandButton}
-                    href={
-                      company.shareLink ||
-                      `/view?id=${encodeURIComponent(company.fileId)}`
-                    }
+                    href={`/view?id=${encodeURIComponent(company.fileId)}`}
                   >
                     Open
                   </a>

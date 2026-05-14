@@ -1,4 +1,3 @@
-import styles from "./CompanyTypeDetail.module.css";
 /**
  * React equivalent of the CompanyTypeCard + CompanyTypeSection Astro components.
  * Uses the exact same CSS classes so it renders identically to the rules page.
@@ -16,6 +15,10 @@ export const ICON_PATHS: Record<string, string> = {
   proxy: `<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>`,
 };
 
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function TypeSection({
   title,
   tone = "notes",
@@ -26,17 +29,11 @@ function TypeSection({
   children: React.ReactNode;
 }) {
   return (
-    <section
-      className={`${styles.companyTypeSection} ${styles[`tone${capitalize(tone)}`]}`}
-    >
+    <section className={`company-type-section tone-${tone}`}>
       <h3>{title}</h3>
       <div>{children}</div>
     </section>
   );
-
-  function capitalize(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 }
 
 export type CompanyTypeVariant =
@@ -55,7 +52,7 @@ export function CompanyTypeDetail({
   const iconPath = ICON_PATHS[variant] ?? "";
 
   const icon = (
-    <span className={styles.companyTypeIcon} aria-hidden="true">
+    <span className="company-type-icon" aria-hidden="true">
       <svg
         viewBox="0 0 24 24"
         aria-hidden="true"
@@ -65,9 +62,7 @@ export function CompanyTypeDetail({
   );
 
   return (
-    <section
-      className={`${styles.companyTypeCard} ${styles[`variant${capitalize(variant)}`]}`}
-    >
+    <section className={`company-type-card variant-${variant}`}>
       {icon}
       {variant === "standard" && <StandardDetail />}
       {variant === "cohesive" && <CohesiveDetail />}
@@ -83,7 +78,7 @@ function StandardDetail() {
   return (
     <>
       <h2>Standard Company</h2>
-      <p className={styles.companyTypeTagline}>
+      <p className="company-type-tagline">
         The flexible all-rounder — maximum faction freedom with no tradeoffs.
       </p>
       <TypeSection title="Setup" tone="setup">
@@ -106,7 +101,7 @@ function CohesiveDetail() {
   return (
     <>
       <h2>Cohesive Company</h2>
-      <p className={styles.companyTypeTagline}>
+      <p className="company-type-tagline">
         An elite synchronized unit built around a single fireteam's deep
         synergy.
       </p>
@@ -157,7 +152,7 @@ function LeaderDetail() {
   return (
     <>
       <h2>Inspiring Leader</h2>
-      <p className={styles.companyTypeTagline}>
+      <p className="company-type-tagline">
         One exceptional Captain leading a crew of irregulars from across the
         Human Sphere.
       </p>
@@ -185,7 +180,7 @@ function AirborneDetail() {
   return (
     <>
       <h2>Airborne Company</h2>
-      <p className={styles.companyTypeTagline}>
+      <p className="company-type-tagline">
         A hard-insertion force built entirely around Airborne Deployment.
       </p>
       <TypeSection title="Setup" tone="setup">

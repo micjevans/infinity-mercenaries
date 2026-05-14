@@ -1213,7 +1213,7 @@ function SharedEventWorkspace({
               </div>
               <a
                 className="command-button command-button--small"
-                href={company.shareLink}
+                href={`/view?id=${encodeURIComponent(company.fileId)}`}
                 target="_blank"
                 rel="noreferrer"
               >

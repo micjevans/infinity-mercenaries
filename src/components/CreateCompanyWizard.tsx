@@ -22,7 +22,6 @@ import {
 } from "../lib/google-drive-adapter";
 import { AppIcon } from "./AppIcon";
 import { CaptainCreatorStep } from "./CaptainCreatorStep";
-import styles from "./CreateCompanyWizard.module.css";
 
 type WizardStep = "name" | "companyType" | "sectorials" | "captain" | "share";
 
@@ -98,7 +97,7 @@ function FactionSelector({
     <div className={`faction-selector${open ? " is-open" : ""}`} ref={ref}>
       <button
         type="button"
-        className={styles.factionSelectorTrigger}
+        className="faction-selector__trigger"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -110,7 +109,7 @@ function FactionSelector({
                 src={value.logo}
                 alt=""
                 aria-hidden="true"
-                className={styles.factionSelectorLogo}
+                className="faction-selector__logo"
               />
             )}
             <span>{value.name}</span>
@@ -126,11 +125,7 @@ function FactionSelector({
           <li
             role="option"
             aria-selected={!value}
-            className={
-              !value
-                ? `${styles.factionSelectorOption} ${styles.factionSelectorOptionIsSelected}`
-                : styles.factionSelectorOption
-            }
+            className={`faction-selector__option${!value ? " is-selected" : ""}`}
             onPointerDown={(e) => {
               e.preventDefault();
               onChange(null);
@@ -144,11 +139,7 @@ function FactionSelector({
               key={faction.id}
               role="option"
               aria-selected={value?.id === faction.id}
-              className={
-                value?.id === faction.id
-                  ? `${styles.factionSelectorOption} ${styles.factionSelectorOptionIsSelected}`
-                  : styles.factionSelectorOption
-              }
+              className={`faction-selector__option${value?.id === faction.id ? " is-selected" : ""}`}
               onPointerDown={(e) => {
                 e.preventDefault();
                 onChange(faction);
@@ -160,7 +151,7 @@ function FactionSelector({
                   src={faction.logo}
                   alt=""
                   aria-hidden="true"
-                  className={styles.factionSelectorLogo}
+                  className="faction-selector__logo"
                 />
               )}
               <span>{faction.name}</span>

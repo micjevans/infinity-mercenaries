@@ -603,6 +603,11 @@
   background:
     linear-gradient(135deg, rgba(56, 183, 164, 0.05), transparent 50%),
     rgba(20, 22, 18, 0.76);
+  overflow: visible !important;
+  clip-path: none !important;
+}
+.company-wizard__panel::after {
+  clip-path: none !important;
 }
 
 .company-wizard__panel h2 {
@@ -787,7 +792,7 @@
   top: calc(100% + 0.35rem);
   left: 0;
   right: 0;
-  z-index: 30;
+  z-index: 999;
   margin: 0;
   padding: 0.35rem;
   list-style: none;

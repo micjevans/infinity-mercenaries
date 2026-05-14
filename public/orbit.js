@@ -595,17 +595,11 @@
       --o-stroke-width: 1;
       --o-color: currentcolor;
     }
-    :host(:hover) {
-      --o-fill: var(--o-gray-light);
-      --o-stroke: var(--o-fill);
-      --o-stroke-width: 1;
-      --o-color: currentcolor;
-    }
     svg {
       width: 100%;
       height: 100%;
       overflow: visible;
-      pointer-events: none;
+      pointer-events: visiblePainted;
     }
     svg * {
       pointer-events: visiblePainted;
