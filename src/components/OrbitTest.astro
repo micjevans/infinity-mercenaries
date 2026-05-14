@@ -1,28 +1,61 @@
 ---
-import type { OrbitMeta } from "../lib/orbitTest";
+import { buildOrbitScene, type OrbitMenu } from "../lib/orbitTest";
 
 type Props = {
-  orbitRingMeta: OrbitMeta[];
-  gravitySpotSize: number;
+  menu: OrbitMenu;
 };
 
-const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
+const { menu } = Astro.props as Props;
+const collapsedScene = buildOrbitScene(menu, { includeSubmenu: false });
+const expandedScene = buildOrbitScene(menu, { includeSubmenu: true });
+const contractsSubmenuScene = buildOrbitScene(menu, {
+  includeSubmenu: true,
+  targetMenuGroup: "contracts",
+});
+const rulesSubmenuScene = buildOrbitScene(menu, {
+  includeSubmenu: true,
+  targetMenuGroup: "rules",
+});
+
+const collapsedOrbitRingMeta = collapsedScene.orbitRingMeta;
+const collapsedGravitySpotSize = collapsedScene.gravitySpotSize;
+const expandedGravitySpotSize = expandedScene.gravitySpotSize;
+const contractsGravitySpotSize = contractsSubmenuScene.gravitySpotSize;
+const rulesGravitySpotSize = rulesSubmenuScene.gravitySpotSize;
+
+// Extract submenu data for both templates
+const contractsSubmenuMeta = contractsSubmenuScene.orbitRingMeta.filter(
+  (orbit) => orbit.isSubmenu || orbit.isFiller,
+);
+const rulesSubmenuMeta = rulesSubmenuScene.orbitRingMeta.filter(
+  (orbit) => orbit.isSubmenu || orbit.isFiller,
+);
 ---
 
-<div class="bigbang" style={`width: min(100%, ${gravitySpotSize}px);`}>
+<div
+  class="bigbang"
+  style={`width: min(100%, ${collapsedGravitySpotSize}px);`}
+  data-collapsed-size={collapsedGravitySpotSize}
+  data-expanded-size={expandedGravitySpotSize}
+  data-contracts-size={contractsGravitySpotSize}
+  data-rules-size={rulesGravitySpotSize}
+>
   <div
     class="gravity-spot"
-    style={`width: ${gravitySpotSize}px; height: ${gravitySpotSize}px;`}
+    style={`width: ${collapsedGravitySpotSize}px; height: ${collapsedGravitySpotSize}px;`}
+    data-collapsed-size={collapsedGravitySpotSize}
+    data-expanded-size={expandedGravitySpotSize}
+    data-submenu-mounted="false"
   >
     <div class="orbit-0">
       <div class="satellite at-center">M</div>
     </div>
 
     {
-      orbitRingMeta.map((orbit) => (
+      collapsedOrbitRingMeta.map((orbit) => (
         <div
           data-menu-group={orbit.menuGroup || undefined}
-          class={`orbit-${orbit.orbitNumber} ${orbit.isFiller ? `${orbit.rangeClass} filler` : "range-360"} ${orbit.rotationDirection === "reverse" ? "reverse" : ""} labels${orbit.isTopMenu || orbit.isTitleOrbit ? "" : orbit.menuGroup === "contracts" ? " contracts" : ""} ${orbit.isPairedMenu ? "paired-menu" : ""} ${orbit.isTitleOrbit ? "title-orbit" : ""}`}
+          class={`orbit-${orbit.orbitNumber} ${orbit.isFiller ? `${orbit.rangeClass} filler` : "range-360"} ${orbit.rotationDirection === "reverse" ? "reverse" : ""} labels${orbit.isTopMenu || orbit.isTitleOrbit ? "" : orbit.menuGroup === "contracts" ? " contracts" : ""} ${orbit.isPairedMenu ? "paired-menu" : ""} ${orbit.isTitleOrbit ? "title-orbit" : ""} ${orbit.isSubmenu ? "submenu-orbit" : ""}`}
           style={`--o-size-ratio: ${orbit.sizeRatio}; --o-force-ratio: 1; --o-fixed-font-size: ${orbit.fontSize}rem; --o-from: ${orbit.from}; --o-gap: ${orbit.gap};`}
         >
           {orbit.contracts.map((label, index) => (
@@ -44,6 +77,64 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
       ))
     }
   </div>
+
+  <template id="submenu-rings-template-contracts">
+    {
+      contractsSubmenuMeta.map((orbit) => (
+        <div
+          data-submenu-ring="true"
+          data-menu-group={orbit.menuGroup || undefined}
+          class={`orbit-${orbit.orbitNumber} ${orbit.isFiller ? `${orbit.rangeClass} filler` : "range-360"} ${orbit.rotationDirection === "reverse" ? "reverse" : ""} labels${orbit.isTopMenu || orbit.isTitleOrbit ? "" : orbit.menuGroup === "contracts" ? " contracts" : ""} ${orbit.isPairedMenu ? "paired-menu" : ""} ${orbit.isTitleOrbit ? "title-orbit" : ""} ${orbit.isSubmenu ? "submenu-orbit" : ""}`}
+          style={`--o-size-ratio: ${orbit.sizeRatio}; --o-force-ratio: 1; --o-fixed-font-size: ${orbit.fontSize}rem; --o-from: ${orbit.from}; --o-gap: ${orbit.gap};`}
+        >
+          {orbit.contracts.map((label, index) => (
+            <o-arc
+              class={
+                orbit.isFiller
+                  ? `filler-arc ${typeof label === "object" && label.angleClass ? label.angleClass : orbit.angleClass} ${typeof label === "object" && label.sizeRatioClass ? label.sizeRatioClass : ""} ${typeof label === "object" && label.gapClass ? label.gapClass : "gap-10"}`
+                  : orbit.isTitleOrbit
+                    ? "title-arc"
+                    : `button-arc control-${(index % 5) + 1} gap-${orbit.isTopMenu ? 12 : 10}`
+              }
+              text-anchor={orbit.isTitleOrbit ? "start" : "middle"}
+              style="dominant-baseline: middle;"
+            >
+              {orbit.isFiller ? null : label}
+            </o-arc>
+          ))}
+        </div>
+      ))
+    }
+  </template>
+
+  <template id="submenu-rings-template-rules">
+    {
+      rulesSubmenuMeta.map((orbit) => (
+        <div
+          data-submenu-ring="true"
+          data-menu-group={orbit.menuGroup || undefined}
+          class={`orbit-${orbit.orbitNumber} ${orbit.isFiller ? `${orbit.rangeClass} filler` : "range-360"} ${orbit.rotationDirection === "reverse" ? "reverse" : ""} labels${orbit.isTopMenu || orbit.isTitleOrbit ? "" : orbit.menuGroup === "rules" ? " rules" : ""} ${orbit.isPairedMenu ? "paired-menu" : ""} ${orbit.isTitleOrbit ? "title-orbit" : ""} ${orbit.isSubmenu ? "submenu-orbit" : ""}`}
+          style={`--o-size-ratio: ${orbit.sizeRatio}; --o-force-ratio: 1; --o-fixed-font-size: ${orbit.fontSize}rem; --o-from: ${orbit.from}; --o-gap: ${orbit.gap};`}
+        >
+          {orbit.contracts.map((label, index) => (
+            <o-arc
+              class={
+                orbit.isFiller
+                  ? `filler-arc ${typeof label === "object" && label.angleClass ? label.angleClass : orbit.angleClass} ${typeof label === "object" && label.sizeRatioClass ? label.sizeRatioClass : ""} ${typeof label === "object" && label.gapClass ? label.gapClass : "gap-10"}`
+                  : orbit.isTitleOrbit
+                    ? "title-arc"
+                    : `button-arc control-${(index % 5) + 1} gap-${orbit.isTopMenu ? 12 : 10}`
+              }
+              text-anchor={orbit.isTitleOrbit ? "start" : "middle"}
+              style="dominant-baseline: middle;"
+            >
+              {orbit.isFiller ? null : label}
+            </o-arc>
+          ))}
+        </div>
+      ))
+    }
+  </template>
 </div>
 
 <script>
@@ -190,116 +281,242 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
     });
   }
 
+  // --- Performance: Hover throttling and caching ---
+  let lastHoveredArc = null;
+  let hoverRAF = null;
+  let pendingHover = null;
+
   function clearArcHover() {
-    const arcs = Array.from(
-      document.querySelectorAll("o-arc.button-arc.hovered"),
-    );
-    arcs.forEach((arc) => arc.classList.remove("hovered"));
+    if (lastHoveredArc) {
+      lastHoveredArc.classList.remove("hovered");
+      lastHoveredArc = null;
+    }
   }
 
-  function updateArcHover(x, y) {
-    clearArcHover();
-    const hitArc = findHitArc(x, y);
-    if (hitArc) hitArc.classList.add("hovered");
+  function updateArcHoverThrottled(x, y) {
+    // Only schedule one per frame
+    pendingHover = { x, y };
+    if (hoverRAF) return;
+    hoverRAF = requestAnimationFrame(() => {
+      hoverRAF = null;
+      const { x, y } = pendingHover;
+      pendingHover = null;
+      // Cache arcs for this frame
+      const arcs = Array.from(document.querySelectorAll("o-arc.button-arc"));
+      let hitArc = null;
+      let hitOrbitNumber = -Infinity;
+      for (const arc of arcs) {
+        if (!isArcHitByPoint(arc, x, y)) continue;
+        const orbit = arc.closest(".range-360.labels");
+        if (!orbit) continue;
+        const orbitNumber = parseFloat(
+          getComputedStyle(orbit).getPropertyValue("--o-orbit-number") || "0",
+        );
+        if (orbitNumber >= hitOrbitNumber) {
+          hitOrbitNumber = orbitNumber;
+          hitArc = arc;
+        }
+      }
+      if (hitArc !== lastHoveredArc) {
+        if (lastHoveredArc) lastHoveredArc.classList.remove("hovered");
+        if (hitArc) hitArc.classList.add("hovered");
+        lastHoveredArc = hitArc;
+      }
+    });
   }
 
   window.addEventListener("load", () => {
-    requestAnimationFrame(() => {
-      Array.from(document.querySelectorAll(".range-360.labels")).forEach(
-        (orbit) => {
-          updateFlipForOrbit(orbit);
-        },
-      );
-    });
-
+    const bigbang = document.querySelector(".bigbang");
     const gravitySpot = document.querySelector(".gravity-spot");
-    if (!gravitySpot) return;
+    // Multiple submenu templates for rules and contracts
+    const submenuTemplates = {
+      rules: document.querySelector("#submenu-rings-template-rules"),
+      contracts: document.querySelector("#submenu-rings-template-contracts"),
+    };
+    if (!bigbang || !gravitySpot) return;
 
-    gravitySpot.addEventListener("pointermove", (event) => {
-      const pointerEvent = event;
-      updateArcHover(pointerEvent.clientX, pointerEvent.clientY);
-    });
+    const collapsedSize = Number(gravitySpot.dataset.collapsedSize || "560");
+    const expandedSize = Number(gravitySpot.dataset.expandedSize || "560");
+    const contractsSize = Number(bigbang.dataset.contractsSize || expandedSize);
+    const rulesSize = Number(bigbang.dataset.rulesSize || expandedSize);
 
-    gravitySpot.addEventListener("pointerleave", clearArcHover);
+    const setGravitySize = (size) => {
+      const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+      const viewportHeight =
+        window.visualViewport?.height ?? window.innerHeight;
 
-    gravitySpot.addEventListener("click", (event) => {
-      const mouseEvent = event;
-      const hitArc = findHitArc(mouseEvent.clientX, mouseEvent.clientY);
-      const orbit = hitArc?.closest(".range-360.labels");
-      if (orbit && hitArc) rotateOrbitGroupToArc(orbit, hitArc);
-    });
-
-    Array.from(document.querySelectorAll(".filler")).forEach((orbit) => {
-      const moveFiller = () => {
-        const delay = Math.random() * 2.5 + 0.5;
-        orbit.style.setProperty(
-          "--filler-duration",
-          `${Math.random() * 2.5 + 0.5}s`,
-        );
-        orbit.style.transform = `rotate(${Math.random() * 360}deg)`;
-        window.setTimeout(moveFiller, delay * 1000);
-      };
-      moveFiller();
-    });
-
-    Array.from(document.querySelectorAll(".title-orbit")).forEach((orbit) => {
-      let lastTimestamp = null;
-      let currentFrom = normalizeAngle(
-        getNumericDegrees(getComputedStyle(orbit).getPropertyValue("--o-from")),
+      // Keep extra room for text overhang and mobile browser chrome.
+      const edgePadding = 0;
+      const labelOverhangFactor = 1;
+      const availableViewportSize = Math.min(
+        viewportWidth - edgePadding,
+        viewportHeight - edgePadding,
       );
-      const speedDegreesPerSecond = 4;
+      const availableSize = Math.max(200, availableViewportSize);
+      const requiredSize = size * labelOverhangFactor;
+      const scale = Math.min(1, availableSize / requiredSize);
+      const visualSize = Math.max(200, Math.floor(size * scale));
 
-      const animateTitleOrbit = (timestamp) => {
-        if (lastTimestamp === null) lastTimestamp = timestamp;
-        const delta = (timestamp - lastTimestamp) / 1000;
-        lastTimestamp = timestamp;
-        currentFrom = normalizeAngle(
-          currentFrom + delta * speedDegreesPerSecond,
+      bigbang.style.width = `${visualSize}px`;
+      bigbang.style.maxWidth = "100%";
+
+      gravitySpot.style.width = `${size}px`;
+      gravitySpot.style.height = `${size}px`;
+      gravitySpot.style.transform = `scale(${scale})`;
+    };
+
+    // --- Performance: Batch filler animation loop ---
+    let fillerAnimationFrame = null;
+    function startFillerAnimations() {
+      const fillers = Array.from(document.querySelectorAll(".filler"));
+      fillers.forEach((orbit) => {
+        if (orbit.dataset.fillerAnimated === "true") return;
+        orbit.dataset.fillerAnimated = "true";
+        orbit._fillerAngle = Math.random() * 360;
+        orbit._fillerSpeed = Math.random() * 0.12 + 0.04; // deg/ms
+      });
+      if (fillerAnimationFrame) cancelAnimationFrame(fillerAnimationFrame);
+      function animateFillers(ts) {
+        fillers.forEach((orbit) => {
+          if (!document.body.contains(orbit)) return;
+          orbit._fillerAngle =
+            (orbit._fillerAngle + orbit._fillerSpeed * 16) % 360;
+          orbit.style.transform = `rotate(${orbit._fillerAngle}deg)`;
+        });
+        fillerAnimationFrame = requestAnimationFrame(animateFillers);
+      }
+      fillerAnimationFrame = requestAnimationFrame(animateFillers);
+    }
+
+    // --- Performance: Batch title orbit animation loop ---
+    let titleOrbitAnimationFrame = null;
+    function startTitleOrbitAnimations() {
+      const titleOrbits = Array.from(document.querySelectorAll(".title-orbit"));
+      titleOrbits.forEach((orbit) => {
+        if (orbit.dataset.titleOrbitAnimated === "true") return;
+        orbit.dataset.titleOrbitAnimated = "true";
+        orbit._titleAngle = getNumericDegrees(
+          getComputedStyle(orbit).getPropertyValue("--o-from"),
         );
-        orbit.style.setProperty("--o-from", `${currentFrom}deg`);
-        updateFlipForOrbit(orbit);
-        requestAnimationFrame(animateTitleOrbit);
-      };
+      });
+      if (titleOrbitAnimationFrame)
+        cancelAnimationFrame(titleOrbitAnimationFrame);
+      let lastTimestamp = null;
+      function animateTitleOrbits(ts) {
+        if (lastTimestamp === null) lastTimestamp = ts;
+        const delta = (ts - lastTimestamp) / 1000;
+        lastTimestamp = ts;
+        titleOrbits.forEach((orbit) => {
+          if (!document.body.contains(orbit)) return;
+          orbit._titleAngle = normalizeAngle(orbit._titleAngle + delta * 4);
+          orbit.style.setProperty("--o-from", `${orbit._titleAngle}deg`);
+          updateFlipForOrbit(orbit);
+        });
+        titleOrbitAnimationFrame = requestAnimationFrame(animateTitleOrbits);
+      }
+      titleOrbitAnimationFrame = requestAnimationFrame(animateTitleOrbits);
+    }
 
-      requestAnimationFrame(animateTitleOrbit);
+    const refreshOrbitFlips = () => {
+      requestAnimationFrame(() => {
+        Array.from(document.querySelectorAll(".range-360.labels")).forEach(
+          (orbit) => {
+            updateFlipForOrbit(orbit);
+          },
+        );
+      });
+    };
+
+    let mountedSubmenuType = null;
+    const mountSubmenu = (type) => {
+      if (
+        gravitySpot.dataset.submenuMounted === "true" &&
+        mountedSubmenuType === type
+      )
+        return;
+      unmountSubmenu();
+      const template = submenuTemplates[type];
+      if (!template) return;
+      const fragment = template.content.cloneNode(true);
+      gravitySpot.appendChild(fragment);
+      gravitySpot.dataset.submenuMounted = "true";
+      mountedSubmenuType = type;
+      const sizeForType = type === "contracts" ? contractsSize : rulesSize;
+      setGravitySize(sizeForType);
+      refreshOrbitFlips();
+      startFillerAnimations();
+      startTitleOrbitAnimations();
+    };
+
+    const unmountSubmenu = () => {
+      if (gravitySpot.dataset.submenuMounted !== "true") return;
+      Array.from(
+        gravitySpot.querySelectorAll('[data-submenu-ring="true"]'),
+      ).forEach((ring) => ring.remove());
+      gravitySpot.dataset.submenuMounted = "false";
+      mountedSubmenuType = null;
+      setGravitySize(collapsedSize);
+      refreshOrbitFlips();
+      clearArcHover();
+    };
+
+    setGravitySize(collapsedSize);
+    refreshOrbitFlips();
+    startFillerAnimations();
+    startTitleOrbitAnimations();
+
+    window.addEventListener("resize", () => {
+      if (gravitySpot.dataset.submenuMounted === "true") {
+        const activeSize =
+          mountedSubmenuType === "contracts" ? contractsSize : rulesSize;
+        setGravitySize(activeSize);
+      } else {
+        setGravitySize(collapsedSize);
+      }
     });
+
+    // --- Performance: Prevent duplicate listeners ---
+    if (!gravitySpot._listenersAdded) {
+      gravitySpot.addEventListener("pointermove", (event) => {
+        updateArcHoverThrottled(event.clientX, event.clientY);
+      });
+      gravitySpot.addEventListener("pointerleave", clearArcHover);
+      gravitySpot.addEventListener("click", (event) => {
+        const hitArc =
+          lastHoveredArc ?? findHitArc(event.clientX, event.clientY);
+        if (!hitArc) return;
+
+        const orbit = hitArc.closest(".range-360.labels");
+        if (!orbit) return;
+
+        rotateOrbitGroupToArc(orbit, hitArc);
+
+        // Keep submenu behavior in sync after rotating top navigation items.
+        if (orbit.dataset.menuGroup === "navigation") {
+          const label = hitArc.textContent?.trim().toLowerCase();
+          if (label === "contracts") {
+            mountSubmenu("contracts");
+          } else if (label === "rules") {
+            mountSubmenu("rules");
+          } else {
+            unmountSubmenu();
+          }
+        }
+      });
+      gravitySpot._listenersAdded = true;
+    }
   });
 </script>
 
 <style>
-  :global(:root) {
-    color-scheme: dark;
-    background: #090c0b;
-  }
-
-  :global(body) {
-    margin: 0;
-    min-height: 100vh;
-    background:
-      radial-gradient(
-        circle at 20% 20%,
-        rgba(71, 221, 228, 0.12),
-        transparent 20%
-      ),
-      radial-gradient(
-        circle at 80% 10%,
-        rgba(56, 183, 164, 0.08),
-        transparent 24%
-      ),
-      radial-gradient(
-        circle at 55% 50%,
-        rgba(38, 232, 255, 0.04),
-        transparent 28%
-      ),
-      #090c0b;
-    color: #d8f8ff;
-    font-family: var(--font-display, Inter, system-ui, sans-serif);
-  }
-
   .bigbang {
     width: min(100%, 560px);
+    min-height: 100vh;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 1.5rem;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
   }
 
   .gravity-spot {
@@ -309,27 +526,11 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    overflow: hidden;
-    background:
-      radial-gradient(
-        circle at 50% 50%,
-        rgba(14, 45, 59, 0.94),
-        rgba(4, 9, 14, 0.98)
-      ),
-      radial-gradient(
-        circle at 25% 20%,
-        rgba(0, 248, 255, 0.12),
-        transparent 26%
-      ),
-      radial-gradient(
-        circle at 80% 10%,
-        rgba(51, 255, 241, 0.08),
-        transparent 22%
-      );
-    border: 1px solid rgba(71, 221, 228, 0.16);
-    box-shadow:
-      inset 0 0 120px rgba(0, 255, 255, 0.08),
-      0 0 60px rgba(58, 231, 255, 0.08);
+    overflow: visible;
+    transform-origin: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
   .gravity-spot::before,
@@ -342,25 +543,11 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
   }
 
   .gravity-spot::before {
-    background:
-      radial-gradient(
-        circle at 50% 45%,
-        rgba(0, 255, 255, 0.12),
-        transparent 35%
-      ),
-      radial-gradient(
-        circle at 35% 40%,
-        rgba(155, 255, 112, 0.08),
-        transparent 30%
-      );
+    background: none;
   }
 
   .gravity-spot::after {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.02)
-    );
+    background: none;
     mix-blend-mode: screen;
   }
 
@@ -389,19 +576,32 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
 
   o-arc {
     --o-fill: rgba(35, 169, 183, 0.14);
-    --o-stroke: rgba(71, 221, 228, 0.72);
-    --o-stroke-width: 0.6;
+    --o-stroke: rgba(71, 221, 228, 0.92);
+    --o-stroke-width: 0.72;
     color: #9efff1;
     font-family: "Orbitron", "Exo 2", ui-sans-serif, system-ui, sans-serif;
     text-shadow: 0 0 0.35rem rgba(158, 255, 241, 0.32);
     cursor: pointer;
     pointer-events: none;
     transition:
-      transform 420ms ease,
-      filter 180ms ease,
-      --o-fill 180ms ease,
-      --o-stroke 180ms ease;
-    filter: drop-shadow(0 0 18px rgba(71, 221, 228, 0.14));
+      transform 420ms cubic-bezier(0.77, 0, 0.18, 1),
+      --o-fill 120ms ease,
+      --o-stroke 120ms ease;
+    filter: drop-shadow(0 0 16px rgba(71, 221, 228, 0.26))
+      drop-shadow(0 0 28px rgba(71, 221, 228, 0.18));
+  }
+
+  o-arc.button-arc {
+    /* Remove filter transition for instant hover */
+    transition:
+      transform 420ms cubic-bezier(0.77, 0, 0.18, 1),
+      --o-fill 80ms ease,
+      --o-stroke 80ms ease;
+    --o-fill: rgba(35, 169, 183, 0.18);
+    --o-stroke: rgba(114, 255, 255, 0.96);
+    --o-stroke-width: 0.74;
+    /* Performance: reduce to one strong glow */
+    filter: drop-shadow(0 0 12px rgba(114, 255, 255, 0.38));
   }
 
   .filler {
@@ -411,33 +611,34 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
   }
 
   .filler-arc {
-    --o-fill: rgba(var(--o-yellow-light-rgb, 214, 255, 63), 0.12);
-    --o-stroke: rgba(var(--o-yellow-rgb, 214, 255, 63), 0.95);
-    --o-stroke-width: 0.4;
-    opacity: 0.85;
-    filter: drop-shadow(0 0 14px rgba(214, 255, 63, 0.35))
-      drop-shadow(0 0 24px rgba(214, 255, 63, 0.18));
+    --o-fill: rgba(var(--o-yellow-light-rgb, 214, 255, 63), 0.18);
+    --o-stroke: rgba(var(--o-yellow-rgb, 214, 255, 63), 1);
+    --o-stroke-width: 0.52;
+    opacity: 0.96;
+    filter: drop-shadow(0 0 14px rgba(214, 255, 63, 0.54))
+      drop-shadow(0 0 28px rgba(214, 255, 63, 0.36))
+      drop-shadow(0 0 40px rgba(214, 255, 63, 0.22));
   }
 
   .filler-arc.thin {
-    --o-stroke-width: 0.28;
-    opacity: 0.7;
-    filter: drop-shadow(0 0 10px rgba(214, 255, 63, 0.25))
-      drop-shadow(0 0 16px rgba(214, 255, 63, 0.16));
+    --o-stroke-width: 0.36;
+    opacity: 0.84;
+    filter: drop-shadow(0 0 11px rgba(214, 255, 63, 0.38))
+      drop-shadow(0 0 20px rgba(214, 255, 63, 0.26));
   }
 
   .filler-arc.medium {
-    --o-stroke-width: 0.45;
-    opacity: 0.82;
-    filter: drop-shadow(0 0 12px rgba(214, 255, 63, 0.3))
-      drop-shadow(0 0 20px rgba(214, 255, 63, 0.18));
+    --o-stroke-width: 0.58;
+    opacity: 0.92;
+    filter: drop-shadow(0 0 14px rgba(214, 255, 63, 0.44))
+      drop-shadow(0 0 24px rgba(214, 255, 63, 0.3));
   }
 
   .filler-arc.thick {
-    --o-stroke-width: 0.7;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 18px rgba(214, 255, 63, 0.4))
-      drop-shadow(0 0 26px rgba(214, 255, 63, 0.2));
+    --o-stroke-width: 0.86;
+    opacity: 1;
+    filter: drop-shadow(0 0 20px rgba(214, 255, 63, 0.6))
+      drop-shadow(0 0 34px rgba(214, 255, 63, 0.4));
   }
 
   o-arc {
@@ -446,9 +647,11 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
   }
 
   o-arc.button-arc.hovered {
-    --o-fill: rgba(71, 221, 228, 0.24);
-    --o-stroke: rgba(114, 255, 255, 0.9);
-    filter: drop-shadow(0 0 28px rgba(71, 221, 228, 0.32));
+    --o-fill: rgba(71, 221, 228, 0.28);
+    --o-stroke: rgba(164, 255, 255, 1);
+    --o-stroke-width: 0.86;
+    /* Performance: single, brighter glow */
+    filter: drop-shadow(0 0 18px rgba(114, 255, 255, 0.44));
   }
 
   .contracts {
@@ -475,5 +678,12 @@ const { orbitRingMeta, gravitySpotSize } = Astro.props as Props;
     --o-stroke: transparent;
     color: rgba(214, 255, 63, 0.95);
     text-shadow: 0 0 0.2rem rgba(214, 255, 63, 0.55);
+  }
+
+  @media (max-width: 768px) {
+    .bigbang {
+      padding: 0.5rem;
+      min-height: 100svh;
+    }
   }
 </style>

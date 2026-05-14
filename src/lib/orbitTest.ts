@@ -1,4 +1,16 @@
-export type MenuGroup = "navigation" | "contracts" | "";
+export type MenuGroup = string;
+
+export interface OrbitMenuItem {
+  text: string;
+  items?: OrbitMenu;
+  onClick?: string;
+}
+
+export interface OrbitMenu {
+  title: string;
+  menuGroup?: MenuGroup;
+  items: OrbitMenuItem[];
+}
 
 export type FillerArcMeta = {
   sizeRatioClass: string;
@@ -15,6 +27,7 @@ export interface OrbitMeta {
   isFiller: boolean;
   isPairedMenu: boolean;
   isTitleOrbit: boolean;
+  isSubmenu: boolean;
   menuGroup: MenuGroup;
   rangeClass: string;
   angleClass: string;
@@ -22,6 +35,11 @@ export interface OrbitMeta {
   sizeRatio: number;
   contracts: Array<string | FillerArcMeta>;
 }
+
+type BuildOrbitSceneOptions = {
+  includeSubmenu?: boolean;
+  targetMenuGroup?: string;
+};
 
 const ORBIT_SIZE_RATIO = 1.8;
 const MIN_ORBIT_NUMBER = 6;
@@ -107,6 +125,7 @@ const createOrbitMeta = ({
   isFiller = false,
   isPairedMenu = false,
   isTitleOrbit = false,
+  isSubmenu = false,
   menuGroup = "",
   rangeClass = "range-90",
   angleClass = "",
@@ -121,6 +140,7 @@ const createOrbitMeta = ({
   isFiller?: boolean;
   isPairedMenu?: boolean;
   isTitleOrbit?: boolean;
+  isSubmenu?: boolean;
   menuGroup?: MenuGroup;
   rangeClass?: string;
   angleClass?: string;
@@ -135,6 +155,7 @@ const createOrbitMeta = ({
   isFiller,
   isPairedMenu,
   isTitleOrbit,
+  isSubmenu,
   menuGroup,
   rangeClass,
   angleClass,
@@ -150,6 +171,7 @@ const createMenuOrbitPair = ({
   from = "0deg",
   menuGroup = "",
   isTopMenu = false,
+  isSubmenu = false,
 }: {
   items: string[];
   orbitNumber: number;
@@ -157,6 +179,7 @@ const createMenuOrbitPair = ({
   from?: string;
   menuGroup?: MenuGroup;
   isTopMenu?: boolean;
+  isSubmenu?: boolean;
 }) => [
   createOrbitMeta({
     items,
@@ -164,6 +187,7 @@ const createMenuOrbitPair = ({
     from,
     gap: 8,
     isTopMenu,
+    isSubmenu,
     menuGroup,
     sizeRatio: ORBIT_SIZE_RATIO,
   }),
@@ -174,6 +198,7 @@ const createMenuOrbitPair = ({
     gap: 0,
     isPairedMenu: true,
     isTitleOrbit: true,
+    isSubmenu,
     rangeClass: "range-120",
     sizeRatio: ORBIT_SIZE_RATIO,
   }),
@@ -200,125 +225,160 @@ const createFillerOrbit = ({
   });
 };
 
-export const buildOrbitScene = (contractNames: string[]) => {
-  const outerMenuItems = ["rules", "companies", "events", "contracts"];
-  const contractOrbitChunks =
-    contractNames.length > 10
-      ? [
-          contractNames.slice(0, Math.ceil(contractNames.length / 2)),
-          contractNames.slice(Math.ceil(contractNames.length / 2)),
-        ]
-      : [contractNames];
+export const buildOrbitScene = (
+  rootMenu: OrbitMenu,
+  options: BuildOrbitSceneOptions = {},
+) => {
+  const includeSubmenu = options.includeSubmenu ?? true;
+  const targetMenuGroup = options.targetMenuGroup;
+  const rootMenuItems = rootMenu.items.map((item) => item.text);
 
-  const outerChunkCount = contractOrbitChunks[0]?.length || 0;
+  // Find submenu container: if targetMenuGroup specified, find matching group, otherwise use contracts or first available
+  let submenuContainerItem: (typeof rootMenu.items)[number] | undefined;
+  if (targetMenuGroup) {
+    submenuContainerItem = rootMenu.items.find(
+      (item) => item.items?.menuGroup === targetMenuGroup,
+    );
+  } else {
+    submenuContainerItem =
+      rootMenu.items.find(
+        (item) => item.items && item.text.toLowerCase() === "contracts",
+      ) ?? rootMenu.items.find((item) => item.items);
+  }
+
+  const submenu = submenuContainerItem?.items;
+  const submenuNames = submenu?.items.map((item) => item.text) ?? [];
+  const submenuTitle = submenu?.title ?? "SUBMENU";
+  const submenuGroup =
+    submenu?.menuGroup ??
+    submenuContainerItem?.text?.toLowerCase() ??
+    "submenu";
+
+  const submenuOrbitChunks =
+    submenuNames.length === 0
+      ? []
+      : submenuNames.length > 10
+        ? [
+            submenuNames.slice(0, Math.ceil(submenuNames.length / 2)),
+            submenuNames.slice(Math.ceil(submenuNames.length / 2)),
+          ]
+        : [submenuNames];
+
+  const outerChunkCount = submenuOrbitChunks[0]?.length || 0;
   const innerOrbitFrom =
     outerChunkCount > 0 ? `${180 / outerChunkCount}deg` : "0deg";
 
-  const contractOrbitMeta: OrbitMeta[] = [];
+  const submenuOrbitMeta: OrbitMeta[] = [];
   const spacingGap = 2;
   let lastOrbitNumber = 0;
 
-  for (let index = 0; index < contractOrbitChunks.length; index += 2) {
-    const outerChunk = contractOrbitChunks[index];
-    const innerChunk = contractOrbitChunks[index + 1];
+  if (includeSubmenu) {
+    for (let index = 0; index < submenuOrbitChunks.length; index += 2) {
+      const outerChunk = submenuOrbitChunks[index];
+      const innerChunk = submenuOrbitChunks[index + 1];
 
-    const outerRequired = getOrbitNumberFromCharCount(
-      Math.max(...outerChunk.map((name) => name.length)) *
-        outerChunk.length *
-        0.7,
-    );
+      const outerRequired = getOrbitNumberFromCharCount(
+        Math.max(...outerChunk.map((name) => name.length)) *
+          outerChunk.length *
+          0.7,
+      );
 
-    const innerRequired = innerChunk
-      ? getOrbitNumberFromCharCount(
-          Math.max(...innerChunk.map((name) => name.length)) *
-            innerChunk.length *
-            0.7,
-        )
-      : null;
+      const innerRequired = innerChunk
+        ? getOrbitNumberFromCharCount(
+            Math.max(...innerChunk.map((name) => name.length)) *
+              innerChunk.length *
+              0.7,
+          )
+        : null;
 
-    const outerOrbitNumber = innerRequired
-      ? Math.max(
-          outerRequired,
-          innerRequired + spacingGap,
-          lastOrbitNumber + spacingGap,
-        )
-      : Math.max(outerRequired, lastOrbitNumber + spacingGap);
+      const outerOrbitNumber = innerRequired
+        ? Math.max(
+            outerRequired,
+            innerRequired + spacingGap,
+            lastOrbitNumber + spacingGap,
+          )
+        : Math.max(outerRequired, lastOrbitNumber + spacingGap);
 
-    const innerOrbitNumber = innerRequired
-      ? outerOrbitNumber - spacingGap
-      : null;
+      const innerOrbitNumber = innerRequired
+        ? outerOrbitNumber - spacingGap
+        : null;
 
-    contractOrbitMeta.push(
-      ...createMenuOrbitPair({
-        items: outerChunk,
-        orbitNumber: outerOrbitNumber,
-        title: "CONTRACTS // MISSION ARCHIVE",
-        from: "0deg",
-        menuGroup: "contracts",
-      }),
-    );
-
-    if (innerChunk && innerOrbitNumber !== null) {
-      contractOrbitMeta.push(
-        createOrbitMeta({
-          items: innerChunk,
-          orbitNumber: innerOrbitNumber,
-          from: innerOrbitFrom,
-          gap: 2,
-          sizeRatio: ORBIT_SIZE_RATIO,
-          menuGroup: "contracts",
+      submenuOrbitMeta.push(
+        ...createMenuOrbitPair({
+          items: outerChunk,
+          orbitNumber: outerOrbitNumber,
+          title: submenuTitle,
+          from: "0deg",
+          isSubmenu: true,
+          menuGroup: submenuGroup,
         }),
       );
-    }
 
-    lastOrbitNumber = outerOrbitNumber;
+      if (innerChunk && innerOrbitNumber !== null) {
+        submenuOrbitMeta.push(
+          createOrbitMeta({
+            items: innerChunk,
+            orbitNumber: innerOrbitNumber,
+            from: innerOrbitFrom,
+            gap: 2,
+            isSubmenu: true,
+            sizeRatio: ORBIT_SIZE_RATIO,
+            menuGroup: submenuGroup,
+          }),
+        );
+      }
+
+      lastOrbitNumber = outerOrbitNumber;
+    }
   }
 
   const topMenuOrbitNumber = 4;
   const topMenuOrbitMeta = createMenuOrbitPair({
-    items: outerMenuItems,
+    items: rootMenuItems,
     orbitNumber: topMenuOrbitNumber,
-    title: "NAVIGATION // ROTARY SELECTOR",
+    title: rootMenu.title,
     from: "0deg",
     isTopMenu: true,
-    menuGroup: "navigation",
+    menuGroup: rootMenu.menuGroup ?? "navigation",
   });
 
-  const menuOrbitMeta = [...topMenuOrbitMeta, ...contractOrbitMeta];
+  const menuOrbitMeta = [...topMenuOrbitMeta, ...submenuOrbitMeta];
   const occupiedOrbitNumbers = Array.from(
     new Set(menuOrbitMeta.map((meta) => meta.orbitNumber)),
   ).sort((a, b) => a - b);
 
   const fillerOrbitMeta: OrbitMeta[] = [];
-  const fillerStep = 2;
-  occupiedOrbitNumbers.forEach((orbitNumber, index) => {
-    const nextOrbitNumber = occupiedOrbitNumbers[index + 1];
-    if (!nextOrbitNumber) return;
+  if (includeSubmenu) {
+    const fillerStep = 2;
+    occupiedOrbitNumbers.forEach((orbitNumber, index) => {
+      const nextOrbitNumber = occupiedOrbitNumbers[index + 1];
+      if (!nextOrbitNumber) return;
 
-    for (
-      let fillerOrbitNumber = orbitNumber + fillerStep;
-      fillerOrbitNumber < nextOrbitNumber;
-      fillerOrbitNumber += fillerStep
-    ) {
-      fillerOrbitMeta.push(
-        createFillerOrbit({
-          orbitNumber: fillerOrbitNumber,
-          rotationDirection:
-            fillerOrbitMeta.length % 2 === 0 ? "reverse" : "normal",
-        }),
-      );
-    }
-  });
+      for (
+        let fillerOrbitNumber = orbitNumber + fillerStep;
+        fillerOrbitNumber < nextOrbitNumber - 1;
+        fillerOrbitNumber += fillerStep
+      ) {
+        fillerOrbitMeta.push(
+          createFillerOrbit({
+            orbitNumber: fillerOrbitNumber,
+            rotationDirection:
+              fillerOrbitMeta.length % 2 === 0 ? "reverse" : "normal",
+          }),
+        );
+      }
+    });
+  }
 
   const orbitRingMeta: OrbitMeta[] = [
     ...topMenuOrbitMeta,
     ...fillerOrbitMeta,
-    ...contractOrbitMeta,
+    ...submenuOrbitMeta,
   ];
 
   const largestOrbitNumber = Math.max(
-    topMenuOrbitNumber,
-    ...contractOrbitMeta.map((meta) => meta.orbitNumber),
+    ...topMenuOrbitMeta.map((meta) => meta.orbitNumber),
+    ...submenuOrbitMeta.map((meta) => meta.orbitNumber),
     ...fillerOrbitMeta.map((meta) => meta.orbitNumber),
   );
 

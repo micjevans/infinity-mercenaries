@@ -139,6 +139,7 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
     />
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <slot name="head" />
     <title>{pageTitle}</title>
   </head>
   <body class="theme-control-panel is-boot-preparing">
@@ -230,86 +231,92 @@ const backplaneTiles = Array.from({ length: 5 }, (_, index) => index);
         ))
       }
     </div>
-    {!hideHeader && <header class="site-header">
-      <nav class="site-nav" aria-label="Main navigation">
-        <a class="brand" href="/">
-          <img
-            class="brand-mark"
-            src="/images/m2-logo.png"
-            alt=""
-            aria-hidden="true"
-          />
-          <span>Infinity: Mercenaries</span>
-        </a>
-        <div class="nav-links">
-          {
-            navItems.map((item) => (
+    {
+      !hideHeader && (
+        <header class="site-header">
+          <nav class="site-nav" aria-label="Main navigation">
+            <a class="brand" href="/">
+              <img
+                class="brand-mark"
+                src="/images/m2-logo.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span>Infinity: Mercenaries</span>
+            </a>
+            <div class="nav-links">
+              {navItems.map((item) => (
+                <a
+                  href={item.href}
+                  class:list={{ "is-current": isCurrentNav(item.href) }}
+                  aria-current={isCurrentNav(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              ))}
               <a
-                href={item.href}
-                class:list={{ "is-current": isCurrentNav(item.href) }}
-                aria-current={isCurrentNav(item.href) ? "page" : undefined}
+                class="nav-discord-link"
+                href="https://discord.gg/QJyzrQZGvG"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Join the Infinity: Mercenaries Discord"
+                title="Join Discord"
               >
-                {item.label}
+                <svg
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M5.5 16c5 2.5 8 2.5 13 0M15.5 17.5l1 2s4.171-1.328 5.5-3.5c0-1 .53-8.147-3-10.5-1.5-1-4-1.5-4-1.5l-1 2h-2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8.528 17.5l-1 2s-4.171-1.328-5.5-3.5c0-1-.53-8.147 3-10.5 1.5-1 4-1.5 4-1.5l1 2h2"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2zM15.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </a>
-            ))
-          }
-          <a
-            class="nav-discord-link"
-            href="https://discord.gg/QJyzrQZGvG"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Join the Infinity: Mercenaries Discord"
-            title="Join Discord"
-          >
-            <svg
-              width="1.5em"
-              height="1.5em"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M5.5 16c5 2.5 8 2.5 13 0M15.5 17.5l1 2s4.171-1.328 5.5-3.5c0-1 .53-8.147-3-10.5-1.5-1-4-1.5-4-1.5l-1 2h-2"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-              <path
-                d="M8.528 17.5l-1 2s-4.171-1.328-5.5-3.5c0-1-.53-8.147 3-10.5 1.5-1 4-1.5 4-1.5l1 2h2"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-              <path
-                d="M8.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2zM15.5 14c-.828 0-1.5-.895-1.5-2s.672-2 1.5-2 1.5.895 1.5 2-.672 2-1.5 2z"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-            </svg>
-          </a>
-          <GoogleAuthButton client:load clientId={googleClientId} />
-        </div>
-      </nav>
-    </header>}
+              <GoogleAuthButton client:load clientId={googleClientId} />
+            </div>
+          </nav>
+        </header>
+      )
+    }
     <main id="main">
       <slot />
     </main>
-    {!hideFooter && <footer class="site-footer">
-      <div>
-        <div class="footer-brand">
-          <img src="/images/m2-logo.png" alt="" aria-hidden="true" />
-          <strong>Infinity: Mercenaries</strong>
-        </div>
-        <p>A community-made campaign framework for Infinity N5.</p>
-      </div>
-      <p class="legal-note">
-        Unofficial fan project. Infinity is owned by Corvus Belli.
-      </p>
-    </footer>}
+    {
+      !hideFooter && (
+        <footer class="site-footer">
+          <div>
+            <div class="footer-brand">
+              <img src="/images/m2-logo.png" alt="" aria-hidden="true" />
+              <strong>Infinity: Mercenaries</strong>
+            </div>
+            <p>A community-made campaign framework for Infinity N5.</p>
+          </div>
+          <p class="legal-note">
+            Unofficial fan project. Infinity is owned by Corvus Belli.
+          </p>
+        </footer>
+      )
+    }
 
     <script>
       const prefersReducedMotion = window.matchMedia(

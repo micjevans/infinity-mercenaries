@@ -1,27 +1,67 @@
 ---
 import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import OrbitTestComponent from "../components/OrbitTest.astro";
-import { buildOrbitScene } from "../lib/orbitTest";
+import type { OrbitMenu } from "../lib/orbitTest";
 
 const contractEntries = await getCollection("contracts");
 const contractNames = contractEntries
   .sort((a, b) => a.data.title.localeCompare(b.data.title))
   .map((entry) => entry.data.title || entry.slug);
 
-const { orbitRingMeta, gravitySpotSize } = buildOrbitScene(contractNames);
+// Gather rules page titles for submenu
+const rulesPages = [
+  { text: "Getting Started" },
+  { text: "The Company" },
+  { text: "Company Types" },
+  { text: "Playing Contracts" },
+  { text: "Downtime" },
+  { text: "Progression" },
+  { text: "Equipment and Loadouts" },
+  { text: "Services and Personnel" },
+  { text: "Ending a Season" },
+  { text: "Sponsors" },
+  { text: "Inducements" },
+  { text: "Classified Deck" },
+  { text: "Perks" },
+  { text: "War Markets" },
+  { text: "Loot Tables" },
+  { text: "NPC Reference" },
+  { text: "Rule Adjustments" },
+  { text: "Patch Notes" },
+  { text: "Credits" },
+];
+
+const orbitMenu: OrbitMenu = {
+  title: "NAVIGATION // ROTARY SELECTOR",
+  menuGroup: "navigation",
+  items: [
+    {
+      text: "rules",
+      items: {
+        title: "RULES // FIELD MANUAL",
+        menuGroup: "rules",
+        items: rulesPages,
+      },
+    },
+    { text: "companies" },
+    { text: "events", onClick: "open-events" },
+    {
+      text: "contracts",
+      items: {
+        title: "CONTRACTS // MISSION ARCHIVE",
+        menuGroup: "contracts",
+        items: contractNames.map((name) => ({ text: name })),
+      },
+    },
+  ],
+};
 ---
 
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Orbit quick start</title>
+<BaseLayout title="Orbit quick start" hideHeader={true} hideFooter={true}>
+  <Fragment slot="head">
     <link rel="stylesheet" href="/orbit.css" />
     <script src="/orbit.js" defer></script>
-  </head>
-  <body>
-    <OrbitTestComponent
-      orbitRingMeta={orbitRingMeta}
-      gravitySpotSize={gravitySpotSize}
-    />
-  </body>
-</html>
+  </Fragment>
+  <OrbitTestComponent menu={orbitMenu} />
+</BaseLayout>
